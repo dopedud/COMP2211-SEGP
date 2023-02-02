@@ -1,0 +1,21 @@
+SEG first meeting (02/02/2023)
+
+brian didn't attend
+
+discuss on which topic to choose
+
+first project seems more interesting, more fun, but will end up doing more work
+
+second project seems more mundane, dealing more with data than calculation, but may end up less work
+
+overall, both would seem that both of them requires approximately the same work
+
+need to split the team to backend and frontend, to avoid confusion and emphasise project structure
+
+agreed to use gitlab soton to manage version control of our project
+
+first project seems there's more work in frontend compared to second project
+
+geeth suggest that the second project's frontend work seems deceptive
+
+agreed on doing the first project
