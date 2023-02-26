@@ -1,6 +1,6 @@
 # COMP2211 Software Engineering Group Project
 
-Hello World
+Hello World - My own branch
 
 ## Getting started
 
