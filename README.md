@@ -2,7 +2,7 @@
 
 ## Topic
 
-Airport Runway Re-decleration Tool
+Airport Runway Re-declaration Tool
 
 ## Description
 
