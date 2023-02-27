@@ -80,3 +80,6 @@ fabric.properties
 
 # Target
 target/
+
+# MacOS
+.DS_Store
