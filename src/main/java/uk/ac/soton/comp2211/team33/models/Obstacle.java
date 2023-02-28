@@ -7,10 +7,11 @@ public class Obstacle {
 
   private double distanceThresh;
 
-  public Obstacle(String name, int height, int length) {
+  public Obstacle(String name, int height, int length, double distanceThresh) {
     this.name = name;
     this.height = height;
     this.length = length;
+    this.distanceThresh = distanceThresh;
   }
 
   public int getHeight() {
@@ -19,5 +20,9 @@ public class Obstacle {
 
   public int getLength() {
     return length;
+  }
+
+  public double getDistanceThresh() {
+    return distanceThresh;
   }
 }

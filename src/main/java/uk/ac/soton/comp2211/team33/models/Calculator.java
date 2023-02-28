@@ -11,10 +11,8 @@ abstract class Calculator {
     }
 
     protected double ldaOver (Runway runway, Obstacle obstacle) {
-        var tempThresh = obstacle.getHeight() * 50;
-        if (tempThresh < runway.getResa()) {
+        var newLda = runway.getLda() - obstacle.get(obstacle.getHeight() * 50);
 
-        }
     }
 
 
