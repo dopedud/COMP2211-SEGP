@@ -3,20 +3,20 @@ package uk.ac.soton.comp2211.team33.models;
 public class Runway {
     private String rdesignator;
     //Initial values of the runway
-    private Double tora, toda, asda, lda, resa, als, tocs;
+    private double tora, toda, asda, lda, resa, als, tocs;
     //Currently used runway values (after calculation)
-    private Double ctora, ctoda, casda, clda, cresa, cals, ctocs;
-    private Double threshold, clearway, stopway, stripEnd, blastProtection;
-    private Double strip;
+    private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
+    private double threshold, clearway, stopway, stripEnd, blastProtection;
+    private double strip;
 
-    public Runway(String rdesignator, Double tora, Double toda, Double asda, Double lda, Double resa, Double als,
-                  Double tocs, Double threshold, Double clearway, Double stopway, Double stripEnd, Double blastProtection, Double strip) {
+    public Runway(String rdesignator, double tora, double toda, double asda, double lda, double als,
+                  double tocs, double threshold, double clearway, double stopway, double stripEnd, double blastProtection, double strip) {
         this.rdesignator = rdesignator;
         this.tora = tora;
         this.toda = toda;
         this.asda = asda;
         this.lda = lda;
-        this.resa = resa;
+        this.resa = 240;
         this.als = als;
         this.tocs = tocs;
         this.ctora = tora;
@@ -35,112 +35,112 @@ public class Runway {
     }
 
     //Below are getters for some values that don't have to change but may be used in certain calculations
-    public Double getTora() {
+    public double getTora() {
         return tora;
     }
 
-    public Double getToda() {
+    public double getToda() {
         return toda;
     }
 
-    public Double getAsda() {
+    public double getAsda() {
         return asda;
     }
 
-    public Double getLda() {
+    public double getLda() {
         return lda;
     }
 
-    public Double getResa() {
+    public double getResa() {
         return resa;
     }
 
-    public Double getAls() {
+    public double getAls() {
         return als;
     }
 
-    public Double getTocs() {
+    public double getTocs() {
         return tocs;
     }
 
-    public Double getThreshold() {
+    public double getThreshold() {
         return threshold;
     }
 
-    public Double getClearway() {
+    public double getClearway() {
         return clearway;
     }
 
-    public Double getStopway() {
+    public double getStopway() {
         return stopway;
     }
 
-    public Double getStripEnd() {
+    public double getStripEnd() {
         return stripEnd;
     }
 
-    public Double getBlastProtection() {
+    public double getBlastProtection() {
         return blastProtection;
     }
 
-    public Double getStrip() {
+    public double getStrip() {
         return strip;
     }
 
     //Getters and setter for all current values that can be changed by a re-declaration
-    public Double getCtora() {
+    public double getCtora() {
         return ctora;
     }
 
-    public void setCtora(Double ctora) {
+    public void setCtora(double ctora) {
         this.ctora = ctora;
     }
 
-    public Double getCtoda() {
+    public double getCtoda() {
         return ctoda;
     }
 
-    public void setCtoda(Double ctoda) {
+    public void setCtoda(double ctoda) {
         this.ctoda = ctoda;
     }
 
-    public Double getCasda() {
+    public double getCasda() {
         return casda;
     }
 
-    public void setCasda(Double casda) {
+    public void setCasda(double casda) {
         this.casda = casda;
     }
 
-    public Double getClda() {
+    public double getClda() {
         return clda;
     }
 
-    public void setClda(Double clda) {
+    public void setClda(double clda) {
         this.clda = clda;
     }
 
-    public Double getCresa() {
+    public double getCresa() {
         return cresa;
     }
 
-    public void setCresa(Double cresa) {
+    public void setCresa(double cresa) {
         this.cresa = cresa;
     }
 
-    public Double getCals() {
+    public double getCals() {
         return cals;
     }
 
-    public void setCals(Double cals) {
+    public void setCals(double cals) {
         this.cals = cals;
     }
 
-    public Double getCtocs() {
+    public double getCtocs() {
         return ctocs;
     }
 
-    public void setCtocs(Double ctocs) {
+    public void setCtocs(double ctocs) {
         this.ctocs = ctocs;
     }
 }
