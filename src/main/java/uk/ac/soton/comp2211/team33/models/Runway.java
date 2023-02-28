@@ -34,6 +34,59 @@ public class Runway {
         this.strip = strip;
     }
 
+    //Below are getters for some values that don't have to change but may be used in certain calculations
+    public Double getTora() {
+        return tora;
+    }
+
+    public Double getToda() {
+        return toda;
+    }
+
+    public Double getAsda() {
+        return asda;
+    }
+
+    public Double getLda() {
+        return lda;
+    }
+
+    public Double getResa() {
+        return resa;
+    }
+
+    public Double getAls() {
+        return als;
+    }
+
+    public Double getTocs() {
+        return tocs;
+    }
+
+    public Double getThreshold() {
+        return threshold;
+    }
+
+    public Double getClearway() {
+        return clearway;
+    }
+
+    public Double getStopway() {
+        return stopway;
+    }
+
+    public Double getStripEnd() {
+        return stripEnd;
+    }
+
+    public Double getBlastProtection() {
+        return blastProtection;
+    }
+
+    public Double getStrip() {
+        return strip;
+    }
+
     //Getters and setter for all current values that can be changed by a re-declaration
     public Double getCtora() {
         return ctora;
