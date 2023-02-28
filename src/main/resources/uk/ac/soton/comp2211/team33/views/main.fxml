@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="uk.ac.soton.comp2211.team33.controllers.MainViewController"
             prefHeight="400.0" prefWidth="600.0">
-  <children>
-    <Label text="Hello World!" />
-  </children>
-</AnchorPane>
+  <top>
+    <Text text="Welcome" />
+  </top>
+  <center>
+    <VBox alignment="CENTER">
+        <Button text="Click me!" onAction="#handleClick" />
+    </VBox>
+  </center>
+</BorderPane>
