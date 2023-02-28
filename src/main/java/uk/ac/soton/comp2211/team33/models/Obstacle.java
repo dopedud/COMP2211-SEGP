@@ -12,27 +12,27 @@ public class Obstacle {
   /**
    * Name of the obstacle.
    */
-  private String name;
+  private final String name;
 
   /**
    * Height of the obstacle.
    */
-  private int height;
+  private final double height;
 
   /**
    * Length of the obstacle.
    */
-  private int length;
+  private final double length;
 
 
   /**
    * Creates a new obstacle with the specified name, height, and length.
    *
-   * @param name
-   * @param height
-   * @param length
+   * @param name    name of the obstacle
+   * @param height  height of the obstacle
+   * @param length  length of the obstacle
    */
-  public Obstacle(String name, int height, int length) {
+  public Obstacle(String name, double height, double length) {
     this.name = name;
     this.height = height;
     this.length = length;
