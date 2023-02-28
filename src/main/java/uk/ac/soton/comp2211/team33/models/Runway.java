@@ -1,6 +1,13 @@
 package uk.ac.soton.comp2211.team33.models;
 
+import java.util.ArrayList;
+
 public class Runway {
+
+    //Obstacles on the runway
+    private ArrayList<Obstacle> obstacles;
+    //Current obstacle
+    private Obstacle currentObs;
     private String rdesignator;
     //Initial values of the runway
     private double tora, toda, asda, lda, resa, als, tocs;

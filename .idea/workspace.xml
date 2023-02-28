@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7847d25-294a-4011-9547-aea2330d42ea" name="Changes" comment="Work #1">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Calculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java" afterDir="false" />
-    </list>
+    <list default="true" id="c7847d25-294a-4011-9547-aea2330d42ea" name="Changes" comment="Work #1" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -93,7 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1677535713671</updated>
       <workItem from="1677535715293" duration="673000" />
-      <workItem from="1677597290114" duration="5500000" />
+      <workItem from="1677597290114" duration="5615000" />
     </task>
     <task id="LOCAL-00001" summary="Start">
       <created>1677536125225</created>

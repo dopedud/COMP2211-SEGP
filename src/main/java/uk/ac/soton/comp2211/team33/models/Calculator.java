@@ -1,12 +1,21 @@
 package uk.ac.soton.comp2211.team33.models;
 
-public class Calculator {
+abstract class Calculator {
 
 
     //Function that calculates the take-off runway available
-    // TORA for Take Off Away and Landing Over
-    private double tora1 (Runway runway, double distanceThreshold, double displacedThreshold){
+    // TORA for Take Off Away
+    protected double tora1 (Runway runway, double distanceThreshold, double displacedThreshold){
         var newTora = runway.getTora() - runway.getBlastProtection() - distanceThreshold - displacedThreshold;
         return 0;
     }
+
+    protected double ldaOver (Runway runway, Obstacle obstacle) {
+        var tempThresh = obstacle.getHeight() * 50;
+        if (tempThresh < runway.getResa()) {
+
+        }
+    }
+
+
 }
