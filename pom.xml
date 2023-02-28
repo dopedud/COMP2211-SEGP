@@ -14,25 +14,33 @@
     <maven.compiler.target>19</maven.compiler.target>
     <maven.compiler.release>19</maven.compiler.release>
     <junit.version>5.8.2</junit.version>
+    <javafx.version>19</javafx.version>
+    <log4j.version>2.20.0</log4j.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.20.0</version>
+      <version>${log4j.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.20.0</version>
+      <version>${log4j.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>19</version>
+      <version>${javafx.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
     </dependency>
 
     <dependency>
@@ -66,10 +74,9 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>uk.ac.soton.comp2211.team33.App</mainClass>
+          <mainClass>uk.ac.soton.comp2211.team33/uk.ac.soton.comp2211.team33.App</mainClass>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
 </project>
