@@ -14,11 +14,11 @@ public class Obstacle {
     this.distanceThresh = distanceThresh;
   }
 
-  public int getHeight() {
+  public double getHeight() {
     return height;
   }
 
-  public int getLength() {
+  public double getLength() {
     return length;
   }
 

@@ -11,8 +11,9 @@ abstract class Calculator {
     }
 
     protected double ldaOver (Runway runway, Obstacle obstacle) {
-        var newLda = runway.getLda() - obstacle.get(obstacle.getHeight() * 50);
-
+        var newLda = runway.getLda() - obstacle.getDistanceThresh() - (obstacle.getHeight() * 50) - runway.getStripEnd();
+        runway.setClda(newLda);
+        return runway.getClda();
     }
 
 
