@@ -35,7 +35,7 @@ public class Obstacle {
    * @param height  height of the obstacle
    * @param length  length of the obstacle
    */
-  public Obstacle(String name, int height, int length, double distanceThresh) {
+  public Obstacle(String name, double height, double length, double distanceThresh) {
 
     this.name = name;
     this.height = height;

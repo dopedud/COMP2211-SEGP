@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Runway {
 
@@ -13,7 +12,7 @@ public class Runway {
   /**
    * Obstacles on the runway
    */
-  private ArrayList<Obstacle> obstacles;
+  private ArrayList<Obstacle> obstacles = new ArrayList<>();
 
   /**
    * Current obstacle
@@ -109,15 +108,16 @@ public class Runway {
    */
   public void selectObs(String name){
     logger.info("Switching current obstacle to " + name);
-    var iterator = obstacles.iterator();
     boolean found = false;
-    while(iterator.hasNext() && !found){
-      if(iterator.next().getName().matches(name)){
-        currentObs = iterator.next();
+    int x = 0;
+    while( x < obstacles.size() && !found){
+      if(obstacles.get(x).getName().matches(name)){
+        currentObs = obstacles.get(x);
         logger.info("Currently selected obstacle is: " + currentObs.getName());
         found = true;
+      } else {
+        x++;
       }
-      iterator.next();
     }
     //In case the obstacle name is not found
     if (!found) {

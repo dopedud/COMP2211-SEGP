@@ -2,7 +2,6 @@ package uk.ac.soton.comp2211.team33.models;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.App;
 
 abstract class Calculator {
 
@@ -14,10 +13,9 @@ abstract class Calculator {
    * TORA = ASDA = TODA in this case
    *
    * @param runway
-   * @param displacedThreshold
    * @return the new TORA
    */
-  protected double toraTowards(Runway runway, double displacedThreshold) {
+  protected static void toraTowards(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
     double newTora;
     double tempSlope = (runway.getCurrentObs().getHeight() * 50);
@@ -26,10 +24,10 @@ abstract class Calculator {
       tempSlope = runway.getCresa();
     }
 
-    if (displacedThreshold < 0) {
+    if (runway.getCurrentObs().getDistanceThresh() < 0) {
       newTora = runway.getCurrentObs().getDistanceThresh() - tempSlope - runway.getStripEnd();
     } else {
-      newTora = runway.getCurrentObs().getDistanceThresh() + displacedThreshold - tempSlope - runway.getStripEnd();
+      newTora = runway.getCurrentObs().getDistanceThresh() + runway.getThreshold() - tempSlope - runway.getStripEnd();
     }
 
     runway.setCtora(newTora);
@@ -38,7 +36,6 @@ abstract class Calculator {
     var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
     runway.setCals(surfaceClimb);
     runway.setCtocs(surfaceClimb);
-    return newTora;
   }
 
   /**
@@ -47,14 +44,13 @@ abstract class Calculator {
    * TORA	for	the	TODA	and	ASDA	values.
    *
    * @param runway
-   * @param displacedThreshold
    * @return the new TORA value
    */
-  protected double toraAway(Runway runway, double displacedThreshold) {
+  protected static void toraAway(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
     double newTora;
-    if (displacedThreshold < 0) {
-      newTora = runway.getTora() - runway.getBlastProtection() - runway.getCurrentObs().getDistanceThresh() - displacedThreshold;
+    if (runway.getCurrentObs().getDistanceThresh() < 0) {
+      newTora = runway.getTora() - runway.getBlastProtection() - runway.getCurrentObs().getDistanceThresh() - runway.getThreshold();
     } else {
       newTora = runway.getTora() - runway.getStripEnd() - runway.getCresa() - runway.getCurrentObs().getDistanceThresh();
     }
@@ -65,7 +61,6 @@ abstract class Calculator {
     var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
     runway.setCals(surfaceClimb);
     runway.setCtocs(surfaceClimb);
-    return newTora;
   }
 
   /**
@@ -75,7 +70,7 @@ abstract class Calculator {
    * @param runway
    * @return the new LDA
    */
-  protected double ldaOver(Runway runway) {
+  protected static double ldaOver(Runway runway) {
     logger.info("Re-declaring LDA for landing over obstacle...");
     var newLda = runway.getLda() - runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - (runway.getCurrentObs().getHeight() * 50);
     runway.setClda(newLda);
@@ -89,7 +84,7 @@ abstract class Calculator {
    * @param runway
    * @return the new LDA
    */
-  protected double ldaTowards(Runway runway) {
+  protected static double ldaTowards(Runway runway) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
     var newLda = runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - runway.getCresa();
     runway.setClda(newLda);
