@@ -2,7 +2,7 @@ package uk.ac.soton.comp2211.team33;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.models.Calculator;
+import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 
