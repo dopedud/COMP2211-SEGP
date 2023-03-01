@@ -1,153 +1,230 @@
 package uk.ac.soton.comp2211.team33.models;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Runway {
 
-    //Obstacles on the runway
-    private ArrayList<Obstacle> obstacles;
-    //Current obstacle
-    private Obstacle currentObs;
-    private String rdesignator;
-    //Initial values of the runway
-    private final double tora, toda, asda, lda, resa, als, tocs;
-    //Currently used runway values (after calculation)
-    private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
-    private double threshold, clearway, stopway, stripEnd, blastProtection;
-    private double strip;
+  private static Logger logger = LogManager.getLogger(Calculator.class);
 
-    public Runway(String rdesignator, double tora, double toda, double asda, double lda, double als,
-                  double tocs, double threshold, double clearway, double stopway, double stripEnd, double blastProtection, double strip) {
-        this.rdesignator = rdesignator;
-        this.tora = tora;
-        this.toda = toda;
-        this.asda = asda;
-        this.lda = lda;
-        this.resa = 240;
-        this.als = als;
-        this.tocs = tocs;
-        this.ctora = tora;
-        this.ctoda = toda;
-        this.casda = asda;
-        this.clda = lda;
-        this.cresa = resa;
-        this.cals = als;
-        this.ctocs = tocs;
-        this.threshold = threshold;
-        this.clearway = clearway;
-        this.stopway = stopway;
-        this.stripEnd = stripEnd;
-        this.blastProtection = blastProtection;
-        this.strip = strip;
+  /**
+   * Obstacles on the runway
+   */
+  private ArrayList<Obstacle> obstacles;
+
+  /**
+   * Current obstacle
+   */
+  private Obstacle currentObs = null;
+
+  /**
+   * The designator for the runway. Usually 2 characters with L/R at the end
+   */
+  private String rdesignator;
+
+  /**
+   * Initial values of the runway
+   */
+  private final double tora, toda, asda, lda, resa;
+
+  /**
+   * Currently used runway values (after calculation)
+   */
+  private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
+
+  /**
+   * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m)
+   */
+  private double threshold, clearway, stopway, stripEnd, blastProtection;
+
+
+  public Runway(String rdesignator, double tora, double toda, double asda, double lda,
+                double resa, double threshold, double clearway, double stopway,
+                double stripEnd, double blastProtection) {
+    this.rdesignator = rdesignator;
+    this.tora = tora;
+    this.toda = toda;
+    this.asda = asda;
+    this.lda = lda;
+    if (resa < 240) {
+      logger.info("RESA value below 240m. Setting it as 240m minimum value...");
+      this.resa = 240;
+    } else {
+      this.resa = resa;
+    }
+    this.ctora = tora;
+    this.ctoda = toda;
+    this.casda = asda;
+    this.clda = lda;
+    this.cresa = this.resa;
+    this.cals = 0;
+    this.ctocs = 0;
+    this.threshold = threshold;
+    this.clearway = clearway;
+    this.stopway = stopway;
+    this.stripEnd = stripEnd;
+    if (blastProtection < 300 || blastProtection > 500) {
+      logger.error("Blast protection is not within required range");
+    } else {
+      this.blastProtection = blastProtection;
+    }
+  }
+
+  /**
+   * Adds an obstacle to the runway
+   * @param obstacle
+   */
+  public void addObstacle(Obstacle obstacle) {
+      obstacles.add(obstacle);
+      if (currentObs == null) {
+        currentObs = obstacle;
+      }
+  }
+
+  /**
+   * Gets the current obstacle
+   * @return an Obstacle object
+   */
+  public Obstacle getCurrentObs() {
+    return currentObs;
+  }
+
+  /**
+   * lists all the obstacles on the runway
+   */
+  public void listObjects() {
+    logger.info("Listing all obstacles on runway:");
+    var iterator = obstacles.iterator();
+    while (iterator.hasNext()){
+      logger.info(iterator.next());
+    }
+  }
+
+  /**
+   * Switch the current obstacle for some other one
+   * @param name
+   */
+  public void selectObs(String name){
+    logger.info("Switching current obstacle to " + name);
+    var iterator = obstacles.iterator();
+    boolean found = false;
+    while(iterator.hasNext() && !found){
+      if(iterator.next().getName().matches(name)){
+        currentObs = iterator.next();
+        logger.info("Currently selected obstacle is: " + currentObs.getName());
+        found = true;
+      }
+      iterator.next();
+    }
+    //In case the obstacle name is not found
+    if (!found) {
+      logger.info("Obstacle " + name + " does not exist.");
     }
 
-    //Below are getters for some values that don't have to change but may be used in certain calculations
-    public double getTora() {
-        return tora;
-    }
+  }
 
-    public double getToda() {
-        return toda;
-    }
+  /**
+   * Below are getters for some values that don't have to change but may be used in certain calculations
+   */
+  public double getTora() {
+    return tora;
+  }
 
-    public double getAsda() {
-        return asda;
-    }
+  public double getToda() {
+    return toda;
+  }
 
-    public double getLda() {
-        return lda;
-    }
+  public double getAsda() {
+    return asda;
+  }
 
-    public double getResa() {
-        return resa;
-    }
+  public double getLda() {
+    return lda;
+  }
 
-    public double getAls() {
-        return als;
-    }
+  public double getResa() {
+    return resa;
+  }
 
-    public double getTocs() {
-        return tocs;
-    }
+  public double getThreshold() {
+    return threshold;
+  }
 
-    public double getThreshold() {
-        return threshold;
-    }
+  public double getClearway() {
+    return clearway;
+  }
 
-    public double getClearway() {
-        return clearway;
-    }
+  public double getStopway() {
+    return stopway;
+  }
 
-    public double getStopway() {
-        return stopway;
-    }
+  public double getStripEnd() {
+    return stripEnd;
+  }
 
-    public double getStripEnd() {
-        return stripEnd;
-    }
+  public double getBlastProtection() {
+    return blastProtection;
+  }
 
-    public double getBlastProtection() {
-        return blastProtection;
-    }
+  /**
+   *  Getters and setter for all current values that can be changed by a re-declaration
+   */
+  public double getCtora() {
+    return ctora;
+  }
 
-    public double getStrip() {
-        return strip;
-    }
+  public void setCtora(double ctora) {
+    this.ctora = ctora;
+  }
 
-    //Getters and setter for all current values that can be changed by a re-declaration
-    public double getCtora() {
-        return ctora;
-    }
+  public double getCtoda() {
+    return ctoda;
+  }
 
-    public void setCtora(double ctora) {
-        this.ctora = ctora;
-    }
+  public void setCtoda(double ctoda) {
+    this.ctoda = ctoda;
+  }
 
-    public double getCtoda() {
-        return ctoda;
-    }
+  public double getCasda() {
+    return casda;
+  }
 
-    public void setCtoda(double ctoda) {
-        this.ctoda = ctoda;
-    }
+  public void setCasda(double casda) {
+    this.casda = casda;
+  }
 
-    public double getCasda() {
-        return casda;
-    }
+  public double getClda() {
+    return clda;
+  }
 
-    public void setCasda(double casda) {
-        this.casda = casda;
-    }
+  public void setClda(double clda) {
+    this.clda = clda;
+  }
 
-    public double getClda() {
-        return clda;
-    }
+  public double getCresa() {
+    return cresa;
+  }
 
-    public void setClda(double clda) {
-        this.clda = clda;
-    }
+  public void setCresa(double cresa) {
+    this.cresa = cresa;
+  }
 
-    public double getCresa() {
-        return cresa;
-    }
+  public double getCals() {
+    return cals;
+  }
 
-    public void setCresa(double cresa) {
-        this.cresa = cresa;
-    }
+  public void setCals(double cals) {
+    this.cals = cals;
+  }
 
-    public double getCals() {
-        return cals;
-    }
+  public double getCtocs() {
+    return ctocs;
+  }
 
-    public void setCals(double cals) {
-        this.cals = cals;
-    }
-
-    public double getCtocs() {
-        return ctocs;
-    }
-
-    public void setCtocs(double ctocs) {
-        this.ctocs = ctocs;
-    }
+  public void setCtocs(double ctocs) {
+    this.ctocs = ctocs;
+  }
 }

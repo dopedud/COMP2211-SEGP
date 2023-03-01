@@ -12,23 +12,72 @@ abstract class Calculator {
    * Function that calculates the take-off runway available
    * TORA for Take Off Away
    * TORA = ASDA = TODA in this case
+   *
+   * @param runway
+   * @param displacedThreshold
+   * @return the new TORA
    */
-  protected double toraTowards(Runway runway, Obstacle obstacle, double displacedThreshold) {
+  protected double toraTowards(Runway runway, double displacedThreshold) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
-    var newTora = runway.getTora() - runway.getBlastProtection() - obstacle.getDistanceThresh() - displacedThreshold;
+    double newTora;
+    double tempSlope = (runway.getCurrentObs().getHeight() * 50);
+    //Compare with RESA, if RESA is greater, use RESA
+    if (tempSlope < runway.getCresa()){
+      tempSlope = runway.getCresa();
+    }
+
+    if (displacedThreshold < 0) {
+      newTora = runway.getCurrentObs().getDistanceThresh() - tempSlope - runway.getStripEnd();
+    } else {
+      newTora = runway.getCurrentObs().getDistanceThresh() + displacedThreshold - tempSlope - runway.getStripEnd();
+    }
+
     runway.setCtora(newTora);
     runway.setCasda(newTora);
     runway.setCtoda(newTora);
+    var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
+    runway.setCals(surfaceClimb);
+    runway.setCtocs(surfaceClimb);
+    return newTora;
+  }
+
+  /**
+   * Calculate the TORA for take-off away from the obstacle present
+   * For ASDA and TODA, if	there	exist	any	Clearway	and/or	Stopway	then	those	values	should	be	added	to	the	reduced
+   * TORA	for	the	TODA	and	ASDA	values.
+   *
+   * @param runway
+   * @param displacedThreshold
+   * @return the new TORA value
+   */
+  protected double toraAway(Runway runway, double displacedThreshold) {
+    logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
+    double newTora;
+    if (displacedThreshold < 0) {
+      newTora = runway.getTora() - runway.getBlastProtection() - runway.getCurrentObs().getDistanceThresh() - displacedThreshold;
+    } else {
+      newTora = runway.getTora() - runway.getStripEnd() - runway.getCresa() - runway.getCurrentObs().getDistanceThresh();
+    }
+
+    runway.setCtora(newTora);
+    runway.setCasda(newTora + runway.getStopway());
+    runway.setCtoda(newTora + runway.getClearway());
+    var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
+    runway.setCals(surfaceClimb);
+    runway.setCtocs(surfaceClimb);
     return newTora;
   }
 
   /**
    * Function that re-declares the LDA (Landing Distance Available) after an obstacle appears
    * When landing over, only the LDA has to change.
+   *
+   * @param runway
+   * @return the new LDA
    */
-  protected double ldaOver(Runway runway, Obstacle obstacle) {
+  protected double ldaOver(Runway runway) {
     logger.info("Re-declaring LDA for landing over obstacle...");
-    var newLda = runway.getLda() - obstacle.getDistanceThresh() - (obstacle.getHeight() * 50) - runway.getStripEnd();
+    var newLda = runway.getLda() - runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - (runway.getCurrentObs().getHeight() * 50);
     runway.setClda(newLda);
     return runway.getClda();
   }
@@ -36,10 +85,13 @@ abstract class Calculator {
   /**
    * Function that re-declares the LDA after an obstacle appears
    * When landing towards, only the LDA has to change.
+   *
+   * @param runway
+   * @return the new LDA
    */
-  protected double ldaTowards(Runway runway, Obstacle obstacle) {
+  protected double ldaTowards(Runway runway) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
-    var newLda = obstacle.getDistanceThresh() - runway.getStripEnd() - runway.getCresa();
+    var newLda = runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - runway.getCresa();
     runway.setClda(newLda);
     return runway.getClda();
   }

@@ -54,4 +54,8 @@ public class Obstacle {
   public double getDistanceThresh() {
     return distanceThresh;
   }
+
+  public String getName() {
+    return name;
+  }
 }
