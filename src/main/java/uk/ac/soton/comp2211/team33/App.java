@@ -12,6 +12,7 @@ import javafx.stage.Stage;
  * The main class to execute when running the application.
  */
 public class App extends Application {
+
   private static Logger logger = LogManager.getLogger(App.class);
 
   /**
