@@ -10,7 +10,7 @@ public class Runway {
     private Obstacle currentObs;
     private String rdesignator;
     //Initial values of the runway
-    private double tora, toda, asda, lda, resa, als, tocs;
+    private final double tora, toda, asda, lda, resa, als, tocs;
     //Currently used runway values (after calculation)
     private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
     private double threshold, clearway, stopway, stripEnd, blastProtection;
