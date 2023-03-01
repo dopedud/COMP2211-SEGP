@@ -7,8 +7,7 @@
     <list default="true" id="c7847d25-294a-4011-9547-aea2330d42ea" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Calculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Obstacle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Obstacle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/TesterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/soton/comp2211/team33/TesterClass.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +63,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="uk.ac.soton.comp2211.team33" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.TesterClass">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="uk.ac.soton.comp2211.team33.App" />
@@ -79,11 +83,11 @@
       </method>
     </configuration>
     <configuration name="TesterClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="uk.ac.soton.comp2211.team33.models.TesterClass" />
+      <option name="MAIN_CLASS_NAME" value="uk.ac.soton.comp2211.team33.TesterClass" />
       <module name="airport-runway-redeclaration" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.soton.comp2211.team33.models.*" />
+          <option name="PATTERN" value="uk.ac.soton.comp2211.team33.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>

@@ -3,9 +3,16 @@ package uk.ac.soton.comp2211.team33.models;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-abstract class Calculator {
+public final class Calculator {
 
   private static Logger logger = LogManager.getLogger(Calculator.class);
+
+  /**
+   * Private constructor to prevent instantiating
+   */
+  private Calculator(){
+    //Private class
+  }
 
   /**
    * Function that calculates the take-off runway available
@@ -15,7 +22,7 @@ abstract class Calculator {
    * @param runway
    * @return the new TORA
    */
-  protected static void toraTowards(Runway runway) {
+  public static void toraTowards(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
     double newTora;
     double tempSlope = (runway.getCurrentObs().getHeight() * 50);
@@ -46,7 +53,7 @@ abstract class Calculator {
    * @param runway
    * @return the new TORA value
    */
-  protected static void toraAway(Runway runway) {
+  public static void toraAway(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
     double newTora;
     if (runway.getCurrentObs().getDistanceThresh() < 0) {
@@ -70,7 +77,7 @@ abstract class Calculator {
    * @param runway
    * @return the new LDA
    */
-  protected static double ldaOver(Runway runway) {
+  public static double ldaOver(Runway runway) {
     logger.info("Re-declaring LDA for landing over obstacle...");
     var newLda = runway.getLda() - runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - (runway.getCurrentObs().getHeight() * 50);
     runway.setClda(newLda);
@@ -84,7 +91,7 @@ abstract class Calculator {
    * @param runway
    * @return the new LDA
    */
-  protected static double ldaTowards(Runway runway) {
+  public static double ldaTowards(Runway runway) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
     var newLda = runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - runway.getCresa();
     runway.setClda(newLda);
