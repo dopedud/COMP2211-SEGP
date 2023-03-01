@@ -9,6 +9,9 @@ package uk.ac.soton.comp2211.team33.models;
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
 public class Obstacle {
+
+  private double distanceThresh;
+
   /**
    * Name of the obstacle.
    */
@@ -32,9 +35,27 @@ public class Obstacle {
    * @param height  height of the obstacle
    * @param length  length of the obstacle
    */
-  public Obstacle(String name, double height, double length) {
+  public Obstacle(String name, double height, double length, double distanceThresh) {
+
     this.name = name;
     this.height = height;
     this.length = length;
+    this.distanceThresh = distanceThresh;
+  }
+
+  public double getHeight() {
+    return height;
+  }
+
+  public double getLength() {
+    return length;
+  }
+
+  public double getDistanceThresh() {
+    return distanceThresh;
+  }
+
+  public String getName() {
+    return name;
   }
 }
