@@ -1,56 +1,73 @@
-package uk.ac.soton.comp2211.team33.models;
+package uk.ac.soton.comp2211.team33.entities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
+/**
+ * The class Runway models a runway and its values for re-declaration in an airport.
+ * (Jackson if you want you can add more description)
+ *
+ * @author Jackson (jl14u21@soton.ac.uk)
+ */
 public class Runway {
 
-  private static Logger logger = LogManager.getLogger(Calculator.class);
+  private static Logger logger = LogManager.getLogger(Runway.class);
 
   /**
+<<<<<<< HEAD:src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java
    * Current obstacle
+=======
+   * List of obstacles on the runway.
+   */
+  private ArrayList<Obstacle> obstacles = new ArrayList<>();
+
+  /**
+   * Current obstacle on the runway.
+>>>>>>> 004a3f751f7de9b760cab206a545db7402eb9957:src/main/java/uk/ac/soton/comp2211/team33/entities/Runway.java
    */
   private Obstacle currentObs = null;
   
   // TODO: 01/03/2023 Make sure to limit it to 1 obstacle
 
   /**
-   * The designator for the runway. Usually 2 characters with L/R at the end
+   * The designator for the runway. Usually 2 characters with L/R at the end.
    */
-  private String rdesignator;
+  private String runwayDesignator;
 
   /**
-   * Initial values of the runway
+   * Initial values of the runway.
    */
   private final double tora, toda, asda, lda, resa;
 
   /**
-   * Currently used runway values (after calculation)
+   * Currently used runway values (after calculation).
    */
   private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
 
   /**
-   * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m)
+   * Displaced threshold, clearway, stopway, Strip end and blast protection (300m-500m).
    */
   private double threshold, clearway, stopway, stripEnd, blastProtection;
 
 
-  public Runway(String rdesignator, double tora, double toda, double asda, double lda,
+  public Runway(String runwayDesignator, double tora, double toda, double asda, double lda,
                 double resa, double threshold, double clearway, double stopway,
                 double stripEnd, double blastProtection) {
-    this.rdesignator = rdesignator;
+    this.runwayDesignator = runwayDesignator;
     this.tora = tora;
     this.toda = toda;
     this.asda = asda;
     this.lda = lda;
+
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
       this.resa = 240;
     } else {
       this.resa = resa;
     }
+
     this.ctora = tora;
     this.ctoda = toda;
     this.casda = asda;
@@ -62,6 +79,7 @@ public class Runway {
     this.clearway = clearway;
     this.stopway = stopway;
     this.stripEnd = stripEnd;
+
     if (blastProtection < 300 || blastProtection > 500) {
       logger.error("Blast protection is not within required range");
     } else {
@@ -69,7 +87,11 @@ public class Runway {
     }
   }
 
-  /*
+  /**
+   * Adds an obstacle to the runway.
+   *
+   * @param obstacle the obstacle to add
+   */
   public void addObstacle(Obstacle obstacle) {
       obstacles.add(obstacle);
       if (currentObs == null) {
@@ -77,20 +99,31 @@ public class Runway {
       }
   }
 
-  public void listObjects() {
+
+  /**
+   * Lists all the obstacles on the runway.
+   */
+  public void listObstacles() {
     logger.info("Listing all obstacles on runway:");
     var iterator = obstacles.iterator();
-    while (iterator.hasNext()){
+    while (iterator.hasNext()) {
       logger.info(iterator.next());
     }
   }
 
+
+  /**
+   * Switch the current obstacle for some other one.
+   *
+   * @param name name of the obstacle
+   */
   public void selectObs(String name){
     logger.info("Switching current obstacle to " + name);
     boolean found = false;
     int x = 0;
-    while( x < obstacles.size() && !found){
-      if(obstacles.get(x).getName().matches(name)){
+
+    while( x < obstacles.size() && !found) {
+      if(obstacles.get(x).getName().matches(name)) {
         currentObs = obstacles.get(x);
         logger.info("Currently selected obstacle is: " + currentObs.getName());
         found = true;
@@ -104,7 +137,7 @@ public class Runway {
     }
 
   }
-  */
+
   /**
    * Gets the current obstacle
    * @return an Obstacle object
@@ -122,7 +155,7 @@ public class Runway {
   }
 
   /**
-   * Below are getters for some values that don't have to change but may be used in certain calculations
+   * Below are getters for some values that don't have to change but may be used in certain calculations.
    */
   public double getTora() {
     return tora;
