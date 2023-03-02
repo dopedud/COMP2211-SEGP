@@ -240,4 +240,18 @@ public class Runway {
   public void setCtocs(double ctocs) {
     this.ctocs = ctocs;
   }
+
+  public String toString() {
+    return "Runway: " + runwayDesignator + "\n" +
+            "TORA: " + tora + "\n" +
+            "TODA: " + toda + "\n" +
+            "ASDA: " + asda + "\n" +
+            "LDA: " + lda + "\n" +
+            "RESA: " + resa + "\n" +
+            "Threshold: " + threshold + "\n" +
+            "Clearway: " + clearway + "\n" +
+            "Stopway: " + stopway + "\n" +
+            "Strip End: " + stripEnd + "\n" +
+            "Blast Protection: " + blastProtection + "\n";
+  }
 }

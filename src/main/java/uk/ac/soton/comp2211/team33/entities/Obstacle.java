@@ -58,4 +58,8 @@ public class Obstacle {
   public double getDistanceThreshold() {
     return distanceThreshold;
   }
+
+  public String toString() {
+     return ("Name: " + name + "\nHeight: " + height + "\nDistance: " + distanceThreshold);
+  }
 }
