@@ -8,10 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import uk.ac.soton.comp2211.team33.controllers.BaseController;
+import uk.ac.soton.comp2211.team33.controllers.MainViewController;
+import uk.ac.soton.comp2211.team33.models.AppState;
+
 /**
  * The main class to execute when running the application.
  */
 public class App extends Application {
+
   private static Logger logger = LogManager.getLogger(App.class);
 
   /**
@@ -30,7 +35,13 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) throws Exception {
-    Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
+    AppState state = new AppState();
+
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main.fxml"));
+    BaseController controller = loader.getController();
+    controller.setState(state);
+
+    Parent root = loader.load();
     Scene scene = new Scene(root);
 
     stage.setTitle("New application");
