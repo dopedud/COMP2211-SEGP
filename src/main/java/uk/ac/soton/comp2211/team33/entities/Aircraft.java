@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.models;
+package uk.ac.soton.comp2211.team33.entities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
