@@ -18,7 +18,9 @@ public class Runway {
    * Current obstacle
    */
   private Obstacle currentObs = null;
-
+  
+  // TODO: 01/03/2023 Make sure to limit it to 1 obstacle
+  
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end
    */
