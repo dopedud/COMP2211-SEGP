@@ -23,7 +23,7 @@ public class Runway {
   /**
    * Current obstacle on the runway.
    */
-  private Obstacle currentObstacle = null;
+  private Obstacle currentObs = null;
 
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end.
@@ -88,8 +88,8 @@ public class Runway {
    */
   public void addObstacle(Obstacle obstacle) {
       obstacles.add(obstacle);
-      if (currentObstacle == null) {
-        currentObstacle = obstacle;
+      if (currentObs == null) {
+        currentObs = obstacle;
       }
   }
 
@@ -98,8 +98,8 @@ public class Runway {
    *
    * @return an Obstacle object
    */
-  public Obstacle getCurrentObstacle() {
-    return currentObstacle;
+  public Obstacle getCurrentObs() {
+    return currentObs;
   }
 
   /**
@@ -125,8 +125,8 @@ public class Runway {
 
     while( x < obstacles.size() && !found) {
       if(obstacles.get(x).getName().matches(name)) {
-        currentObstacle = obstacles.get(x);
-        logger.info("Currently selected obstacle is: " + currentObstacle.getName());
+        currentObs = obstacles.get(x);
+        logger.info("Currently selected obstacle is: " + currentObs.getName());
         found = true;
       } else {
         x++;

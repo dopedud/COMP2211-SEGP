@@ -27,24 +27,24 @@ public final class Calculator {
   public static void toraTowards(Runway runway) {
     logger.info("Re-declaring TORA, TODA, and ASDA for take-off towards the obstacle...");
     double newTora;
-    double tempSlope = (runway.getCurrentObstacle().getHeight() * 50);
+    double tempSlope = (runway.getCurrentObs().getHeight() * 50);
 
     //Compare with RESA, if RESA is greater, use RESA
     if (tempSlope < runway.getCresa()){
       tempSlope = runway.getCresa();
     }
 
-    if (runway.getCurrentObstacle().getDistanceThreshold() < 0) {
-      newTora = runway.getCurrentObstacle().getDistanceThreshold() - tempSlope - runway.getStripEnd();
+    if (runway.getCurrentObs().getDistanceThreshold() < 0) {
+      newTora = runway.getCurrentObs().getDistanceThreshold() - tempSlope - runway.getStripEnd();
     } else {
-      newTora = runway.getCurrentObstacle().getDistanceThreshold() +
+      newTora = runway.getCurrentObs().getDistanceThreshold() +
           runway.getThreshold() - tempSlope - runway.getStripEnd();
     }
 
     runway.setCtora(newTora);
     runway.setCasda(newTora);
     runway.setCtoda(newTora);
-    var surfaceClimb = runway.getCurrentObstacle().getHeight() * runway.getCurrentObstacle().getHeight() * 50;
+    var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
     runway.setCals(surfaceClimb);
     runway.setCtocs(surfaceClimb);
   }
@@ -60,18 +60,18 @@ public final class Calculator {
     logger.info("Re-declaring TORA, TODA, and ASDA for take-off away from the obstacle...");
     double newTora;
 
-    if (runway.getCurrentObstacle().getDistanceThreshold() < 0) {
+    if (runway.getCurrentObs().getDistanceThreshold() < 0) {
       newTora = runway.getTora() - runway.getBlastProtection() -
-          runway.getCurrentObstacle().getDistanceThreshold() - runway.getThreshold();
+          runway.getCurrentObs().getDistanceThreshold() - runway.getThreshold();
     } else {
       newTora = runway.getTora() - runway.getStripEnd() - runway.getCresa() -
-          runway.getCurrentObstacle().getDistanceThreshold();
+          runway.getCurrentObs().getDistanceThreshold();
     }
 
     runway.setCtora(newTora);
     runway.setCasda(newTora + runway.getStopway());
     runway.setCtoda(newTora + runway.getClearway());
-    var surfaceClimb = runway.getCurrentObstacle().getHeight() * runway.getCurrentObstacle().getHeight() * 50;
+    var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
     runway.setCals(surfaceClimb);
     runway.setCtocs(surfaceClimb);
   }
@@ -84,8 +84,8 @@ public final class Calculator {
    */
   public static double ldaOver(Runway runway) {
     logger.info("Re-declaring LDA for landing over the obstacle...");
-    var newLda = runway.getLda() - runway.getCurrentObstacle().getDistanceThreshold() -
-        runway.getStripEnd() - (runway.getCurrentObstacle().getHeight() * 50);
+    var newLda = runway.getLda() - runway.getCurrentObs().getDistanceThreshold() -
+        runway.getStripEnd() - (runway.getCurrentObs().getHeight() * 50);
     runway.setClda(newLda);
     return runway.getClda();
   }
@@ -98,7 +98,7 @@ public final class Calculator {
    */
   public static double ldaTowards(Runway runway) {
     logger.info("Re-declaring LDA for landing towards the obstacle...");
-    var newLda = runway.getCurrentObstacle().getDistanceThreshold() - runway.getStripEnd() - runway.getCresa();
+    var newLda = runway.getCurrentObs().getDistanceThreshold() - runway.getStripEnd() - runway.getCresa();
     runway.setClda(newLda);
     return runway.getClda();
   }

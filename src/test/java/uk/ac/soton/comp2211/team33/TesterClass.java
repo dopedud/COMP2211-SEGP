@@ -18,7 +18,7 @@ public class TesterClass {
     runway1.selectObstacle("Obstacle1");
     System.out.println("09L (Take Off Away, Landing Over): ");
     Calculator.toraAway(runway1);
-    System.out.println("TORA = " + runway1.getTora() + "-" + runway1.getBlastProtection() + "-" + runway1.getCurrentObstacle().getDistanceThreshold() + "-" + runway1.getThreshold() + "\n =" + runway1.getCtora());
+    System.out.println("TORA = " + runway1.getTora() + "-" + runway1.getBlastProtection() + "-" + runway1.getCurrentObs().getDistanceThreshold() + "-" + runway1.getThreshold() + "\n =" + runway1.getCtora());
     System.out.println("ASDA = " + runway1.getCasda());
     System.out.println("TODA = " + runway1.getCtoda());
     System.out.println("LDA  = " + Calculator.ldaOver(runway1));
