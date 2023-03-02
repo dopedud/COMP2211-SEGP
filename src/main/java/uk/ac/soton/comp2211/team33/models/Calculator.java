@@ -53,21 +53,31 @@ public final class Calculator {
    * @param runway
    * @return the new TORA value
    */
-  public static void toraAway(Runway runway) {
+  public static String toraAway(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
+    StringBuilder calcs = new StringBuilder();
+    calcs.append(runway.getRdesignator() + "(Take Off Away, Landing Over): \n");
+
     double newTora;
     if (runway.getCurrentObs().getDistanceThresh() < 0) {
-      newTora = runway.getTora() - runway.getBlastProtection() - runway.getCurrentObs().getDistanceThresh() - runway.getThreshold();
+      newTora = runway.getTora() - runway.getAircraft().getBlastProtection() - runway.getCurrentObs().getDistanceThresh() - runway.getThreshold();
+      calcs.append("TORA = Original TORA - Blast Protection - Distance from Threshold - Displaced Threshold \n");
+      calcs.append("     = " + runway.getTora() + " - " + runway.getAircraft().getBlastProtection() + " - "
+        + runway.getCurrentObs().getDistanceThresh() + " - " + runway.getThreshold() + "\n");
+      calcs.append("     = " + newTora + "\n");
     } else {
       newTora = runway.getTora() - runway.getStripEnd() - runway.getCresa() - runway.getCurrentObs().getDistanceThresh();
     }
 
     runway.setCtora(newTora);
     runway.setCasda(newTora + runway.getStopway());
+    calcs.append("ASDA = (R) TORA + STOPWAY \n" + "     = " + runway.getCasda() + "\n");
     runway.setCtoda(newTora + runway.getClearway());
+    calcs.append("TODA = (R) TORA + CLEARWAY \n" + "    = " + runway.getCtoda() + "\n");
     var surfaceClimb = runway.getCurrentObs().getHeight() * runway.getCurrentObs().getHeight() * 50;
     runway.setCals(surfaceClimb);
     runway.setCtocs(surfaceClimb);
+    return calcs.toString();
   }
 
   /**

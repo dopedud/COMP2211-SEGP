@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c7847d25-294a-4011-9547-aea2330d42ea" name="Changes" comment="LDA functions ready for testing, TORA 1/2 done.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Calculator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/soton/comp2211/team33/models/Runway.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/soton/comp2211/team33/TesterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/soton/comp2211/team33/TesterClass.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +119,7 @@
       <workItem from="1677692948456" duration="205000" />
       <workItem from="1677693181073" duration="816000" />
       <workItem from="1677755481052" duration="590000" />
-      <workItem from="1677764842706" duration="1216000" />
+      <workItem from="1677764842706" duration="2757000" />
     </task>
     <task id="LOCAL-00001" summary="Start">
       <created>1677536125225</created>

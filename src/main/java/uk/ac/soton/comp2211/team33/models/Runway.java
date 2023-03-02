@@ -19,7 +19,7 @@ public class Runway {
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end
    */
-  private String rdesignator;
+  private final String rdesignator;
 
   /**
    * Initial values of the runway
@@ -170,6 +170,11 @@ public class Runway {
   /**
    * Below are getters for some values that don't have to change but may be used in certain calculations
    */
+
+  public String getRdesignator() {
+    return rdesignator;
+  }
+
   public double getTora() {
     return tora;
   }
