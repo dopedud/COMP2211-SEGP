@@ -15,11 +15,6 @@ public final class Calculator {
   private static Logger logger = LogManager.getLogger(Calculator.class);
 
   /**
-   * Private constructor to prevent instantiating
-   */
-  private Calculator() {}
-
-  /**
    * Method to calculate the values of a given runway for take-off towards the obstacle.
    *
    * @param runway the runway to calculate
