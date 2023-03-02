@@ -10,17 +10,12 @@ public class Runway {
   private static Logger logger = LogManager.getLogger(Calculator.class);
 
   /**
-   * Obstacles on the runway
-   */
-  private ArrayList<Obstacle> obstacles = new ArrayList<>();
-
-  /**
    * Current obstacle
    */
   private Obstacle currentObs = null;
   
   // TODO: 01/03/2023 Make sure to limit it to 1 obstacle
-  
+
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end
    */
@@ -74,10 +69,7 @@ public class Runway {
     }
   }
 
-  /**
-   * Adds an obstacle to the runway
-   * @param obstacle
-   */
+  /*
   public void addObstacle(Obstacle obstacle) {
       obstacles.add(obstacle);
       if (currentObs == null) {
@@ -85,17 +77,6 @@ public class Runway {
       }
   }
 
-  /**
-   * Gets the current obstacle
-   * @return an Obstacle object
-   */
-  public Obstacle getCurrentObs() {
-    return currentObs;
-  }
-
-  /**
-   * lists all the obstacles on the runway
-   */
   public void listObjects() {
     logger.info("Listing all obstacles on runway:");
     var iterator = obstacles.iterator();
@@ -104,10 +85,6 @@ public class Runway {
     }
   }
 
-  /**
-   * Switch the current obstacle for some other one
-   * @param name
-   */
   public void selectObs(String name){
     logger.info("Switching current obstacle to " + name);
     boolean found = false;
@@ -126,6 +103,22 @@ public class Runway {
       logger.info("Obstacle " + name + " does not exist.");
     }
 
+  }
+  */
+  /**
+   * Gets the current obstacle
+   * @return an Obstacle object
+   */
+  public Obstacle getCurrentObs() {
+    return currentObs;
+  }
+
+  /**
+   * Set the current obstacle
+   * @param currentObs
+   */
+  public void setCurrentObs(Obstacle currentObs) {
+    this.currentObs = currentObs;
   }
 
   /**
