@@ -54,5 +54,7 @@ public class NewRunwayController extends BaseController {
         newRunway = new Runway(designator, toraValue, todaValue, asdaValue, ldaValue, resaValue, thresholdValue,
                 clearwayValue, stopwayValue, stripEndValue, blastProtectionValue);
 
+        System.out.println("Creating runway... \n" + newRunway);
+
     }
 }

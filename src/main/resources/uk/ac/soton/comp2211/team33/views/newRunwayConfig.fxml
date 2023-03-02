@@ -16,9 +16,18 @@
     </top>
     <center>
         <VBox alignment="CENTER">
-            <Text text="Enter the runway configuration" />
-            <TextField fx:id="runwayName" />
-            <TextField fx:id="runwayLength" />
+            <Text text="Enter runway details" />
+            <TextField fx:id="runwayDesignator" />
+            <TextField fx:id="tora" />
+            <TextField fx:id="toda" />
+            <TextField fx:id="asda" />
+            <TextField fx:id="lda" />
+            <TextField fx:id="resa" />
+            <TextField fx:id="threshold" />
+            <TextField fx:id="clearway" />
+            <TextField fx:id="stopway" />
+            <TextField fx:id="stripEnd" />
+            <TextField fx:id="blastProtection" />
             <Button text="Submit" onAction="#createRunway" />
         </VBox>
     </center>
