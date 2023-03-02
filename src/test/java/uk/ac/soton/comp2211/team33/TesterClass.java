@@ -12,7 +12,7 @@ public class TesterClass {
 
   public static void main(String[] args) {
     var runway1 = new Runway("09L", 3902, 3902, 3902, 3595, 100, 306,
-      0, 0, 60, new Aircraft("A380", 300));
+      0, 0, new Aircraft("A380", 300));
     runway1.setCurrentObs(new Obstacle("Obstacle1", 12,100));
     //runway1.setCurrentObs(new Obstacle("Obstacle2", 15,100,50));
     String out = Calculator.toraAway(runway1);

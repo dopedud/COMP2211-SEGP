@@ -25,14 +25,29 @@ public class Runway {
   private final double tora, toda, asda, lda, resa;
 
   /**
+   * ALS constant 50m
+   */
+  private final double als = 50;
+
+  /**
+   * TOCS constant 50m
+   */
+  private final double tocs = 50;
+
+  /**
    * Currently used runway values (after calculation)
    */
-  private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
+  private double ctora, ctoda, casda, clda;
 
   /**
    * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m)
    */
-  private double threshold, clearway, stopway, stripEnd;
+  private double threshold, clearway, stopway;
+
+  /**
+   * Strip end constant of 60m
+   */
+  private final double stripEnd = 60;
 
   /**
    * The aircraft that is about to land on this runway
@@ -40,8 +55,7 @@ public class Runway {
   private Aircraft aircraft = null;
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
-                double resa, double threshold, double clearway, double stopway,
-                double stripEnd) {
+                double resa, double threshold, double clearway, double stopway) {
     this.rdesignator = rdesignator;
     this.tora = tora;
     this.toda = toda;
@@ -57,18 +71,13 @@ public class Runway {
     this.ctoda = toda;
     this.casda = asda;
     this.clda = lda;
-    this.cresa = this.resa;
-    this.cals = 0;
-    this.ctocs = 0;
     this.threshold = threshold;
     this.clearway = clearway;
     this.stopway = stopway;
-    this.stripEnd = stripEnd;
   }
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
-                double resa, double threshold, double clearway, double stopway,
-                double stripEnd, Aircraft aircraft){
+                double resa, double threshold, double clearway, double stopway, Aircraft aircraft){
     this.rdesignator = rdesignator;
     this.tora = tora;
     this.toda = toda;
@@ -84,13 +93,9 @@ public class Runway {
     this.ctoda = toda;
     this.casda = asda;
     this.clda = lda;
-    this.cresa = this.resa;
-    this.cals = 0;
-    this.ctocs = 0;
     this.threshold = threshold;
     this.clearway = clearway;
     this.stopway = stopway;
-    this.stripEnd = stripEnd;
     this.aircraft = aircraft;
   }
 
@@ -245,27 +250,13 @@ public class Runway {
     this.clda = clda;
   }
 
-  public double getCresa() {
-    return cresa;
+
+
+  public double getAls() {
+    return als;
   }
 
-  public void setCresa(double cresa) {
-    this.cresa = cresa;
-  }
-
-  public double getCals() {
-    return cals;
-  }
-
-  public void setCals(double cals) {
-    this.cals = cals;
-  }
-
-  public double getCtocs() {
-    return ctocs;
-  }
-
-  public void setCtocs(double ctocs) {
-    this.ctocs = ctocs;
+  public double getTocs() {
+    return tocs;
   }
 }
