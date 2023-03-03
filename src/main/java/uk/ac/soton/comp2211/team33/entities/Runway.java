@@ -55,7 +55,7 @@ public class Runway {
   private Aircraft aircraft = null;
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
-                double resa, double threshold, double clearway, double stopway) {
+                double resa, double threshold) {
     this.rdesignator = rdesignator;
     this.tora = tora;
     this.toda = toda;
@@ -72,12 +72,12 @@ public class Runway {
     this.casda = asda;
     this.clda = lda;
     this.threshold = threshold;
-    this.clearway = clearway;
-    this.stopway = stopway;
+    this.clearway = toda - tora;
+    this.stopway = asda - tora;
   }
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
-                double resa, double threshold, double clearway, double stopway, Aircraft aircraft){
+                double resa, double threshold, Aircraft aircraft){
     this.rdesignator = rdesignator;
     this.tora = tora;
     this.toda = toda;
@@ -94,8 +94,8 @@ public class Runway {
     this.casda = asda;
     this.clda = lda;
     this.threshold = threshold;
-    this.clearway = clearway;
-    this.stopway = stopway;
+    this.clearway = toda - tora;
+    this.stopway = asda - tora;
     this.aircraft = aircraft;
   }
 
