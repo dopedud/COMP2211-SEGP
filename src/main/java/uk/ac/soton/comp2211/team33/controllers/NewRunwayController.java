@@ -1,20 +1,32 @@
 package uk.ac.soton.comp2211.team33.controllers;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import uk.ac.soton.comp2211.team33.entities.Runway;
 
 public class NewRunwayController extends BaseController {
-    public TextField runwayDesignator;
-    public TextField tora;
-    public TextField toda;
-    public TextField asda;
-    public TextField lda;
-    public TextField resa;
-    public TextField threshold;
-    public TextField clearway;
-    public TextField stopway;
-    public TextField stripEnd;
-    public TextField blastProtection;
+    @FXML
+    private TextField runwayDesignator;
+    @FXML
+    private TextField tora;
+    @FXML
+    private TextField toda;
+    @FXML
+    private TextField asda;
+    @FXML
+    private TextField lda;
+    @FXML
+    private TextField resa;
+    @FXML
+    private TextField threshold;
+    @FXML
+    private TextField clearway;
+    @FXML
+    private TextField stopway;
+    @FXML
+    private TextField stripEnd;
+    @FXML
+    private TextField blastProtection;
 
     private Runway newRunway;
 
