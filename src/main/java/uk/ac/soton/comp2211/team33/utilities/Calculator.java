@@ -95,9 +95,8 @@ public final class Calculator {
 
     double newTora;
     boolean useBlast = false;
-    boolean useRESA = false;
     boolean dispThresh = false;
-    double tempVal = max((runway.getStripEnd()+runway.getResa()), runway.getAircraft().getBlastProtection());
+    double tempVal = max((runway.getStripEnd() + runway.getResa()), runway.getAircraft().getBlastProtection());
 
 
     calcs.append("TORA = Original TORA ");
@@ -117,7 +116,7 @@ public final class Calculator {
     }
 
     //If it uses blast protection instead of RESA+StripEnd
-    if(useBlast){
+    if (useBlast) {
       calcs.append("\n     = " + runway.getTora() + " - " + tempVal + " - "
         + runway.getCurrentObs().getDistanceThresh());
     } else {
@@ -130,14 +129,26 @@ public final class Calculator {
       calcs.append(" - " + runway.getThreshold());
     }
 
-    //Claculate the new TORA
+    //Calculate the new TORA
     newTora = runway.getTora() - tempVal - runway.getCurrentObs().getDistanceThresh() - runway.getThreshold();
     runway.setCtora(newTora);
     calcs.append("\n     = " + runway.getCtora());
+
+    //Calculate new ASDA
     runway.setCasda(newTora + runway.getStopway());
-    calcs.append("\nASDA = (R) TORA + STOPWAY " + "\n     = " + runway.getCasda());
+    calcs.append("\nASDA = (R) TORA + STOPWAY ");
+    if (runway.getStopway() != 0) {
+      calcs.append("\n     = " + newTora + " + (" + runway.getAsda() + " - " + runway.getTora() + ")");
+    }
+    calcs.append("\n     = " + runway.getCasda());
+
+    //Calculate new TODA
     runway.setCtoda(newTora + runway.getClearway());
-    calcs.append("\nTODA = (R) TORA + CLEARWAY " + "\n     = " + runway.getCtoda());
+    calcs.append("\nTODA = (R) TORA + CLEARWAY ");
+    if (runway.getClearway() != 0) {
+      calcs.append("\n     = " + newTora + " + (" + runway.getToda() + " - " + runway.getTora() + ")");
+    }
+    calcs.append("\n     = " + runway.getCtoda());
 
     return calcs.toString();
   }
@@ -149,12 +160,28 @@ public final class Calculator {
    * @param runway
    * @return the new LDA
    */
-  public static double ldaOver(Runway runway) {
-    // TODO: 02/03/2023 Add string output 
+  public static String ldaOver(Runway runway) {
     logger.info("Re-declaring LDA for landing over obstacle...");
-    var newLda = runway.getLda() - runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - (runway.getCurrentObs().getHeight() * 50);
+    StringBuilder calcs = new StringBuilder();
+
+    double slope = runway.getCurrentObs().getHeight() * runway.getAls();
+    double newLda;
+    //Will use blast protection if it is larger than the slope calculation
+    if (slope < runway.getAircraft().getBlastProtection()) {
+      calcs.append("LDA  = Original LDA - Blast Protection- Distance from Threshold - Strip End");
+      calcs.append("\n     = " + runway.getLda() + " - " + runway.getAircraft().getBlastProtection() + " - " + runway.getCurrentObs().getDistanceThresh() + " - "
+        + runway.getStripEnd());
+      newLda = runway.getLda() - runway.getAircraft().getBlastProtection() - runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd();
+    } else {
+      calcs.append("LDA  = Original LDA - Slope Calculation - Distance from Threshold - Strip End");
+      calcs.append("\n     = " + runway.getLda() + " - " + runway.getCurrentObs().getHeight() + "*" + runway.getAls() + " - " + runway.getCurrentObs().getDistanceThresh() + " - "
+        + runway.getStripEnd());
+      newLda = runway.getLda() - slope - runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd();
+    }
+
     runway.setClda(newLda);
-    return runway.getClda();
+    calcs.append("\n     = " + runway.getClda());
+    return calcs.toString();
   }
 
   /**
@@ -164,12 +191,18 @@ public final class Calculator {
    * @param runway
    * @return the new LDA
    */
-  public static double ldaTowards(Runway runway) {
-    // TODO: 02/03/2023 Add string output 
+  public static String ldaTowards(Runway runway) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
+    StringBuilder calcs = new StringBuilder();
+
+    calcs.append("LDA  = Distance from Threshold - RESA - Strip End");
+    calcs.append("\n     = " + runway.getCurrentObs().getDistanceThresh() + " - " + runway.getStripEnd() + " - " + runway.getResa());
+
     var newLda = runway.getCurrentObs().getDistanceThresh() - runway.getStripEnd() - runway.getResa();
     runway.setClda(newLda);
-    return runway.getClda();
+    calcs.append("\n     = " + runway.getClda());
+
+    return calcs.toString();
   }
 
 

@@ -16,6 +16,6 @@ public class TesterClass {
     //runway1.setCurrentObs(new Obstacle("Obstacle2", 15,100,50));
     String out = Calculator.toraAway(runway1);
     System.out.println(out);
-    System.out.println("LDA  = " + Calculator.ldaOver(runway1));
+    System.out.println(Calculator.ldaOver(runway1));
   }
 }
