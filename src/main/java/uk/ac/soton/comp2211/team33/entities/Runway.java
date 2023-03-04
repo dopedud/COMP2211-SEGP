@@ -3,56 +3,59 @@ package uk.ac.soton.comp2211.team33.entities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The class Runway models a runway and its values for re-declaration in an airport.
+ *
+ * @author Jackson (jl14u21@soton.ac.uk)
+ */
 public class Runway {
 
-  private static Logger logger = LogManager.getLogger(Runway.class);
+  private static final Logger logger = LogManager.getLogger(Runway.class);
 
   /**
-   * Current obstacle
+   * Current obstacle.
    */
   private Obstacle currentObs = null;
 
-  // TODO: 01/03/2023 Make sure to limit it to 1 obstacle
+  /**
+   * The aircraft that is about to land on this runway.
+   */
+  private Aircraft aircraft = null;
 
   /**
-   * The designator for the runway. Usually 2 characters with L/R at the end
+   * The designator for the runway. Usually 2 characters with L/R at the end.
    */
   private final String rdesignator;
 
   /**
-   * Initial values of the runway
+   * Initial values of the runway.
    */
   private final double tora, toda, asda, lda, resa;
 
   /**
-   * ALS constant 50m
+   * ALS constant 50m.
    */
   private final double als = 50;
 
   /**
-   * TOCS constant 50m
+   * TOCS constant 50m.
    */
   private final double tocs = 50;
 
   /**
-   * Currently used runway values (after calculation)
+   * Currently used runway values (after calculation).
    */
   private double ctora, ctoda, casda, clda;
 
   /**
-   * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m)
+   * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m).
    */
   private double threshold, clearway, stopway;
 
   /**
-   * Strip end constant of 60m
+   * Strip end constant of 60m.
    */
   private final double stripEnd = 60;
-
-  /**
-   * The aircraft that is about to land on this runway
-   */
-  private Aircraft aircraft = null;
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
@@ -61,12 +64,14 @@ public class Runway {
     this.toda = toda;
     this.asda = asda;
     this.lda = lda;
+
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
       this.resa = 240;
     } else {
       this.resa = resa;
     }
+
     this.ctora = tora;
     this.ctoda = toda;
     this.casda = asda;
@@ -77,18 +82,20 @@ public class Runway {
   }
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
-                double resa, double threshold, Aircraft aircraft){
+                double resa, double threshold, Aircraft aircraft) {
     this.rdesignator = rdesignator;
     this.tora = tora;
     this.toda = toda;
     this.asda = asda;
     this.lda = lda;
+
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
       this.resa = 240;
     } else {
       this.resa = resa;
     }
+
     this.ctora = tora;
     this.ctoda = toda;
     this.casda = asda;
@@ -135,8 +142,9 @@ public class Runway {
 
   }
   */
+
   /**
-   * Gets the current obstacle
+   * Gets the current obstacle.
    * @return an Obstacle object
    */
   public Obstacle getCurrentObs() {
@@ -144,34 +152,34 @@ public class Runway {
   }
 
   /**
-   * Set the current obstacle
-   * @param currentObs
+   * Set the current obstacle.
+   * @param currentObs new obstacle for the runway
    */
   public void setCurrentObs(Obstacle currentObs) {
     this.currentObs = currentObs;
   }
 
   /**
-   * Returns the aircraft for this runway
-   * @return
+   * Returns the aircraft for this runway.
+   * @return an Aircraft object
    */
   public Aircraft getAircraft() {
-    if (aircraft == null){
+    if (aircraft == null) {
       logger.error("No aircraft exists on runway " + rdesignator);
     }
     return aircraft;
   }
 
   /**
-   * Set the aircraft for this runway
-   * @param aircraft
+   * Set the aircraft for this runway.
+   * @param aircraft new aircraft for the runway
    */
   public void setAircraft(Aircraft aircraft) {
     this.aircraft = aircraft;
   }
 
   /**
-   * Below are getters for some values that don't have to change but may be used in certain calculations
+   * Below are getters for some values that don't have to change but may be used in certain calculations.
    */
 
   public String getRdesignator() {
@@ -216,7 +224,7 @@ public class Runway {
 
 
   /**
-   *  Getters and setter for all current values that can be changed by a re-declaration
+   *  Getters and setter for all current values that can be changed by a re-declaration.
    */
   public double getCtora() {
     return ctora;
@@ -250,8 +258,6 @@ public class Runway {
     this.clda = clda;
   }
 
-
-
   public double getAls() {
     return als;
   }
@@ -270,6 +276,7 @@ public class Runway {
             "Threshold: " + threshold + "\n" +
             "Clearway: " + clearway + "\n" +
             "Stopway: " + stopway + "\n" +
-            "Strip End: " + stripEnd + "\n";
+            "Strip End: " + stripEnd + "\n" +
+            "Blast Protection: " + aircraft.getBlastProtection() + "\n";
   }
 }

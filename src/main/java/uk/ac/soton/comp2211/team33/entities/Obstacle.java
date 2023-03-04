@@ -13,17 +13,17 @@ import org.apache.logging.log4j.Logger;
  */
 public class Obstacle {
 
-  private static Logger logger = LogManager.getLogger(Obstacle.class);
+  private static final Logger logger = LogManager.getLogger(Obstacle.class);
 
   /**
    * Name of the obstacle.
    */
-  private final String name;
+  private  String name;
 
   /**
    * Height of the obstacle.
    */
-  private final double height;
+  private  double height;
 
   /**
    * Distance between the obstacle and the threshold of the runway.
@@ -45,7 +45,7 @@ public class Obstacle {
   }
 
   /**
-   * Below are the usual accessors and mutators for the class variables.
+   * Below are the usual accessors and mutators for the instance variables of this class.
    */
   public String getName() {
     return name;
@@ -55,7 +55,7 @@ public class Obstacle {
     return height;
   }
 
-  public double getDistanceThresh() {
+  public double getDistThresh() {
     return distanceThreshold;
   }
 
