@@ -55,7 +55,7 @@ public class Obstacle {
     return height;
   }
 
-  public double getDistanceThreshold() {
+  public double getDistanceThresh() {
     return distanceThreshold;
   }
 

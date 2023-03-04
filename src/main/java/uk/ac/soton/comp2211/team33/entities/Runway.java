@@ -3,89 +3,103 @@ package uk.ac.soton.comp2211.team33.entities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-
-/**
- * The class Runway models a runway and its values for re-declaration in an airport.
- * (Jackson if you want you can add more description)
- *
- * @author Jackson (jl14u21@soton.ac.uk)
- */
 public class Runway {
 
   private static Logger logger = LogManager.getLogger(Runway.class);
 
   /**
-   * List of obstacles on the runway.
-   */
-  private ArrayList<Obstacle> obstacles = new ArrayList<>();
-
-  /**
-   * Current obstacle on the runway.
+   * Current obstacle
    */
   private Obstacle currentObs = null;
 
-  /**
-   * The designator for the runway. Usually 2 characters with L/R at the end.
-   */
-  private String runwayDesignator;
+  // TODO: 01/03/2023 Make sure to limit it to 1 obstacle
 
   /**
-   * Initial values of the runway.
+   * The designator for the runway. Usually 2 characters with L/R at the end
+   */
+  private final String rdesignator;
+
+  /**
+   * Initial values of the runway
    */
   private final double tora, toda, asda, lda, resa;
 
   /**
-   * Currently used runway values (after calculation).
+   * ALS constant 50m
    */
-  private double ctora, ctoda, casda, clda, cresa, cals, ctocs;
+  private final double als = 50;
 
   /**
-   * Displaced threshold, clearway, stopway, Strip end and blast protection (300m-500m).
+   * TOCS constant 50m
    */
-  private double threshold, clearway, stopway, stripEnd, blastProtection;
+  private final double tocs = 50;
 
+  /**
+   * Currently used runway values (after calculation)
+   */
+  private double ctora, ctoda, casda, clda;
 
-  public Runway(String runwayDesignator, double tora, double toda, double asda, double lda,
-                double resa, double threshold, double clearway, double stopway,
-                double stripEnd, double blastProtection) {
-    this.runwayDesignator = runwayDesignator;
+  /**
+   * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m)
+   */
+  private double threshold, clearway, stopway;
+
+  /**
+   * Strip end constant of 60m
+   */
+  private final double stripEnd = 60;
+
+  /**
+   * The aircraft that is about to land on this runway
+   */
+  private Aircraft aircraft = null;
+
+  public Runway(String rdesignator, double tora, double toda, double asda, double lda,
+                double resa, double threshold) {
+    this.rdesignator = rdesignator;
     this.tora = tora;
     this.toda = toda;
     this.asda = asda;
     this.lda = lda;
-
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
       this.resa = 240;
     } else {
       this.resa = resa;
     }
-
     this.ctora = tora;
     this.ctoda = toda;
     this.casda = asda;
     this.clda = lda;
-    this.cresa = this.resa;
-    this.cals = 0;
-    this.ctocs = 0;
     this.threshold = threshold;
-    this.clearway = clearway;
-    this.stopway = stopway;
-    this.stripEnd = stripEnd;
-
-    if (blastProtection < 300 || blastProtection > 500) {
-      logger.error("Blast protection is not within required range");
-    } else {
-      this.blastProtection = blastProtection;
-    }
+    this.clearway = toda - tora;
+    this.stopway = asda - tora;
   }
 
-  /**
-   * Adds an obstacle to the runway.
-   *
-   * @param obstacle the obstacle to add
-   */
+  public Runway(String rdesignator, double tora, double toda, double asda, double lda,
+                double resa, double threshold, Aircraft aircraft){
+    this.rdesignator = rdesignator;
+    this.tora = tora;
+    this.toda = toda;
+    this.asda = asda;
+    this.lda = lda;
+    if (resa < 240) {
+      logger.info("RESA value below 240m. Setting it as 240m minimum value...");
+      this.resa = 240;
+    } else {
+      this.resa = resa;
+    }
+    this.ctora = tora;
+    this.ctoda = toda;
+    this.casda = asda;
+    this.clda = lda;
+    this.threshold = threshold;
+    this.clearway = toda - tora;
+    this.stopway = asda - tora;
+    this.aircraft = aircraft;
+  }
+
+  /*
   public void addObstacle(Obstacle obstacle) {
       obstacles.add(obstacle);
       if (currentObs == null) {
@@ -93,38 +107,20 @@ public class Runway {
       }
   }
 
-  /**
-   * Gets the current obstacle.
-   *
-   * @return an Obstacle object
-   */
-  public Obstacle getCurrentObs() {
-    return currentObs;
-  }
-
-  /**
-   * Lists all the obstacles on the runway.
-   */
-  public void listObstacles() {
+  public void listObjects() {
     logger.info("Listing all obstacles on runway:");
     var iterator = obstacles.iterator();
-    while (iterator.hasNext()) {
+    while (iterator.hasNext()){
       logger.info(iterator.next());
     }
   }
 
-  /**
-   * Switch the current obstacle for some other one.
-   *
-   * @param name name of the obstacle
-   */
-  public void selectObstacle(String name) {
+  public void selectObs(String name){
     logger.info("Switching current obstacle to " + name);
     boolean found = false;
     int x = 0;
-
-    while( x < obstacles.size() && !found) {
-      if(obstacles.get(x).getName().matches(name)) {
+    while( x < obstacles.size() && !found){
+      if(obstacles.get(x).getName().matches(name)){
         currentObs = obstacles.get(x);
         logger.info("Currently selected obstacle is: " + currentObs.getName());
         found = true;
@@ -138,10 +134,50 @@ public class Runway {
     }
 
   }
+  */
+  /**
+   * Gets the current obstacle
+   * @return an Obstacle object
+   */
+  public Obstacle getCurrentObs() {
+    return currentObs;
+  }
 
   /**
-   * Below are getters for some values that don't have to change but may be used in certain calculations.
+   * Set the current obstacle
+   * @param currentObs
    */
+  public void setCurrentObs(Obstacle currentObs) {
+    this.currentObs = currentObs;
+  }
+
+  /**
+   * Returns the aircraft for this runway
+   * @return
+   */
+  public Aircraft getAircraft() {
+    if (aircraft == null){
+      logger.error("No aircraft exists on runway " + rdesignator);
+    }
+    return aircraft;
+  }
+
+  /**
+   * Set the aircraft for this runway
+   * @param aircraft
+   */
+  public void setAircraft(Aircraft aircraft) {
+    this.aircraft = aircraft;
+  }
+
+  /**
+   * Below are getters for some values that don't have to change but may be used in certain calculations
+   */
+
+  public String getRdesignator() {
+    return rdesignator;
+  }
+
   public double getTora() {
     return tora;
   }
@@ -178,9 +214,6 @@ public class Runway {
     return stripEnd;
   }
 
-  public double getBlastProtection() {
-    return blastProtection;
-  }
 
   /**
    *  Getters and setter for all current values that can be changed by a re-declaration
@@ -217,28 +250,14 @@ public class Runway {
     this.clda = clda;
   }
 
-  public double getCresa() {
-    return cresa;
+
+
+  public double getAls() {
+    return als;
   }
 
-  public void setCresa(double cresa) {
-    this.cresa = cresa;
-  }
-
-  public double getCals() {
-    return cals;
-  }
-
-  public void setCals(double cals) {
-    this.cals = cals;
-  }
-
-  public double getCtocs() {
-    return ctocs;
-  }
-
-  public void setCtocs(double ctocs) {
-    this.ctocs = ctocs;
+  public double getTocs() {
+    return tocs;
   }
 
   public String toString() {
