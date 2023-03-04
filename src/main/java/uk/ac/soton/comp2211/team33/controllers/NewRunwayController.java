@@ -2,31 +2,33 @@ package uk.ac.soton.comp2211.team33.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.entities.Runway;
 
 public class NewRunwayController extends BaseController {
+
     @FXML
-    private TextField runwayDesignator;
+    private InputField runwayDesignator;
     @FXML
-    private TextField tora;
+    private InputField tora;
     @FXML
-    private TextField toda;
+    private InputField toda;
     @FXML
-    private TextField asda;
+    private InputField asda;
     @FXML
-    private TextField lda;
+    private InputField lda;
     @FXML
-    private TextField resa;
+    private InputField resa;
     @FXML
-    private TextField threshold;
+    private InputField threshold;
     @FXML
-    private TextField clearway;
+    private InputField clearway;
     @FXML
-    private TextField stopway;
+    private InputField stopway;
     @FXML
-    private TextField stripEnd;
+    private InputField stripEnd;
     @FXML
-    private TextField blastProtection;
+    private InputField blastProtection;
 
     private Runway newRunway;
 

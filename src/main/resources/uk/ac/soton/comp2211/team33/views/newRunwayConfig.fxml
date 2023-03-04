@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="uk.ac.soton.comp2211.team33.controllers.NewRunwayController"
@@ -17,17 +18,17 @@
     <center>
         <VBox alignment="CENTER">
             <Text text="Enter runway details" />
-            <TextField fx:id="runwayDesignator" />
-            <TextField fx:id="tora" />
-            <TextField fx:id="toda" />
-            <TextField fx:id="asda" />
-            <TextField fx:id="lda" />
-            <TextField fx:id="resa" />
-            <TextField fx:id="threshold" />
-            <TextField fx:id="clearway" />
-            <TextField fx:id="stopway" />
-            <TextField fx:id="stripEnd" />
-            <TextField fx:id="blastProtection" />
+            <InputField fx:id="runwayDesignator" labelText="Designator" />
+            <InputField fx:id="tora" labelText="TORA"/>
+            <InputField fx:id="toda" labelText="TODA" />
+            <InputField fx:id="asda" labelText="ASDA"/>
+            <InputField fx:id="lda" labelText="LDA"/>
+            <InputField fx:id="resa" labelText="RESA"/>
+            <InputField fx:id="threshold" labelText="Threshold"/>
+            <InputField fx:id="clearway" labelText="Clearway"/>
+            <InputField fx:id="stopway" labelText="Stopway"/>
+            <InputField fx:id="stripEnd" labelText="Strip End"/>
+            <InputField fx:id="blastProtection" labelText="Blast Protection"/>
             <Button text="Submit" onAction="#createRunway" />
         </VBox>
     </center>
