@@ -9,6 +9,9 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
+/**
+ * A custom component that contains a label and a text field.
+ */
 public class InputField extends HBox {
 
 

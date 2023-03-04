@@ -261,7 +261,7 @@ public class Runway {
   }
 
   public String toString() {
-    return "Runway: " + runwayDesignator + "\n" +
+    return "Runway: " + rdesignator + "\n" +
             "TORA: " + tora + "\n" +
             "TODA: " + toda + "\n" +
             "ASDA: " + asda + "\n" +
@@ -270,7 +270,6 @@ public class Runway {
             "Threshold: " + threshold + "\n" +
             "Clearway: " + clearway + "\n" +
             "Stopway: " + stopway + "\n" +
-            "Strip End: " + stripEnd + "\n" +
-            "Blast Protection: " + blastProtection + "\n";
+            "Strip End: " + stripEnd + "\n";
   }
 }

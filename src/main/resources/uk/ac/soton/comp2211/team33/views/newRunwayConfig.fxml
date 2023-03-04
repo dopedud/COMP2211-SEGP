@@ -25,10 +25,6 @@
             <InputField fx:id="lda" labelText="LDA"/>
             <InputField fx:id="resa" labelText="RESA"/>
             <InputField fx:id="threshold" labelText="Threshold"/>
-            <InputField fx:id="clearway" labelText="Clearway"/>
-            <InputField fx:id="stopway" labelText="Stopway"/>
-            <InputField fx:id="stripEnd" labelText="Strip End"/>
-            <InputField fx:id="blastProtection" labelText="Blast Protection"/>
             <Button text="Submit" onAction="#createRunway" />
         </VBox>
     </center>

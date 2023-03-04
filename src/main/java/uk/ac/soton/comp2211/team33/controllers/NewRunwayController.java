@@ -1,10 +1,12 @@
 package uk.ac.soton.comp2211.team33.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.entities.Runway;
 
+/**
+ * Controller for the interfacce to configure a new runway.
+ */
 public class NewRunwayController extends BaseController {
 
     @FXML
@@ -21,14 +23,6 @@ public class NewRunwayController extends BaseController {
     private InputField resa;
     @FXML
     private InputField threshold;
-    @FXML
-    private InputField clearway;
-    @FXML
-    private InputField stopway;
-    @FXML
-    private InputField stripEnd;
-    @FXML
-    private InputField blastProtection;
 
     private Runway newRunway;
 
@@ -44,10 +38,7 @@ public class NewRunwayController extends BaseController {
         double ldaValue = 0;
         double resaValue = 0;
         double thresholdValue = 0;
-        double clearwayValue = 0;
-        double stopwayValue = 0;
-        double stripEndValue = 0;
-        double blastProtectionValue = 0;
+
 
         try {
             designator = runwayDesignator.getText();
@@ -57,16 +48,12 @@ public class NewRunwayController extends BaseController {
             ldaValue = Double.parseDouble(lda.getText());
             resaValue = Double.parseDouble(resa.getText());
             thresholdValue = Double.parseDouble(threshold.getText());
-            clearwayValue = Double.parseDouble(clearway.getText());
-            stopwayValue = Double.parseDouble(stopway.getText());
-            stripEndValue = Double.parseDouble(stripEnd.getText());
-            blastProtectionValue = Double.parseDouble(blastProtection.getText());
-        } catch (NumberFormatException e) {
+      } catch (NumberFormatException e) {
             System.out.println("Invalid input");
         }
 
-        newRunway = new Runway(designator, toraValue, todaValue, asdaValue, ldaValue, resaValue, thresholdValue,
-                clearwayValue, stopwayValue, stripEndValue, blastProtectionValue);
+        newRunway = new Runway(designator, toraValue, todaValue, asdaValue, ldaValue, resaValue,
+                thresholdValue);
 
         System.out.println("Creating runway... \n" + newRunway);
 
