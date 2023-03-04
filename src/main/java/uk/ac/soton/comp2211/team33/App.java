@@ -9,15 +9,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.controllers.BaseController;
-import uk.ac.soton.comp2211.team33.controllers.MainViewController;
 import uk.ac.soton.comp2211.team33.models.AppState;
 
 /**
  * The main class to execute when running the application.
+ *
+ * @author Brian (dal1g21@soton.ac.uk)
+ * @author Geeth (gv2g21@soton.ac.uk)
  */
 public class App extends Application {
 
-  private static Logger logger = LogManager.getLogger(App.class);
+  private static final Logger logger = LogManager.getLogger(App.class);
 
   /**
    * The main method to run when starting the application.
@@ -35,14 +37,13 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) throws Exception {
-    AppState state = new AppState();
-
     FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main.fxml"));
     BaseController controller = loader.getController();
-    controller.setState(state);
-
     Parent root = loader.load();
     Scene scene = new Scene(root);
+
+    AppState state = new AppState();
+    controller.setState(state);
 
     stage.setTitle("New application");
     stage.setScene(scene);
