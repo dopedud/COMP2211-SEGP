@@ -24,6 +24,7 @@ public class Aircraft {
 
   /**
    * Constructor to create a new Aircraft object.
+   *
    * @param id                id of the aircraft
    * @param blastProtection   blast protection of the aircraft
    */

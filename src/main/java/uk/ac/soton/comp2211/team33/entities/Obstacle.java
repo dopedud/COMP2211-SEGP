@@ -4,10 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * The class Obstacle specifies what attributes should an obstacle have. Obstacles in a runway re-declaration is
- * treated like a cuboid object, thus they only really have 2 significant measurements, which is its height and length.
- * The width is not taken into account, as in a runway re-declaration it is assumed that the obstacle will be centred
- * on the runway, leaving no room for the incoming or outgoing aircraft to maneuver besides it.
+ * The class Obstacle specifies what attributes should an obstacle have in a runway re-declaration.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
@@ -29,7 +26,6 @@ public class Obstacle {
    * Distance between the obstacle and the threshold of the runway.
    */
   private double distanceThreshold;
-
 
   /**
    * Creates a new obstacle with the specified name, height, and length.

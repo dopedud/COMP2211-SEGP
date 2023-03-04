@@ -23,6 +23,7 @@ public class App extends Application {
 
   /**
    * The main method to run when starting the application.
+   *
    * @param args  arguments given when running the application
    */
   public static void main(String[] args) {
@@ -32,6 +33,7 @@ public class App extends Application {
 
   /**
    * The method to invoke when the application starts.
+   *
    * @param stage       initial stage of the JavaFX application
    * @throws Exception  exception thrown if application fails to start
    */

@@ -106,45 +106,9 @@ public class Runway {
     this.aircraft = aircraft;
   }
 
-  /*
-  public void addObstacle(Obstacle obstacle) {
-      obstacles.add(obstacle);
-      if (currentObs == null) {
-        currentObs = obstacle;
-      }
-  }
-
-  public void listObjects() {
-    logger.info("Listing all obstacles on runway:");
-    var iterator = obstacles.iterator();
-    while (iterator.hasNext()){
-      logger.info(iterator.next());
-    }
-  }
-
-  public void selectObs(String name){
-    logger.info("Switching current obstacle to " + name);
-    boolean found = false;
-    int x = 0;
-    while( x < obstacles.size() && !found){
-      if(obstacles.get(x).getName().matches(name)){
-        currentObs = obstacles.get(x);
-        logger.info("Currently selected obstacle is: " + currentObs.getName());
-        found = true;
-      } else {
-        x++;
-      }
-    }
-    //In case the obstacle name is not found
-    if (!found) {
-      logger.info("Obstacle " + name + " does not exist.");
-    }
-
-  }
-  */
-
   /**
    * Gets the current obstacle.
+   *
    * @return an Obstacle object
    */
   public Obstacle getCurrentObs() {
@@ -153,6 +117,7 @@ public class Runway {
 
   /**
    * Set the current obstacle.
+   *
    * @param currentObs new obstacle for the runway
    */
   public void setCurrentObs(Obstacle currentObs) {
@@ -161,6 +126,7 @@ public class Runway {
 
   /**
    * Returns the aircraft for this runway.
+   *
    * @return an Aircraft object
    */
   public Aircraft getAircraft() {
@@ -172,6 +138,7 @@ public class Runway {
 
   /**
    * Set the aircraft for this runway.
+   *
    * @param aircraft new aircraft for the runway
    */
   public void setAircraft(Aircraft aircraft) {
@@ -181,7 +148,6 @@ public class Runway {
   /**
    * Below are getters for some values that don't have to change but may be used in certain calculations.
    */
-
   public String getRdesignator() {
     return rdesignator;
   }
@@ -221,7 +187,6 @@ public class Runway {
   public double getStripEnd() {
     return stripEnd;
   }
-
 
   /**
    *  Getters and setter for all current values that can be changed by a re-declaration.
@@ -279,4 +244,41 @@ public class Runway {
             "Strip End: " + stripEnd + "\n" +
             "Blast Protection: " + aircraft.getBlastProtection() + "\n";
   }
+
+  /*
+  public void addObstacle(Obstacle obstacle) {
+      obstacles.add(obstacle);
+      if (currentObs == null) {
+        currentObs = obstacle;
+      }
+  }
+
+  public void listObjects() {
+    logger.info("Listing all obstacles on runway:");
+    var iterator = obstacles.iterator();
+    while (iterator.hasNext()){
+      logger.info(iterator.next());
+    }
+  }
+
+  public void selectObs(String name){
+    logger.info("Switching current obstacle to " + name);
+    boolean found = false;
+    int x = 0;
+    while( x < obstacles.size() && !found){
+      if(obstacles.get(x).getName().matches(name)){
+        currentObs = obstacles.get(x);
+        logger.info("Currently selected obstacle is: " + currentObs.getName());
+        found = true;
+      } else {
+        x++;
+      }
+    }
+    //In case the obstacle name is not found
+    if (!found) {
+      logger.info("Obstacle " + name + " does not exist.");
+    }
+
+  }
+  */
 }
