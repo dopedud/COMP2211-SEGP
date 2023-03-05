@@ -31,7 +31,6 @@ public final class Calculator {
    * @return the new TORA value
    */
   public static String toraTowards(Runway runway) {
-    // TODO: 02/03/2023 Add string output 
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
 
     StringBuilder calcs = new StringBuilder();
@@ -94,10 +93,10 @@ public final class Calculator {
   public static void toraTowardsObs(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
 
-    double newTora;
-    double slope = max(runway.getResa(), runway.getCurrentObs().getHeight() * runway.getTocs());
+    //Gets the larger between RESA and the slope calculation
+    double temp = max(runway.getResa(), runway.getCurrentObs().getHeight() * runway.getTocs());
 
-    newTora = runway.getCurrentObs().getDistThresh() + runway.getThreshold() - slope - runway.getStripEnd();
+    double newTora = runway.getCurrentObs().getDistThresh() + runway.getThreshold() - temp - runway.getStripEnd();
     runway.setCtora(newTora);
     runway.setCasda(newTora);
     runway.setCtoda(newTora);
@@ -182,10 +181,9 @@ public final class Calculator {
   public static void toraAwayObs(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
 
-    double newTora;
     double blastProtection = max((runway.getStripEnd() + runway.getResa()), runway.getAircraft().getBlastProtection());
 
-    newTora = runway.getTora() - blastProtection - runway.getCurrentObs().getDistThresh() - runway.getThreshold();
+    double newTora = runway.getTora() - blastProtection - runway.getCurrentObs().getDistThresh() - runway.getThreshold();
 
     runway.setCtora(newTora);
     runway.setCtoda(newTora + runway.getClearway());
@@ -235,9 +233,9 @@ public final class Calculator {
     logger.info("Re-declaring LDA for landing over obstacle...");
 
     double newLda;
-    double slope = max(runway.getAircraft().getBlastProtection(), runway.getCurrentObs().getHeight() * runway.getAls());
+    double tempVal = max(runway.getAircraft().getBlastProtection(), runway.getCurrentObs().getHeight() * runway.getAls());
 
-    newLda = runway.getLda() - slope - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
+    newLda = runway.getLda() - tempVal - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
 
     makeNewRESA(runway, newLda);
   }
@@ -274,7 +272,7 @@ public final class Calculator {
     calcs.append("\n     = " + runway.getCurrentObs().getDistThresh()
       + " - " + runway.getStripEnd() + " - " + runway.getResa());
 
-    var newLda = runway.getCurrentObs().getDistThresh() - runway.getStripEnd() - runway.getResa();
+    double newLda = runway.getCurrentObs().getDistThresh() - runway.getStripEnd() - runway.getResa();
     runway.setClda(newLda);
     calcs.append("\n     = " + runway.getClda());
 
