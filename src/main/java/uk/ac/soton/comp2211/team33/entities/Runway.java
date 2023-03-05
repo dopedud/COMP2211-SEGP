@@ -33,9 +33,9 @@ public class Runway {
   private final double tora, toda, asda, lda, resa;
 
   /**
-   * ALS constant 50m.
+   * Currently used runway values (after calculation).
    */
-  private final double als = 50;
+  private double ctora, ctoda, casda, clda;
 
   /**
    * TOCS constant 50m.
@@ -43,14 +43,14 @@ public class Runway {
   private final double tocs = 50;
 
   /**
-   * Currently used runway values (after calculation).
+   * ALS constant 50m.
    */
-  private double ctora, ctoda, casda, clda;
+  private final double als = 50;
 
   /**
-   * Displaced threshold, Clearway, Stopway, Strip end and blast protection (300m-500m).
+   * Displaced threshold, clearway, stopway, and strip end.
    */
-  private double threshold, clearway, stopway;
+  private double clearway, stopway, threshold;
 
   /**
    * Strip end constant of 60m.
@@ -60,6 +60,7 @@ public class Runway {
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
     this.rdesignator = rdesignator;
+
     this.tora = tora;
     this.toda = toda;
     this.asda = asda;
@@ -76,14 +77,18 @@ public class Runway {
     this.ctoda = toda;
     this.casda = asda;
     this.clda = lda;
+
+    clearway = toda - tora;
+    stopway = asda - tora;
     this.threshold = threshold;
-    this.clearway = toda - tora;
-    this.stopway = asda - tora;
   }
 
   public Runway(String rdesignator, double tora, double toda, double asda, double lda,
                 double resa, double threshold, Aircraft aircraft) {
+    this.aircraft = aircraft;
+
     this.rdesignator = rdesignator;
+
     this.tora = tora;
     this.toda = toda;
     this.asda = asda;
@@ -100,10 +105,10 @@ public class Runway {
     this.ctoda = toda;
     this.casda = asda;
     this.clda = lda;
+
+    clearway = toda - tora;
+    stopway = asda - tora;
     this.threshold = threshold;
-    this.clearway = toda - tora;
-    this.stopway = asda - tora;
-    this.aircraft = aircraft;
   }
 
   /**
@@ -133,6 +138,7 @@ public class Runway {
     if (aircraft == null) {
       logger.error("No aircraft exists on runway " + rdesignator);
     }
+
     return aircraft;
   }
 

@@ -56,6 +56,6 @@ public class Obstacle {
   }
 
   public String toString() {
-     return ("Name: " + name + "\nHeight: " + height + "\nDistance: " + distanceThreshold);
+     return "Name: " + name + "\nHeight: " + height + "\nDistance: " + distanceThreshold;
   }
 }

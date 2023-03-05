@@ -160,7 +160,7 @@ public final class Calculator {
    * When landing over, only the LDA has to change.
    *
    * @param runway  the runway being calculated
-   * @return        the new LDA
+   * @return        the new LDA value
    */
   public static String ldaOver(Runway runway) {
     logger.info("Re-declaring LDA for landing over obstacle...");
@@ -193,7 +193,7 @@ public final class Calculator {
    * When landing towards, only the LDA has to change.
    *
    * @param runway  the runway being calculated
-   * @return        the new LDA
+   * @return        the new LDA value
    */
   public static String ldaTowards(Runway runway) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
