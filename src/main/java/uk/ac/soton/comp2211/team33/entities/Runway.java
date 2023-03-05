@@ -31,7 +31,11 @@ public class Runway {
    * Initial values of the runway.
    */
   private final double tora, toda, asda, lda;
-  private final double resa;
+
+  /**
+   * RESA value of the runway, could be re-declared
+   */
+  private double resa;
 
   /**
    * Currently used runway values (after calculation).
@@ -153,7 +157,7 @@ public class Runway {
   }
 
   /**
-   * Below are getters for some values that don't have to change but may be used in certain calculations.
+   * Below are getters and setters for some values that don't have to change but may be used in certain calculations.
    */
   public String getRdesignator() {
     return rdesignator;
@@ -177,6 +181,10 @@ public class Runway {
 
   public double getResa() {
     return resa;
+  }
+
+  public void setResa(double resa) {
+    this.resa = resa;
   }
 
   public double getThreshold() {
