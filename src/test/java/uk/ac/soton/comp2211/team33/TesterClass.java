@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
-
 public class TesterClass {
 
   private static Logger logger = LogManager.getLogger(TesterClass.class);
