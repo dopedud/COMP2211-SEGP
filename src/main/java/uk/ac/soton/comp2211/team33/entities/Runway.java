@@ -30,7 +30,8 @@ public class Runway {
   /**
    * Initial values of the runway.
    */
-  private final double tora, toda, asda, lda, resa;
+  private final double tora, toda, asda, lda;
+  private final double resa;
 
   /**
    * Currently used runway values (after calculation).

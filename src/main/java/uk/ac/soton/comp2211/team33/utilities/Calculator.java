@@ -2,9 +2,10 @@ package uk.ac.soton.comp2211.team33.utilities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.entities.Runway;
 
 import static java.lang.Math.max;
+
+import uk.ac.soton.comp2211.team33.entities.Runway;
 
 /**
  * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.
@@ -84,6 +85,18 @@ public final class Calculator {
     return calcs.toString();
   }
 
+  public static void toraTowardsObs(Runway runway) {
+    logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
+
+    double newTora;
+    double slope = max(runway.getResa(), runway.getCurrentObs().getHeight() * runway.getTocs());
+
+    newTora = runway.getCurrentObs().getDistThresh() + runway.getThreshold() - slope - runway.getStripEnd();
+    runway.setCtora(newTora);
+    runway.setCasda(newTora);
+    runway.setCtoda(newTora);
+  }
+
   /**
    * Calculate the TORA for take-off away from the obstacle present.
    * For ASDA and TODA, if there exists any clearway and/or stopway then those values should be added to the reduced
@@ -93,7 +106,7 @@ public final class Calculator {
    * @return        the new TORA value
    */
   public static String toraAway(Runway runway) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
+    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
     StringBuilder calcs = new StringBuilder();
     calcs.append(runway.getRdesignator() + "(Take Off Away, Landing Over): \n");
 
@@ -155,6 +168,19 @@ public final class Calculator {
     return calcs.toString();
   }
 
+  public static void toraAwayObs(Runway runway) {
+    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
+
+    double newTora;
+    double blastProtection = max((runway.getStripEnd() + runway.getResa()), runway.getAircraft().getBlastProtection());
+
+    newTora = runway.getTora() - blastProtection - runway.getCurrentObs().getDistThresh() - runway.getThreshold();
+
+    runway.setCtora(newTora);
+    runway.setCtoda(newTora + runway.getClearway());
+    runway.setCasda(newTora + runway.getStopway());
+  }
+
   /**
    * Function that re-declares the LDA (Landing Distance Available) after an obstacle appears.
    * When landing over, only the LDA has to change.
@@ -188,6 +214,17 @@ public final class Calculator {
     return calcs.toString();
   }
 
+  public static void ldaOverObs(Runway runway) {
+    logger.info("Re-declaring LDA for landing over obstacle...");
+
+    double newLda;
+    double slope = max(runway.getAircraft().getBlastProtection(), runway.getCurrentObs().getHeight() * runway.getAls());
+
+    newLda = runway.getLda() - slope - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
+
+    runway.setClda(newLda);
+  }
+
   /**
    * Function that re-declares the LDA after an obstacle appears.
    * When landing towards, only the LDA has to change.
@@ -208,5 +245,12 @@ public final class Calculator {
     calcs.append("\n     = " + runway.getClda());
 
     return calcs.toString();
+  }
+
+  public static void ldaTowardsObs(Runway runway) {
+    logger.info("Re-declaring LDA for landing towards obstacle...");
+
+    double newLda = runway.getCurrentObs().getDistThresh() - runway.getStripEnd() - runway.getResa();
+    runway.setClda(newLda);
   }
 }
