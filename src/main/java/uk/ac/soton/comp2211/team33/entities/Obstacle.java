@@ -15,12 +15,12 @@ public class Obstacle {
   /**
    * Name of the obstacle.
    */
-  private  String name;
+  private String name;
 
   /**
    * Height of the obstacle.
    */
-  private  double height;
+  private double height;
 
   /**
    * Distance between the obstacle and the threshold of the runway.
@@ -55,6 +55,7 @@ public class Obstacle {
     return distanceThreshold;
   }
 
+  @Override
   public String toString() {
      return "Name: " + name + "\nHeight: " + height + "\nDistance: " + distanceThreshold;
   }
