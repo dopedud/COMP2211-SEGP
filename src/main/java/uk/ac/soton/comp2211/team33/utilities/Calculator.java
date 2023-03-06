@@ -9,6 +9,7 @@ import uk.ac.soton.comp2211.team33.entities.Runway;
 
 /**
  * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.
+ * User story #1
  *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
