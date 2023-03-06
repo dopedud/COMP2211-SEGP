@@ -55,7 +55,7 @@ public class CalculatorTest {
 
     Calculator.ldaTowardsObs(runway);
 
-    assertEquals(3246, runway.getLda(),
+    assertEquals(3246, runway.getClda(),
         "Calculated LDA of runway is incorrect after calculation.");
   }
 
@@ -68,7 +68,7 @@ public class CalculatorTest {
 
     Calculator.ldaOverObs(runway);
 
-    assertEquals(2774, runway.getLda(),
+    assertEquals(2774, runway.getClda(),
         "Calculated LDA of runway is incorrect after calculation.");
   }
 }
