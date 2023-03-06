@@ -1,0 +1,69 @@
+package uk.ac.soton.comp2211.team33.entities;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.*;
+import java.util.ArrayList;
+
+
+/**
+ * The class ObstacleList represents a list of obstacles, and can be used for importing / exporting a list of obstacles.
+ */
+public class ObstacleList {
+
+    private static final Logger logger = LogManager.getLogger(ObstacleList.class);
+
+    private final ArrayList<Obstacle> obstacles;
+
+
+    public ObstacleList() {
+        logger.info("Creating new obstacle list...");
+        obstacles = new ArrayList<>();
+    }
+
+    /**
+     * Updates the obstacle list with the obstacles from the CSV file.
+     */
+    public void loadObstaclesFromCSV(String filepath) {
+        logger.info("Loading obstacles from CSV file...");
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                Obstacle obstacle = new Obstacle(values[0], Double.parseDouble(values[1]), Double.parseDouble(values[2]));
+                obstacles.add(obstacle);
+            }
+        } catch (IOException e) {
+            logger.error("Error loading obstacles from CSV file.");
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Calls loadObstaclesFromCSV(String filepath) with the default filepath.
+     */
+    public void loadObstaclesFromCSV() {
+        String CSV_FILE_PATH = "src/main/resources/uk/ac/soton/comp2211/team33/data/obstacles.csv";
+        loadObstaclesFromCSV(CSV_FILE_PATH);
+    }
+
+    /**
+     * Adds an obstacle to the list.
+     * @param obstacle the obstacle to be added to the list
+     */
+    public void addObstacle(Obstacle obstacle) {
+        obstacles.add(obstacle);
+    }
+
+    /**
+     * Get an ArrayList of all the obstacles in the list.
+     * @return the list of obstacles
+     */
+    public ArrayList<Obstacle> getObstacles() {
+        return obstacles;
+    }
+
+
+}
