@@ -4,32 +4,28 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * The class Obstacle specifies what attributes should an obstacle have. Obstacles in a runway re-declaration is
- * treated like a cuboid object, thus they only really have 2 significant measurements, which is its height and length.
- * The width is not taken into account, as in a runway re-declaration it is assumed that the obstacle will be centred
- * on the runway, leaving no room for the incoming or outgoing aircraft to maneuver besides it.
+ * The class Obstacle specifies what attributes should an obstacle have in a runway re-declaration.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
 public class Obstacle {
 
-  private static Logger logger = LogManager.getLogger(Obstacle.class);
+  private static final Logger logger = LogManager.getLogger(Obstacle.class);
 
   /**
    * Name of the obstacle.
    */
-  private final String name;
+  private  String name;
 
   /**
    * Height of the obstacle.
    */
-  private final double height;
+  private  double height;
 
   /**
    * Distance between the obstacle and the threshold of the runway.
    */
   private double distanceThreshold;
-
 
   /**
    * Creates a new obstacle with the specified name, height, and length.
@@ -45,7 +41,7 @@ public class Obstacle {
   }
 
   /**
-   * Below are the usual accessors and mutators for the class variables.
+   * Below are the usual accessors and mutators for the instance variables of this class.
    */
   public String getName() {
     return name;
@@ -55,7 +51,11 @@ public class Obstacle {
     return height;
   }
 
-  public double getDistanceThreshold() {
+  public double getDistThresh() {
     return distanceThreshold;
+  }
+
+  public String toString() {
+     return "Name: " + name + "\nHeight: " + height + "\nDistance: " + distanceThreshold;
   }
 }

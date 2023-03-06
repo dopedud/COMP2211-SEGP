@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uk.ac.soton.comp2211.team33.controllers.NewObstacleController"
+            prefHeight="400.0" prefWidth="600.0">
+    <top>
+        <Text text="New Runway Configuration" />
+    </top>
+    <center>
+        <VBox alignment="CENTER">
+            <Text text="Enter obstacle details" />
+            <InputField fx:id="name" labelText="Name" />
+            <InputField fx:id="height" labelText="Height"/>
+            <InputField fx:id="distanceThreshold" labelText="Dist. Threshold" />
+            <Button text="Confirm" onAction="#createObstacle" />
+        </VBox>
+    </center>
+</BorderPane>
