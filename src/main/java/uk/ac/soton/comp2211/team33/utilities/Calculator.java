@@ -218,9 +218,18 @@ public final class Calculator {
       newLda = runway.getLda() - slope - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
     }
 
-    makeNewRESA(runway, newLda);
+    boolean changeLDA = makeNewRESA(runway, newLda);
 
+    if (changeLDA) {
+      calcs.setLength(0);
+      calcs.append("LDA  = Original LDA - Distance from Threshold - New RESA");
+      calcs.append("\n     = " + runway.getLda() + " - " + runway.getCurrentObs().getDistThresh() + " - " + runway.getResa());
+      newLda = runway.getLda() - runway.getCurrentObs().getDistThresh() - runway.getResa();
+    }
+
+    runway.setClda(newLda);
     calcs.append("\n     = " + runway.getClda());
+
     return calcs.toString();
   }
 
@@ -237,7 +246,13 @@ public final class Calculator {
 
     newLda = runway.getLda() - tempVal - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
 
-    makeNewRESA(runway, newLda);
+    boolean changeLDA = makeNewRESA(runway, newLda);
+
+    if (changeLDA) {
+      newLda = runway.getLda() - runway.getCurrentObs().getDistThresh() - runway.getResa();
+    }
+
+    runway.setClda(newLda);
   }
 
   /**
@@ -246,15 +261,16 @@ public final class Calculator {
    * @param runway the runway
    * @param newLda the new LDA after re-declaration
    */
-  private static void makeNewRESA(Runway runway, double newLda) {
+  private static boolean makeNewRESA(Runway runway, double newLda) {
     if (newLda < runway.getAircraft().getBlastProtection()) {
       logger.info("Declaring a new RESA due to blast protection...");
       double newResa = runway.getAircraft().getBlastProtection() + runway.getCurrentObs().getDistThresh();
       logger.info("New RESA is: " + newResa);
       runway.setResa(newResa);
+      return true;
+    } else {
+      return  false;
     }
-
-    runway.setClda(newLda);
   }
 
   /**
