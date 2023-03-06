@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.controllers.BaseController;
-import uk.ac.soton.comp2211.team33.controllers.MainViewController;
 import uk.ac.soton.comp2211.team33.models.AppState;
 
 /**
@@ -38,10 +37,11 @@ public class App extends Application {
     AppState state = new AppState();
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main.fxml"));
+    Parent root = loader.load();
+
     BaseController controller = loader.getController();
     controller.setState(state);
 
-    Parent root = loader.load();
     Scene scene = new Scene(root);
 
     stage.setTitle("New application");
