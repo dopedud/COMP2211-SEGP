@@ -14,7 +14,7 @@
   </top>
   <center>
     <VBox alignment="CENTER">
-        <Button text="Click me!" onAction="#handleClick" />
+        <Button text="Click me!" onAction="#handleSubmit" />
     </VBox>
   </center>
 </BorderPane>
