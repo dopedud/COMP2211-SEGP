@@ -227,8 +227,8 @@ public final class Calculator {
       newLda = runway.getLda() - runway.getCurrentObs().getDistThresh() - runway.getResa();
     }
 
-    calcs.append("\n     = " + runway.getClda());
     runway.setClda(newLda);
+    calcs.append("\n     = " + runway.getClda());
 
     return calcs.toString();
   }
