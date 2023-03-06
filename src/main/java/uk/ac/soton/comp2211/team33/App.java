@@ -41,7 +41,7 @@ public class App extends Application {
   public void start(Stage stage) throws Exception {
     AppState state = new AppState();
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("views/newRunwayConfig.fxml"));
     Parent root = loader.load();
 
     BaseController controller = loader.getController();
@@ -49,7 +49,7 @@ public class App extends Application {
 
     Scene scene = new Scene(root);
 
-    stage.setTitle("New application");
+    stage.setTitle("Runway Re-declaration tool");
     stage.setScene(scene);
     stage.show();
   }
