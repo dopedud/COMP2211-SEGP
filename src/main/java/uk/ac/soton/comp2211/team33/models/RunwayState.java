@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.AbstractMap;
+
 public class RunwayState {
 
   private static final Logger logger = LogManager.getLogger(RunwayState.class);
@@ -98,4 +100,6 @@ public class RunwayState {
   public double getStripEnd() {
     return stripEnd;
   }
+
+
 }
