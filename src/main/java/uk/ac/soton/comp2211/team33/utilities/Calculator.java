@@ -26,72 +26,10 @@ public final class Calculator {
   private Calculator() {}
 
   /**
-   * Function that calculates the take-off runway available.
-   * TORA for Take Off Away.
-   * TORA = ASDA = TODA in this case.
+   * Calculate the take-off runway available (use toraTowardsObsPrettyPrint() for pretty print). Updates runway with new values.
    *
-   * @param runway the runway being calculated
-   * @return the new TORA value
-   */
-  public static String toraTowards(Runway runway, Obstacle obstacle) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
-
-    StringBuilder calcs = new StringBuilder();
-    calcs.append(runway.getDesignator() + " (Take Off Towards, Landing Towards): ");
-
-    double newTora;
-    double tempSlope = obstacle.getHeight() * runway.getTocs();
-    boolean zeroDisp = false; //True if displaced threshold is 0
-    boolean useRESA = false; // will use RESA if RESA > slope
-
-    //Check if threshold is 0
-    if (runway.getThreshold() == 0) {
-      zeroDisp = true;
-      calcs.append("\nTORA = Distance from Threshold");
-    } else {
-      calcs.append("\nTORA = Distance from Threshold + Displaced Threshold");
-    }
-
-    //Compare with RESA, if RESA is greater, use RESA
-    if (tempSlope < runway.getResa()) {
-      tempSlope = runway.getResa();
-      useRESA = true;
-      calcs.append(" - Strip End");
-    } else {
-      calcs.append(" - Slope Calculation - Strip End");
-    }
-
-    //When there is no displacement, ignore it
-    if (zeroDisp) {
-      calcs.append("\n     = " + obstacle.getDistThresh());
-    } else {
-      calcs.append("\n     = " + obstacle.getDistThresh() + " + " + runway.getThreshold());
-    }
-
-    //If RESA is used, append accordingly
-    if (useRESA) {
-      calcs.append(" - " + runway.getResa() + " - " + runway.getStripEnd());
-    } else {
-      calcs.append(" - " + obstacle.getHeight() + "*"
-        + runway.getTocs() + " - " + runway.getStripEnd());
-    }
-
-    newTora = obstacle.getDistThresh() + runway.getThreshold() - tempSlope - runway.getStripEnd();
-    runway.setCtora(newTora);
-    runway.setCasda(newTora);
-    runway.setCtoda(newTora);
-
-    calcs.append("\n     = " + newTora);
-    calcs.append("\nTODA = (R) TORA" + "\n     = " + newTora);
-    calcs.append("\nASDA = (R) TORA" + "\n     = " + newTora);
-
-    return calcs.toString();
-  }
-
-  /**
-   * No pretty printing TORA towards obstacle.
-   *
-   * @param runway the runway being calculated
+   * @param runway the runway to perform the calculation on
+   * @param obstacle the obstacle to perform the calculation on
    */
   public static void toraTowardsObs(Runway runway, Obstacle obstacle) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
@@ -104,6 +42,57 @@ public final class Calculator {
     runway.setCasda(newTora);
     runway.setCtoda(newTora);
   }
+
+  /**
+   * Function that calculates the take-off runway available, and pretty prints the output. Updates runway with new values.
+   * TORA for Take Off Away.
+   * TORA = ASDA = TODA in this case.
+   *
+   * @param runway the runway to perform the calculation on
+   * @param obstacle the obstacle to perform the calculation on
+   * @return A string detailing the steps of the calculation performed
+   */
+  public static String toraTowardsObsPrettyPrint(Runway runway, Obstacle obstacle) {
+    logger.info("Re-declaring TORA, TODA and ASDA for take-offs towards obstacle...");
+    StringBuilder calcSummary = new StringBuilder();
+
+    calcSummary.append("Summary of calculations for runway " + runway.getDesignator() + "\n");
+    calcSummary.append("Takeoff towards obstacle: \n");
+
+    calcSummary.append("RESA = " + runway.getResa() + "\n");
+
+    double slope = obstacle.getHeight() * runway.getTocs();
+    calcSummary.append("Slope = " + obstacle.getHeight() + " * " + runway.getTocs() + " = " + slope + "\n");
+
+    double temp;
+    String tempName;
+    if (runway.getResa() >= slope) {
+      calcSummary.append("RESA >= Slope, using RESA value: " + runway.getResa() + "\n");
+      temp = runway.getResa();
+      tempName = "RESA";
+    } else {
+      calcSummary.append("Slope > RESA, using Slope value: " + slope + "\n");
+      temp = slope;
+      tempName = "Slope";
+    }
+
+    double newTora = obstacle.getDistThresh() + runway.getThreshold() - temp - runway.getStripEnd();
+    calcSummary.append("TORA = Obstacle Distance from Threshold + Displaced Threshold - " + tempName + " - Strip End\n");
+    calcSummary.append("TORA = " + obstacle.getDistThresh() + " + " + runway.getThreshold() + " - " + temp + " - " + runway.getStripEnd() + "\n");
+    calcSummary.append("TORA = " + newTora + "\n");
+    calcSummary.append("TODA = TORA = " + newTora + "\n");
+    calcSummary.append("ASDA = TORA = " + newTora + "\n");
+
+
+    // updating runway with new values
+    runway.setCtora(newTora);
+    runway.setCasda(newTora);
+    runway.setCtoda(newTora);
+
+    return calcSummary.toString();
+  }
+
+
 
   /**
    * Calculate the TORA for take-off away from the obstacle present.
