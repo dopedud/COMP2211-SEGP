@@ -28,12 +28,12 @@ public class MainScene extends BaseScene {
 
   @FXML
   private void handleAddObstacle() {
-    new NewObstacleScene(this.createModalStage(), state);
+    new NewObstacleScene(createModalStage(), state);
   }
 
   @FXML
   private void handleAddAircraft() {
-    new NewAircraftScene(this.createModalStage(), state);
+    new NewAircraftScene(createModalStage(), state);
   }
 
   protected void build() {

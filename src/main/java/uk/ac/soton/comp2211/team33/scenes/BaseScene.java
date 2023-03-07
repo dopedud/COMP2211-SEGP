@@ -13,8 +13,7 @@ import uk.ac.soton.comp2211.team33.models.AppState;
 /**
  * An abstract class to create scenes.
  *
- * @author Brian (dal1g21@soton.ac.uk)
- * @author Geeth (gv2g21@soton.ac.uk)
+ * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
 abstract class BaseScene {
   /**
@@ -62,7 +61,7 @@ abstract class BaseScene {
       stage.show();
     }
     catch (IOException ex) {
-      System.out.println(ex);
+      ex.printStackTrace();
     }
   }
 
