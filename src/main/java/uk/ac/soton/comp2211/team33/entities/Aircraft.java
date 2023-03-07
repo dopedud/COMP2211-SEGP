@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 /**
  * The class Aircraft models what attributes an aircraft has when runway is being re-declared.
  *
+ * Corresponds to user story #3.
+ *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
 public class Aircraft {
@@ -32,7 +34,7 @@ public class Aircraft {
     this.aircraftID = id;
 
     if(blastProtection < 300 || blastProtection > 500) {
-      logger.error("Blast protection value not within boundaries (300m-500m)");
+      logger.error("Blast protection value not within boundaries (300m-500m).");
     } else {
       this.blastProtection = blastProtection;
     }
@@ -41,6 +43,7 @@ public class Aircraft {
   /**
    * Below are the usual accessors and mutators for the instance variables of this class.
    */
+
   public String getAircraftID() {
     return aircraftID;
   }

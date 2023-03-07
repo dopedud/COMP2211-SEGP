@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 /**
  * The class Obstacle specifies what attributes should an obstacle have in a runway re-declaration.
  *
+ * Corresponds to user story #3, #4.
+ *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
 public class Obstacle {
@@ -43,6 +45,7 @@ public class Obstacle {
   /**
    * Below are the usual accessors and mutators for the instance variables of this class.
    */
+
   public String getName() {
     return name;
   }
