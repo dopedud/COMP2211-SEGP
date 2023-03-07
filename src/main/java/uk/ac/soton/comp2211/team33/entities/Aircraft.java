@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
-public class Aircraft extends Runway {
+public class Aircraft {
 
   private static final Logger logger = LogManager.getLogger(Aircraft.class);
 
