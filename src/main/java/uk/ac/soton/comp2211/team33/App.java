@@ -11,15 +11,14 @@ import uk.ac.soton.comp2211.team33.scenes.MainScene;
 /**
  * The main class to execute when running the application.
  *
- * @author Brian (dal1g21@soton.ac.uk)
- * @author Geeth (gv2g21@soton.ac.uk)
+ * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
 public class App extends Application {
 
   private static final Logger logger = LogManager.getLogger(App.class);
 
   /**
-   * The main method to run when starting the application.
+   * The main method to execute when starting the application.
    *
    * @param args
    */
@@ -29,7 +28,7 @@ public class App extends Application {
   }
 
   /**
-   * The method to invoke when the application starts.
+   * The method to invoke for JavaFX.
    *
    * @param stage The initial window of the JavaFX application
    */
