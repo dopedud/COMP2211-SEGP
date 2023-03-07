@@ -2,6 +2,7 @@ package uk.ac.soton.comp2211.team33.entities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.App;
 
 /**
  * The class Runway models a runway and its values for re-declaration in an airport.
@@ -78,7 +79,9 @@ public class Runway {
     clearway = toda - tora;
     stopway = asda - tora;
     this.threshold = threshold;
+
   }
+
 
   /**
    * Below are getters and setters for some values that don't have to change but may be used in certain calculations.

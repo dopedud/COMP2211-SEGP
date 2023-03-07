@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
