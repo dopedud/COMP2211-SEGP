@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 
 /**
- * Class that serves to meet user story #1 requirement
+ * The class Airport that serves as a collection of runways and aircraft.
+ *
+ * Corresponds to user story #1.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
@@ -18,7 +20,7 @@ public class Airport {
   private static final Logger logger = LogManager.getLogger(Airport.class);
 
   /**
-   * Airport constructor for an airport project
+   * Airport constructor for an airport project.
    *
    * @param name The name of the aircraft
    * @param city The city the airport is in
@@ -29,7 +31,7 @@ public class Airport {
   }
 
   /**
-   * Getters and setters for the airport name and city
+   * Getters and setters for the airport name and city.
    */
 
   public String getName() {

@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 /**
  * The class Runway models a runway and its values for re-declaration in an airport.
  *
+ * Corresponds to user story #3.
+ *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
 public class Runway {

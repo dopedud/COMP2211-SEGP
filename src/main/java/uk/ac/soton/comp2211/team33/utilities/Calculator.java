@@ -11,13 +11,19 @@ import uk.ac.soton.comp2211.team33.entities.Runway;
 
 /**
  * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.
- * User story #1
+ *
+ * Corresponds to user story #3, #5, #6.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
 public final class Calculator {
 
   private static final Logger logger = LogManager.getLogger(Calculator.class);
+
+  /**
+   * Private constructor to avoid instantiating.
+   */
+  private Calculator() {}
 
   /**
    * Function that calculates the take-off runway available.
@@ -215,7 +221,7 @@ public final class Calculator {
       newLda = runway.getLda() - slope - obstacle.getDistThresh() - runway.getStripEnd();
     }
 
-    boolean changeLDA = makeNewRESA(runway, newLda, obstacle, aircraft);
+    boolean changeLDA = makeNewRESA(newLda, runway, obstacle, aircraft);
 
     if (changeLDA) {
       calcs.setLength(0);
@@ -243,7 +249,7 @@ public final class Calculator {
 
     newLda = runway.getLda() - tempVal - obstacle.getDistThresh() - runway.getStripEnd();
 
-    boolean changeLDA = makeNewRESA(runway, newLda, obstacle, aircraft);
+    boolean changeLDA = makeNewRESA(newLda, runway, obstacle, aircraft);
 
     if (changeLDA) {
       newLda = runway.getLda() - obstacle.getDistThresh() - runway.getResa();
@@ -289,10 +295,12 @@ public final class Calculator {
   /**
    * Judge if a new RESA has to be re-declared, if yes, then re-declare according to formula.
    *
-   * @param runway the runway
    * @param newLda the new LDA after re-declaration
+   * @param runway the runway
+   * @param obstacle the obstacle
+   * @param aircraft the aircraft
    */
-  private static boolean makeNewRESA(Runway runway, double newLda, Obstacle obstacle, Aircraft aircraft) {
+  private static boolean makeNewRESA(double newLda, Runway runway, Obstacle obstacle, Aircraft aircraft) {
     if (newLda < aircraft.getBlastProtection()) {
       logger.info("Declaring a new RESA due to blast protection...");
       double newResa = aircraft.getBlastProtection() + obstacle.getDistThresh();
