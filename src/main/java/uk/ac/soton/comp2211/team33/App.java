@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.controllers.BaseController;
 import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.scenes.MainScene;
 
 /**
  * The main class to execute when running the application.
@@ -41,16 +42,7 @@ public class App extends Application {
   public void start(Stage stage) throws Exception {
     AppState state = new AppState();
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main.fxml"));
-    Parent root = loader.load();
-
-    BaseController controller = loader.getController();
-    controller.setState(state);
-
-    Scene scene = new Scene(root);
-
-    stage.setTitle("New application");
-    stage.setScene(scene);
+    new MainScene(stage);
     stage.show();
   }
 }
