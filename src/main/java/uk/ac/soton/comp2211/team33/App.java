@@ -3,12 +3,8 @@ package uk.ac.soton.comp2211.team33;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.controllers.BaseController;
 import uk.ac.soton.comp2211.team33.models.AppState;
 import uk.ac.soton.comp2211.team33.scenes.MainScene;
 
@@ -25,7 +21,7 @@ public class App extends Application {
   /**
    * The main method to run when starting the application.
    *
-   * @param args  arguments given when running the application
+   * @param args
    */
   public static void main(String[] args) {
     logger.info("Starting application...");
@@ -35,14 +31,10 @@ public class App extends Application {
   /**
    * The method to invoke when the application starts.
    *
-   * @param stage       initial stage of the JavaFX application
-   * @throws Exception  exception thrown if application fails to start
+   * @param stage The initial window of the JavaFX application
    */
   @Override
-  public void start(Stage stage) throws Exception {
-    AppState state = new AppState();
-
-    new MainScene(stage);
-    stage.show();
+  public void start(Stage stage) {
+    new MainScene(stage, new AppState());
   }
 }

@@ -1,15 +1,18 @@
-package uk.ac.soton.comp2211.team33.controllers;
+
+package uk.ac.soton.comp2211.team33.scenes;
 
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
+
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.entities.Runway;
+import uk.ac.soton.comp2211.team33.models.AppState;
 
 /**
- * The class NewRunwayController is a controller for the user interface to configure a new runway.
+ * A scene which can be used to configure new runways.
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */
-public class NewRunwayController extends BaseController {
+public class NewRunwayScene extends BaseScene {
 
   @FXML
   private InputField runwayDesignator;
@@ -26,14 +29,19 @@ public class NewRunwayController extends BaseController {
   @FXML
   private InputField threshold;
 
-  private Runway newRunway;
+  public NewRunwayScene(Stage stage, AppState state) {
+    super(stage, state, "newRunwayScene.fxml");
+  }
 
   /**
-   * Creates a new runway based on the input values in the text fields.
+   * A method invoked when the runway configuration form is submitted
    */
-  public void createRunway() {
+  @FXML
+  private void handleSubmitConfigurations() {
+
     // TODO: Validate input, display error message if invalid
-    String designator = null;
+
+    String designator;
     double toraValue = 0;
     double todaValue = 0;
     double asdaValue = 0;
@@ -49,13 +57,18 @@ public class NewRunwayController extends BaseController {
       ldaValue = Double.parseDouble(lda.getText());
       resaValue = Double.parseDouble(resa.getText());
       thresholdValue = Double.parseDouble(threshold.getText());
-    } catch (NumberFormatException e) {
+    }
+    catch (NumberFormatException e) {
       System.out.println("Invalid input");
+      return;
     }
 
-    newRunway = new Runway(designator, toraValue, todaValue, asdaValue, ldaValue, resaValue,
-        thresholdValue);
+    this.state.getRunwayState().createRunway(designator, toraValue, todaValue, asdaValue, ldaValue, resaValue, thresholdValue);
+    stage.close();
+  }
 
-    System.out.println("Creating runway... \n" + newRunway);
+  protected void build() {
+    stage.setTitle("New runway configurator");
+    renderMarkup();
   }
 }

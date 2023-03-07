@@ -1,51 +1,51 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
-import javafx.scene.Scene;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Button;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 
-public class MainScene {
-  public MainScene(Stage stage) {
+import uk.ac.soton.comp2211.team33.entities.Runway;
+import uk.ac.soton.comp2211.team33.models.AppState;
 
-    GridPane root = new GridPane();
+/**
+ * Main scene of the application. This scene should only be fully functional when there is at least a runway configured.
+ * Contains visualisation and computation of the selected runway.
+ *
+ * @author Brian (dal1g21@soton.ac.uk)
+ */
+public class MainScene extends BaseScene {
 
-    VBox rightPanel = new VBox();
-    rightPanel.setStyle("-fx-background-color: red");
+  @FXML
+  private Canvas canvas;
 
-    HBox bottomPanel = new HBox();
-    bottomPanel.setStyle("-fx-background-color: green");
+  public MainScene(Stage stage, AppState state) {
+    super(stage, state, "mainScene.fxml");
+  }
 
-    Canvas visualisationPanel = new Canvas();
-    visualisationPanel.setStyle("-fx-background-color: blue");
+  @FXML
+  private void handleAddObstacle() {
+    new NewObstacleScene(this.createModalStage(), state);
+  }
 
-    root.setMinSize(1280, 960);
+  @FXML
+  private void handleAddAircraft() {
+    new NewAircraftScene(this.createModalStage(), state);
+  }
 
-    root.add(visualisationPanel, 0, 0);
-    root.add(rightPanel, 1, 0, 1, 2);
-    root.add(bottomPanel, 0, 1);
+  protected void build() {
+    stage.setTitle("Runway 1");
+    renderMarkup();
 
-    ColumnConstraints col1Constraints = new ColumnConstraints();
-    col1Constraints.setPercentWidth(66.6666);
-    ColumnConstraints col2Constraints = new ColumnConstraints();
-    col2Constraints.setPercentWidth(33.3333);
+    SimpleObjectProperty<Runway> runway = state.getRunwayState().getRunway();
 
-    root.getColumnConstraints().addAll(col1Constraints, col2Constraints);
+    runway.addListener(((observableValue, oldRunway, newRunway) -> {
+      GraphicsContext ctx = canvas.getGraphicsContext2D();
+    }));
 
-    RowConstraints row1Constraints = new RowConstraints();
-    row1Constraints.setPercentHeight(66.6666);
-    RowConstraints row2Constraints = new RowConstraints();
-    row2Constraints.setPercentHeight(33.3333);
-
-    root.getRowConstraints().addAll(row1Constraints, row2Constraints);
-
-    Scene scene = new Scene(root);
-    stage.setScene(scene);
-    stage.setTitle("Runway Redeclaration");
+    if (runway.get() == null) {
+      new NewRunwayScene(this.createModalStage(), state);
+    }
   }
 }

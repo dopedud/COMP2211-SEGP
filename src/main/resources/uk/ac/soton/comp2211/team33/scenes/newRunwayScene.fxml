@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      prefHeight="400.0" prefWidth="600.0" alignment="CENTER">
+
+  <Text text="Enter runway details" />
+  <InputField fx:id="runwayDesignator" label="Designator" />
+  <InputField fx:id="tora" label="TORA"/>
+  <InputField fx:id="toda" label="TODA" />
+  <InputField fx:id="asda" label="ASDA"/>
+  <InputField fx:id="lda" label="LDA"/>
+  <InputField fx:id="resa" label="RESA"/>
+  <InputField fx:id="threshold" label="Threshold"/>
+
+  <Button text="Submit" onAction="#handleSubmitConfigurations" />
+</VBox>
