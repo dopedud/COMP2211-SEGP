@@ -13,5 +13,6 @@ public class RunwayState {
   public void createRunway(String designator, double tora, double toda, double asda, double lda, double resa, double threshold) {
     Runway runway = new Runway(designator, tora, toda, asda, lda, resa, threshold);
     this.runway.set(runway);
+
   }
 }

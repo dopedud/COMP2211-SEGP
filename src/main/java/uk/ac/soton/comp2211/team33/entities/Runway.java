@@ -1,5 +1,7 @@
 package uk.ac.soton.comp2211.team33.entities;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,7 +80,9 @@ public class Runway {
     clearway = toda - tora;
     stopway = asda - tora;
     this.threshold = threshold;
+
   }
+
 
   /**
    * Below are getters and setters for some values that don't have to change but may be used in certain calculations.
