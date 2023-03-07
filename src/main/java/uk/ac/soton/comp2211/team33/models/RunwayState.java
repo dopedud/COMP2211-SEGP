@@ -4,6 +4,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import uk.ac.soton.comp2211.team33.entities.Runway;
 
+import java.util.AbstractMap;
+
 public class RunwayState {
 
   private SimpleDoubleProperty tora = new SimpleDoubleProperty();
@@ -18,7 +20,7 @@ public class RunwayState {
 
   private SimpleDoubleProperty threshold = new SimpleDoubleProperty();
 
-  private SimpleObjectProperty<Runway> runway;
+  private SimpleObjectProperty<Runway> runway = new SimpleObjectProperty<>();
 
 
   public void createRunway(String designator, double tora, double toda, double asda, double lda, double resa, double threshold) {

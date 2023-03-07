@@ -1,9 +1,8 @@
 package uk.ac.soton.comp2211.team33.entities;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.App;
 
 /**
  * The class Runway models a runway and its values for re-declaration in an airport.
