@@ -39,9 +39,11 @@ public class NewObstacleScene extends BaseScene {
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input");
+      return;
     }
 
-    // Call state here
+    state.getObstacleState().addNewObstacle(obstacleName, heightValue, distanceThresholdValue);
+    stage.close();
   }
 
   protected void build() {
