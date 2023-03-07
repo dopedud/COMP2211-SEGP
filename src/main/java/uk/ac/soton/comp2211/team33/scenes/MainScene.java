@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -8,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import uk.ac.soton.comp2211.team33.entities.Obstacle;
 import uk.ac.soton.comp2211.team33.entities.Runway;
 import uk.ac.soton.comp2211.team33.models.AppState;
 
@@ -42,7 +44,7 @@ public class MainScene extends BaseScene {
 
     SimpleObjectProperty<Runway> runway = state.getRunwayState().getRunway();
 
-    runway.addListener(((observableValue, oldRunway, newRunway) -> {
+     runway.addListener(((observableValue, oldRunway, newRunway) -> {
       GraphicsContext ctx = canvas.getGraphicsContext2D();
 
       ctx.setFill(Color.RED);
@@ -55,6 +57,19 @@ public class MainScene extends BaseScene {
       ctx.fillText("RESA: " + newRunway.getResa(), 0, 120);
       ctx.fillText("Threshold: " + newRunway.getThreshold(), 0, 140);
     }));
+
+    SimpleListProperty<Obstacle> obstaclesList = state.getObstacleState().getObstaclesList();
+
+    obstaclesList.addListener((observableValue, oldList, newList) -> {
+      GraphicsContext ctx = canvas.getGraphicsContext2D();
+
+      ctx.setFill(Color.BLUE);
+      ctx.setFont(new Font(15));
+
+      for (int i = 0; i < newList.size(); i++) {
+        ctx.fillText(newList.get(i).getName(), 0, i * 20 + 160);
+      }
+    });
 
     if (runway.get() == null) {
       new NewRunwayScene(this.createModalStage(), state);
