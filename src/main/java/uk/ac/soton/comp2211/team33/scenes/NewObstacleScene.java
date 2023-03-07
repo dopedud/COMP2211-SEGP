@@ -12,8 +12,10 @@ import uk.ac.soton.comp2211.team33.models.AppState;
 public class NewObstacleScene extends BaseScene {
   @FXML
   private InputField name;
+
   @FXML
   private InputField height;
+
   @FXML
   private InputField distanceThreshold;
 

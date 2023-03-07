@@ -14,6 +14,7 @@ import uk.ac.soton.comp2211.team33.models.AppState;
 public class NewAircraftScene extends BaseScene {
   @FXML
   private InputField id;
+
   @FXML
   private InputField blastProtection;
 
