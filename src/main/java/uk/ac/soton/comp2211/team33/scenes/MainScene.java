@@ -46,6 +46,6 @@ public class MainScene {
 
     Scene scene = new Scene(root);
     stage.setScene(scene);
-    stage.setTitle("Runway Redeclaration");
+    stage.setTitle("Runway Re-declaration");
   }
 }
