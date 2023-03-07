@@ -4,6 +4,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.entities.Runway;
@@ -42,6 +44,16 @@ public class MainScene extends BaseScene {
 
     runway.addListener(((observableValue, oldRunway, newRunway) -> {
       GraphicsContext ctx = canvas.getGraphicsContext2D();
+
+      ctx.setFill(Color.RED);
+      ctx.setFont(new Font(20));
+      ctx.fillText("Runway designator: " + newRunway.getDesignator(), 0, 20);
+      ctx.fillText("TORA: " + newRunway.getTora(), 0, 40);
+      ctx.fillText("TODA: " + newRunway.getToda(), 0, 60);
+      ctx.fillText("ASDA: " + newRunway.getAsda(), 0, 80);
+      ctx.fillText("LDA: " + newRunway.getLda(), 0, 100);
+      ctx.fillText("RESA: " + newRunway.getResa(), 0, 120);
+      ctx.fillText("Threshold: " + newRunway.getThreshold(), 0, 140);
     }));
 
     if (runway.get() == null) {
