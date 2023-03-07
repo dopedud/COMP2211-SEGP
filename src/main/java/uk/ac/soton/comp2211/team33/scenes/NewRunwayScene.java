@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.AirportState;
 
 /**
  * A scene which can be used to configure new runways.
@@ -35,7 +35,7 @@ public class NewRunwayScene extends BaseScene {
   @FXML
   private InputField threshold;
 
-  public NewRunwayScene(Stage stage, AppState state) {
+  public NewRunwayScene(Stage stage, AirportState state) {
     super(stage, state, "newRunwayScene.fxml");
   }
 

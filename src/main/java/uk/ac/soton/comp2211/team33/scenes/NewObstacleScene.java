@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.AirportState;
 
 /**
  * @author Geeth (gv2g21@soton.ac.uk)
@@ -19,7 +19,7 @@ public class NewObstacleScene extends BaseScene {
   @FXML
   private InputField distanceThreshold;
 
-  public NewObstacleScene(Stage stage, AppState state) {
+  public NewObstacleScene(Stage stage, AirportState state) {
     super(stage, state, "newObstacleScene.fxml");
   }
 
@@ -42,7 +42,6 @@ public class NewObstacleScene extends BaseScene {
       return;
     }
 
-    state.getObstacleState().addNewObstacle(obstacleName, heightValue, distanceThresholdValue);
     stage.close();
   }
 

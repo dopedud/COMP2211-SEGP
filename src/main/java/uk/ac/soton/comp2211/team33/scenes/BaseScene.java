@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.AirportState;
 
 /**
  * An abstract class to create scenes.
@@ -24,7 +24,7 @@ abstract class BaseScene {
   /**
    * Global application state.
    */
-  protected AppState state;
+  protected AirportState state;
 
   private String markupUri;
 
@@ -35,7 +35,7 @@ abstract class BaseScene {
    * @param state The global application state
    * @param markupUri The FXML markup URI of this scene
    */
-  BaseScene(Stage stage, AppState state, String markupUri) {
+  BaseScene(Stage stage, AirportState state, String markupUri) {
     this.stage = stage;
     this.state = state;
     this.markupUri = markupUri;
