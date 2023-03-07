@@ -9,6 +9,7 @@ import uk.ac.soton.comp2211.team33.entities.Runway;
 
 /**
  * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.
+ * User story #1
  *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
@@ -86,9 +87,9 @@ public final class Calculator {
   }
 
   /**
-   * No pretty printing TORA (Towards obstacle)
+   * No pretty printing TORA towards obstacle.
    *
-   * @param runway
+   * @param runway the runway being calculated
    */
   public static void toraTowardsObs(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
@@ -174,9 +175,9 @@ public final class Calculator {
   }
 
   /**
-   * No pretty printing TORA Away from obstacle
+   * No pretty printing TORA away from obstacle.
    *
-   * @param runway
+   * @param runway the runway being calculated
    */
   public static void toraAwayObs(Runway runway) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
@@ -218,16 +219,25 @@ public final class Calculator {
       newLda = runway.getLda() - slope - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
     }
 
-    makeNewRESA(runway, newLda);
+    boolean changeLDA = makeNewRESA(runway, newLda);
 
+    if (changeLDA) {
+      calcs.setLength(0);
+      calcs.append("LDA  = Original LDA - Distance from Threshold - New RESA");
+      calcs.append("\n     = " + runway.getLda() + " - " + runway.getCurrentObs().getDistThresh() + " - " + runway.getResa());
+      newLda = runway.getLda() - runway.getCurrentObs().getDistThresh() - runway.getResa();
+    }
+
+    runway.setClda(newLda);
     calcs.append("\n     = " + runway.getClda());
+
     return calcs.toString();
   }
 
   /**
-   * No pretty printing LDA over obstacle
+   * No pretty printing LDA over obstacle.
    *
-   * @param runway
+   * @param runway the runway being calculated
    */
   public static void ldaOverObs(Runway runway) {
     logger.info("Re-declaring LDA for landing over obstacle...");
@@ -237,21 +247,10 @@ public final class Calculator {
 
     newLda = runway.getLda() - tempVal - runway.getCurrentObs().getDistThresh() - runway.getStripEnd();
 
-    makeNewRESA(runway, newLda);
-  }
+    boolean changeLDA = makeNewRESA(runway, newLda);
 
-  /**
-   * Judge if a new RESA has to be re-declared, if yes, then re-declare according to formula
-   *
-   * @param runway the runway
-   * @param newLda the new LDA after re-declaration
-   */
-  private static void makeNewRESA(Runway runway, double newLda) {
-    if (newLda < runway.getAircraft().getBlastProtection()) {
-      logger.info("Declaring a new RESA due to blast protection...");
-      double newResa = runway.getAircraft().getBlastProtection() + runway.getCurrentObs().getDistThresh();
-      logger.info("New RESA is: " + newResa);
-      runway.setResa(newResa);
+    if (changeLDA) {
+      newLda = runway.getLda() - runway.getCurrentObs().getDistThresh() - runway.getResa();
     }
 
     runway.setClda(newLda);
@@ -280,14 +279,32 @@ public final class Calculator {
   }
 
   /**
-   * No pretty printing LDA towards obstacle
+   * No pretty printing LDA towards obstacle.
    *
-   * @param runway
+   * @param runway the runway being calculated
    */
   public static void ldaTowardsObs(Runway runway) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
 
     double newLda = runway.getCurrentObs().getDistThresh() - runway.getStripEnd() - runway.getResa();
     runway.setClda(newLda);
+  }
+
+  /**
+   * Judge if a new RESA has to be re-declared, if yes, then re-declare according to formula.
+   *
+   * @param runway the runway
+   * @param newLda the new LDA after re-declaration
+   */
+  private static boolean makeNewRESA(Runway runway, double newLda) {
+    if (newLda < runway.getAircraft().getBlastProtection()) {
+      logger.info("Declaring a new RESA due to blast protection...");
+      double newResa = runway.getAircraft().getBlastProtection() + runway.getCurrentObs().getDistThresh();
+      logger.info("New RESA is: " + newResa);
+      runway.setResa(newResa);
+      return true;
+    } else {
+      return  false;
+    }
   }
 }
