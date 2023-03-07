@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      prefHeight="400.0" prefWidth="600.0" alignment="CENTER">
+
+  <Text text="Enter obstacle details" />
+  <InputField fx:id="name" label="Name" />
+  <InputField fx:id="height" label="Height"/>
+  <InputField fx:id="distanceThreshold" label="Dist. Threshold" />
+
+  <Button text="Submit" onAction="#handleSubmitObstacle" />
+</VBox>

@@ -34,12 +34,12 @@ public class InputField extends HBox {
     }
   }
 
-  public String getLabelText() {
+  public String getLabel() {
     return label.getText();
   }
 
-  public void setLabelText(String labelText) {
-    label.setText(labelText);
+  public void setLabel(String label) {
+    this.label.setText(label);
   }
 
   public String getText() {
