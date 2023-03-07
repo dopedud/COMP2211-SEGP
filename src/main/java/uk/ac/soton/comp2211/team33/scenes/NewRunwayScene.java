@@ -16,16 +16,22 @@ public class NewRunwayScene extends BaseScene {
 
   @FXML
   private InputField runwayDesignator;
+
   @FXML
   private InputField tora;
+
   @FXML
   private InputField toda;
+
   @FXML
   private InputField asda;
+
   @FXML
   private InputField lda;
+
   @FXML
   private InputField resa;
+
   @FXML
   private InputField threshold;
 

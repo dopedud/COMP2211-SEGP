@@ -16,9 +16,9 @@ public class CalculatorTest {
   @DisplayName("Test for calculated TORA towards from obstacle.")
   public void toraTowards() {
     Runway runway = new Runway("09L", 3902, 3902, 3902, 3595, 240, 307);
-    runway.setCurrentObs(new Obstacle("Obstacle", 20, 3546));
+    Obstacle obs = new Obstacle("Obstacle", 20, 3546);
 
-    Calculator.toraTowardsObs(runway);
+    Calculator.toraTowardsObs(runway, obs);
 
     assertEquals(2793, runway.getCtora(),
         "Calculated TORA of runway is incorrect after calculation.");
@@ -26,17 +26,16 @@ public class CalculatorTest {
         "Calculated TODA of runway is incorrect after calculation.");
     assertEquals(2793, runway.getCasda(),
         "Calculated ASDA of runway is incorrect after calculation.");
-
   }
 
   @Test
   @DisplayName("Test for calculated TORA away from obstacle.")
   public void toraAway() {
-    Runway runway = new Runway("27R", 3884, 3962, 3884, 3884, 240, 0,
-        new Aircraft("A380", 300));
-    runway.setCurrentObs(new Obstacle("Obstacle", 20,50));
+    Runway runway = new Runway("27R", 3884, 3962, 3884, 3884, 240, 0);
+    Aircraft aircraft = new Aircraft("A380", 300);
+    Obstacle obs = new Obstacle("Obstacle", 20,50);
 
-    Calculator.toraAwayObs(runway);
+    Calculator.toraAwayObs(runway, obs, aircraft);
 
     assertEquals(3534, runway.getCtora(),
         "Calculated TORA of runway is incorrect after calculation.");
@@ -44,16 +43,15 @@ public class CalculatorTest {
         "Calculated TODA of runway is incorrect after calculation.");
     assertEquals(3534, runway.getCasda(),
         "Calculated ASDA of runway is incorrect after calculation.");
-
   }
 
   @Test
   @DisplayName("Test for calculated LDA towards obstacle.")
   public void ldaTowards() {
     Runway runway = new Runway("09L", 3902, 3902, 3902, 3595, 240, 307);
-    runway.setCurrentObs(new Obstacle("Obstacle", 20, 3546));
+    Obstacle obs = new Obstacle("Obstacle", 20, 3546);
 
-    Calculator.ldaTowardsObs(runway);
+    Calculator.ldaTowardsObs(runway, obs);
 
     assertEquals(3246, runway.getClda(),
         "Calculated LDA of runway is incorrect after calculation.");
@@ -62,11 +60,11 @@ public class CalculatorTest {
   @Test
   @DisplayName("Test for calculated LDA over obstacle.")
   public void ldaOver() {
-    Runway runway = new Runway("27R", 3884, 3962, 3884, 3884, 240, 0,
-        new Aircraft("A380", 300));
-    runway.setCurrentObs(new Obstacle("Obstacle", 20,50));
+    Runway runway = new Runway("27R", 3884, 3962, 3884, 3884, 240, 0);
+    Aircraft aircraft = new Aircraft("A380", 300);
+    Obstacle obs = new Obstacle("Obstacle", 20,50);
 
-    Calculator.ldaOverObs(runway);
+    Calculator.ldaOverObs(runway, obs, aircraft);
 
     assertEquals(2774, runway.getClda(),
         "Calculated LDA of runway is incorrect after calculation.");

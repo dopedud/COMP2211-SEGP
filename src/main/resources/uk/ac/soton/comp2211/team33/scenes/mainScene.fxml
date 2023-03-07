@@ -7,10 +7,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import java.net.URL?>
 
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="960.0" prefWidth="1280.0">
+
+  <stylesheets>
+    <URL value="@../css/mainScene.css" />
+  </stylesheets>
 
   <columnConstraints>
     <ColumnConstraints percentWidth="66.6666" />
@@ -22,13 +27,13 @@
     <RowConstraints percentHeight="33.3333" />
   </rowConstraints>
 
-  <VBox style="-fx-background-color: red" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
+  <VBox styleClass="panel" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
   </VBox>
 
-  <HBox style="-fx-background-color: blue" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="1" GridPane.rowSpan="1">
+  <HBox styleClass="panel, bottom-panel" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="1" GridPane.rowSpan="1">
     <Button text="Add obstacle" onAction="#handleAddObstacle" />
     <Button text="Add aircraft" onAction="#handleAddAircraft" />
   </HBox>
 
-  <Canvas fx:id="canvas" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="1" />
+  <Canvas width="853.3333" height="640" fx:id="canvas" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="1" />
 </GridPane>
