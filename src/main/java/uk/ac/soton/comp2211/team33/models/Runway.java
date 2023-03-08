@@ -1,6 +1,7 @@
 package uk.ac.soton.comp2211.team33.models;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -65,6 +66,8 @@ public class Runway {
    */
   private final double stripEnd = 60;
 
+  private SimpleStringProperty summaryOfCalculation = new SimpleStringProperty();
+
   public Runway(String designator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
     this.designator = designator;
@@ -90,6 +93,7 @@ public class Runway {
     stopway.set(asda - tora);
     this.threshold.set(threshold);
 
+    summaryOfCalculation.set("No calculation has been performed on Runway " + this.getDesignator() + " yet.");
   }
 
 
@@ -214,6 +218,18 @@ public class Runway {
 
   public double getTocs() {
     return tocs;
+  }
+
+  public SimpleStringProperty calculationSummaryProperty() {
+    return summaryOfCalculation;
+  }
+
+  public String getCalculationSummary() {
+      return summaryOfCalculation.get();
+  }
+
+  public void setCalculationSummary(String summary) {
+      summaryOfCalculation.set(summary);
   }
 
   public String toString() {
