@@ -14,7 +14,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 import uk.ac.soton.comp2211.team33.components.CalcSummary;
+import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.*;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
@@ -68,6 +71,9 @@ public class MainScene extends BaseScene {
    */
   @FXML
   private CalcSummary calcSummary;
+
+  @FXML
+  private InputField obstacleDistance;
 
   public MainScene(Stage stage, AppState state) {
     super(stage, state);
@@ -216,6 +222,8 @@ public class MainScene extends BaseScene {
   private void renderTabView() {
     AirportState airportState = state.getActiveAirportState();
 
+    StringConverter<Number> converter = new NumberStringConverter();
+
     // Runway instance listener
 
     if (runwayChangeListener == null) {
@@ -223,6 +231,7 @@ public class MainScene extends BaseScene {
         renderAddRunwayButton();
         paintVisualisation();
         calcSummary.bindCalcText(newRunwayState.calculationSummaryProperty());
+        obstacleDistance.inputTextProperty().bindBidirectional(newRunwayState.obstacleDistanceProperty(), converter);
       };
     }
 
@@ -241,9 +250,11 @@ public class MainScene extends BaseScene {
     // Render calculation summary of the runway in the current airport. If there is no runway, then display placeholder message
     if (airportState.getRunway() != null) {
       calcSummary.bindCalcText(airportState.getRunway().calculationSummaryProperty());
+      obstacleDistance.inputTextProperty().bindBidirectional(airportState.getRunway().obstacleDistanceProperty(), converter);
     } else {
       calcSummary.removeCalcTextBinding();
       calcSummary.setCalcText("Create a runway to see calculation");
+      obstacleDistance.removeTextBinding();
     }
 
 

@@ -67,4 +67,8 @@ public class InputField extends HBox {
     textField.textProperty().unbind();
   }
 
+  public StringProperty inputTextProperty() {
+    return textField.textProperty();
+  }
+
 }

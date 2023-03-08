@@ -11,6 +11,7 @@
 <?import javafx.scene.canvas.Canvas?>
 
 <?import uk.ac.soton.comp2211.team33.components.CalcSummary?>
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="960.0" prefWidth="1280.0" stylesheets="@../css/mainScene.css">
@@ -43,6 +44,7 @@
     <Button text="Calculate TORA away from Obstacle" onAction="#handleCalculateToraAway" />
     <Button text="Calculate LDA towards Obstacle" onAction="#handleCalculateLdaTowards"/>
     <Button text="Calculate LDA over Obstacle" onAction="#handleCalculateLdaOver"/>
+    <InputField fx:id="obstacleDistance" label="Obstacle Dist. from Threshold" />
   </VBox>
 
   <HBox
