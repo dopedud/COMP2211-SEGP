@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.entities;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.App;
@@ -28,12 +29,18 @@ public class Runway {
   /**
    * RESA value of the runway, could be re-declared
    */
-  private double resa;
+  private SimpleDoubleProperty resa = new SimpleDoubleProperty();
 
   /**
    * Currently used runway values (after calculation).
    */
-  private double ctora, ctoda, casda, clda;
+  private SimpleDoubleProperty ctora = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty ctoda = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty casda = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty clda = new SimpleDoubleProperty();
 
   /**
    * TOCS constant 50m.
@@ -48,7 +55,11 @@ public class Runway {
   /**
    * Displaced threshold, clearway, stopway, and strip end.
    */
-  private double clearway, stopway, threshold;
+  private SimpleDoubleProperty clearway = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty stopway = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty threshold = new SimpleDoubleProperty();
 
   /**
    * Strip end constant of 60m.
@@ -66,19 +77,19 @@ public class Runway {
 
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
-      this.resa = 240;
+      this.resa.set(240);
     } else {
-      this.resa = resa;
+      this.resa.set(resa);
     }
 
-    this.ctora = tora;
-    this.ctoda = toda;
-    this.casda = asda;
-    this.clda = lda;
+    this.ctora.set(tora);
+    this.ctoda.set(toda);
+    this.casda.set(asda);
+    this.clda.set(lda);
 
-    clearway = toda - tora;
-    stopway = asda - tora;
-    this.threshold = threshold;
+    clearway.set(toda - tora);
+    stopway.set(asda - tora);
+    this.threshold.set(threshold);
 
   }
 
@@ -106,64 +117,102 @@ public class Runway {
     return lda;
   }
 
-  public double getResa() {
+
+  public SimpleDoubleProperty resaProperty() {
     return resa;
   }
 
-  public void setResa(double resa) {
-    this.resa = resa;
+  public SimpleDoubleProperty ctoraProperty() {
+    return ctora;
   }
 
-  public double getThreshold() {
-    return threshold;
+  public SimpleDoubleProperty ctodaProperty() {
+    return ctoda;
+  }
+
+  public SimpleDoubleProperty casdaProperty() {
+    return casda;
+  }
+
+  public SimpleDoubleProperty cldaProperty() {
+    return clda;
   }
 
   public double getClearway() {
+    return clearway.get();
+  }
+
+  public SimpleDoubleProperty clearwayProperty() {
     return clearway;
   }
 
   public double getStopway() {
+    return stopway.get();
+  }
+
+  public SimpleDoubleProperty stopwayProperty() {
     return stopway;
+  }
+
+  public double getThreshold() {
+    return threshold.get();
+  }
+
+  public SimpleDoubleProperty thresholdProperty() {
+    return threshold;
   }
 
   public double getStripEnd() {
     return stripEnd;
   }
 
-  /**
-   *  Getters and setter for all current values that can be changed by a re-declaration.
-   */
+  public double getResa() {
+    return resa.get();
+  }
+
+  public void setResa(double resa) {
+    this.resa.set(resa);
+  }
+
+  public SimpleDoubleProperty getRESAProp() {
+    return resa;
+  }
+
   public double getCtora() {
-    return ctora;
+    return ctora.get();
   }
 
   public void setCtora(double ctora) {
-    this.ctora = ctora;
+    this.ctora.set(ctora);
   }
 
   public double getCtoda() {
-    return ctoda;
+    return ctoda.get();
   }
 
   public void setCtoda(double ctoda) {
-    this.ctoda = ctoda;
+    this.ctoda.set(ctoda);
   }
 
   public double getCasda() {
-    return casda;
+    return casda.get();
   }
 
   public void setCasda(double casda) {
-    this.casda = casda;
+    this.casda.set(casda);
   }
 
   public double getClda() {
-    return clda;
+    return clda.get();
   }
 
   public void setClda(double clda) {
-    this.clda = clda;
+    this.clda.set(clda);
   }
+
+  /**
+   *  Getters and setter for all current values that can be changed by a re-declaration.
+   */
 
   public double getAls() {
     return als;
@@ -175,14 +224,16 @@ public class Runway {
 
   public String toString() {
     return "Runway: " + designator + "\n" +
-            "TORA: " + tora + "\n" +
-            "TODA: " + toda + "\n" +
-            "ASDA: " + asda + "\n" +
-            "LDA: " + lda + "\n" +
-            "RESA: " + resa + "\n" +
-            "Threshold: " + threshold + "\n" +
-            "Clearway: " + clearway + "\n" +
-            "Stopway: " + stopway + "\n" +
+            "TORA: " + ctora.get() + "\n" +
+            "TODA: " + ctoda.get() + "\n" +
+            "ASDA: " + casda.get() + "\n" +
+            "LDA: " + clda.get() + "\n" +
+            "RESA: " + resa.get() + "\n" +
+            "Threshold: " + threshold.get() + "\n" +
+            "Clearway: " + clearway.get() + "\n" +
+            "Stopway: " + stopway.get() + "\n" +
             "Strip End: " + stripEnd + "\n";
   }
+
+
 }

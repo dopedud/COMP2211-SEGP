@@ -1,5 +1,7 @@
 package uk.ac.soton.comp2211.team33.entities;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,46 +19,57 @@ public class Aircraft {
   /**
    * A name to identify the aircraft.
    */
-  private String aircraftID;
+  private SimpleStringProperty aircraftID = new SimpleStringProperty();
 
   /**
    * The blast protection value which is dependent on the aircraft.
    */
-  private double blastProtection;
+  private SimpleDoubleProperty blastProtection = new SimpleDoubleProperty();
 
   /**
    * Constructor to create a new Aircraft object.
    *
-   * @param id                id of the aircraft
-   * @param blastProtection   blast protection of the aircraft
+   * @param id              id of the aircraft
+   * @param blastProtection blast protection of the aircraft
    */
   public Aircraft(String id, double blastProtection) {
-    this.aircraftID = id;
+    this.aircraftID.set(id);
 
-    if(blastProtection < 300 || blastProtection > 500) {
+    if (blastProtection < 300 || blastProtection > 500) {
       logger.error("Blast protection value not within boundaries (300m-500m).");
     } else {
-      this.blastProtection = blastProtection;
+      this.blastProtection.set(blastProtection);
     }
   }
 
   /**
-   * Below are the usual accessors and mutators for the instance variables of this class.
+   * Getters and setters for class properties
+   * @return
    */
 
   public String getAircraftID() {
+    return aircraftID.get();
+  }
+
+  public SimpleStringProperty aircraftIDProperty() {
     return aircraftID;
   }
 
   public void setAircraftID(String aircraftID) {
-    this.aircraftID = aircraftID;
+    this.aircraftID.set(aircraftID);
   }
 
   public double getBlastProtection() {
+    return blastProtection.get();
+  }
+
+  public SimpleDoubleProperty blastProtectionProperty() {
     return blastProtection;
   }
 
   public void setBlastProtection(double blastProtection) {
-    this.blastProtection = blastProtection;
+    this.blastProtection.set(blastProtection);
   }
 }
+
+

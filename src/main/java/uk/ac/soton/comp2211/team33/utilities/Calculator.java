@@ -183,9 +183,16 @@ public final class Calculator {
   /*
 
   public static String ldaOver(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    logger.info("Re-declaring LDA for landing over obstacle...");
     StringBuilder calcs = new StringBuilder();
 
+    //In case of no re-declaration
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+      calcs.append("LDA  = " + runway.getLda());
+      return calcs.toString();
+    }
+
+    logger.info("Re-declaring LDA for landing over obstacle...");
     double slope = obstacle.getHeight() * runway.getAls();
     double newLda;
 
