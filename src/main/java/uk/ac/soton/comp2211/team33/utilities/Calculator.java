@@ -39,7 +39,7 @@ public final class Calculator {
     StringBuilder calcs = new StringBuilder();
 
     //In case of no re-declaration
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       calcs.append("\nTORA = " + runway.getTora());
       calcs.append("\nTODA = " + runway.getToda());
       calcs.append("\nASDA = " + runway.getAsda());
@@ -108,7 +108,7 @@ public final class Calculator {
   public static void toraTowardsObs(Runway runway, Obstacle obstacle) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
     //In case of no re-declaration
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       //Gets the larger between RESA and the slope calculation
@@ -133,7 +133,7 @@ public final class Calculator {
     StringBuilder calcs = new StringBuilder();
 
     //In case of no re-declaration
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       calcs.append("\nTORA = " + runway.getTora());
       calcs.append("\nTODA = " + runway.getToda());
       calcs.append("\nASDA = " + runway.getAsda());
@@ -210,7 +210,7 @@ public final class Calculator {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
 
     //In case of no re-declaration
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       double blastProtection = max((runway.getStripEnd() + runway.getResa()), aircraft.getBlastProtection());
@@ -233,7 +233,7 @@ public final class Calculator {
     StringBuilder calcs = new StringBuilder();
 
     //In case of no re-declaration
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       logger.info("No need for re-declaration...");
       calcs.append("LDA  = " + runway.getLda());
       return calcs.toString();
@@ -279,7 +279,7 @@ public final class Calculator {
    */
   public static void ldaOverObs(Runway runway, Obstacle obstacle, Aircraft aircraft) {
     logger.info("Re-declaring LDA for landing over obstacle...");
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       double newLda;
@@ -307,7 +307,7 @@ public final class Calculator {
   public static String ldaTowards(Runway runway, Obstacle obstacle) {
     StringBuilder calcs = new StringBuilder();
 
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() < 60)) {
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
       logger.info("No need for re-declaration...");
       calcs.append("LDA  = " + runway.getLda());
       return calcs.toString();
