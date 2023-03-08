@@ -92,78 +92,7 @@ public final class Calculator {
     return calcSummary.toString();
   }
 
-
-
-  /**
-   * Calculate the TORA for take-off away from the obstacle present.
-   * For ASDA and TODA, if there exists any clearway and/or stopway then those values should be added to the reduced
-   * TORA for the TODA and ASDA values.
-   *
-   * @param runway the runway being calculated
-   * @return the new TORA value
-   */
-  public static String toraAway(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
-    StringBuilder calcs = new StringBuilder();
-    calcs.append(runway.getDesignator() + "(Take Off Away, Landing Over): \n");
-
-    double newTora;
-    boolean useBlast = false;
-    boolean dispThresh = false;
-    double tempVal = max((runway.getStripEnd() + runway.getResa()), aircraft.getBlastProtection());
-
-    calcs.append("TORA = Original TORA ");
-
-    //See if the calculation will be using blast protection when it is greater than RESA or TOCS * Height
-    if ((runway.getStripEnd() + runway.getResa()) < aircraft.getBlastProtection()) {
-      calcs.append("- Blast Protection - Distance from Threshold");
-      useBlast = true;
-    } else {
-      calcs.append("- Strip End - RESA - Distance from Threshold");
-    }
-
-    if (runway.getThreshold() != 0) {
-      calcs.append(" - Displaced Threshold");
-      dispThresh = true;
-    }
-
-    //If it uses blast protection instead of RESA+StripEnd
-    if (useBlast) {
-      calcs.append("\n     = " + runway.getTora() + " - " + tempVal + " - "
-        + obstacle.getDistThresh());
-    } else {
-      calcs.append("\n     = " + runway.getTora() + " - " + runway.getStripEnd() + " - " + runway.getResa() + " - "
-        + obstacle.getDistThresh());
-    }
-
-    //If displacement threshold is not 0
-    if (dispThresh) {
-      calcs.append(" - " + runway.getThreshold());
-    }
-
-    //Calculate the new TORA
-    newTora = runway.getTora() - tempVal - obstacle.getDistThresh() - runway.getThreshold();
-    runway.setCtora(newTora);
-    calcs.append("\n     = " + runway.getCtora());
-
-    //Calculate new ASDA
-    runway.setCasda(newTora + runway.getStopway());
-    calcs.append("\nASDA = (R) TORA + STOPWAY ");
-    if (runway.getStopway() != 0) {
-      calcs.append("\n     = " + newTora + " + (" + runway.getAsda() + " - " + runway.getTora() + ")");
-    }
-    calcs.append("\n     = " + runway.getCasda());
-
-    //Calculate new TODA
-    runway.setCtoda(newTora + runway.getClearway());
-    calcs.append("\nTODA = (R) TORA + CLEARWAY ");
-    if (runway.getClearway() != 0) {
-      calcs.append("\n     = " + newTora + " + (" + runway.getToda() + " - " + runway.getTora() + ")");
-    }
-    calcs.append("\n     = " + runway.getCtoda());
-
-    return calcs.toString();
-  }
+  
 
   /**
    * No pretty printing TORA away from obstacle.
@@ -180,6 +109,49 @@ public final class Calculator {
     runway.setCtora(newTora);
     runway.setCtoda(newTora + runway.getClearway());
     runway.setCasda(newTora + runway.getStopway());
+  }
+
+  /**
+   * Calculate the TORA for take-off away from the obstacle present.
+   * For ASDA and TODA, if there exists any clearway and/or stopway then those values should be added to the reduced
+   * TORA for the TODA and ASDA values.
+   *
+   * @param runway the runway being calculated
+   * @return string detailing the calculations
+   */
+  public static String toraAwayObsPrettyPrint(Runway runway, Obstacle obstacle, Aircraft aircraft) {
+    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
+
+    StringBuilder calcSummary = new StringBuilder();
+    calcSummary.append(runway.getDesignator() + "Summary of calculations for runway: " + runway.getDesignator() + "\n");
+    calcSummary.append("Takeoff away from, landing over obstacle: \n");
+
+    double stripEndPlusResa = runway.getStripEnd() + runway.getResa();
+    double blastProtection = max(stripEndPlusResa, aircraft.getBlastProtection());
+
+    if (stripEndPlusResa < aircraft.getBlastProtection()) {
+      calcSummary.append("TORA = Original TORA - Blast Protection - Distance from Threshold\n");
+    } else {
+      calcSummary.append("TORA = Original TORA - Strip End - RESA - Distance from Threshold\n");
+    }
+
+    double newTora = runway.getTora() - blastProtection - obstacle.getDistThresh() - runway.getThreshold();
+
+    calcSummary.append("TORA = " + runway.getTora() + " - " + blastProtection + " - " + obstacle.getDistThresh() + " - " + runway.getThreshold() + "\n");
+    calcSummary.append("TORA = " + newTora + "\n");
+    calcSummary.append("ASDA = TORA + STOPWAY\n");
+    calcSummary.append("ASDA = " + newTora + " + " + runway.getStopway() + "\n");
+    calcSummary.append("ASDA = " + (newTora + runway.getStopway()) + "\n");
+    calcSummary.append("TODA = TORA + CLEARWAY\n");
+    calcSummary.append("TODA = " + newTora + " + " + runway.getClearway() + "\n");
+    calcSummary.append("TODA = " + (newTora + runway.getClearway()) + "\n");
+
+    runway.setCtora(newTora);
+    runway.setCtoda(newTora + runway.getClearway());
+    runway.setCasda(newTora + runway.getStopway());
+
+    return calcSummary.toString();
+
   }
 
   /**
