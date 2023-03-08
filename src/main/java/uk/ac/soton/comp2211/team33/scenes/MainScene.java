@@ -107,13 +107,47 @@ public class MainScene extends BaseScene {
    * Calculates the TORA towards the obstacle, and updates the currently selected runway object accordingly
    */
   @FXML
-  private void handleCalculateToraTowards() {
+  private void handleCalculateToraAway() {
     Runway currentRunway = state.getActiveAirportState().getRunway();
     Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
     Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
 
     if (currentRunway != null && currentObstacle != null && currentAircraft != null) {
       String calculation = Calculator.toraAwayObsPP(currentRunway, currentObstacle, currentAircraft);
+      currentRunway.setCalculationSummary(calculation);
+    }
+  }
+
+  @FXML
+  private void handleCalculateToraTowards() {
+    Runway currentRunway = state.getActiveAirportState().getRunway();
+    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
+
+    if (currentRunway != null && currentObstacle != null) {
+      String calculation = Calculator.toraTowardsObsPP(currentRunway, currentObstacle);
+      currentRunway.setCalculationSummary(calculation);
+    }
+  }
+
+  @FXML
+  private void handleCalculateLdaTowards() {
+    Runway currentRunway = state.getActiveAirportState().getRunway();
+    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
+
+    if (currentRunway != null && currentObstacle != null) {
+      String calculation = Calculator.ldaTowardsObsPP(currentRunway, currentObstacle);
+      currentRunway.setCalculationSummary(calculation);
+    }
+  }
+
+  @FXML
+  private void handleCalculateLdaOver() {
+    Runway currentRunway = state.getActiveAirportState().getRunway();
+    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
+    Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
+
+    if (currentRunway != null && currentObstacle != null && currentAircraft != null) {
+      String calculation = Calculator.ldaOverObsPP(currentRunway, currentObstacle, currentAircraft);
       currentRunway.setCalculationSummary(calculation);
     }
   }

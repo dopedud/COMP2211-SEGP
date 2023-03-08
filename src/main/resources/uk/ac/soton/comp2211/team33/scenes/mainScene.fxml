@@ -40,6 +40,9 @@
         GridPane.rowSpan="2">
     <CalcSummary fx:id="calcSummary" />
     <Button text="Calculate TORA towards Obstacle" onAction="#handleCalculateToraTowards" />
+    <Button text="Calculate TORA away from Obstacle" onAction="#handleCalculateToraAway" />
+    <Button text="Calculate LDA towards Obstacle" onAction="#handleCalculateLdaTowards"/>
+    <Button text="Calculate LDA over Obstacle" onAction="#handleCalculateLdaOver"/>
   </VBox>
 
   <HBox
