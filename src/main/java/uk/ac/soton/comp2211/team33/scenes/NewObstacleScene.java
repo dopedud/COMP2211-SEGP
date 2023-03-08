@@ -46,6 +46,7 @@ public class NewObstacleScene extends BaseScene {
     stage.close();
   }
 
+  @Override
   protected void build() {
     stage.setTitle("New obstacle");
     renderFXML("newObstacleScene.fxml");

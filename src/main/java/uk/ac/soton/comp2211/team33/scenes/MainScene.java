@@ -11,7 +11,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.components.CalcSummary;
+import uk.ac.soton.comp2211.team33.components.RawInformationDisplay;
 import uk.ac.soton.comp2211.team33.models.*;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
@@ -69,7 +69,14 @@ public class MainScene extends BaseScene {
    * A CalcSummary component to display the calculation steps
    */
   @FXML
-  private CalcSummary calcSummary;
+  private RawInformationDisplay calcSummary;
+
+
+  @FXML
+  private RawInformationDisplay oldRunwayValues;
+
+  @FXML
+  private RawInformationDisplay newRunwayValues;
 
   public MainScene(Stage stage, AppState state) {
     super(stage, state);
@@ -144,6 +151,7 @@ public class MainScene extends BaseScene {
   /**
    * Builds the Main scene
    */
+  @Override
   protected void build() {
     // Initialise local states
 
@@ -166,15 +174,16 @@ public class MainScene extends BaseScene {
 
     tabPanel.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
       state.setActiveAirportCode(newTab.getText());
+      calcMode.set(null);
       renderTabView();
     });
 
     // Change handlers for calculation summary
 
-    calcMode.addListener((ov, oldMode, newMode) -> renderCalculations());
-    obstaclesList.getSelectionModel().selectedItemProperty().addListener((ov, oldObs, newObs) -> renderCalculations());
-    aircraftList.getSelectionModel().selectedItemProperty().addListener((ov, oldAc, newAc) -> renderCalculations());
-    runwaysList.getSelectionModel().selectedItemProperty().addListener((ov, oldRw, newRw) -> renderCalculations());
+    calcMode.addListener((ov, oldMode, newMode) -> renderTabView());
+    obstaclesList.getSelectionModel().selectedItemProperty().addListener((ov, oldObs, newObs) -> renderTabView());
+    aircraftList.getSelectionModel().selectedItemProperty().addListener((ov, oldAc, newAc) -> renderTabView());
+    runwaysList.getSelectionModel().selectedItemProperty().addListener((ov, oldRw, newRw) -> renderTabView());
 
     // Render tab view
 
@@ -208,6 +217,34 @@ public class MainScene extends BaseScene {
     // Render calculation summary
 
     renderCalculations();
+    renderRunwayValues();
+  }
+
+  private void renderRunwayValues() {
+    Runway currentRunway = runwaysList.getSelectionModel().getSelectedItem();
+
+    if (currentRunway == null) {
+      newRunwayValues.setInformation("No calculation has been performed yet");
+      return;
+    }
+
+    oldRunwayValues.setInformation(currentRunway.getInformationString());
+
+    String calcMode = this.calcMode.get();
+    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
+    Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
+
+    if (calcMode == null || currentObstacle == null) {
+      newRunwayValues.setInformation("No calculation has been performed yet");
+      return;
+    }
+
+    if ((calcMode.equals("TORA_AWAY") || calcMode.equals("LDA_OVER")) && currentAircraft == null) {
+      newRunwayValues.setInformation("No calculation has been performed yet");
+      return;
+    }
+
+    newRunwayValues.setInformation(currentRunway.getCInformationString());
   }
 
   private void renderCalculations() {
@@ -217,36 +254,36 @@ public class MainScene extends BaseScene {
     Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
 
     if (calcMode == null || currentRunway == null || currentObstacle == null) {
-      calcSummary.setCalcText("No calculation has been performed yet");
+      calcSummary.setInformation("No calculation has been performed yet");
       return;
     }
 
-    if (calcMode == "TORA_TOWARDS") {
+    if (calcMode.equals("TORA_TOWARDS")) {
       String calculation = Calculator.toraTowardsObsPP(currentRunway, currentObstacle);
-      calcSummary.setCalcText(calculation);
+      calcSummary.setInformation(calculation);
       return;
     }
 
-    if (calcMode == "LDA_TOWARDS") {
+    if (calcMode.equals("LDA_TOWARDS")) {
       String calculation = Calculator.ldaTowardsObsPP(currentRunway, currentObstacle);
-      calcSummary.setCalcText(calculation);
+      calcSummary.setInformation(calculation);
       return;
     }
 
     if (currentAircraft == null) {
-      calcSummary.setCalcText("Please pick an aircraft to complete the calculation");
+      calcSummary.setInformation("Please pick an aircraft to complete the calculation");
       return;
     }
 
-    if (calcMode == "TORA_AWAY") {
+    if (calcMode.equals("TORA_AWAY")) {
       String calculation = Calculator.toraAwayObsPP(currentRunway, currentObstacle, currentAircraft);
-      calcSummary.setCalcText(calculation);
+      calcSummary.setInformation(calculation);
       return;
     }
 
-    if (calcMode == "LDA_OVER") {
+    if (calcMode.equals("LDA_OVER")) {
       String calculation = Calculator.ldaOverObsPP(currentRunway, currentObstacle, currentAircraft);
-      calcSummary.setCalcText(calculation);
+      calcSummary.setInformation(calculation);
     }
   }
 }
