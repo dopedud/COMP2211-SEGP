@@ -17,7 +17,7 @@ public class NewObstacleScene extends BaseScene {
   private InputField height;
 
   @FXML
-  private InputField distanceThreshold;
+  private InputField length;
 
   public NewObstacleScene(Stage stage, AppState state) {
     super(stage, state);
@@ -30,19 +30,19 @@ public class NewObstacleScene extends BaseScene {
 
     String obstacleName;
     double heightValue = 0;
-    double distanceThresholdValue = 0;
+    double lengthValue = 0;
 
     try {
       obstacleName = name.getText();
       heightValue = Double.parseDouble(height.getText());
-      distanceThresholdValue = Double.parseDouble(distanceThreshold.getText());
+      lengthValue = Double.parseDouble(length.getText());
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input");
       return;
     }
 
-    state.getActiveAirportState().addObstacle(obstacleName, heightValue, distanceThresholdValue);
+    state.getActiveAirportState().addObstacle(obstacleName, heightValue, lengthValue);
     stage.close();
   }
 

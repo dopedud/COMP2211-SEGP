@@ -13,7 +13,7 @@
   <Text text="Enter obstacle details" />
   <InputField fx:id="name" label="Name" />
   <InputField fx:id="height" label="Height"/>
-  <InputField fx:id="distanceThreshold" label="Dist. Threshold" />
+  <InputField fx:id="length" label="Length" />
 
   <Button text="Submit" onAction="#handleSubmitObstacle" />
 </VBox>
