@@ -12,9 +12,9 @@ public class AirportState {
 
   private static final Logger logger = LogManager.getLogger(AirportState.class);
 
-  private String name;
+  private final String name;
 
-  private String city;
+  private final String city;
 
   private SimpleListProperty<Obstacle> obstaclesList = new SimpleListProperty<>(FXCollections.observableArrayList());
 

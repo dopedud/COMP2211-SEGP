@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="400.0" prefWidth="600.0">
+
+  <left>
+    <Button text="2" />
+  </left>
+
+  <center>
+    <Button text="1" fx:id="buttonOne" onAction="#handleButtonOneClick" />
+  </center>
+
+  <right>
+    <Button text="3" />
+  </right>
+</BorderPane>

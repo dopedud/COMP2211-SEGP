@@ -46,6 +46,7 @@
         GridPane.rowIndex="2"
         GridPane.rowSpan="1"
         spacing="40">
+
     <VBox spacing="4">
       <HBox spacing="4">
         <Button text="Add obstacle" onAction="#handleAddObstacle" />
@@ -53,6 +54,7 @@
       </HBox>
       <ListView fx:id="obstaclesList" />
     </VBox>
+
     <VBox spacing="4">
       <Button text="Add aircraft" onAction="#handleAddAircraft" />
       <ListView fx:id="aircraftList" />
