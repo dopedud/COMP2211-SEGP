@@ -18,7 +18,7 @@ public class Obstacle {
   /**
    * Name of the obstacle.
    */
-  private SimpleStringProperty name;
+  private SimpleStringProperty name = new SimpleStringProperty();
 
   /**
    * Height of the obstacle.

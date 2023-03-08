@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class Airport {
 
   //private SimpleListProperty<Obstacle> obstacles = new SimpleListProperty<>();
-  private SimpleStringProperty name;
-  private SimpleStringProperty city;
+  private SimpleStringProperty name = new SimpleStringProperty();
+  private SimpleStringProperty city = new SimpleStringProperty();
 
   private static final Logger logger = LogManager.getLogger(Airport.class);
 
@@ -29,6 +29,7 @@ public class Airport {
    * @param city The city the airport is in
    */
   public Airport(String name, String city) {
+    logger.info("Creating new Airport..." + name);
     this.name.set(name);
     this.city.set(city);
   }

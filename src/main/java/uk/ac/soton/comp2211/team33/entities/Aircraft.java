@@ -19,12 +19,12 @@ public class Aircraft {
   /**
    * A name to identify the aircraft.
    */
-  private SimpleStringProperty aircraftID;
+  private SimpleStringProperty aircraftID = new SimpleStringProperty();
 
   /**
    * The blast protection value which is dependent on the aircraft.
    */
-  private SimpleDoubleProperty blastProtection;
+  private SimpleDoubleProperty blastProtection = new SimpleDoubleProperty();
 
   /**
    * Constructor to create a new Aircraft object.
