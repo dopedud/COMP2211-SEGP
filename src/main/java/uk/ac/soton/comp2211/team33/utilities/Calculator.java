@@ -92,7 +92,7 @@ public final class Calculator {
     return calcSummary.toString();
   }
 
-  
+
 
   /**
    * No pretty printing TORA away from obstacle.
@@ -123,8 +123,8 @@ public final class Calculator {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
 
     StringBuilder calcSummary = new StringBuilder();
-    calcSummary.append(runway.getDesignator() + "Summary of calculations for runway: " + runway.getDesignator() + "\n");
-    calcSummary.append("Takeoff away from, landing over obstacle: \n");
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
+    calcSummary.append("Takeoff away from obstacle: \n");
 
     double stripEndPlusResa = runway.getStripEnd() + runway.getResa();
     double blastProtection = max(stripEndPlusResa, aircraft.getBlastProtection());
@@ -154,13 +154,9 @@ public final class Calculator {
 
   }
 
-  /**
-   * Function that re-declares the LDA (Landing Distance Available) after an obstacle appears.
-   * When landing over, only the LDA has to change.
-   *
-   * @param runway the runway being calculated
-   * @return the new LDA value
-   */
+
+  /*
+
   public static String ldaOver(Runway runway, Obstacle obstacle, Aircraft aircraft) {
     logger.info("Re-declaring LDA for landing over obstacle...");
     StringBuilder calcs = new StringBuilder();
@@ -196,6 +192,8 @@ public final class Calculator {
 
     return calcs.toString();
   }
+  */
+
 
   /**
    * No pretty printing LDA over obstacle.
@@ -219,26 +217,52 @@ public final class Calculator {
     runway.setClda(newLda);
   }
 
+
   /**
-   * Function that re-declares the LDA after an obstacle appears.
-   * When landing towards, only the LDA has to change.
-   *
-   * @param runway the runway being calculated
-   * @return the new LDA value
+   * Pretty prints the calculations for LDA over obstacle. Updates the runway object with the new calculated values.
+   * @param runway the runway to perform calculations on
+   * @param obstacle the obstacle to base calculations on
+   * @param aircraft the aircraft to base calculations on
+   * @return a string containing the calculations performed
    */
-  public static String ldaTowards(Runway runway, Obstacle obstacle) {
-    logger.info("Re-declaring LDA for landing towards obstacle...");
-    StringBuilder calcs = new StringBuilder();
+  public static String ldaOverObsPrettyPrint(Runway runway, Obstacle obstacle, Aircraft aircraft) {
+    logger.info("Re-declaring LDA for landing over obstacle...");
+    StringBuilder calcSummary = new StringBuilder();
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
+    calcSummary.append("Landing over obstacle: \n");
 
-    calcs.append("LDA  = Distance from Threshold - RESA - Strip End");
-    calcs.append("\n     = " + obstacle.getDistThresh()
-      + " - " + runway.getStripEnd() + " - " + runway.getResa());
+    double slope = obstacle.getHeight() * runway.getAls();
+    double tempVal = max(aircraft.getBlastProtection(), slope);
 
-    double newLda = obstacle.getDistThresh() - runway.getStripEnd() - runway.getResa();
+    calcSummary.append("Slope = Obstacle Height * Runway Slope\n");
+    calcSummary.append("Slope = " + obstacle.getHeight() + " * " + runway.getAls() + "\n");
+    calcSummary.append("Slope = " + slope + "\n");
+
+    if (slope < aircraft.getBlastProtection()) {
+        calcSummary.append("Slope < Blast Protection\n");
+        calcSummary.append("LDA = Original LDA - Blast Protection - Distance from Threshold - Strip End\n");
+    } else {
+        calcSummary.append("Slope > Blast Protection\n");
+        calcSummary.append("LDA = Original LDA - Slope Calculation - Distance from Threshold - Strip End\n");
+    }
+
+    double newLda = runway.getLda() - tempVal - obstacle.getDistThresh() - runway.getStripEnd();
+    calcSummary.append("LDA = " + runway.getLda() + " - " + tempVal + " - " + obstacle.getDistThresh() + " - " + runway.getStripEnd() + "\n");
+    calcSummary.append("LDA = " + newLda + "\n");
+
+    boolean changeLDA = makeNewRESA(newLda, runway, obstacle, aircraft);
+
+    if (changeLDA) {
+        calcSummary.setLength(0);
+        calcSummary.append("Declaring new RESA due to Blast Protection\n");
+        calcSummary.append("LDA = Original LDA - Distance from Threshold - New RESA\n");
+        newLda = runway.getLda() - obstacle.getDistThresh() - runway.getResa();
+    }
+
     runway.setClda(newLda);
-    calcs.append("\n     = " + runway.getClda());
+    calcSummary.append("LDA = " + runway.getClda() + "\n");
 
-    return calcs.toString();
+    return calcSummary.toString();
   }
 
   /**
@@ -251,6 +275,31 @@ public final class Calculator {
 
     double newLda = obstacle.getDistThresh() - runway.getStripEnd() - runway.getResa();
     runway.setClda(newLda);
+  }
+
+
+  /**
+   * Function that re-declares the LDA after an obstacle appears, and pretty prints the calculations. Updates runway object with new values.
+   * When landing towards, only the LDA has to change.
+   *
+   * @param runway the runway to perform calculations on
+   * @param obstacle the obstacle to base calculations on
+   * @return A string containing a summary of the calculations performed
+   */
+  public static String ldaTowardsObsPrettyPrint(Runway runway, Obstacle obstacle) {
+    logger.info("Re-declaring LDA for landing towards obstacle...");
+    StringBuilder calcSummary = new StringBuilder();
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
+    calcSummary.append("Landing towards obstacle: \n");
+
+    calcSummary.append("LDA = Obstacle distance from Threshold - Strip End - RESA\n");
+    calcSummary.append("LDA = " + obstacle.getDistThresh() + " - " + runway.getStripEnd() + " - " + runway.getResa() + "\n");
+
+    double newLda = obstacle.getDistThresh() - runway.getStripEnd() - runway.getResa();
+    runway.setClda(newLda);
+    calcSummary.append("LDA = " + runway.getClda() + "\n");
+
+    return calcSummary.toString();
   }
 
   /**
