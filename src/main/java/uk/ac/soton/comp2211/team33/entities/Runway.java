@@ -29,12 +29,18 @@ public class Runway {
   /**
    * RESA value of the runway, could be re-declared
    */
-  private SimpleDoubleProperty resa;
+  private SimpleDoubleProperty resa = new SimpleDoubleProperty();
 
   /**
    * Currently used runway values (after calculation).
    */
-  private SimpleDoubleProperty ctora, ctoda, casda, clda;
+  private SimpleDoubleProperty ctora = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty ctoda = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty casda = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty clda = new SimpleDoubleProperty();
 
   /**
    * TOCS constant 50m.
@@ -49,7 +55,11 @@ public class Runway {
   /**
    * Displaced threshold, clearway, stopway, and strip end.
    */
-  private SimpleDoubleProperty clearway, stopway, threshold;
+  private SimpleDoubleProperty clearway = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty stopway = new SimpleDoubleProperty();
+
+  private SimpleDoubleProperty threshold = new SimpleDoubleProperty();
 
   /**
    * Strip end constant of 60m.
@@ -162,6 +172,10 @@ public class Runway {
 
   public void setResa(double resa) {
     this.resa.set(resa);
+  }
+
+  public SimpleDoubleProperty getRESAProp() {
+    return resa;
   }
 
   public double getCtora() {
