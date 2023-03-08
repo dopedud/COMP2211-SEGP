@@ -16,7 +16,7 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 public class CalculatorTest {
 
   @Test
-  @DisplayName("Test for calculated TORA towards from obstacle.")
+  @DisplayName("Test for calculated TORA, TODA, and ASDA towards obstacle.")
   public void toraTowards() {
     Runway runway = new Runway("09R", 3660, 3660, 3660, 3353, 240, 307);
     Obstacle obs = new Obstacle("BrokenAirplane", 25, 2853);
@@ -32,7 +32,7 @@ public class CalculatorTest {
   }
 
   @Test
-  @DisplayName("Test for calculated TORA away from obstacle.")
+  @DisplayName("Test for calculated TORA, TODA, and ASDA away from obstacle.")
   public void toraAway() {
     Runway runway = new Runway("27L", 3660, 3660, 3660, 3660, 240, 0);
     Aircraft aircraft = new Aircraft("A380", 300);
