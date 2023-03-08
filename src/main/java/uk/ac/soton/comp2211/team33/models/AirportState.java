@@ -1,7 +1,6 @@
 package uk.ac.soton.comp2211.team33.models;
 
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +19,7 @@ public class AirportState {
 
   private SimpleListProperty<Aircraft> aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
-  private SimpleObjectProperty<Runway> runway = new SimpleObjectProperty<>();
+  private SimpleListProperty<Runway> runwaysList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
   public AirportState(String name, String city) {
     this.name = name;
@@ -64,7 +63,7 @@ public class AirportState {
 
   public void addRunway(String designator, double tora, double toda, double asda, double lda,
                         double resa, double threshold) {
-    this.runway.set(new Runway(designator, tora, toda, asda, lda, resa, threshold));
+    this.runwaysList.add(new Runway(designator, tora, toda, asda, lda, resa, threshold));
   }
 
   public SimpleListProperty<Obstacle> obstaclesListProperty() {
@@ -75,11 +74,7 @@ public class AirportState {
     return aircraftList;
   }
 
-  public SimpleObjectProperty<Runway> runwayProperty() {
-    return runway;
-  }
-
-  public Runway getRunway() {
-    return runway.get();
+  public SimpleListProperty<Runway> runwaysListProperty() {
+    return runwaysList;
   }
 }
