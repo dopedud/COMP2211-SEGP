@@ -9,8 +9,11 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 
 <?import uk.ac.soton.comp2211.team33.components.CalcSummary?>
+
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="960.0" prefWidth="1280.0" stylesheets="@../css/mainScene.css">
@@ -38,7 +41,9 @@
         GridPane.columnSpan="1"
         GridPane.rowIndex="1"
         GridPane.rowSpan="2">
+
     <CalcSummary fx:id="calcSummary" />
+
     <Button text="Calculate TORA towards Obstacle" onAction="#handleCalculateToraTowards" />
     <Button text="Calculate TORA away from Obstacle" onAction="#handleCalculateToraAway" />
     <Button text="Calculate LDA towards Obstacle" onAction="#handleCalculateLdaTowards"/>
@@ -52,6 +57,7 @@
         GridPane.rowIndex="2"
         GridPane.rowSpan="1"
         spacing="40">
+
     <VBox spacing="4">
       <HBox spacing="4">
         <Button text="Add obstacle" onAction="#handleAddObstacle" />
@@ -59,12 +65,16 @@
       </HBox>
       <ListView fx:id="obstaclesList" />
     </VBox>
+
     <VBox spacing="4">
       <Button text="Add aircraft" onAction="#handleAddAircraft" />
       <ListView fx:id="aircraftList" />
     </VBox>
 
-    <Button fx:id="addNewRunwayButton" text="Add new runway" onAction="#handleAddRunway" />
+    <VBox spacing="4">
+      <Button fx:id="addNewRunwayButton" text="Add new runway" onAction="#handleAddRunway" />
+      <ListView fx:id="runwaysList" />
+    </VBox>
   </HBox>
 
   <VBox fx:id="canvasPanel"
