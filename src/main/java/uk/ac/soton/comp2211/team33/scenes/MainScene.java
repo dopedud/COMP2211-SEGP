@@ -1,17 +1,10 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.entities.Obstacle;
-import uk.ac.soton.comp2211.team33.entities.Runway;
-import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.AirportState;
 
 /**
  * Main scene of the application. This scene should only be fully functional when there is at least a runway configured.
@@ -24,7 +17,7 @@ public class MainScene extends BaseScene {
   @FXML
   private Canvas canvas;
 
-  public MainScene(Stage stage, AppState state) {
+  public MainScene(Stage stage, AirportState state) {
     super(stage, state, "mainScene.fxml");
   }
 
@@ -42,9 +35,9 @@ public class MainScene extends BaseScene {
     stage.setTitle("Runway 1");
     renderMarkup();
 
-    SimpleObjectProperty<Runway> runway = state.getRunwayState().getRunway();
+    var runway = state.getRunwayState();
 
-     runway.addListener(((observableValue, oldRunway, newRunway) -> {
+    /*runway.addListener((observableValue, oldRunway, newRunway) -> {
       GraphicsContext ctx = canvas.getGraphicsContext2D();
 
       ctx.setFill(Color.RED);
@@ -56,23 +49,23 @@ public class MainScene extends BaseScene {
       ctx.fillText("LDA: " + newRunway.getLda(), 0, 100);
       ctx.fillText("RESA: " + newRunway.getResa(), 0, 120);
       ctx.fillText("Threshold: " + newRunway.getThreshold(), 0, 140);
-    }));
+    });
 
-    SimpleListProperty<Obstacle> obstaclesList = state.getObstacleState().getObstaclesList();
+    var obstacleList = state.getObstacleListState().getObstacleListProperty();
 
-    obstaclesList.addListener((observableValue, oldList, newList) -> {
+    obstacleList.addListener((observableValue, oldList, newList) -> {
       GraphicsContext ctx = canvas.getGraphicsContext2D();
 
       ctx.setFill(Color.BLUE);
       ctx.setFont(new Font(15));
 
       for (int i = 0; i < newList.size(); i++) {
-        ctx.fillText(newList.get(i).getName(), 0, i * 20 + 160);
+        ctx.fillText(newList.get(i).getNameProperty().get(), 0, i * 20 + 160);
       }
     });
 
     if (runway.get() == null) {
-      new NewRunwayScene(this.createModalStage(), state);
-    }
+      new NewRunwayScene(createModalStage(), state);
+    }*/
   }
 }

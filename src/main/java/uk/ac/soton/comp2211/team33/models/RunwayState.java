@@ -1,38 +1,105 @@
 package uk.ac.soton.comp2211.team33.models;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import uk.ac.soton.comp2211.team33.entities.Runway;
+import javafx.beans.property.SimpleStringProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.AbstractMap;
 
 public class RunwayState {
 
-  private SimpleDoubleProperty tora = new SimpleDoubleProperty();
+  private static final Logger logger = LogManager.getLogger(RunwayState.class);
 
-  private SimpleDoubleProperty toda = new SimpleDoubleProperty();
+  private final SimpleStringProperty designator;
 
-  private SimpleDoubleProperty asda = new SimpleDoubleProperty();
+  private double tora, toda, asda, lda;
 
-  private SimpleDoubleProperty lda = new SimpleDoubleProperty();
+  private final SimpleDoubleProperty ctora, ctoda, casda, clda, resa;
 
-  private SimpleDoubleProperty resa = new SimpleDoubleProperty();
+  private final SimpleDoubleProperty clearway, stopway, threshold;
 
-  private SimpleDoubleProperty threshold = new SimpleDoubleProperty();
+  private final double tocs = 50, als = 50, stripEnd = 60;
 
-  private SimpleObjectProperty<Runway> runway;
+  public RunwayState() {
+    designator = new SimpleStringProperty();
+    ctora = new SimpleDoubleProperty();
+    ctoda = new SimpleDoubleProperty();
+    casda = new SimpleDoubleProperty();
+    clda = new SimpleDoubleProperty();
+    resa = new SimpleDoubleProperty();
+    clearway = new SimpleDoubleProperty();
+    stopway = new SimpleDoubleProperty();
+    threshold = new SimpleDoubleProperty();
+  }
 
+  public void createRunway(String designator, double tora, double toda, double asda, double lda,
+                           double resa, double threshold) {
+    this.designator.set(designator);
 
-  public void createRunway(String designator, double tora, double toda, double asda, double lda, double resa, double threshold) {
-    this.tora.set(tora);
-    this.toda.set(toda);
-    this.asda.set(asda);
-    this.lda.set(lda);
-    this.resa.set(resa);
+    this.tora = tora;
+    this.toda = toda;
+    this.asda = asda;
+    this.lda = lda;
+
+    ctora.set(tora);
+    ctoda.set(toda);
+    casda.set(asda);
+    clda.set(lda);
+
+    if (resa < 240) {
+      logger.info("RESA value below 240m. Setting it as 240m minimum value...");
+      this.resa.set(240);
+    } else this.resa.set(resa);
+
+    clearway.set(toda - tora);
+    stopway.set(asda - tora);
     this.threshold.set(threshold);
-
-    this.runway.set(new Runway(designator, tora, toda, asda, lda, resa, threshold));
   }
 
-  public SimpleObjectProperty<Runway> getRunway() {
-    return runway;
+  public SimpleStringProperty getDesignator() {
+    return designator;
   }
+
+  public SimpleDoubleProperty getCtoraProperty() {
+    return ctora;
+  }
+
+  public SimpleDoubleProperty getCtodaProperty() {
+    return ctoda;
+  }
+
+  public SimpleDoubleProperty getCasdaProperty() {
+    return casda;
+  }
+
+  public SimpleDoubleProperty getCldaProperty() {
+    return clda;
+  }
+
+  public SimpleDoubleProperty getResaProperty() {
+    return resa;
+  }
+
+  public SimpleDoubleProperty getClearwayProperty() {
+    return clearway;
+  }
+
+  public SimpleDoubleProperty getStopwayProperty() {
+    return stopway;
+  }
+
+  public double getTocs() {
+    return tocs;
+  }
+
+  public double getAls() {
+    return als;
+  }
+
+  public double getStripEnd() {
+    return stripEnd;
+  }
+
+
 }

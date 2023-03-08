@@ -4,8 +4,7 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.entities.Aircraft;
-import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.AirportState;
 
 
 /**
@@ -18,7 +17,7 @@ public class NewAircraftScene extends BaseScene {
   @FXML
   private InputField blastProtection;
 
-  public NewAircraftScene(Stage stage, AppState state) {
+  public NewAircraftScene(Stage stage, AirportState state) {
     super(stage, state, "newAircraftScene.fxml");
   }
 

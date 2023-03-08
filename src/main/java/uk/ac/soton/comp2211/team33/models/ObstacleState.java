@@ -1,18 +1,33 @@
 package uk.ac.soton.comp2211.team33.models;
 
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-
-import uk.ac.soton.comp2211.team33.entities.Obstacle;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ObstacleState {
-  private SimpleListProperty<Obstacle> obstaclesList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
-  public SimpleListProperty<Obstacle> getObstaclesList() {
-    return obstaclesList;
+  private static final Logger logger = LogManager.getLogger(ObstacleState.class);
+
+  private final SimpleStringProperty name;
+
+  private final SimpleDoubleProperty height, distanceThreshold;
+
+  public ObstacleState(String name, double height, double distanceThreshold) {
+    this.name = new SimpleStringProperty(name);
+    this.height = new SimpleDoubleProperty(height);
+    this.distanceThreshold = new SimpleDoubleProperty(distanceThreshold);
   }
 
-  public void addNewObstacle(String name, double height, double distanceThreshold) {
-    obstaclesList.add(new Obstacle(name, height,distanceThreshold));
+  public SimpleStringProperty getNameProperty() {
+    return name;
+  }
+
+  public SimpleDoubleProperty getHeightProperty() {
+    return height;
+  }
+
+  public SimpleDoubleProperty getDistThreshProperty() {
+    return distanceThreshold;
   }
 }
