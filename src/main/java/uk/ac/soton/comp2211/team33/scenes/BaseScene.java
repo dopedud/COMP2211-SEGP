@@ -5,9 +5,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import uk.ac.soton.comp2211.team33.models.AirportState;
 
 import java.io.IOException;
+
+import uk.ac.soton.comp2211.team33.models.AppState;
 
 /**
  * An abstract class to create scenes.
@@ -23,35 +24,35 @@ abstract class BaseScene {
   /**
    * Global application state.
    */
-  protected AirportState state;
-
-  private String markupUri;
+  protected AppState state;
 
   /**
    * Instantiate a scene.
    *
    * @param stage The application stage to render the scene in
    * @param state The global application state
-   * @param markupUri The FXML markup URI of this scene
    */
-  BaseScene(Stage stage, AirportState state, String markupUri) {
+  BaseScene(Stage stage, AppState state) {
     this.stage = stage;
     this.state = state;
-    this.markupUri = markupUri;
 
     this.build();
   }
 
   /**
-   * A method to implement to render the scene.
+   * A method to implement to build the scene.
    */
   protected abstract void build();
 
+  // ======== SCENE UTILITY METHODS ========
+
   /**
    * A utility method to render the FXML markup of this scene.
+   *
+   * @param fxmlUri The URI, relative to the calling class' classpath, of the FXML file
    */
-  protected void renderMarkup() {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource(markupUri));
+  protected void renderFXML(String fxmlUri) {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlUri));
     loader.setController(this);
 
     try {
@@ -64,6 +65,11 @@ abstract class BaseScene {
     }
   }
 
+  /**
+   * Create a modal stage that is owned by the stage of this scene
+   *
+   * @return The created stage to render in
+   */
   protected Stage createModalStage() {
     Stage modal = new Stage();
     modal.initOwner(stage);

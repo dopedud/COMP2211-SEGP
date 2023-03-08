@@ -5,9 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 import static java.lang.Math.max;
 
-import uk.ac.soton.comp2211.team33.entities.Aircraft;
-import uk.ac.soton.comp2211.team33.entities.Obstacle;
-import uk.ac.soton.comp2211.team33.entities.Runway;
+import uk.ac.soton.comp2211.team33.models.Aircraft;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
+import uk.ac.soton.comp2211.team33.models.Runway;
 
 /**
  * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.

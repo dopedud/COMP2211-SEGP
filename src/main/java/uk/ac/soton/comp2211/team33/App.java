@@ -1,10 +1,11 @@
 package uk.ac.soton.comp2211.team33;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.models.AirportState;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+import uk.ac.soton.comp2211.team33.models.AppState;
 import uk.ac.soton.comp2211.team33.scenes.MainScene;
 
 /**
@@ -34,6 +35,6 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) {
-    new MainScene(stage, new AirportState());
+    new MainScene(stage, new AppState());
   }
 }

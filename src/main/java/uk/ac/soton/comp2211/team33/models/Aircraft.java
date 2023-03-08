@@ -1,7 +1,5 @@
-package uk.ac.soton.comp2211.team33.entities;
+package uk.ac.soton.comp2211.team33.models;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,12 +17,12 @@ public class Aircraft {
   /**
    * A name to identify the aircraft.
    */
-  private SimpleStringProperty aircraftID = new SimpleStringProperty();
+  private String id;
 
   /**
    * The blast protection value which is dependent on the aircraft.
    */
-  private SimpleDoubleProperty blastProtection = new SimpleDoubleProperty();
+  private double blastProtection;
 
   /**
    * Constructor to create a new Aircraft object.
@@ -33,12 +31,12 @@ public class Aircraft {
    * @param blastProtection blast protection of the aircraft
    */
   public Aircraft(String id, double blastProtection) {
-    this.aircraftID.set(id);
+    this.id = id;
 
     if (blastProtection < 300 || blastProtection > 500) {
       logger.error("Blast protection value not within boundaries (300m-500m).");
     } else {
-      this.blastProtection.set(blastProtection);
+      this.blastProtection = blastProtection;
     }
   }
 
@@ -47,28 +45,25 @@ public class Aircraft {
    * @return
    */
 
-  public String getAircraftID() {
-    return aircraftID.get();
+  public String getId() {
+    return id;
   }
 
-  public SimpleStringProperty aircraftIDProperty() {
-    return aircraftID;
-  }
-
-  public void setAircraftID(String aircraftID) {
-    this.aircraftID.set(aircraftID);
+  public void setId(String id) {
+    this.id = id;
   }
 
   public double getBlastProtection() {
-    return blastProtection.get();
-  }
-
-  public SimpleDoubleProperty blastProtectionProperty() {
     return blastProtection;
   }
 
   public void setBlastProtection(double blastProtection) {
-    this.blastProtection.set(blastProtection);
+    this.blastProtection = blastProtection;
+  }
+
+  @Override
+  public String toString() {
+    return "Aircraft ID: " + id + "\nBlast Protection: " +  blastProtection;
   }
 }
 

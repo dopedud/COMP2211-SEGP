@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import uk.ac.soton.comp2211.team33.entities.Aircraft;
-import uk.ac.soton.comp2211.team33.entities.Obstacle;
+import uk.ac.soton.comp2211.team33.models.Aircraft;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
-import uk.ac.soton.comp2211.team33.entities.Runway;
+import uk.ac.soton.comp2211.team33.models.Runway;
 
 /**
  * Test for the Calculator

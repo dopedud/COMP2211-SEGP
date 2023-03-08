@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.models.AirportState;
+import uk.ac.soton.comp2211.team33.models.AppState;
 
 
 /**
@@ -17,8 +17,8 @@ public class NewAircraftScene extends BaseScene {
   @FXML
   private InputField blastProtection;
 
-  public NewAircraftScene(Stage stage, AirportState state) {
-    super(stage, state, "newAircraftScene.fxml");
+  public NewAircraftScene(Stage stage, AppState state) {
+    super(stage, state);
   }
 
   @FXML
@@ -35,14 +35,16 @@ public class NewAircraftScene extends BaseScene {
     }
     catch (NumberFormatException e) {
       System.err.println("Invalid input");
+      return;
     }
 
-    // Call state
+    state.getActiveAirportState().addAircraft(aircraftId, blastProtectionValue);
+    stage.close();
   }
 
   @Override
   protected void build() {
     stage.setTitle("New aircraft");
-    renderMarkup();
+    renderFXML("newAircraftScene.fxml");
   }
 }

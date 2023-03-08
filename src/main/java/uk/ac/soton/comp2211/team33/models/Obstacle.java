@@ -1,6 +1,5 @@
-package uk.ac.soton.comp2211.team33.entities;
+package uk.ac.soton.comp2211.team33.models;
 
-import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +17,7 @@ public class Obstacle {
   /**
    * Name of the obstacle.
    */
-  private SimpleStringProperty name = new SimpleStringProperty();
+  private String name;
 
   /**
    * Height of the obstacle.
@@ -42,7 +41,7 @@ public class Obstacle {
    * @param distanceThreshold
    */
   public Obstacle(String name, double height, double distanceThreshold) {
-    this.name.set(name);
+    this.name = name;
     this.height = height;
     this.distanceThreshold = distanceThreshold;
   }
@@ -56,25 +55,17 @@ public class Obstacle {
    * @param centerline        Distance from centerline (+ if North, - if South)
    */
   public Obstacle(String name, double height, double distanceThreshold, double centerline) {
-    this.name.set(name);
-    this.height = height;
-    this.distanceThreshold = distanceThreshold;
-    this.centerline= centerline;
-  }
-
-  public String getName() {
-    return name.get();
-  }
-
-  public SimpleStringProperty nameProperty() {
-    return name;
+    this(name, height, distanceThreshold);
+    this.centerline = centerline;
   }
 
   /**
    * Below are the usual accessors and mutators for the instance variables of this class.
    */
 
-
+  public String getName() {
+    return name;
+  }
 
   public double getHeight() {
     return height;

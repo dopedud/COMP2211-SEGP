@@ -1,9 +1,8 @@
-package uk.ac.soton.comp2211.team33.entities;
+package uk.ac.soton.comp2211.team33.models;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.App;
 
 /**
  * The class Runway models a runway and its values for re-declaration in an airport.
@@ -117,7 +116,6 @@ public class Runway {
     return lda;
   }
 
-
   public SimpleDoubleProperty resaProperty() {
     return resa;
   }
@@ -172,10 +170,6 @@ public class Runway {
 
   public void setResa(double resa) {
     this.resa.set(resa);
-  }
-
-  public SimpleDoubleProperty getRESAProp() {
-    return resa;
   }
 
   public double getCtora() {
