@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.entities;
+package uk.ac.soton.comp2211.team33.models;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,5 +58,10 @@ public class Aircraft {
 
   public void setBlastProtection(double blastProtection) {
     this.blastProtection = blastProtection;
+  }
+
+  @Override
+  public String toString() {
+    return "Aircraft ID: " + aircraftID + "\nBlast Protection: " +  blastProtection;
   }
 }

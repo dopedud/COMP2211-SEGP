@@ -2,10 +2,10 @@ package uk.ac.soton.comp2211.team33.entities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**

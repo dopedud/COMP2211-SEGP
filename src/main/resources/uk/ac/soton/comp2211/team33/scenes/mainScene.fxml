@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
-<?import java.net.URL?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.canvas.Canvas?>
 
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
@@ -19,21 +21,53 @@
 
   <columnConstraints>
     <ColumnConstraints percentWidth="66.6666" />
-    <ColumnConstraints percentWidth="33.3333" />
+    <ColumnConstraints percentWidth="33.3334" />
   </columnConstraints>
 
   <rowConstraints>
-    <RowConstraints percentHeight="66.6666" />
-    <RowConstraints percentHeight="33.3333" />
+    <RowConstraints />
+    <RowConstraints percentHeight="50" />
+    <RowConstraints percentHeight="50" />
   </rowConstraints>
 
-  <VBox styleClass="panel" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
+  <TabPane fx:id="tabPanel"
+           GridPane.columnIndex="0"
+           GridPane.columnSpan="2"
+           GridPane.rowIndex="0"
+           GridPane.rowSpan="1"
+           tabClosingPolicy="UNAVAILABLE" />
+
+  <VBox styleClass="panel, right-panel"
+        GridPane.columnIndex="1"
+        GridPane.columnSpan="1"
+        GridPane.rowIndex="1"
+        GridPane.rowSpan="2">
   </VBox>
 
-  <HBox styleClass="panel, bottom-panel" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="1" GridPane.rowSpan="1">
-    <Button text="Add obstacle" onAction="#handleAddObstacle" />
-    <Button text="Add aircraft" onAction="#handleAddAircraft" />
+  <HBox
+        styleClass="panel, bottom-panel"
+        GridPane.columnIndex="0"
+        GridPane.columnSpan="1"
+        GridPane.rowIndex="2"
+        GridPane.rowSpan="1"
+        spacing="40">
+    <VBox spacing="4">
+      <Button text="Add obstacle" onAction="#handleAddObstacle" />
+      <ListView fx:id="obstaclesList" />
+    </VBox>
+    <VBox spacing="4">
+      <Button text="Add aircraft" onAction="#handleAddAircraft" />
+      <ListView fx:id="aircraftList" />
+    </VBox>
+
+    <Button fx:id="addNewRunwayButton" text="Add new runway" onAction="#handleAddRunway" />
   </HBox>
 
-  <Canvas width="853.3333" height="640" fx:id="canvas" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="0" GridPane.rowSpan="1" />
+  <VBox fx:id="canvasPanel"
+        GridPane.columnIndex="0"
+        GridPane.columnSpan="1"
+        GridPane.rowIndex="1"
+        GridPane.rowSpan="1">
+    <Canvas fx:id="canvas" />
+  </VBox>
 </GridPane>

@@ -1,10 +1,23 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.models.AirportState;
+import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
+import uk.ac.soton.comp2211.team33.models.Runway;
 
 /**
  * Main scene of the application. This scene should only be fully functional when there is at least a runway configured.
@@ -14,58 +27,183 @@ import uk.ac.soton.comp2211.team33.models.AirportState;
  */
 public class MainScene extends BaseScene {
 
+  /**
+   * The TabPane node used to switch between different airports
+   */
+  @FXML
+  private TabPane tabPanel;
+
+  /**
+   * The Canvas panel node that contains the canvas node
+   */
+  @FXML
+  private VBox canvasPanel;
+
+  /**
+   * The Canvas node to draw visualisations
+   */
   @FXML
   private Canvas canvas;
 
-  public MainScene(Stage stage, AirportState state) {
-    super(stage, state, "mainScene.fxml");
+  /**
+   * The "Add new runway" button used to add new runways
+   */
+  @FXML
+  private Button addNewRunwayButton;
+
+  /**
+   * A ListView to display all added obstacles
+   */
+  @FXML
+  private ListView<Obstacle> obstaclesList;
+
+  /**
+   * A ListView to display all added aircraft
+   */
+  @FXML
+  private ListView aircraftList;
+
+  public MainScene(Stage stage, AppState state) {
+    super(stage, state);
   }
 
+  /**
+   * An event handler that is fired when the "Add obstacle" button is clicked
+   */
   @FXML
   private void handleAddObstacle() {
     new NewObstacleScene(createModalStage(), state);
   }
 
+  /**
+   * An event handler that is fired when the "Add aircraft" button is clicked
+   */
   @FXML
   private void handleAddAircraft() {
     new NewAircraftScene(createModalStage(), state);
   }
 
+  /**
+   * An event handler that is fired when the "Add new runway" button is clicked
+   */
+  @FXML
+  private void handleAddRunway() {
+    new NewRunwayScene(createModalStage(), state);
+  }
+
+  /**
+   * Builds the Main scene
+   */
   protected void build() {
-    stage.setTitle("Runway 1");
-    renderMarkup();
+    stage.setTitle("Runway Redeclaration");
 
-    var runway = state.getRunwayState();
+    // Render skeleton layout
 
-    /*runway.addListener((observableValue, oldRunway, newRunway) -> {
-      GraphicsContext ctx = canvas.getGraphicsContext2D();
+    renderFXML("mainScene.fxml");
 
-      ctx.setFill(Color.RED);
-      ctx.setFont(new Font(20));
-      ctx.fillText("Runway designator: " + newRunway.getDesignator(), 0, 20);
-      ctx.fillText("TORA: " + newRunway.getTora(), 0, 40);
-      ctx.fillText("TODA: " + newRunway.getToda(), 0, 60);
-      ctx.fillText("ASDA: " + newRunway.getAsda(), 0, 80);
-      ctx.fillText("LDA: " + newRunway.getLda(), 0, 100);
-      ctx.fillText("RESA: " + newRunway.getResa(), 0, 120);
-      ctx.fillText("Threshold: " + newRunway.getThreshold(), 0, 140);
+    // Stretch canvas
+
+    canvas.widthProperty().bind(canvasPanel.widthProperty());
+    canvas.heightProperty().bind(canvasPanel.heightProperty());
+
+    // Render tabs
+
+    renderTabs();
+    state.airportCodesProperty().addListener((ov, oldCodes, newCodes) -> renderTabs());
+
+    // On tab change, we set the active airport, and then re-render tab view
+
+    tabPanel.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+      state.setActiveAirportCode(newTab.getText());
+      renderTabView();
     });
 
-    var obstacleList = state.getObstacleListState().getObstacleListProperty();
+    // Render tab view
 
-    obstacleList.addListener((observableValue, oldList, newList) -> {
-      GraphicsContext ctx = canvas.getGraphicsContext2D();
+    renderTabView();
+  }
 
-      ctx.setFill(Color.BLUE);
-      ctx.setFont(new Font(15));
+  /**
+   * Renders airport tabs
+   */
+  private void renderTabs() {
+    SimpleListProperty<String> airportCodesProperty = state.airportCodesProperty();
 
-      for (int i = 0; i < newList.size(); i++) {
-        ctx.fillText(newList.get(i).getNameProperty().get(), 0, i * 20 + 160);
-      }
-    });
+    for (String airportCode: airportCodesProperty) {
+      Tab tab = new Tab(airportCode);
+      tabPanel.getTabs().add(tab);
+    }
+  }
 
-    if (runway.get() == null) {
-      new NewRunwayScene(createModalStage(), state);
-    }*/
+  private ChangeListener<Runway> runwayChangeListener;
+
+  /**
+   * Renders tab content
+   */
+  private void renderTabView() {
+    AirportState airportState = state.getActiveAirportState();
+
+    // Runway instance listener
+
+    if (runwayChangeListener == null) {
+      runwayChangeListener = (ov, oldRunwayState, newRunwayState) -> {
+        renderAddRunwayButton();
+        paintVisualisation();
+      };
+    }
+
+    airportState.runwayProperty().removeListener(runwayChangeListener);      // Ensure that only one listener is active at one time
+    airportState.runwayProperty().addListener(runwayChangeListener);
+
+    // Change the disabled status of add runway button
+
+    renderAddRunwayButton();
+
+    // Render obstacles and aircraft list
+
+    obstaclesList.setItems(airportState.obstaclesListProperty().get());
+    aircraftList.setItems(airportState.aircraftListProperty().get());
+
+    // Paint visualisations
+
+    paintVisualisation();
+  }
+
+  /**
+   * Renders "Add new runway" button
+   */
+  private void renderAddRunwayButton() {
+    if (state.getActiveAirportState().getRunway() == null) {
+      addNewRunwayButton.setDisable(false);
+      return;
+    }
+
+    addNewRunwayButton.setDisable(true);
+  }
+
+  private void paintVisualisation() {
+    GraphicsContext ctx = canvas.getGraphicsContext2D();
+    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+    AirportState airportState = state.getActiveAirportState();
+
+    if (airportState.getRunway() == null) {
+      return;
+    }
+
+    Runway runway = airportState.getRunway();
+
+    // Draw runway info
+
+    ctx.setFill(Color.BLACK);
+    ctx.fillRect(10, 10, 180, 100);
+
+    ctx.setFill(Color.WHITE);
+    ctx.setFont(new Font(12));
+    ctx.fillText("Designator: " + runway.designatorProperty().get(), 26, 26);
+    ctx.fillText("TORA: " + runway.ctoraProperty().get(), 26, 40);
+    ctx.fillText("TODA: " + runway.ctodaProperty().get(), 26, 54);
+    ctx.fillText("ASDA: " + runway.casdaProperty().get(), 26, 68);
+    ctx.fillText("LDA: " + runway.cldaProperty().get(), 26, 82);
   }
 }
