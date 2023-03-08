@@ -52,7 +52,7 @@ public final class Calculator {
    * @param obstacle the obstacle to perform the calculation on
    * @return A string detailing the steps of the calculation performed
    */
-  public static String toraTowardsObsPrettyPrint(Runway runway, Obstacle obstacle) {
+  public static String toraTowardsObsPP(Runway runway, Obstacle obstacle) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-offs towards obstacle...");
     StringBuilder calcSummary = new StringBuilder();
 
@@ -119,7 +119,7 @@ public final class Calculator {
    * @param runway the runway being calculated
    * @return string detailing the calculations
    */
-  public static String toraAwayObsPrettyPrint(Runway runway, Obstacle obstacle, Aircraft aircraft) {
+  public static String toraAwayObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
     logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
 
     StringBuilder calcSummary = new StringBuilder();
@@ -225,7 +225,7 @@ public final class Calculator {
    * @param aircraft the aircraft to base calculations on
    * @return a string containing the calculations performed
    */
-  public static String ldaOverObsPrettyPrint(Runway runway, Obstacle obstacle, Aircraft aircraft) {
+  public static String ldaOverObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
     logger.info("Re-declaring LDA for landing over obstacle...");
     StringBuilder calcSummary = new StringBuilder();
     calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
@@ -286,7 +286,7 @@ public final class Calculator {
    * @param obstacle the obstacle to base calculations on
    * @return A string containing a summary of the calculations performed
    */
-  public static String ldaTowardsObsPrettyPrint(Runway runway, Obstacle obstacle) {
+  public static String ldaTowardsObsPP(Runway runway, Obstacle obstacle) {
     logger.info("Re-declaring LDA for landing towards obstacle...");
     StringBuilder calcSummary = new StringBuilder();
     calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
