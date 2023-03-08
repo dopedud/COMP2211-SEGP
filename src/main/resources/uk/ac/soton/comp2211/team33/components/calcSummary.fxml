@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
+    </padding>
+    <spacing>10.0</spacing>
+    <alignment>CENTER</alignment>
+
+    <Text text="Summary of calculations" />
+    <TextArea fx:id="calcSummary" editable="false" />
+
+</fx:root>
