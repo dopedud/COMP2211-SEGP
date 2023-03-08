@@ -10,6 +10,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.canvas.Canvas?>
 
+<?import uk.ac.soton.comp2211.team33.components.CalcSummary?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="960.0" prefWidth="1280.0" stylesheets="@../css/mainScene.css">
@@ -37,6 +38,8 @@
         GridPane.columnSpan="1"
         GridPane.rowIndex="1"
         GridPane.rowSpan="2">
+    <CalcSummary fx:id="calcSummary" />
+    <Button text="Calculate TORA towards Obstacle" onAction="#handleCalculateToraTowards" />
   </VBox>
 
   <HBox

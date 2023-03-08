@@ -14,10 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.models.AirportState;
-import uk.ac.soton.comp2211.team33.models.AppState;
-import uk.ac.soton.comp2211.team33.models.Obstacle;
-import uk.ac.soton.comp2211.team33.models.Runway;
+import uk.ac.soton.comp2211.team33.components.CalcSummary;
+import uk.ac.soton.comp2211.team33.models.*;
+import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
 /**
  * Main scene of the application. This scene should only be fully functional when there is at least a runway configured.
@@ -61,7 +60,14 @@ public class MainScene extends BaseScene {
    * A ListView to display all added aircraft
    */
   @FXML
-  private ListView aircraftList;
+  private ListView<Aircraft> aircraftList;
+
+
+  /**
+   * A CalcSummary component to display the calculation steps
+   */
+  @FXML
+  private CalcSummary calcSummary;
 
   public MainScene(Stage stage, AppState state) {
     super(stage, state);
@@ -94,6 +100,22 @@ public class MainScene extends BaseScene {
   @FXML
   private void handleAddRunway() {
     new NewRunwayScene(createModalStage(), state);
+  }
+
+  /**
+   * An event handler that is fired when the "Calculate TORA towards" button is clicked:
+   * Calculates the TORA towards the obstacle, and updates the currently selected runway object accordingly
+   */
+  @FXML
+  private void handleCalculateToraTowards() {
+    Runway currentRunway = state.getActiveAirportState().getRunway();
+    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
+    Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
+
+    if (currentRunway != null && currentObstacle != null && currentAircraft != null) {
+      String calculation = Calculator.toraAwayObsPP(currentRunway, currentObstacle, currentAircraft);
+      currentRunway.setCalculationSummary(calculation);
+    }
   }
 
   /**
@@ -154,6 +176,7 @@ public class MainScene extends BaseScene {
       runwayChangeListener = (ov, oldRunwayState, newRunwayState) -> {
         renderAddRunwayButton();
         paintVisualisation();
+        calcSummary.bindCalcText(newRunwayState.calculationSummaryProperty());
       };
     }
 
@@ -168,6 +191,15 @@ public class MainScene extends BaseScene {
 
     obstaclesList.setItems(airportState.obstaclesListProperty().get());
     aircraftList.setItems(airportState.aircraftListProperty().get());
+
+    // Render calculation summary of the runway in the current airport. If there is no runway, then display placeholder message
+    if (airportState.getRunway() != null) {
+      calcSummary.bindCalcText(airportState.getRunway().calculationSummaryProperty());
+    } else {
+      calcSummary.removeCalcTextBinding();
+      calcSummary.setCalcText("Create a runway to see calculation");
+    }
+
 
     // Paint visualisations
 
