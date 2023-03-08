@@ -28,14 +28,25 @@ public class CalcSummary extends VBox {
 
     }
 
+    /**
+     * Binds the text displayed in the text area to the given property.
+     * @param text The property to bind the text to.
+     */
     public void bindCalcText(StringProperty text) {
         calcSummary.textProperty().bind(text);
     }
 
+    /**
+     * Removes binding from the text area.
+     */
     public void removeCalcTextBinding() {
         calcSummary.textProperty().unbind();
     }
 
+    /**
+     * Manually set the text in the text area, without binding to a property.
+     * @param text The text to set in the text area.
+     */
     public void setCalcText(String text) {
         calcSummary.setText(text);
     }

@@ -103,8 +103,8 @@ public class MainScene extends BaseScene {
   }
 
   /**
-   * An event handler that is fired when the "Calculate TORA towards" button is clicked:
-   * Calculates the TORA towards the obstacle, and updates the currently selected runway object accordingly
+   * An event handler that is fired when the "Calculate TORA away" button is clicked:
+   * Calculates the TORA away from obstacle, and updates the currently selected runway object accordingly
    */
   @FXML
   private void handleCalculateToraAway() {
@@ -118,6 +118,10 @@ public class MainScene extends BaseScene {
     }
   }
 
+  /**
+   * An event handler that is fired when the "Calculate TORA towards" button is clicked:
+   * Calculates the TORA towards the obstacle, and updates the currently selected runway object accordingly
+   */
   @FXML
   private void handleCalculateToraTowards() {
     Runway currentRunway = state.getActiveAirportState().getRunway();
@@ -129,6 +133,10 @@ public class MainScene extends BaseScene {
     }
   }
 
+  /**
+   * An event handler that is fired when the "Calculate LDA towards" button is clicked:
+   * Calculates the LDA towards the obstacle, and updates the currently selected runway object accordingly
+   */
   @FXML
   private void handleCalculateLdaTowards() {
     Runway currentRunway = state.getActiveAirportState().getRunway();
@@ -140,6 +148,10 @@ public class MainScene extends BaseScene {
     }
   }
 
+  /**
+   * An event handler that is fired when the "Calculate LDA over" button is clicked:
+   * Calculates the LDA over the obstacle, and updates the currently selected runway object accordingly
+   */
   @FXML
   private void handleCalculateLdaOver() {
     Runway currentRunway = state.getActiveAirportState().getRunway();

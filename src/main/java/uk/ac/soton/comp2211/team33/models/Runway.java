@@ -66,6 +66,9 @@ public class Runway {
    */
   private final double stripEnd = 60;
 
+  /**
+   * A summary of the last calculation performed on the runway.
+   */
   private SimpleStringProperty summaryOfCalculation = new SimpleStringProperty();
 
   public Runway(String designator, double tora, double toda, double asda, double lda,
