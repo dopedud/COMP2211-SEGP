@@ -71,6 +71,11 @@ public class Runway {
    */
   private SimpleStringProperty summaryOfCalculation = new SimpleStringProperty();
 
+  /**
+   * The distance of the obstacle from the threshold of the runway.
+   */
+  private SimpleDoubleProperty obstacleDistance = new SimpleDoubleProperty();
+
   public Runway(String designator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
     this.designator = designator;
@@ -221,6 +226,14 @@ public class Runway {
 
   public double getTocs() {
     return tocs;
+  }
+
+  public SimpleDoubleProperty obstacleDistanceProperty() {
+    return obstacleDistance;
+  }
+
+  public double getObstacleDistance() {
+      return obstacleDistance.get();
   }
 
   public SimpleStringProperty calculationSummaryProperty() {
