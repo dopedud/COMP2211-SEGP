@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.entities;
 
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  */
 public class Airport {
 
+  //private SimpleListProperty<Obstacle> obstacles = new SimpleListProperty<>();
   private SimpleStringProperty name;
   private SimpleStringProperty city;
 
@@ -30,6 +32,7 @@ public class Airport {
     this.name.set(name);
     this.city.set(city);
   }
+
 
   /**
    * Getters and setters for the airport name and city.
