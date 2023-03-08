@@ -249,6 +249,10 @@ public class Runway {
   }
 
   public String toString() {
+    return designator;
+  }
+
+  public String toFullString() {
     return "Runway: " + designator + "\n" +
             "TORA: " + ctora.get() + "\n" +
             "TODA: " + ctoda.get() + "\n" +
@@ -260,6 +264,4 @@ public class Runway {
             "Stopway: " + stopway.get() + "\n" +
             "Strip End: " + stripEnd + "\n";
   }
-
-
 }

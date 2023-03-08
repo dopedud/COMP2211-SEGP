@@ -1,17 +1,14 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
@@ -65,6 +62,11 @@ public class MainScene extends BaseScene {
   @FXML
   private ListView<Aircraft> aircraftList;
 
+  @FXML
+  private ListView<Runway> runwaysList;
+
+  private SimpleStringProperty calcMode;            // Local state, no need to be in app state
+
 
   /**
    * A CalcSummary component to display the calculation steps
@@ -114,14 +116,8 @@ public class MainScene extends BaseScene {
    */
   @FXML
   private void handleCalculateToraAway() {
-    Runway currentRunway = state.getActiveAirportState().getRunway();
-    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
-    Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
+    calcMode.set("TORA_AWAY");
 
-    if (currentRunway != null && currentObstacle != null && currentAircraft != null) {
-      String calculation = Calculator.toraAwayObsPP(currentRunway, currentObstacle, currentAircraft);
-      currentRunway.setCalculationSummary(calculation);
-    }
   }
 
   /**
@@ -130,13 +126,7 @@ public class MainScene extends BaseScene {
    */
   @FXML
   private void handleCalculateToraTowards() {
-    Runway currentRunway = state.getActiveAirportState().getRunway();
-    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
-
-    if (currentRunway != null && currentObstacle != null) {
-      String calculation = Calculator.toraTowardsObsPP(currentRunway, currentObstacle);
-      currentRunway.setCalculationSummary(calculation);
-    }
+    calcMode.set("TORA_TOWARDS");
   }
 
   /**
@@ -145,13 +135,7 @@ public class MainScene extends BaseScene {
    */
   @FXML
   private void handleCalculateLdaTowards() {
-    Runway currentRunway = state.getActiveAirportState().getRunway();
-    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
-
-    if (currentRunway != null && currentObstacle != null) {
-      String calculation = Calculator.ldaTowardsObsPP(currentRunway, currentObstacle);
-      currentRunway.setCalculationSummary(calculation);
-    }
+    calcMode.set("LDA_TOWARDS");
   }
 
   /**
@@ -160,30 +144,24 @@ public class MainScene extends BaseScene {
    */
   @FXML
   private void handleCalculateLdaOver() {
-    Runway currentRunway = state.getActiveAirportState().getRunway();
-    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
-    Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
-
-    if (currentRunway != null && currentObstacle != null && currentAircraft != null) {
-      String calculation = Calculator.ldaOverObsPP(currentRunway, currentObstacle, currentAircraft);
-      currentRunway.setCalculationSummary(calculation);
-    }
+    calcMode.set("LDA_OVER");
   }
 
   /**
    * Builds the Main scene
    */
   protected void build() {
+    // Initialise local states
+
+    calcMode = new SimpleStringProperty();
+
+    // Main part
+
     stage.setTitle("Runway Redeclaration");
 
     // Render skeleton layout
 
     renderFXML("mainScene.fxml");
-
-    // Stretch canvas
-
-    canvas.widthProperty().bind(canvasPanel.widthProperty());
-    canvas.heightProperty().bind(canvasPanel.heightProperty());
 
     // Render tabs
 
@@ -196,6 +174,13 @@ public class MainScene extends BaseScene {
       state.setActiveAirportCode(newTab.getText());
       renderTabView();
     });
+
+    // Change handlers for calculation summary
+
+    calcMode.addListener((ov, oldMode, newMode) -> renderCalculations());
+    obstaclesList.getSelectionModel().selectedItemProperty().addListener((ov, oldObs, newObs) -> renderCalculations());
+    aircraftList.getSelectionModel().selectedItemProperty().addListener((ov, oldAc, newAc) -> renderCalculations());
+    runwaysList.getSelectionModel().selectedItemProperty().addListener((ov, oldRw, newRw) -> renderCalculations());
 
     // Render tab view
 
@@ -213,8 +198,6 @@ public class MainScene extends BaseScene {
       tabPanel.getTabs().add(tab);
     }
   }
-
-  private ChangeListener<Runway> runwayChangeListener;
 
   /**
    * Renders tab content
@@ -246,6 +229,7 @@ public class MainScene extends BaseScene {
 
     obstaclesList.setItems(airportState.obstaclesListProperty().get());
     aircraftList.setItems(airportState.aircraftListProperty().get());
+    runwaysList.setItems(airportState.runwaysListProperty().get());
 
     // Render calculation summary of the runway in the current airport. If there is no runway, then display placeholder message
     if (airportState.getRunway() != null) {
@@ -258,45 +242,46 @@ public class MainScene extends BaseScene {
     }
 
 
-    // Paint visualisations
-
-    paintVisualisation();
+    renderCalculations();
   }
 
-  /**
-   * Renders "Add new runway" button
-   */
-  private void renderAddRunwayButton() {
-    if (state.getActiveAirportState().getRunway() == null) {
-      addNewRunwayButton.setDisable(false);
+  private void renderCalculations() {
+    String calcMode = this.calcMode.get();
+    Runway currentRunway = runwaysList.getSelectionModel().getSelectedItem();
+    Obstacle currentObstacle = obstaclesList.getSelectionModel().getSelectedItem();
+    Aircraft currentAircraft = aircraftList.getSelectionModel().getSelectedItem();
+
+    if (calcMode == null || currentRunway == null || currentObstacle == null) {
+      calcSummary.setCalcText("No calculation has been performed yet");
       return;
     }
 
-    addNewRunwayButton.setDisable(true);
-  }
-
-  /**
-   * Creates the background for displaying runway information
-   */
-  private void paintVisualisation() {
-    GraphicsContext ctx = canvas.getGraphicsContext2D();
-    ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-    AirportState airportState = state.getActiveAirportState();
-
-    if (airportState.getRunway() == null) {
+    if (calcMode == "TORA_TOWARDS") {
+      String calculation = Calculator.toraTowardsObsPP(currentRunway, currentObstacle);
+      calcSummary.setCalcText(calculation);
       return;
     }
 
-    Runway runway = airportState.getRunway();
+    if (calcMode == "LDA_TOWARDS") {
+      String calculation = Calculator.ldaTowardsObsPP(currentRunway, currentObstacle);
+      calcSummary.setCalcText(calculation);
+      return;
+    }
 
-    // Draw runway info
+    if (currentAircraft == null) {
+      calcSummary.setCalcText("Please pick an aircraft to complete the calculation");
+      return;
+    }
 
-    ctx.setFill(Color.BLACK);
-    ctx.fillRect(10, 10, 180, 200);
+    if (calcMode == "TORA_AWAY") {
+      String calculation = Calculator.toraAwayObsPP(currentRunway, currentObstacle, currentAircraft);
+      calcSummary.setCalcText(calculation);
+      return;
+    }
 
-    ctx.setFill(Color.WHITE);
-    ctx.setFont(new Font(15));
-    ctx.fillText(runway.toString(), 26, 26);
+    if (calcMode == "LDA_OVER") {
+      String calculation = Calculator.ldaOverObsPP(currentRunway, currentObstacle, currentAircraft);
+      calcSummary.setCalcText(calculation);
+    }
   }
 }
