@@ -3,7 +3,6 @@ package uk.ac.soton.comp2211.team33.scenes;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
-
 import uk.ac.soton.comp2211.team33.models.AirportState;
 
 /**

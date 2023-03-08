@@ -5,10 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import uk.ac.soton.comp2211.team33.models.AirportState;
 
 import java.io.IOException;
-
-import uk.ac.soton.comp2211.team33.models.AirportState;
 
 /**
  * An abstract class to create scenes.

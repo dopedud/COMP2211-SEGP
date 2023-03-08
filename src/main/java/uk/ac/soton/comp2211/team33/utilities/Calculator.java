@@ -11,7 +11,7 @@ import uk.ac.soton.comp2211.team33.entities.Runway;
 
 /**
  * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.
- *
+ * <p>
  * Corresponds to user story #3, #5, #6.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
@@ -23,24 +23,29 @@ public final class Calculator {
   /**
    * Private constructor to avoid instantiating.
    */
-  private Calculator() {}
+  private Calculator() {
+  }
 
   /**
    * Calculate the take-off runway available (use toraTowardsObsPrettyPrint() for pretty print). Updates runway with new values.
    *
-   * @param runway the runway to perform the calculation on
+   * @param runway   the runway to perform the calculation on
    * @param obstacle the obstacle to perform the calculation on
    */
   public static void toraTowardsObs(Runway runway, Obstacle obstacle) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+    } else {
+      logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
 
-    //Gets the larger between RESA and the slope calculation
-    double temp = max(runway.getResa(), obstacle.getHeight() * runway.getTocs());
+      //Gets the larger between RESA and the slope calculation
+      double temp = max(runway.getResa(), obstacle.getHeight() * runway.getTocs());
 
-    double newTora = obstacle.getDistThresh() + runway.getThreshold() - temp - runway.getStripEnd();
-    runway.setCtora(newTora);
-    runway.setCasda(newTora);
-    runway.setCtoda(newTora);
+      double newTora = obstacle.getDistThresh() + runway.getThreshold() - temp - runway.getStripEnd();
+      runway.setCtora(newTora);
+      runway.setCasda(newTora);
+      runway.setCtoda(newTora);
+    }
   }
 
   /**
@@ -48,14 +53,23 @@ public final class Calculator {
    * TORA for Take Off Away.
    * TORA = ASDA = TODA in this case.
    *
-   * @param runway the runway to perform the calculation on
+   * @param runway   the runway to perform the calculation on
    * @param obstacle the obstacle to perform the calculation on
    * @return A string detailing the steps of the calculation performed
    */
   public static String toraTowardsObsPP(Runway runway, Obstacle obstacle) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-offs towards obstacle...");
+    ;
     StringBuilder calcSummary = new StringBuilder();
 
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No re-declaration needed...");
+      calcSummary.append("\nTORA = " + runway.getTora());
+      calcSummary.append("\nTODA = " + runway.getToda());
+      calcSummary.append("\nASDA = " + runway.getAsda());
+      return calcSummary.toString();
+    }
+
+    logger.info("Re-declaring TORA, TODA and ASDA for take-offs towards obstacle...");
     calcSummary.append("Summary of calculations for runway " + runway.getDesignator() + "\n");
     calcSummary.append("Takeoff towards obstacle: \n");
 
@@ -93,22 +107,25 @@ public final class Calculator {
   }
 
 
-
   /**
    * No pretty printing TORA away from obstacle.
    *
    * @param runway the runway being calculated
    */
   public static void toraAwayObs(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+    } else {
+      logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
 
-    double blastProtection = max((runway.getStripEnd() + runway.getResa()), aircraft.getBlastProtection());
+      double blastProtection = max((runway.getStripEnd() + runway.getResa()), aircraft.getBlastProtection());
 
-    double newTora = runway.getTora() - blastProtection - obstacle.getDistThresh() - runway.getThreshold();
+      double newTora = runway.getTora() - blastProtection - obstacle.getDistThresh() - runway.getThreshold();
 
-    runway.setCtora(newTora);
-    runway.setCtoda(newTora + runway.getClearway());
-    runway.setCasda(newTora + runway.getStopway());
+      runway.setCtora(newTora);
+      runway.setCtoda(newTora + runway.getClearway());
+      runway.setCasda(newTora + runway.getStopway());
+    }
   }
 
   /**
@@ -120,9 +137,17 @@ public final class Calculator {
    * @return string detailing the calculations
    */
   public static String toraAwayObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
-
     StringBuilder calcSummary = new StringBuilder();
+
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No re-declaration needed...");
+      calcSummary.append("\nTORA = " + runway.getTora());
+      calcSummary.append("\nTODA = " + runway.getToda());
+      calcSummary.append("\nASDA = " + runway.getAsda());
+      return calcSummary.toString();
+    }
+
+    logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
     calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Takeoff away from obstacle: \n");
 
@@ -201,33 +226,45 @@ public final class Calculator {
    * @param runway the runway being calculated
    */
   public static void ldaOverObs(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    logger.info("Re-declaring LDA for landing over obstacle...");
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+    } else {
+      logger.info("Re-declaring LDA for landing over obstacle...");
 
-    double newLda;
-    double tempVal = max(aircraft.getBlastProtection(), obstacle.getHeight() * runway.getAls());
+      double newLda;
+      double tempVal = max(aircraft.getBlastProtection(), obstacle.getHeight() * runway.getAls());
 
-    newLda = runway.getLda() - tempVal - obstacle.getDistThresh() - runway.getStripEnd();
+      newLda = runway.getLda() - tempVal - obstacle.getDistThresh() - runway.getStripEnd();
 
-    boolean changeLDA = makeNewRESA(newLda, runway, obstacle, aircraft);
+      boolean changeLDA = makeNewRESA(newLda, runway, obstacle, aircraft);
 
-    if (changeLDA) {
-      newLda = runway.getLda() - obstacle.getDistThresh() - runway.getResa();
+      if (changeLDA) {
+        newLda = runway.getLda() - obstacle.getDistThresh() - runway.getResa();
+      }
+
+      runway.setClda(newLda);
     }
-
-    runway.setClda(newLda);
   }
 
 
   /**
    * Pretty prints the calculations for LDA over obstacle. Updates the runway object with the new calculated values.
-   * @param runway the runway to perform calculations on
+   *
+   * @param runway   the runway to perform calculations on
    * @param obstacle the obstacle to base calculations on
    * @param aircraft the aircraft to base calculations on
    * @return a string containing the calculations performed
    */
   public static String ldaOverObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    logger.info("Re-declaring LDA for landing over obstacle...");
     StringBuilder calcSummary = new StringBuilder();
+
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+      calcSummary.append("LDA  = " + runway.getLda());
+      return calcSummary.toString();
+    }
+
+    logger.info("Re-declaring LDA for landing over obstacle...");
     calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Landing over obstacle: \n");
 
@@ -239,11 +276,11 @@ public final class Calculator {
     calcSummary.append("Slope = " + slope + "\n");
 
     if (slope < aircraft.getBlastProtection()) {
-        calcSummary.append("Slope < Blast Protection\n");
-        calcSummary.append("LDA = Original LDA - Blast Protection - Distance from Threshold - Strip End\n");
+      calcSummary.append("Slope < Blast Protection\n");
+      calcSummary.append("LDA = Original LDA - Blast Protection - Distance from Threshold - Strip End\n");
     } else {
-        calcSummary.append("Slope > Blast Protection\n");
-        calcSummary.append("LDA = Original LDA - Slope Calculation - Distance from Threshold - Strip End\n");
+      calcSummary.append("Slope > Blast Protection\n");
+      calcSummary.append("LDA = Original LDA - Slope Calculation - Distance from Threshold - Strip End\n");
     }
 
     double newLda = runway.getLda() - tempVal - obstacle.getDistThresh() - runway.getStripEnd();
@@ -253,10 +290,10 @@ public final class Calculator {
     boolean changeLDA = makeNewRESA(newLda, runway, obstacle, aircraft);
 
     if (changeLDA) {
-        calcSummary.setLength(0);
-        calcSummary.append("Declaring new RESA due to Blast Protection\n");
-        calcSummary.append("LDA = Original LDA - Distance from Threshold - New RESA\n");
-        newLda = runway.getLda() - obstacle.getDistThresh() - runway.getResa();
+      calcSummary.setLength(0);
+      calcSummary.append("Declaring new RESA due to Blast Protection\n");
+      calcSummary.append("LDA = Original LDA - Distance from Threshold - New RESA\n");
+      newLda = runway.getLda() - obstacle.getDistThresh() - runway.getResa();
     }
 
     runway.setClda(newLda);
@@ -271,10 +308,13 @@ public final class Calculator {
    * @param runway the runway being calculated
    */
   public static void ldaTowardsObs(Runway runway, Obstacle obstacle) {
-    logger.info("Re-declaring LDA for landing towards obstacle...");
-
-    double newLda = obstacle.getDistThresh() - runway.getStripEnd() - runway.getResa();
-    runway.setClda(newLda);
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+    } else {
+      logger.info("Re-declaring LDA for landing towards obstacle...");
+      double newLda = obstacle.getDistThresh() - runway.getStripEnd() - runway.getResa();
+      runway.setClda(newLda);
+    }
   }
 
 
@@ -282,13 +322,20 @@ public final class Calculator {
    * Function that re-declares the LDA after an obstacle appears, and pretty prints the calculations. Updates runway object with new values.
    * When landing towards, only the LDA has to change.
    *
-   * @param runway the runway to perform calculations on
+   * @param runway   the runway to perform calculations on
    * @param obstacle the obstacle to base calculations on
    * @return A string containing a summary of the calculations performed
    */
   public static String ldaTowardsObsPP(Runway runway, Obstacle obstacle) {
-    logger.info("Re-declaring LDA for landing towards obstacle...");
     StringBuilder calcSummary = new StringBuilder();
+
+    if (!(Math.abs(obstacle.getCenterline()) < 75 && obstacle.getDistThresh() > -60)) {
+      logger.info("No need for re-declaration...");
+      calcSummary.append("LDA  = " + runway.getLda());
+      return calcSummary.toString();
+    }
+
+    logger.info("Re-declaring LDA for landing towards obstacle...");
     calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Landing towards obstacle: \n");
 
@@ -305,8 +352,8 @@ public final class Calculator {
   /**
    * Judge if a new RESA has to be re-declared, if yes, then re-declare according to formula.
    *
-   * @param newLda the new LDA after re-declaration
-   * @param runway the runway
+   * @param newLda   the new LDA after re-declaration
+   * @param runway   the runway
    * @param obstacle the obstacle
    * @param aircraft the aircraft
    */
@@ -318,7 +365,7 @@ public final class Calculator {
       runway.setResa(newResa);
       return true;
     } else {
-      return  false;
+      return false;
     }
   }
 }
