@@ -22,24 +22,41 @@ public class Obstacle {
   /**
    * Height of the obstacle.
    */
-  private double height;
+  private final double height;
 
   /**
    * Distance between the obstacle and the threshold of the runway.
    */
-  private double distanceThreshold;
+  private final double distanceThreshold;
+
+  /**
+   * Centerline displacement, North : positive number, South : negative number
+   */
+  private double centerline = 0;
 
   /**
    * Creates a new obstacle with the specified name, height, and length.
-   *
-   * @param name                name of the obstacle
-   * @param height              height of the obstacle
-   * @param distanceThreshold   the distance from the threshold of the obstacle
+   * @param name
+   * @param height
+   * @param distanceThreshold
    */
   public Obstacle(String name, double height, double distanceThreshold) {
     this.name = name;
     this.height = height;
     this.distanceThreshold = distanceThreshold;
+  }
+
+  /**
+   * Creates a new obstacle with the specified name, height, length, and distance from centerline.
+   *
+   * @param name              name of the obstacle
+   * @param height            height of the obstacle
+   * @param distanceThreshold the distance from the threshold of the obstacle
+   * @param centerline        Distance from centerline (+ if North, - if South)
+   */
+  public Obstacle(String name, double height, double distanceThreshold, double centerline) {
+    this(name, height, distanceThreshold);
+    this.centerline = centerline;
   }
 
   /**
@@ -56,6 +73,10 @@ public class Obstacle {
 
   public double getDistThresh() {
     return distanceThreshold;
+  }
+
+  public double getCenterline() {
+    return centerline;
   }
 
   @Override

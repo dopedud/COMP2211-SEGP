@@ -20,8 +20,8 @@ public class AppState {
   private SimpleStringProperty activeAirportCode = new SimpleStringProperty("LHR");
 
   public AppState() {
-    airports.put("LHR", new AirportState("London Heathrow"));
-    airports.put("SOU", new AirportState("Southampton"));
+    airports.put("LHR", new AirportState("London Heathrow Airport", "London"));
+    airports.put("SOU", new AirportState("Southampton Airport", "Southampton"));
   }
 
   public void setActiveAirportCode(String code) {

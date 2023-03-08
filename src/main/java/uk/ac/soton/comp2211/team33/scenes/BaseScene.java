@@ -49,7 +49,7 @@ abstract class BaseScene {
   /**
    * A utility method to render the FXML markup of this scene.
    *
-   * @param fxmlUri The URI, relative to the calling class, of the FXML file
+   * @param fxmlUri The URI, relative to the calling class' classpath, of the FXML file
    */
   protected void renderFXML(String fxmlUri) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlUri));

@@ -17,7 +17,7 @@ public class Aircraft {
   /**
    * A name to identify the aircraft.
    */
-  private String aircraftID;
+  private String id;
 
   /**
    * The blast protection value which is dependent on the aircraft.
@@ -27,13 +27,13 @@ public class Aircraft {
   /**
    * Constructor to create a new Aircraft object.
    *
-   * @param id                id of the aircraft
-   * @param blastProtection   blast protection of the aircraft
+   * @param id              id of the aircraft
+   * @param blastProtection blast protection of the aircraft
    */
   public Aircraft(String id, double blastProtection) {
-    this.aircraftID = id;
+    this.id = id;
 
-    if(blastProtection < 300 || blastProtection > 500) {
+    if (blastProtection < 300 || blastProtection > 500) {
       logger.error("Blast protection value not within boundaries (300m-500m).");
     } else {
       this.blastProtection = blastProtection;
@@ -41,15 +41,16 @@ public class Aircraft {
   }
 
   /**
-   * Below are the usual accessors and mutators for the instance variables of this class.
+   * Getters and setters for class properties
+   * @return
    */
 
-  public String getAircraftID() {
-    return aircraftID;
+  public String getId() {
+    return id;
   }
 
-  public void setAircraftID(String aircraftID) {
-    this.aircraftID = aircraftID;
+  public void setId(String id) {
+    this.id = id;
   }
 
   public double getBlastProtection() {
@@ -62,6 +63,8 @@ public class Aircraft {
 
   @Override
   public String toString() {
-    return "Aircraft ID: " + aircraftID + "\nBlast Protection: " +  blastProtection;
+    return "Aircraft ID: " + id + "\nBlast Protection: " +  blastProtection;
   }
 }
+
+

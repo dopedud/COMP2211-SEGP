@@ -75,6 +75,11 @@ public class MainScene extends BaseScene {
     new NewObstacleScene(createModalStage(), state);
   }
 
+  @FXML
+  private void handleLoadPredefinedObstacles() {
+    state.getActiveAirportState().loadPredefinedObstacles();
+  }
+
   /**
    * An event handler that is fired when the "Add aircraft" button is clicked
    */
@@ -196,14 +201,10 @@ public class MainScene extends BaseScene {
     // Draw runway info
 
     ctx.setFill(Color.BLACK);
-    ctx.fillRect(10, 10, 180, 100);
+    ctx.fillRect(10, 10, 180, 120);
 
     ctx.setFill(Color.WHITE);
     ctx.setFont(new Font(12));
-    ctx.fillText("Designator: " + runway.designatorProperty().get(), 26, 26);
-    ctx.fillText("TORA: " + runway.ctoraProperty().get(), 26, 40);
-    ctx.fillText("TODA: " + runway.ctodaProperty().get(), 26, 54);
-    ctx.fillText("ASDA: " + runway.casdaProperty().get(), 26, 68);
-    ctx.fillText("LDA: " + runway.cldaProperty().get(), 26, 82);
+    ctx.fillText(runway.toString(), 26, 26);
   }
 }
