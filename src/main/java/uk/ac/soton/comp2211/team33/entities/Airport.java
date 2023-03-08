@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.entities;
 
+import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,8 +15,8 @@ import java.util.ArrayList;
  */
 public class Airport {
 
-  private String name;
-  private String city;
+  private SimpleStringProperty name;
+  private SimpleStringProperty city;
 
   private static final Logger logger = LogManager.getLogger(Airport.class);
 
@@ -26,8 +27,8 @@ public class Airport {
    * @param city The city the airport is in
    */
   public Airport(String name, String city) {
-    this.name = name;
-    this.city = city;
+    this.name.set(name);
+    this.city.set(city);
   }
 
   /**
@@ -35,18 +36,26 @@ public class Airport {
    */
 
   public String getName() {
+    return name.get();
+  }
+
+  public SimpleStringProperty nameProperty() {
     return name;
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.name.set(name);
   }
 
   public String getCity() {
+    return city.get();
+  }
+
+  public SimpleStringProperty cityProperty() {
     return city;
   }
 
   public void setCity(String city) {
-    this.city = city;
+    this.city.set(city);
   }
 }
