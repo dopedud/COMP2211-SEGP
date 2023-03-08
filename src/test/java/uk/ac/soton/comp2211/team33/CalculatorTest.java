@@ -9,6 +9,9 @@ import uk.ac.soton.comp2211.team33.entities.Obstacle;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.entities.Runway;
 
+/**
+ * Test for the Calculator
+ */
 @DisplayName("Test for runway re-declaration calculation.")
 public class CalculatorTest {
 
