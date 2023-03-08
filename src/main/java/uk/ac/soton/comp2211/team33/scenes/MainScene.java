@@ -186,6 +186,9 @@ public class MainScene extends BaseScene {
     addNewRunwayButton.setDisable(true);
   }
 
+  /**
+   * Creates the background for displaying runway information
+   */
   private void paintVisualisation() {
     GraphicsContext ctx = canvas.getGraphicsContext2D();
     ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -201,10 +204,10 @@ public class MainScene extends BaseScene {
     // Draw runway info
 
     ctx.setFill(Color.BLACK);
-    ctx.fillRect(10, 10, 180, 120);
+    ctx.fillRect(10, 10, 180, 200);
 
     ctx.setFill(Color.WHITE);
-    ctx.setFont(new Font(12));
+    ctx.setFont(new Font(15));
     ctx.fillText(runway.toString(), 26, 26);
   }
 }
