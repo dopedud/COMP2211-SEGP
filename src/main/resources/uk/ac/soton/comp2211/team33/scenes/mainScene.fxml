@@ -9,11 +9,10 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 
-<?import uk.ac.soton.comp2211.team33.components.CalcSummary?>
+<?import uk.ac.soton.comp2211.team33.components.RawInformationDisplay?>
 <?import uk.ac.soton.comp2211.team33.components.InputField?>
+
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           prefHeight="960.0" prefWidth="1280.0" stylesheets="@../css/mainScene.css">
@@ -40,15 +39,22 @@
         GridPane.columnIndex="1"
         GridPane.columnSpan="1"
         GridPane.rowIndex="1"
-        GridPane.rowSpan="2">
+        GridPane.rowSpan="2"
+        spacing="40">
 
-    <CalcSummary fx:id="calcSummary" />
+    <RawInformationDisplay fx:id="oldRunwayValues" title="Original runway values" />
+    <RawInformationDisplay fx:id="newRunwayValues" title="Calculated runway values" />
 
-    <Button text="Calculate TORA towards Obstacle" onAction="#handleCalculateToraTowards" />
-    <Button text="Calculate TORA away from Obstacle" onAction="#handleCalculateToraAway" />
-    <Button text="Calculate LDA towards Obstacle" onAction="#handleCalculateLdaTowards"/>
-    <Button text="Calculate LDA over Obstacle" onAction="#handleCalculateLdaOver"/>
-    <InputField fx:id="obstacleDistance" label="Obstacle Dist. from Threshold" />
+    <VBox spacing="4">
+      <RawInformationDisplay fx:id="calcSummary" title="Summary of calculation" />
+
+      <Button text="Calculate TORA towards Obstacle" onAction="#handleCalculateToraTowards" />
+      <Button text="Calculate TORA away from Obstacle" onAction="#handleCalculateToraAway" />
+      <Button text="Calculate LDA towards Obstacle" onAction="#handleCalculateLdaTowards"/>
+      <Button text="Calculate LDA over Obstacle" onAction="#handleCalculateLdaOver"/>
+
+      <InputField fx:id="obstacleDistance" label="Obstacle Dist. from Threshold"  />
+    </VBox>
   </VBox>
 
   <HBox

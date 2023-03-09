@@ -1,5 +1,7 @@
 package uk.ac.soton.comp2211.team33.models;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
@@ -24,12 +26,7 @@ public class Runway {
   /**
    * Initial values of the runway.
    */
-  private final double tora, toda, asda, lda;
-
-  /**
-   * RESA value of the runway, could be re-declared
-   */
-  private SimpleDoubleProperty resa = new SimpleDoubleProperty();
+  private final double tora, toda, asda, lda, resa;
 
   /**
    * Currently used runway values (after calculation).
@@ -41,6 +38,11 @@ public class Runway {
   private SimpleDoubleProperty casda = new SimpleDoubleProperty();
 
   private SimpleDoubleProperty clda = new SimpleDoubleProperty();
+
+  /**
+   * RESA value of the runway, could be re-declared
+   */
+  private SimpleDoubleProperty cresa = new SimpleDoubleProperty();
 
   /**
    * TOCS constant 50m.
@@ -67,11 +69,6 @@ public class Runway {
   private final double stripEnd = 60;
 
   /**
-   * A summary of the last calculation performed on the runway.
-   */
-  private SimpleStringProperty summaryOfCalculation = new SimpleStringProperty();
-
-  /**
    * The distance of the obstacle from the threshold of the runway.
    */
   private SimpleDoubleProperty obstacleDistance = new SimpleDoubleProperty(0);
@@ -87,9 +84,11 @@ public class Runway {
 
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
-      this.resa.set(240);
+      this.resa = 240;
+      this.cresa.set(240);
     } else {
-      this.resa.set(resa);
+      this.resa = resa;
+      this.cresa.set(resa);
     }
 
     this.ctora.set(tora);
@@ -100,8 +99,6 @@ public class Runway {
     clearway.set(toda - tora);
     stopway.set(asda - tora);
     this.threshold.set(threshold);
-
-    summaryOfCalculation.set("No calculation has been performed on Runway " + this.getDesignator() + " yet.");
   }
 
 
@@ -128,8 +125,12 @@ public class Runway {
     return lda;
   }
 
-  public SimpleDoubleProperty resaProperty() {
+  public double getResa() {
     return resa;
+  }
+
+  public SimpleDoubleProperty cresaProperty() {
+    return cresa;
   }
 
   public SimpleDoubleProperty ctoraProperty() {
@@ -176,12 +177,12 @@ public class Runway {
     return stripEnd;
   }
 
-  public double getResa() {
-    return resa.get();
+  public double getCresa() {
+    return cresa.get();
   }
 
-  public void setResa(double resa) {
-    this.resa.set(resa);
+  public void setCresa(double resa) {
+    this.cresa.set(resa);
   }
 
   public double getCtora() {
@@ -232,36 +233,28 @@ public class Runway {
     return obstacleDistance;
   }
 
+
   public double getObstacleDistance() {
       return obstacleDistance.get();
-  }
-
-  public SimpleStringProperty calculationSummaryProperty() {
-    return summaryOfCalculation;
-  }
-
-  public String getCalculationSummary() {
-      return summaryOfCalculation.get();
-  }
-
-  public void setCalculationSummary(String summary) {
-      summaryOfCalculation.set(summary);
   }
 
   public String toString() {
     return designator;
   }
 
-  public String toFullString() {
-    return "Runway: " + designator + "\n" +
-            "TORA: " + ctora.get() + "\n" +
-            "TODA: " + ctoda.get() + "\n" +
-            "ASDA: " + casda.get() + "\n" +
-            "LDA: " + clda.get() + "\n" +
-            "RESA: " + resa.get() + "\n" +
-            "Threshold: " + threshold.get() + "\n" +
-            "Clearway: " + clearway.get() + "\n" +
-            "Stopway: " + stopway.get() + "\n" +
-            "Strip End: " + stripEnd + "\n";
+  public String getInformationString() {
+    return "TORA: " + tora + "\n" +
+      "TODA: " + toda + "\n" +
+      "ASDA: " + asda + "\n" +
+      "LDA: " + lda + "\n" +
+      "RESA: " + resa + "\n";
+  }
+
+  public String getCInformationString() {
+    return "TORA: " + ctora.get() + "\n" +
+      "TODA: " + ctoda.get() + "\n" +
+      "ASDA: " + casda.get() + "\n" +
+      "LDA: " + clda.get() + "\n" +
+      "RESA: " + cresa.get() + "\n";
   }
 }
