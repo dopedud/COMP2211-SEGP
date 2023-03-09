@@ -25,9 +25,9 @@ public class Obstacle {
   private final double height;
 
   /**
-   * Distance between the obstacle and the threshold of the runway.
+   * The length of the obstacle.
    */
-  private final double distanceThreshold;
+  private final double length;
 
   /**
    * Centerline displacement, North : positive number, South : negative number
@@ -36,14 +36,14 @@ public class Obstacle {
 
   /**
    * Creates a new obstacle with the specified name, height, and length.
-   * @param name
-   * @param height
-   * @param distanceThreshold
+   * @param name A name to identify the obstacle
+   * @param height Height of the obstacle
+   * @param length Length of the obstacle
    */
-  public Obstacle(String name, double height, double distanceThreshold) {
+  public Obstacle(String name, double height, double length) {
     this.name = name;
     this.height = height;
-    this.distanceThreshold = distanceThreshold;
+    this.length = length;
   }
 
   /**
@@ -51,11 +51,11 @@ public class Obstacle {
    *
    * @param name              name of the obstacle
    * @param height            height of the obstacle
-   * @param distanceThreshold the distance from the threshold of the obstacle
+   * @param length            the length of the obstacle
    * @param centerline        Distance from centerline (+ if North, - if South)
    */
-  public Obstacle(String name, double height, double distanceThreshold, double centerline) {
-    this(name, height, distanceThreshold);
+  public Obstacle(String name, double height, double length, double centerline) {
+    this(name, height, length);
     this.centerline = centerline;
   }
 
@@ -71,8 +71,8 @@ public class Obstacle {
     return height;
   }
 
-  public double getDistThresh() {
-    return distanceThreshold;
+  public double getLength() {
+    return length;
   }
 
   public double getCenterline() {
@@ -81,6 +81,6 @@ public class Obstacle {
 
   @Override
   public String toString() {
-     return "Name: " + name + "\nHeight: " + height + "\nDistance: " + distanceThreshold;
+     return "Name: " + name + "\nHeight: " + height + "\nLength: " + length;
   }
 }

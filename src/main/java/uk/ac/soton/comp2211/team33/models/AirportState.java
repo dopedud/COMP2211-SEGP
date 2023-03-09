@@ -34,8 +34,8 @@ public class AirportState {
     return city;
   }
 
-  public void addObstacle(String name, double height, double distanceThreshold) {
-    this.obstaclesList.add(new Obstacle(name, height, distanceThreshold));
+  public void addObstacle(String name, double height, double length) {
+    this.obstaclesList.add(new Obstacle(name, height, length));
   }
 
   public void loadPredefinedObstacles() {
