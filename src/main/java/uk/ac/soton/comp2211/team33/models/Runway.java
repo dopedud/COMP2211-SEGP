@@ -233,6 +233,7 @@ public class Runway {
     return obstacleDistance;
   }
 
+
   public double getObstacleDistance() {
       return obstacleDistance.get();
   }

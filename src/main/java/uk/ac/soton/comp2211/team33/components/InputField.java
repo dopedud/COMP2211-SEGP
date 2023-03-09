@@ -52,23 +52,14 @@ public class InputField extends HBox {
     textField.setText(text);
   }
 
-  /**
-   * Bi-directionally binds the text displayed in the text field to the given property.
-   * @param text The property to bind the text to.
-   */
-  public void bindText(SimpleStringProperty text) {
-    textField.textProperty().bindBidirectional(text);
-  }
-
-  /**
-   * Removes binding from the text field.
-   */
-  public void removeTextBinding(StringProperty prop) {
-    textField.textProperty().unbindBidirectional(prop);
-  }
 
   public StringProperty inputTextProperty() {
     return textField.textProperty();
   }
+
+  public void setTextProperty(String text) {
+    textField.textProperty().set(text);
+  }
+
 
 }
