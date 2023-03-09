@@ -1,7 +1,9 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -11,7 +13,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
 import uk.ac.soton.comp2211.team33.components.RawInformationDisplay;
+import javafx.util.converter.NumberStringConverter;
+import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.*;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
@@ -77,6 +83,9 @@ public class MainScene extends BaseScene {
 
   @FXML
   private RawInformationDisplay newRunwayValues;
+
+  @FXML
+  private InputField obstacleDistance;
 
   public MainScene(Stage stage, AppState state) {
     super(stage, state);
@@ -202,10 +211,14 @@ public class MainScene extends BaseScene {
     }
   }
 
+  private ChangeListener<Number> obstacleDistanceListener;
+
   /**
    * Renders tab content
    */
   private void renderTabView() {
+    StringConverter<Number> converter = new NumberStringConverter();
+
     AirportState airportState = state.getActiveAirportState();
 
     // Render obstacles and aircraft list
@@ -214,7 +227,33 @@ public class MainScene extends BaseScene {
     aircraftList.setItems(airportState.aircraftListProperty().get());
     runwaysList.setItems(airportState.runwaysListProperty().get());
 
-    // Render calculation summary
+    Runway currentRunway = runwaysList.getSelectionModel().getSelectedItem();
+
+    for (Runway runway: airportState.runwaysListProperty()) {
+      Bindings.unbindBidirectional(runway.obstacleDistanceProperty(), obstacleDistance.inputTextProperty());
+    }
+
+    if (currentRunway != null) {
+      if (obstacleDistanceListener == null) {
+        obstacleDistanceListener = (ov, oldD, newD) -> renderTabView();
+      }
+
+      currentRunway.obstacleDistanceProperty().removeListener(obstacleDistanceListener);
+      currentRunway.obstacleDistanceProperty().addListener(obstacleDistanceListener);
+
+      // obstacleDistance.removeTextBinding(currentRunway.obstacleDistanceProperty());
+      //obstacleDistance.inputTextProperty().bindBidirectional(runwaysList.getSelectionModel().getSelectedItem().obstacleDistanceProperty(), converter);
+
+      obstacleDistance.setTextProperty(String.valueOf(currentRunway.getObstacleDistance()));
+
+      Bindings.bindBidirectional(obstacleDistance.inputTextProperty(), currentRunway.obstacleDistanceProperty(), converter);
+
+      obstacleDistance.setDisable(false);
+    }
+    else {
+      obstacleDistance.setDisable(true);
+      obstacleDistance.setText(null);
+    }
 
     renderCalculations();
     renderRunwayValues();

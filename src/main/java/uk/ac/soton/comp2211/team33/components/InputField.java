@@ -1,6 +1,6 @@
 package uk.ac.soton.comp2211.team33.components;
 
-
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -52,23 +52,14 @@ public class InputField extends HBox {
     textField.setText(text);
   }
 
-  /**
-   * Bi-directionally binds the text displayed in the text field to the given property.
-   * @param text The property to bind the text to.
-   */
-  public void bindText(SimpleStringProperty text) {
-    textField.textProperty().bindBidirectional(text);
-  }
-
-  /**
-   * Removes binding from the text field.
-   */
-  public void removeTextBinding() {
-    textField.textProperty().unbind();
-  }
 
   public StringProperty inputTextProperty() {
     return textField.textProperty();
   }
+
+  public void setTextProperty(String text) {
+    textField.textProperty().set(text);
+  }
+
 
 }

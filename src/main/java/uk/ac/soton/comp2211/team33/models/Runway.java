@@ -69,11 +69,6 @@ public class Runway {
   private final double stripEnd = 60;
 
   /**
-   * A summary of the last calculation performed on the runway.
-   */
-  private SimpleStringProperty summaryOfCalculation = new SimpleStringProperty();
-
-  /**
    * The distance of the obstacle from the threshold of the runway.
    */
   private SimpleDoubleProperty obstacleDistance = new SimpleDoubleProperty(0);
@@ -104,8 +99,6 @@ public class Runway {
     clearway.set(toda - tora);
     stopway.set(asda - tora);
     this.threshold.set(threshold);
-
-    summaryOfCalculation.set("No calculation has been performed on Runway " + this.getDesignator() + " yet.");
   }
 
 
@@ -240,20 +233,9 @@ public class Runway {
     return obstacleDistance;
   }
 
+
   public double getObstacleDistance() {
       return obstacleDistance.get();
-  }
-
-  public SimpleStringProperty calculationSummaryProperty() {
-    return summaryOfCalculation;
-  }
-
-  public String getCalculationSummary() {
-      return summaryOfCalculation.get();
-  }
-
-  public void setCalculationSummary(String summary) {
-      summaryOfCalculation.set(summary);
   }
 
   public String toString() {
