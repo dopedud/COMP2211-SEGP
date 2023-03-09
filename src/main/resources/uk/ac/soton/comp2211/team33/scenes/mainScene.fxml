@@ -15,7 +15,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          prefHeight="960.0" prefWidth="1280.0" stylesheets="@../css/mainScene.css">
+          prefHeight="768.0" prefWidth="1200.0" stylesheets="@../css/mainScene.css">
 
   <columnConstraints>
     <ColumnConstraints percentWidth="66.6666" />
@@ -45,7 +45,7 @@
     <RawInformationDisplay fx:id="oldRunwayValues" title="Original runway values" />
     <RawInformationDisplay fx:id="newRunwayValues" title="Calculated runway values" />
 
-    <VBox spacing="4">
+    <VBox spacing="4" VBox.vgrow="ALWAYS">
       <RawInformationDisplay fx:id="calcSummary" title="Summary of calculation" />
 
       <Button text="Calculate TORA towards Obstacle" onAction="#handleCalculateToraTowards" />
