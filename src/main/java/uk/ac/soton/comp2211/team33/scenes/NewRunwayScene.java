@@ -73,6 +73,7 @@ public class NewRunwayScene extends BaseScene {
     stage.close();
   }
 
+  @Override
   protected void build() {
     stage.setTitle("New runway configurator");
     renderFXML("newRunwayScene.fxml");
