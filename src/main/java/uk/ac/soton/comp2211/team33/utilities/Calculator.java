@@ -369,7 +369,7 @@ public final class Calculator {
       logger.info("Declaring a new RESA due to blast protection...");
       double newResa = aircraft.getBlastProtection() + runway.getObstacleDistance();
       logger.info("New RESA is: " + newResa);
-      runway.setResa(newResa);
+      runway.setCresa(newResa);
       return true;
     } else {
       return false;
