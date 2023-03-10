@@ -27,8 +27,8 @@ public class MainScene extends BaseScene {
     renderFXML("MainScene.fxml");
   }
 
-  @FXML
-  private void onNewRunway() {
-    new NewRunwayScene(createModalStage(), state);
-  }
+//  @FXML
+//  private void onNewRunway() {
+//    new NewRunwayScene(createModalStage(), state);
+//  }
 }

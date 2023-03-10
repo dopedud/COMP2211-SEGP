@@ -7,16 +7,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
 /**
- * The class InputField is a custom component that contains a label and a text field.
+ * The InputField class is a custom component that contains a label and a text field.
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */
-public class InputField extends HBox {
+public class InputField extends AnchorPane {
 
   @FXML
   private Label label;
@@ -25,7 +26,7 @@ public class InputField extends HBox {
   private TextField textField;
 
   public InputField() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("inputField.fxml"));
+    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InputField.fxml"));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
 
