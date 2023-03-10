@@ -3,6 +3,7 @@ package uk.ac.soton.comp2211.team33.models;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -111,6 +112,10 @@ public class Airport {
 
   public SimpleListProperty<Aircraft> getAircraftListProperty() {
     return aircraftList;
+  }
+
+  public ObservableList<Runway> getRunwayList() {
+    return runwayList.get();
   }
 
   public SimpleListProperty<Runway> getRunwayListProperty() {

@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.scenes2.MainScene;
+import uk.ac.soton.comp2211.team33.scenes2.NewAirportScene;
 
 /**
  * The main class to execute when running the application.
@@ -20,7 +21,7 @@ public class App extends Application {
   /**
    * The main method to execute when starting the application.
    *
-   * @param args
+   * @param args command-line arguments
    */
   public static void main(String[] args) {
     logger.info("Starting application...");
@@ -34,6 +35,6 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) {
-    new MainScene(stage, new Airport("London", "London Heathrow Airport"));
+    new NewAirportScene(stage, null);
   }
 }

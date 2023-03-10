@@ -8,8 +8,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
@@ -55,7 +53,6 @@ abstract class BaseScene {
   protected void renderFXML(String fxmlUri) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlUri));
     loader.setController(this);
-
     try {
       Parent root = loader.load();
       stage.setScene(new Scene(root));
@@ -75,7 +72,13 @@ abstract class BaseScene {
     Stage modal = new Stage();
     modal.initOwner(stage);
     modal.initModality(Modality.WINDOW_MODAL);
-    modal.setResizable(false);
+
+    return modal;
+  }
+
+  protected Stage createNewStage() {
+    Stage modal = new Stage();
+    modal.initModality(Modality.NONE);
 
     return modal;
   }

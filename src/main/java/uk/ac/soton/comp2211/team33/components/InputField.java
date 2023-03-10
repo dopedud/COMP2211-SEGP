@@ -29,7 +29,6 @@ public class InputField extends AnchorPane {
     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InputField.fxml"));
     fxmlLoader.setRoot(this);
     fxmlLoader.setController(this);
-
     try {
       fxmlLoader.load();
     } catch (IOException e) {

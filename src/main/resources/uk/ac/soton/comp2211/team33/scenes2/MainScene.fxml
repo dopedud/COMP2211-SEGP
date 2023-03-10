@@ -9,11 +9,11 @@
 
 <?import uk.ac.soton.comp2211.team33.components.RunwayTab?>
 
-<VBox prefHeight="800" prefWidth="1000" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <MenuBar VBox.vgrow="NEVER">
     <Menu mnemonicParsing="false" text="File">
-      <MenuItem mnemonicParsing="false" text="New Airport..."/>
-      <MenuItem mnemonicParsing="false" text="New Runway..."/>
+      <MenuItem mnemonicParsing="false" text="New Airport..." onAction="#onNewAirport"/>
+      <MenuItem mnemonicParsing="false" text="New Runway..." onAction="#onNewRunway"/>
       <SeparatorMenuItem mnemonicParsing="false"/>
       <MenuItem mnemonicParsing="false" text="Save"/>
       <MenuItem mnemonicParsing="false" text="Save As…"/>
@@ -36,6 +36,5 @@
     </Menu>
   </MenuBar>
   <TabPane fx:id="runwayTabs" tabMaxHeight="20.0" tabMaxWidth="100.0" VBox.vgrow="ALWAYS">
-    <RunwayTab/>
   </TabPane>
 </VBox>
