@@ -22,15 +22,15 @@ public class Obstacle {
   /**
    * Height of the obstacle.
    */
-  private final double height;
+  private double height;
 
   /**
    * The length of the obstacle.
    */
-  private final double length;
+  private double length;
 
   /**
-   * Centerline displacement, North : positive number, South : negative number
+   * Center-line displacement; North : positive number, South : negative number.
    */
   private double centerline = 0;
 
@@ -47,22 +47,19 @@ public class Obstacle {
   }
 
   /**
-   * Creates a new obstacle with the specified name, height, length, and distance from centerline.
+   * Creates a new obstacle with the specified name, height, length, and distance from center-line.
    *
    * @param name              name of the obstacle
    * @param height            height of the obstacle
    * @param length            the length of the obstacle
-   * @param centerline        Distance from centerline (+ if North, - if South)
+   * @param centerline        Distance from center-line (+ if North, - if South)
    */
   public Obstacle(String name, double height, double length, double centerline) {
     this(name, height, length);
     this.centerline = centerline;
   }
 
-  /**
-   * Below are the usual accessors and mutators for the instance variables of this class.
-   */
-
+  // Below are the usual accessors and mutators for the instance variables of this class.
   public String getName() {
     return name;
   }

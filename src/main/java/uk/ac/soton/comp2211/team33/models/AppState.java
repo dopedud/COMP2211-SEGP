@@ -13,22 +13,22 @@ import java.util.Map;
  * @author Brian (dal1g21@soton.ac.uk)
  */
 public class AppState {
-  private Map<String, AirportState> airports = new HashMap<>();
+  private Map<String, Airport> airports = new HashMap<>();
 
   private SimpleListProperty<String> airportCodes = new SimpleListProperty<>(FXCollections.observableArrayList("LHR", "SOU"));
 
   private SimpleStringProperty activeAirportCode = new SimpleStringProperty("LHR");
 
   public AppState() {
-    airports.put("LHR", new AirportState("London Heathrow Airport", "London"));
-    airports.put("SOU", new AirportState("Southampton Airport", "Southampton"));
+    airports.put("LHR", new Airport("London", "London Heathrow Airport"));
+    airports.put("SOU", new Airport("Southampton", "Southampton Airport"));
   }
 
   public void setActiveAirportCode(String code) {
     activeAirportCode.set(code);
   }
 
-  public AirportState getActiveAirportState() {
+  public Airport getActiveAirportState() {
     return airports.get(activeAirportCode.get());
   }
 

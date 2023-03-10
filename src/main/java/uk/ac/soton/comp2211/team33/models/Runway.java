@@ -3,6 +3,7 @@ package uk.ac.soton.comp2211.team33.models;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,7 @@ public class Runway {
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end.
    */
-  private final String designator;
+  private final SimpleStringProperty designator;
 
   /**
    * Initial values of the runway.
@@ -31,51 +32,30 @@ public class Runway {
   /**
    * Currently used runway values (after calculation).
    */
-  private SimpleDoubleProperty ctora = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty ctoda = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty casda = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty clda = new SimpleDoubleProperty();
+  private final SimpleDoubleProperty ctora, ctoda, casda, clda, cresa;
 
   /**
-   * RESA value of the runway, could be re-declared
+   * Displaced threshold, clearway, and stopway.
    */
-  private SimpleDoubleProperty cresa = new SimpleDoubleProperty();
+  private final SimpleDoubleProperty threshold, clearway, stopway;
 
   /**
-   * TOCS constant 50m.
+   * TOCS constant of 50m, ALS constant of 50m, and strip end constant of 60m.
    */
-  private final double tocs = 50;
+  private final double tocs = 50, als = 50, stripEnd = 60;
 
-  /**
-   * ALS constant 50m.
-   */
-  private final double als = 50;
+  private SimpleObjectProperty<Obstacle> currentObstacle;
 
-  /**
-   * Displaced threshold, clearway, stopway, and strip end.
-   */
-  private SimpleDoubleProperty clearway = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty stopway = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty threshold = new SimpleDoubleProperty();
-
-  /**
-   * Strip end constant of 60m.
-   */
-  private final double stripEnd = 60;
+  private SimpleObjectProperty<Aircraft> currentAircraft;
 
   /**
    * The distance of the obstacle from the threshold of the runway.
    */
-  private SimpleDoubleProperty obstacleDistance = new SimpleDoubleProperty(0);
+  private SimpleDoubleProperty obstacleDistance;
 
   public Runway(String designator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
-    this.designator = designator;
+    this.designator = new SimpleStringProperty(designator);
 
     this.tora = tora;
     this.toda = toda;
@@ -85,28 +65,27 @@ public class Runway {
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
       this.resa = 240;
-      this.cresa.set(240);
+      cresa = new SimpleDoubleProperty(240);
     } else {
       this.resa = resa;
-      this.cresa.set(resa);
+      cresa = new SimpleDoubleProperty(resa);
     }
 
-    this.ctora.set(tora);
-    this.ctoda.set(toda);
-    this.casda.set(asda);
-    this.clda.set(lda);
+    ctora = new SimpleDoubleProperty(tora);
+    ctoda = new SimpleDoubleProperty(toda);
+    casda = new SimpleDoubleProperty(asda);
+    clda = new SimpleDoubleProperty(lda);
 
-    clearway.set(toda - tora);
-    stopway.set(asda - tora);
-    this.threshold.set(threshold);
+    this.threshold = new SimpleDoubleProperty(threshold);
+    clearway = new SimpleDoubleProperty(toda - tora);
+    stopway = new SimpleDoubleProperty(asda - tora);
+
+    obstacleDistance = new SimpleDoubleProperty();
   }
 
-
-  /**
-   * Below are getters and setters for some values that don't have to change but may be used in certain calculations.
-   */
+  // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
   public String getDesignator() {
-    return designator;
+    return designator.get();
   }
 
   public double getTora() {
@@ -129,10 +108,6 @@ public class Runway {
     return resa;
   }
 
-  public SimpleDoubleProperty cresaProperty() {
-    return cresa;
-  }
-
   public SimpleDoubleProperty ctoraProperty() {
     return ctora;
   }
@@ -149,28 +124,40 @@ public class Runway {
     return clda;
   }
 
-  public double getClearway() {
-    return clearway.get();
+  public SimpleDoubleProperty cresaProperty() {
+    return cresa;
   }
 
-  public SimpleDoubleProperty clearwayProperty() {
-    return clearway;
+  public double getClearway() {
+    return clearway.get();
   }
 
   public double getStopway() {
     return stopway.get();
   }
 
-  public SimpleDoubleProperty stopwayProperty() {
-    return stopway;
-  }
-
   public double getThreshold() {
     return threshold.get();
   }
 
+  public SimpleDoubleProperty clearwayProperty() {
+    return clearway;
+  }
+
+  public SimpleDoubleProperty stopwayProperty() {
+    return stopway;
+  }
+
   public SimpleDoubleProperty thresholdProperty() {
     return threshold;
+  }
+
+  public double getAls() {
+    return als;
+  }
+
+  public double getTocs() {
+    return tocs;
   }
 
   public double getStripEnd() {
@@ -181,6 +168,7 @@ public class Runway {
     return cresa.get();
   }
 
+  // Below are the getters and setters for values that are re-declared in a runway calculation.
   public void setCresa(double resa) {
     this.cresa.set(resa);
   }
@@ -217,29 +205,12 @@ public class Runway {
     this.clda.set(clda);
   }
 
-  /**
-   *  Getters and setter for all current values that can be changed by a re-declaration.
-   */
-
-  public double getAls() {
-    return als;
-  }
-
-  public double getTocs() {
-    return tocs;
-  }
-
   public SimpleDoubleProperty obstacleDistanceProperty() {
     return obstacleDistance;
   }
 
-
   public double getObstacleDistance() {
       return obstacleDistance.get();
-  }
-
-  public String toString() {
-    return designator;
   }
 
   public String getInformationString() {

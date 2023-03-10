@@ -5,8 +5,8 @@ import org.apache.logging.log4j.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.models.AppState;
-import uk.ac.soton.comp2211.team33.scenes.MainScene;
+import uk.ac.soton.comp2211.team33.models.Airport;
+import uk.ac.soton.comp2211.team33.scenes2.MainScene;
 
 /**
  * The main class to execute when running the application.
@@ -35,6 +35,6 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) {
-    new MainScene(stage, new AppState());
+    new MainScene(stage, new Airport("London", "London Heathrow Airport"));
   }
 }
