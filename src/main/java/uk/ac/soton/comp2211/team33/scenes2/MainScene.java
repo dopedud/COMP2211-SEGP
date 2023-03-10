@@ -11,8 +11,8 @@ public class MainScene extends BaseScene {
 
   private static final Logger logger = LogManager.getLogger(MainScene.class);
 
-//  @FXML
-//  private TabPane runwayTabs;
+  @FXML
+  private TabPane runwayTabs;
 
   public MainScene(Stage stage, Airport state) {
     super(stage, state);
@@ -23,6 +23,8 @@ public class MainScene extends BaseScene {
     logger.info("Building MainScene...");
 
     stage.setTitle("Runway Re-decleration Tool - " + state.getName());
+    stage.setMinHeight(600);
+    stage.setMinWidth(1000);
 
     renderFXML("MainScene.fxml");
   }

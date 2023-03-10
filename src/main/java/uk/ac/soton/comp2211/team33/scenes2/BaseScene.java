@@ -67,7 +67,7 @@ abstract class BaseScene {
   }
 
   /**
-   * Create a modal stage that is owned by the stage of this scene
+   * Create a modal stage that is owned by the stage of this scene.
    *
    * @return The created stage to render in
    */

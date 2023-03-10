@@ -17,7 +17,6 @@ public class App extends Application {
 
   private static final Logger logger = LogManager.getLogger(App.class);
 
-
   /**
    * The main method to execute when starting the application.
    *

@@ -32,8 +32,8 @@ public class InputField extends AnchorPane {
 
     try {
       fxmlLoader.load();
-    } catch (IOException exception) {
-      throw new RuntimeException(exception);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
