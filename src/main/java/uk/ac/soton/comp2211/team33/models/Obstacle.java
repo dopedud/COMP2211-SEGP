@@ -25,14 +25,14 @@ public class Obstacle {
   private double height;
 
   /**
-   * The length of the obstacle.
+   * Length of the obstacle.
    */
   private double length;
 
   /**
    * Center-line displacement; North : positive number, South : negative number.
    */
-  private double centerline = 0;
+  private double centerline;
 
   /**
    * Creates a new obstacle with the specified name, height, and length.

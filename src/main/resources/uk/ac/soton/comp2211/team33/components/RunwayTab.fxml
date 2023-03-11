@@ -6,28 +6,118 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Tab?>
 
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ChoiceBox?>
+
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <fx:root type="Tab" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <AnchorPane>
     <SplitPane dividerPositions="0.2, 0.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <AnchorPane>
-        <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-          <TitledPane animated="false" text="Aircraft" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <AnchorPane>
-
-            </AnchorPane>
+        <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+          <TitledPane animated="false" collapsible="false" text="Aircraft"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox spacing="10.0">
+              <HBox alignment="CENTER" spacing="10.0">
+                <Button mnemonicParsing="false" text="Edit"/>
+                <Button mnemonicParsing="false" text="Add"/>
+                <Button mnemonicParsing="false" text="Delete"/>
+              </HBox>
+              <AnchorPane>
+                <ChoiceBox fx:id="aircraftList"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Blast Protection"/>
+                <Label fx:id="blastProtection" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+            </VBox>
           </TitledPane>
-          <TitledPane animated="false" text="Obstacles" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <AnchorPane>
-
-            </AnchorPane>
+          <TitledPane animated="false" collapsible="false" text="Obstacles"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox spacing="10.0">
+              <HBox alignment="CENTER" spacing="10.0">
+                <Button mnemonicParsing="false" text="Edit"/>
+                <Button mnemonicParsing="false" text="Add"/>
+                <Button mnemonicParsing="false" text="Delete"/>
+              </HBox>
+              <AnchorPane>
+                <ChoiceBox fx:id="obstacleList"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Height" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+                <Label text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Length" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+                <Label text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Centerline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+                <Label text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+            </VBox>
           </TitledPane>
         </VBox>
       </AnchorPane>
+        <!--CANVAS/2D-VIEW-->
       <AnchorPane/>
-      <AnchorPane/>
+      <AnchorPane>
+        <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+          <TitledPane animated="false" collapsible="false" text="Runway Values"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" spacing="50.0">
+              <VBox alignment="CENTER" spacing="5.0">
+                <Label text="Values"/>
+                <Label text="TORA"/>
+                <Label text="TODA"/>
+                <Label text="ASDA"/>
+                <Label text="LDA"/>
+                <Label text="RESA"/>
+                <Label text="Threshold"/>
+              </VBox>
+              <VBox alignment="CENTER" spacing="5.0">
+                <Label text="Original"/>
+                <Label fx:id="tora"/>
+                <Label fx:id="toda"/>
+                <Label fx:id="asda"/>
+                <Label fx:id="lda"/>
+                <Label fx:id="resa"/>
+                <Label fx:id="thresholdOriginal"/>
+              </VBox>
+              <VBox alignment="CENTER" spacing="5.0">
+                <Label text="Calculated"/>
+                <Label fx:id="ctora"/>
+                <Label fx:id="ctoda"/>
+                <Label fx:id="casda"/>
+                <Label fx:id="clda"/>
+                <Label fx:id="cresa"/>
+                <Label fx:id="thresholdCalculated"/>
+              </VBox>
+            </HBox>
+          </TitledPane>
+          <TitledPane animated="false" collapsible="false" text="Breakdown of Calculations"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+          </TitledPane>
+        </VBox>
+      </AnchorPane>
     </SplitPane>
   </AnchorPane>
 </fx:root>

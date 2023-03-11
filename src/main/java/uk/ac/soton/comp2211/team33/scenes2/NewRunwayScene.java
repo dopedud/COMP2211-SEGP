@@ -33,7 +33,7 @@ public class NewRunwayScene extends BaseScene {
   @FXML
   private InputField threshold;
 
-  public NewRunwayScene(Stage stage, Airport state) {
+  NewRunwayScene(Stage stage, Airport state) {
     super(stage, state);
   }
 

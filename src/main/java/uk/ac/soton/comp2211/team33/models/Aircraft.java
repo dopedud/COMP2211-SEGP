@@ -32,12 +32,13 @@ public class Aircraft {
    */
   public Aircraft(String id, double blastProtection) {
     this.id = id;
+    this.blastProtection = blastProtection;
 
-    if (blastProtection < 300 || blastProtection > 500) {
-      logger.error("Blast protection value not within boundaries (300m-500m).");
-    } else {
-      this.blastProtection = blastProtection;
-    }
+//    if (blastProtection < 300 || blastProtection > 500) {
+//      logger.error("Blast protection value not within boundaries (300m-500m).");
+//    } else {
+//      this.blastProtection = blastProtection;
+//    }
   }
 
   // Below are the usual accessors and mutators for the instance variables of this class.

@@ -106,8 +106,16 @@ public class Airport {
     return name.get();
   }
 
+  public ObservableList<Obstacle> getObstacleList() {
+    return obstacleList.get();
+  }
+
   public SimpleListProperty<Obstacle> getObstacleListProperty() {
     return obstacleList;
+  }
+
+  public ObservableList<Aircraft> getAircraftList() {
+    return aircraftList.get();
   }
 
   public SimpleListProperty<Aircraft> getAircraftListProperty() {

@@ -16,7 +16,7 @@ public class MainScene extends BaseScene {
   @FXML
   private TabPane runwayTabs;
 
-  public MainScene(Stage stage, Airport state) {
+  MainScene(Stage stage, Airport state) {
     super(stage, state);
   }
 
@@ -46,7 +46,7 @@ public class MainScene extends BaseScene {
     state.getRunwayListProperty().addListener((obList, oldList, newList) -> {
       Runway runway = newList.get(newList.size() - 1);
 
-      runwayTabs.getTabs().add(new RunwayTab(runway.getDesignator()));
+      runwayTabs.getTabs().add(new RunwayTab(runway, state));
     });
   }
 }
