@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.scenes2;
+package uk.ac.soton.comp2211.team33.scenes;
 
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -13,25 +13,7 @@ public class NewRunwayScene extends BaseScene {
   private static final Logger logger = LogManager.getLogger(NewRunwayScene.class);
 
   @FXML
-  private InputField designator;
-
-  @FXML
-  private InputField tora;
-
-  @FXML
-  private InputField toda;
-
-  @FXML
-  private InputField asda;
-
-  @FXML
-  private InputField lda;
-
-  @FXML
-  private InputField resa;
-
-  @FXML
-  private InputField threshold;
+  private InputField designator, tora, toda, asda, lda, resa, threshold;
 
   NewRunwayScene(Stage stage, Airport state) {
     super(stage, state);

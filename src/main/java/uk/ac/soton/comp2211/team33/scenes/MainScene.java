@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.scenes2;
+package uk.ac.soton.comp2211.team33.scenes;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
@@ -46,7 +46,7 @@ public class MainScene extends BaseScene {
     state.getRunwayListProperty().addListener((obList, oldList, newList) -> {
       Runway runway = newList.get(newList.size() - 1);
 
-      runwayTabs.getTabs().add(new RunwayTab(runway, state));
+      runwayTabs.getTabs().add(new RunwayTab(runway, stage, state));
     });
   }
 }

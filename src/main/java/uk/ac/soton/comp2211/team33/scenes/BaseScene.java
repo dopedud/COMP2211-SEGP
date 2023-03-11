@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.scenes2;
+package uk.ac.soton.comp2211.team33.scenes;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
