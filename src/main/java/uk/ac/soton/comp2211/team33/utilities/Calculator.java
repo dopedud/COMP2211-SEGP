@@ -23,7 +23,13 @@ public final class Calculator {
   /**
    * Private constructor to avoid instantiating.
    */
-  private Calculator() {
+  private Calculator() {}
+
+  public static void resetCalculations(Runway runway) {
+    runway.setCtora(runway.getTora());
+    runway.setCtoda(runway.getToda());
+    runway.setCasda(runway.getAsda());
+    runway.setClda(runway.getLda());
   }
 
   /**
@@ -105,7 +111,6 @@ public final class Calculator {
 
     return calcSummary.toString();
   }
-
 
   /**
    * No pretty printing TORA away from obstacle.

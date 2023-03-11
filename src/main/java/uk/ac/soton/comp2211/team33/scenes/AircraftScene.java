@@ -48,7 +48,7 @@ public class AircraftScene extends BaseScene {
 
     state.getAircraftList().add(new Aircraft(id, blastProtection));
 
-    logger.info("New aircraft added - " + state.getAircraftList().get(state.getAircraftList().size() - 1).getId());
+    logger.info("New aircraft added - " + id);
 
     stage.close();
   }

@@ -14,6 +14,7 @@ import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.scenes.AircraftScene;
 import uk.ac.soton.comp2211.team33.scenes.ObstacleScene;
+import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
 import java.io.IOException;
 import java.util.*;
@@ -43,7 +44,7 @@ public class RunwayTab extends Tab {
   @FXML
   private Label blastProtection, height, length, centerline;
 
-  public RunwayTab(Runway runway, Stage stage, Airport state) {
+  public RunwayTab(Stage stage, Airport state, Runway runway) {
     logger.info("Creating new runway tab named " + runway.getDesignator() + "...");
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("RunwayTab.fxml"));
@@ -75,13 +76,13 @@ public class RunwayTab extends Tab {
     thresholdCalculated.setText(String.valueOf(runway.getThreshold()));
 
     // Set calculated values
-    ctora.setText(String.valueOf(runway.getCtora()));
-    ctoda.setText(String.valueOf(runway.getCtoda()));
+    ctora.setText(String.valueOf(runway.getTora()));
+    ctoda.setText(String.valueOf(runway.getToda()));
     casda.setText(String.valueOf(runway.getCasda()));
     clda.setText(String.valueOf(runway.getClda()));
     cresa.setText(String.valueOf(runway.getCresa()));
 
-    // Add listeners from calculated values to listeners
+    // Add listeners from calculated values model to calculated values UI
     runway.ctoraProperty().addListener(((obVal, oldVal, newVal) -> ctora.setText(String.valueOf(newVal))));
     runway.ctodaProperty().addListener(((obVal, oldVal, newVal) -> ctoda.setText(String.valueOf(newVal))));
     runway.casdaProperty().addListener(((obVal, oldVal, newVal) -> casda.setText(String.valueOf(newVal))));
@@ -98,6 +99,9 @@ public class RunwayTab extends Tab {
       }
 
       aircraftList.setItems(FXCollections.observableArrayList(aircraftIDs));
+
+      if (newList.size() > 0) aircraftList.setValue(aircraftIDs.get(aircraftIDs.size() - 1));
+      else aircraftList.setValue("None");
     });
 
     // Add listeners from obstacleList model to obstacleList UI
@@ -110,11 +114,62 @@ public class RunwayTab extends Tab {
       }
 
       obstacleList.setItems(FXCollections.observableArrayList(names));
+
+      if (newList.size() > 0) obstacleList.setValue(names.get(names.size() - 1));
+      else obstacleList.setValue("None");
     });
 
     // Add default items in ChoiceBox
     aircraftList.getItems().add("None");
+    aircraftList.setValue("None");
     obstacleList.getItems().add("None");
+    obstacleList.setValue("None");
+
+    // Add listeners when current value from ChoiceBox change in aircraftList
+    aircraftList.valueProperty().addListener((obVal, oldVal, newVal) -> {
+      if (newVal == null) return;
+
+      logger.info("Aircraft selected named " + newVal);
+      if (newVal.equals("None")) {
+        runway.setCurrentAircraft(null);
+      } else {
+        runway.setCurrentAircraft(state.getAircraftList().stream().
+            filter(aircraft -> aircraft.getId().equals(aircraftList.getValue())).
+            findAny().get());
+      }
+
+      calculateRunwayValues();
+    });
+
+    // Add listeners when current value from ChoiceBox change in obstacleList
+    obstacleList.valueProperty().addListener((obVal, oldVal, newVal) -> {
+      if (newVal == null) return;
+
+      logger.info("Obstacle selected named " + obstacleList.getValue());
+      if (obstacleList.getSelectionModel().getSelectedItem().equals("None")) {
+        runway.setCurrentObstacle(null);
+      } else {
+        runway.setCurrentObstacle(state.getObstacleList().stream().
+            filter(obstacle -> obstacle.getName().equals(obstacleList.getValue())).
+            findAny().get());
+      }
+
+      calculateRunwayValues();
+    });
+  }
+
+  private void calculateRunwayValues() {
+    if (runway.getCurrentObstacle() == null && runway.getCurrentAircraft() == null) {
+      Calculator.resetCalculations(runway);
+    } else if (runway.getCurrentAircraft() == null) {
+      Calculator.toraTowardsObs(runway, runway.getCurrentObstacle());
+      Calculator.ldaTowardsObs(runway, runway.getCurrentObstacle());
+    } else {
+      Calculator.toraTowardsObs(runway, runway.getCurrentObstacle());
+      Calculator.ldaTowardsObs(runway, runway.getCurrentObstacle());
+      Calculator.toraAwayObs(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft());
+      Calculator.ldaOverObs(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft());
+    }
   }
 
   private Stage createModalStage() {

@@ -46,7 +46,7 @@ public class MainScene extends BaseScene {
     state.getRunwayListProperty().addListener((obList, oldList, newList) -> {
       Runway runway = newList.get(newList.size() - 1);
 
-      runwayTabs.getTabs().add(new RunwayTab(runway, stage, state));
+      runwayTabs.getTabs().add(new RunwayTab(stage, state, runway));
     });
   }
 }

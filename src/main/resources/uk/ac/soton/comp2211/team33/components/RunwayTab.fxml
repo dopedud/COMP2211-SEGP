@@ -41,6 +41,11 @@
           <TitledPane animated="false" collapsible="false" text="Obstacles"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <VBox spacing="10.0">
+              <AnchorPane>
+                <Button mnemonicParsing="false" text="Load Pre-defined Obstacles"
+                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
               <HBox alignment="CENTER" spacing="10.0">
                 <Button mnemonicParsing="false" text="Edit" onAction="#onEditObstacle"/>
                 <Button mnemonicParsing="false" text="Add" onAction="#onAddObstacle"/>

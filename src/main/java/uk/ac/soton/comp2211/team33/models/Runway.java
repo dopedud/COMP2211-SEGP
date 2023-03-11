@@ -44,9 +44,10 @@ public class Runway {
    */
   private final double tocs = 50, als = 50, stripEnd = 60;
 
-  private SimpleObjectProperty<Obstacle> currentObstacle;
 
   private SimpleObjectProperty<Aircraft> currentAircraft;
+
+  private SimpleObjectProperty<Obstacle> currentObstacle;
 
   /**
    * The distance of the obstacle from the threshold of the runway.
@@ -80,10 +81,13 @@ public class Runway {
     clearway = new SimpleDoubleProperty(toda - tora);
     stopway = new SimpleDoubleProperty(asda - tora);
 
+    currentAircraft = new SimpleObjectProperty<>();
+    currentObstacle = new SimpleObjectProperty<>();
     obstacleDistance = new SimpleDoubleProperty();
   }
 
   // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
+
   public String getDesignator() {
     return designator.get();
   }
@@ -108,6 +112,76 @@ public class Runway {
     return resa;
   }
 
+  // Below are getters and setter for values that would be re-declared.
+
+  public double getCtora() {
+    return ctora.get();
+  }
+
+  public double getCtoda() {
+    return ctoda.get();
+  }
+
+  public double getCasda() {
+    return casda.get();
+  }
+
+  public double getClda() {
+    return clda.get();
+  }
+
+  public double getCresa() {
+    return cresa.get();
+  }
+
+  public void setCtora(double ctora) {
+    this.ctora.set(ctora);
+  }
+
+  public void setCtoda(double ctoda) {
+    this.ctoda.set(ctoda);
+  }
+
+  public void setCasda(double casda) {
+    this.casda.set(casda);
+  }
+
+  public void setClda(double clda) {
+    this.clda.set(clda);
+  }
+
+  public void setCresa(double resa) {
+    this.cresa.set(resa);
+  }
+
+  // Constants of a runway.
+
+  public double getThreshold() {
+    return threshold.get();
+  }
+
+  public double getClearway() {
+    return clearway.get();
+  }
+
+  public double getStopway() {
+    return stopway.get();
+  }
+
+  public double getAls() {
+    return als;
+  }
+
+  public double getTocs() {
+    return tocs;
+  }
+
+  public double getStripEnd() {
+    return stripEnd;
+  }
+
+  // Properties for re-declared values.
+
   public SimpleDoubleProperty ctoraProperty() {
     return ctora;
   }
@@ -128,16 +202,8 @@ public class Runway {
     return cresa;
   }
 
-  public double getClearway() {
-    return clearway.get();
-  }
-
-  public double getStopway() {
-    return stopway.get();
-  }
-
-  public double getThreshold() {
-    return threshold.get();
+  public SimpleDoubleProperty thresholdProperty() {
+    return threshold;
   }
 
   public SimpleDoubleProperty clearwayProperty() {
@@ -148,61 +214,28 @@ public class Runway {
     return stopway;
   }
 
-  public SimpleDoubleProperty thresholdProperty() {
-    return threshold;
+  public Aircraft getCurrentAircraft() {
+    return currentAircraft.get();
   }
 
-  public double getAls() {
-    return als;
+  public Obstacle getCurrentObstacle() {
+    return currentObstacle.get();
   }
 
-  public double getTocs() {
-    return tocs;
+  public void setCurrentAircraft(Aircraft aircraft) {
+    currentAircraft.set(aircraft);
   }
 
-  public double getStripEnd() {
-    return stripEnd;
+  public void setCurrentObstacle(Obstacle obstacle) {
+    currentObstacle.set(obstacle);
   }
 
-  public double getCresa() {
-    return cresa.get();
+  public SimpleObjectProperty<Aircraft> aircraftProperty() {
+    return currentAircraft;
   }
 
-  // Below are the getters and setters for values that are re-declared in a runway calculation.
-  public void setCresa(double resa) {
-    this.cresa.set(resa);
-  }
-
-  public double getCtora() {
-    return ctora.get();
-  }
-
-  public void setCtora(double ctora) {
-    this.ctora.set(ctora);
-  }
-
-  public double getCtoda() {
-    return ctoda.get();
-  }
-
-  public void setCtoda(double ctoda) {
-    this.ctoda.set(ctoda);
-  }
-
-  public double getCasda() {
-    return casda.get();
-  }
-
-  public void setCasda(double casda) {
-    this.casda.set(casda);
-  }
-
-  public double getClda() {
-    return clda.get();
-  }
-
-  public void setClda(double clda) {
-    this.clda.set(clda);
+  public SimpleObjectProperty<Obstacle> obstacleProperty() {
+    return currentObstacle;
   }
 
   public SimpleDoubleProperty obstacleDistanceProperty() {
