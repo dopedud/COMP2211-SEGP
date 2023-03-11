@@ -5,12 +5,14 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
@@ -205,7 +207,7 @@ public class MainScene extends BaseScene {
   private void renderTabs() {
     SimpleListProperty<String> airportCodesProperty = state.airportCodesProperty();
 
-    for (String airportCode: airportCodesProperty) {
+    for (String airportCode : airportCodesProperty) {
       Tab tab = new Tab(airportCode);
       tabPanel.getTabs().add(tab);
     }
@@ -229,7 +231,7 @@ public class MainScene extends BaseScene {
 
     Runway currentRunway = runwaysList.getSelectionModel().getSelectedItem();
 
-    for (Runway runway: airportState.runwaysListProperty()) {
+    for (Runway runway : airportState.runwaysListProperty()) {
       Bindings.unbindBidirectional(runway.obstacleDistanceProperty(), obstacleDistance.inputTextProperty());
     }
 
@@ -249,8 +251,7 @@ public class MainScene extends BaseScene {
       Bindings.bindBidirectional(obstacleDistance.inputTextProperty(), currentRunway.obstacleDistanceProperty(), converter);
 
       obstacleDistance.setDisable(false);
-    }
-    else {
+    } else {
       obstacleDistance.setDisable(true);
       obstacleDistance.setText(null);
     }
@@ -324,5 +325,157 @@ public class MainScene extends BaseScene {
       String calculation = Calculator.ldaOverObsPP(currentRunway, currentObstacle, currentAircraft);
       calcSummary.setInformation(calculation);
     }
+  }
+
+  /**
+   * Creates a top-down view of the runway using a canvas
+   *
+   * @param primaryStage
+   */
+  // TODO: 11/03/2023 Brian I left most of the variables as you see them below
+  /* Those variables can be replaced by given parameters to make the canvas adapt
+   We can take care of the colours later.
+   Variables that can be passed in instead are Height (currently 400), Width (currently 550)
+   The drawing is all parameterised, so make sure to slightly maintain the aspect ratio of height-width.
+  */
+  public void makeTopDown(Stage primaryStage, String rdesignator, double otora) {
+
+    var canvas = new Canvas();
+    canvas.setHeight(400);
+    canvas.setWidth(550);
+
+    //The designator of the selected runway
+    var designator = rdesignator;
+
+    var formattedDes = formatDesignators(designator);
+
+    var gc = canvas.getGraphicsContext2D();
+
+    var cw = canvas.getWidth();
+    var ch = canvas.getHeight();
+
+    double toraL = otora; //Some given TORA to be passed in, dummy value
+
+    //Surrounding area
+    gc.setFill(Color.valueOf("#2d8000"));
+    gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
+    double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
+
+    //The polygon around the runway
+    gc.setFill(Color.valueOf("#4542ff"));
+    gc.fillPolygon(xCoord, yCoord, 12);
+    gc.setStroke(Color.BLACK);
+    gc.strokePolygon(xCoord, yCoord, 12);
+
+    //Runway body
+    gc.setFill(Color.valueOf("#242424"));
+    gc.fillRect(cw * 0.1, ch * 0.44, cw * 0.80, ch * 0.13);
+    gc.setStroke(Color.BLACK);
+    gc.setLineWidth(0.25);
+    gc.strokeRect(cw * 0.1, ch * 0.44, cw * 0.80, ch * 0.13);
+
+    //Cleared and graded area lines
+    // TODO: 11/03/2023 In development
+    gc.setStroke(Color.valueOf("#ffffff"));
+    gc.setLineWidth(1);
+//  gc.strokeLine(101, 120, 160, 120);
+
+    //Dashed centre line, lower dash number to get more dashes in the line.
+    int dashes = 9;
+    if (toraL >= 3500) {
+      dashes = 5;
+    }
+    gc.setLineDashes(dashes);
+    gc.strokeLine(cw * 0.25, ch * 0.5, cw * 0.75, ch * 0.5);
+    gc.setLineDashes(0);
+
+    //Starting lines at each end of the runway
+    gc.setStroke(Color.valueOf("#ffffff"));
+    gc.setLineWidth(2);
+    var tempA = cw * 0.12;
+    var tempB = ch * 0.46;
+    var tempC = cw * 0.16;
+    var tempD = ch * 0.46;
+    while (tempB < ch * 0.5625) {
+      gc.strokeLine(tempA, tempB, tempC, tempD);
+      tempB += 5;
+      tempD += 5;
+    }
+
+    var tempX = cw * 0.88;
+    var tempY = cw * 0.84;
+    tempB = ch * 0.46;
+    tempD = ch * 0.46;
+    while (tempB < ch * 0.5625) {
+      gc.strokeLine(tempX, tempB, tempY, tempD);
+      tempB += 5;
+      tempD += 5;
+    }
+
+    //Write the runway designators in the 2D view
+    gc.setLineWidth(1);
+    gc.strokeText(formattedDes[0], cw * 0.18, ch * 0.5);
+    gc.strokeText(formattedDes[1], cw * 0.80, ch * 0.5);
+
+    VBox vbox = new VBox(canvas);
+    Scene scene = new Scene(vbox);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
+
+  /**
+   * Takes in a designator string and gives back a list with 2 elements,
+   * first is the original, and second is the other side's designator, both are formatted in a way for the canvas
+   * @param designator the runway designator
+   * @return a list with 2 opposite designators
+   */
+  private String[] formatDesignators(String designator) {
+
+    //Throw error if designator is not of the correct format (e.g. 09L, 26)
+    if (designator.length() != 3 && designator.length() != 2) {
+      System.err.println("Bad format for designator.");
+    }
+
+    //The runway designator of the other side
+    String oppositeDes = null;
+
+    //Designator number
+    int numDes = 0;
+    try {
+      if (designator.length() == 3) {
+        numDes = Integer.parseInt(designator.substring(0, 2));
+      } else {
+        numDes = Integer.parseInt(designator);
+      }
+    } catch (NumberFormatException e) {
+      System.err.println("Bad number format for designator.");
+    }
+
+    //Minus 36
+    int newNumDes = 36 - numDes;
+    String desSide = "";
+    if (designator.length() == 3) {
+      //Change character for other designator
+      if (designator.charAt(2) == 'L') {
+        desSide = "R";
+      } else {
+        desSide = "L";
+      }
+    }
+
+    //Check for the number designator
+    if (newNumDes < 10) {
+      oppositeDes = "0" + newNumDes + "\n " + desSide;
+    } else {
+      oppositeDes = newNumDes + "\n " + desSide;
+    }
+
+    if (designator.length() == 3) {
+      designator = designator.substring(0, 2) + "\n " + designator.substring(2);
+    }
+
+    return new String[]{designator, oppositeDes};
   }
 }
