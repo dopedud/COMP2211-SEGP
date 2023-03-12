@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
-import uk.ac.soton.comp2211.team33.models.Obstacle;
 
 public class ObstacleScene extends BaseScene {
 
@@ -30,6 +29,8 @@ public class ObstacleScene extends BaseScene {
 
   @Override
   protected void build() {
+    logger.info("Building ObstacleScene...");
+
     stage.setResizable(false);
 
     if (isEdit) {
@@ -48,9 +49,9 @@ public class ObstacleScene extends BaseScene {
     double length = Double.parseDouble(this.length.getText());
     double centerline = Double.parseDouble(this.centerline.getText());
 
-    state.getObstacleList().add(new Obstacle(name, height, length, centerline));
+    state.addObstacle(name, height, length, centerline);
 
-    logger.info("New obstacle added - " + state.getObstacleList().get(state.getObstacleList().size() - 1).getName());
+    logger.info("New obstacle added - " + name);
 
     stage.close();
   }

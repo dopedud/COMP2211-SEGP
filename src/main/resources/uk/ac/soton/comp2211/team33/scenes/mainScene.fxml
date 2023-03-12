@@ -18,23 +18,13 @@
       <MenuItem mnemonicParsing="false" text="Save"/>
       <MenuItem mnemonicParsing="false" text="Save As…"/>
       <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="Preferences…"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
+      <!--<MenuItem mnemonicParsing="false" text="Preferences…"/>
+      <SeparatorMenuItem mnemonicParsing="false"/>-->
       <MenuItem mnemonicParsing="false" text="Quit"/>
-    </Menu>
-    <Menu mnemonicParsing="false" text="Edit">
-      <MenuItem mnemonicParsing="false" text="Undo"/>
-      <MenuItem mnemonicParsing="false" text="Redo"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="Cut"/>
-      <MenuItem mnemonicParsing="false" text="Copy"/>
-      <MenuItem mnemonicParsing="false" text="Paste"/>
-      <MenuItem mnemonicParsing="false" text="Delete"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Help">
       <MenuItem mnemonicParsing="false" text="About..."/>
     </Menu>
   </MenuBar>
-  <TabPane fx:id="runwayTabs" tabMaxHeight="20.0" tabMaxWidth="100.0" VBox.vgrow="ALWAYS">
-  </TabPane>
+  <TabPane fx:id="runwayTabs" tabMaxHeight="20.0" tabMaxWidth="100.0" VBox.vgrow="ALWAYS"/>
 </VBox>

@@ -44,10 +44,15 @@ public class Runway {
    */
   private final double tocs = 50, als = 50, stripEnd = 60;
 
+  /**
+   * Currently selected aircraft for this runway.
+   */
+  private final SimpleObjectProperty<Aircraft> currentAircraft;
 
-  private SimpleObjectProperty<Aircraft> currentAircraft;
-
-  private SimpleObjectProperty<Obstacle> currentObstacle;
+  /**
+   * Currently selected obstacle for this runway.
+   */
+  private final SimpleObjectProperty<Obstacle> currentObstacle;
 
   /**
    * The distance of the obstacle from the threshold of the runway.
@@ -222,6 +227,10 @@ public class Runway {
     return currentObstacle.get();
   }
 
+  public double getObstacleDistance() {
+    return obstacleDistance.get();
+  }
+
   public void setCurrentAircraft(Aircraft aircraft) {
     currentAircraft.set(aircraft);
   }
@@ -240,10 +249,6 @@ public class Runway {
 
   public SimpleDoubleProperty obstacleDistanceProperty() {
     return obstacleDistance;
-  }
-
-  public double getObstacleDistance() {
-      return obstacleDistance.get();
   }
 
   public String getInformationString() {

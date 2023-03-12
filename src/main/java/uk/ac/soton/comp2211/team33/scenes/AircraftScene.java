@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 public class AircraftScene extends BaseScene {
@@ -30,6 +29,8 @@ public class AircraftScene extends BaseScene {
 
   @Override
   protected void build() {
+    logger.info("Building AircraftScene...");
+
     stage.setResizable(false);
 
     if (isEdit) {
@@ -46,7 +47,7 @@ public class AircraftScene extends BaseScene {
     String id = this.id.getText();
     double blastProtection = Double.parseDouble(this.blastProtection.getText());
 
-    state.getAircraftList().add(new Aircraft(id, blastProtection));
+    state.addAircraft(id, blastProtection);
 
     logger.info("New aircraft added - " + id);
 

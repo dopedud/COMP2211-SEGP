@@ -23,8 +23,8 @@ public class NewRunwayScene extends BaseScene {
   protected void build() {
     logger.info("Building NewRunwayScene...");
 
-    stage.setTitle("New Runway");
     stage.setResizable(false);
+    stage.setTitle("New Runway");
 
     renderFXML("NewRunwayScene.fxml");
   }
@@ -38,8 +38,7 @@ public class NewRunwayScene extends BaseScene {
     double resaDouble = Double.parseDouble(resa.getText());
     double thresholdDouble = Double.parseDouble(threshold.getText());
 
-    state.getRunwayList().add(new Runway(designator.getText(), toraDouble, todaDouble, asdaDouble, ldaDouble,
-        resaDouble, thresholdDouble));
+    state.addRunway(designator.getText(), toraDouble, todaDouble, asdaDouble, ldaDouble, resaDouble, thresholdDouble);
 
     stage.close();
   }

@@ -1,14 +1,11 @@
 package uk.ac.soton.comp2211.team33.components;
 
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
@@ -26,12 +23,12 @@ public class InputField extends AnchorPane {
   private TextField textField;
 
   public InputField() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("InputField.fxml"));
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("InputField.fxml"));
+    loader.setRoot(this);
+    loader.setController(this);
 
     try {
-      fxmlLoader.load();
+      loader.load();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -51,15 +48,6 @@ public class InputField extends AnchorPane {
 
   public void setText(String text) {
     textField.setText(text);
-  }
-
-
-  public StringProperty inputTextProperty() {
-    return textField.textProperty();
-  }
-
-  public void setTextProperty(String text) {
-    textField.textProperty().set(text);
   }
 
 }

@@ -1,6 +1,7 @@
 package uk.ac.soton.comp2211.team33.components;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -17,8 +18,14 @@ import uk.ac.soton.comp2211.team33.scenes.ObstacleScene;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 
+/**
+ * The RunwayTab class is a custom component that holds a runway in a tab in an airport. An airport can contain many
+ * runways.
+ *
+ * @author Abeed (mabs1u21@soton.ac.uk)
+ */
 public class RunwayTab extends Tab {
 
   private static final Logger logger = LogManager.getLogger(RunwayTab.class);
@@ -34,6 +41,9 @@ public class RunwayTab extends Tab {
 
   @FXML
   private Label ctora, ctoda, casda, clda, cresa;
+
+  @FXML
+  private TextArea toraCalc, todaCalc, asdaCalc, ldaCalc;
 
   @FXML
   private Label thresholdOriginal, thresholdCalculated;
@@ -82,48 +92,46 @@ public class RunwayTab extends Tab {
     clda.setText(String.valueOf(runway.getClda()));
     cresa.setText(String.valueOf(runway.getCresa()));
 
-    // Add listeners from calculated values model to calculated values UI
+    // Add listeners from calculated values UI to calculated values model
     runway.ctoraProperty().addListener(((obVal, oldVal, newVal) -> ctora.setText(String.valueOf(newVal))));
     runway.ctodaProperty().addListener(((obVal, oldVal, newVal) -> ctoda.setText(String.valueOf(newVal))));
     runway.casdaProperty().addListener(((obVal, oldVal, newVal) -> casda.setText(String.valueOf(newVal))));
     runway.cldaProperty().addListener(((obVal, oldVal, newVal) -> clda.setText(String.valueOf(newVal))));
     runway.cresaProperty().addListener(((obVal, oldVal, newVal) -> cresa.setText(String.valueOf(newVal))));
 
-    // Add listeners from aircraftList model to aircraftList UI
-    state.getAircraftListProperty().addListener((obList, oldList, newList) -> {
-      ArrayList<String> aircraftIDs = new ArrayList<>();
-      aircraftIDs.add("None");
+    // Initialise list UI to list models
+    InitialiseAircraftList();
+    InitialiseObstacleList();
+  }
 
-      for (Aircraft aircraft : newList) {
-        aircraftIDs.add(aircraft.getId());
-      }
+  private void InitialiseAircraftList() {
+    // Set items of aircraftList UI to aircraftList model
+    ArrayList<String> ids = new ArrayList<>();
+    ids.add("None");
 
-      aircraftList.setItems(FXCollections.observableArrayList(aircraftIDs));
+    for (Aircraft aircraft : state.getAircraftList()) {
+      ids.add(aircraft.getId());
+    }
 
-      if (newList.size() > 0) aircraftList.setValue(aircraftIDs.get(aircraftIDs.size() - 1));
-      else aircraftList.setValue("None");
-    });
-
-    // Add listeners from obstacleList model to obstacleList UI
-    state.getObstacleListProperty().addListener((obList, oldList, newList) -> {
-      ArrayList<String> names = new ArrayList<>();
-      names.add("None");
-
-      for (Obstacle obstacle : newList) {
-        names.add(obstacle.getName());
-      }
-
-      obstacleList.setItems(FXCollections.observableArrayList(names));
-
-      if (newList.size() > 0) obstacleList.setValue(names.get(names.size() - 1));
-      else obstacleList.setValue("None");
-    });
-
-    // Add default items in ChoiceBox
-    aircraftList.getItems().add("None");
+    aircraftList.setItems(FXCollections.observableArrayList(ids));
     aircraftList.setValue("None");
-    obstacleList.getItems().add("None");
-    obstacleList.setValue("None");
+
+    // Add listeners from aircraftList UI to aircraftList model
+    state.getAircraftList().addListener((ListChangeListener<? super Aircraft>) list -> {
+      list.next();
+
+      if (list.wasAdded()) {
+        String id = list.getAddedSubList().get(0).getId();
+
+        aircraftList.getItems().add(id);
+        aircraftList.setValue(id);
+      } else if (list.wasRemoved()) {
+        String id = list.getRemoved().get(0).getId();
+
+        aircraftList.getItems().remove(id);
+        aircraftList.setValue("None");
+      }
+    });
 
     // Add listeners when current value from ChoiceBox change in aircraftList
     aircraftList.valueProperty().addListener((obVal, oldVal, newVal) -> {
@@ -132,13 +140,47 @@ public class RunwayTab extends Tab {
       logger.info("Aircraft selected named " + newVal);
       if (newVal.equals("None")) {
         runway.setCurrentAircraft(null);
+
+        blastProtection.setText("");
       } else {
         runway.setCurrentAircraft(state.getAircraftList().stream().
             filter(aircraft -> aircraft.getId().equals(aircraftList.getValue())).
             findAny().get());
+
+        blastProtection.setText(String.valueOf(runway.getCurrentAircraft().getBlastProtection()));
       }
 
       calculateRunwayValues();
+    });
+  }
+
+  private void InitialiseObstacleList() {
+    // Set items of aircraftList UI to aircraftList model
+    ArrayList<String> names = new ArrayList<>();
+    names.add("None");
+
+    for (Obstacle obstacle : state.getObstacleList()) {
+      names.add(obstacle.getName());
+    }
+
+    obstacleList.setItems(FXCollections.observableArrayList(names));
+    obstacleList.setValue("None");
+
+    // Add listeners from obstacleList UI to obstacleList model
+    state.getObstacleList().addListener((ListChangeListener<? super Obstacle>) list -> {
+      list.next();
+
+      if (list.wasAdded()) {
+        String name = list.getAddedSubList().get(0).getName();
+
+        obstacleList.getItems().add(name);
+        obstacleList.setValue(name);
+      } else if (list.wasRemoved()) {
+        String name = list.getRemoved().get(0).getName();
+
+        obstacleList.getItems().remove(name);
+        obstacleList.setValue("None");
+      }
     });
 
     // Add listeners when current value from ChoiceBox change in obstacleList
@@ -148,10 +190,18 @@ public class RunwayTab extends Tab {
       logger.info("Obstacle selected named " + obstacleList.getValue());
       if (obstacleList.getSelectionModel().getSelectedItem().equals("None")) {
         runway.setCurrentObstacle(null);
+
+        height.setText("");
+        length.setText("");
+        centerline.setText("");
       } else {
         runway.setCurrentObstacle(state.getObstacleList().stream().
             filter(obstacle -> obstacle.getName().equals(obstacleList.getValue())).
             findAny().get());
+
+        height.setText(String.valueOf(runway.getCurrentObstacle().getHeight()));
+        length.setText(String.valueOf(runway.getCurrentObstacle().getLength()));
+        centerline.setText(String.valueOf(runway.getCurrentObstacle().getCenterline()));
       }
 
       calculateRunwayValues();
@@ -159,7 +209,7 @@ public class RunwayTab extends Tab {
   }
 
   private void calculateRunwayValues() {
-    if (runway.getCurrentObstacle() == null && runway.getCurrentAircraft() == null) {
+    if (runway.getCurrentObstacle() == null) {
       Calculator.resetCalculations(runway);
     } else if (runway.getCurrentAircraft() == null) {
       Calculator.toraTowardsObs(runway, runway.getCurrentObstacle());
@@ -207,6 +257,11 @@ public class RunwayTab extends Tab {
 
   @FXML
   private void onDeleteObstacle() {
+
+  }
+
+  @FXML
+  private void onCloseRunway() {
 
   }
 }

@@ -58,8 +58,21 @@ public class Airport {
     runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
   }
 
+  public void addRunway(String designator, double tora, double toda, double asda, double lda,
+                        double resa, double threshold) {
+    runwayList.add(new Runway(designator, tora, toda, asda, lda, resa, threshold));
+  }
+
+  public void addAircraft(String id, double blastProtection) {
+    aircraftList.add(new Aircraft(id, blastProtection));
+  }
+
   public void addObstacle(String name, double height, double length) {
     obstacleList.add(new Obstacle(name, height, length));
+  }
+
+  public void addObstacle(String name, double height, double length, double centerline) {
+    obstacleList.add(new Obstacle(name, height, length, centerline));
   }
 
   public void loadPredefinedObstacles() {
@@ -81,49 +94,41 @@ public class Airport {
     }
   }
 
-  public void addAircraft(String id, double blastProtection) {
-    aircraftList.add(new Aircraft(id, blastProtection));
-  }
-
-  public void addRunway(String designator, double tora, double toda, double asda, double lda,
-                        double resa, double threshold) {
-    runwayList.add(new Runway(designator, tora, toda, asda, lda, resa, threshold));
-  }
-
-  public SimpleStringProperty getCityProperty() {
-    return city;
-  }
 
   public String getCity() {
     return city.get();
-  }
-
-  public SimpleStringProperty getNameProperty() {
-    return name;
   }
 
   public String getName() {
     return name.get();
   }
 
-  public ObservableList<Obstacle> getObstacleList() {
-    return obstacleList.get();
-  }
-
-  public SimpleListProperty<Obstacle> getObstacleListProperty() {
-    return obstacleList;
+  public ObservableList<Runway> getRunwayList() {
+    return runwayList.get();
   }
 
   public ObservableList<Aircraft> getAircraftList() {
     return aircraftList.get();
   }
 
-  public SimpleListProperty<Aircraft> getAircraftListProperty() {
-    return aircraftList;
+  public ObservableList<Obstacle> getObstacleList() {
+    return obstacleList.get();
   }
 
-  public ObservableList<Runway> getRunwayList() {
-    return runwayList.get();
+  public SimpleStringProperty getCityProperty() {
+    return city;
+  }
+
+  public SimpleStringProperty getNameProperty() {
+    return name;
+  }
+
+  public SimpleListProperty<Obstacle> getObstacleListProperty() {
+    return obstacleList;
+  }
+
+  public SimpleListProperty<Aircraft> getAircraftListProperty() {
+    return aircraftList;
   }
 
   public SimpleListProperty<Runway> getRunwayListProperty() {

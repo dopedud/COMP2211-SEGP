@@ -25,8 +25,8 @@ public class NewAirportScene extends BaseScene {
   protected void build() {
     logger.info("Building NewAirportScene...");
 
-    stage.setTitle("New Airport");
     stage.setResizable(false);
+    stage.setTitle("New Airport");
 
     renderFXML("NewAirportScene.fxml");
   }

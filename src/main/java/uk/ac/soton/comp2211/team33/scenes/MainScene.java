@@ -1,6 +1,9 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
+import javafx.beans.InvalidationListener;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -24,8 +27,8 @@ public class MainScene extends BaseScene {
   protected void build() {
     logger.info("Building MainScene...");
 
-    stage.setTitle("Runway Re-decleration Tool - " + state.getName());
     stage.setResizable(true);
+    stage.setTitle("Runway Re-decleration Tool - " + state.getName());
 
     renderFXML("MainScene.fxml");
 
@@ -43,10 +46,15 @@ public class MainScene extends BaseScene {
   }
 
   private void renderTabs() {
-    state.getRunwayListProperty().addListener((obList, oldList, newList) -> {
-      Runway runway = newList.get(newList.size() - 1);
+    state.getRunwayList().addListener((ListChangeListener<? super Runway>) list -> {
+      list.next();
 
-      runwayTabs.getTabs().add(new RunwayTab(stage, state, runway));
+      if (list.wasAdded()) {
+        Runway runway = list.getAddedSubList().get(0);
+        runwayTabs.getTabs().add(new RunwayTab(stage, state, runway));
+      }
+
+      //TODO: remove runways when tab closed
     });
   }
 }

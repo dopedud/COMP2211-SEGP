@@ -11,9 +11,13 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Separator?>
 
-<fx:root type="Tab" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<fx:root type="Tab" onClosed="#onCloseRunway"
+         xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <AnchorPane>
-    <SplitPane dividerPositions="0.2, 0.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+    <SplitPane dividerPositions="0.2, 0.8"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <AnchorPane>
         <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
@@ -22,9 +26,21 @@
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <VBox spacing="10.0">
               <HBox alignment="CENTER" spacing="10.0">
-                <Button mnemonicParsing="false" text="Edit" onAction="#onEditAircraft"/>
-                <Button mnemonicParsing="false" text="Add" onAction="#onAddAircraft"/>
-                <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteAircraft"/>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Edit" onAction="#onEditAircraft"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Add" onAction="#onAddAircraft"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteAircraft"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
               </HBox>
               <AnchorPane>
                 <ChoiceBox fx:id="aircraftList"
@@ -47,9 +63,21 @@
                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
               </AnchorPane>
               <HBox alignment="CENTER" spacing="10.0">
-                <Button mnemonicParsing="false" text="Edit" onAction="#onEditObstacle"/>
-                <Button mnemonicParsing="false" text="Add" onAction="#onAddObstacle"/>
-                <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteObstacle"/>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Edit" onAction="#onEditObstacle"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Add" onAction="#onAddObstacle"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteObstacle"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
               </HBox>
               <AnchorPane>
                 <ChoiceBox fx:id="obstacleList"
@@ -78,8 +106,9 @@
           </TitledPane>
         </VBox>
       </AnchorPane>
+      <AnchorPane>
         <!--CANVAS/2D-VIEW-->
-      <AnchorPane/>
+      </AnchorPane>
       <AnchorPane>
         <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -120,7 +149,40 @@
           </TitledPane>
           <TitledPane animated="false" collapsible="false" text="Breakdown of Calculations"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-
+            <AnchorPane>
+              <TabPane tabClosingPolicy="UNAVAILABLE"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <Tab closable="false" text="TORA">
+                  <AnchorPane>
+                    <TextArea fx:id="toraCalc" editable="false"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                  </AnchorPane>
+                </Tab>
+                <Tab closable="false" text="TODA">
+                  <AnchorPane>
+                    <TextArea fx:id="todaCalc" editable="false"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                  </AnchorPane>
+                </Tab>
+                <Tab closable="false" text="ASDA">
+                  <AnchorPane>
+                    <TextArea fx:id="asdaCalc" editable="false"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                  </AnchorPane>
+                </Tab>
+                <Tab closable="false" text="LDA">
+                  <AnchorPane>
+                    <TextArea fx:id="ldaCalc" editable="false"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                  </AnchorPane>
+                </Tab>
+              </TabPane>
+            </AnchorPane>
           </TitledPane>
         </VBox>
       </AnchorPane>
