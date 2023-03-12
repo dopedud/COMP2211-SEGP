@@ -43,10 +43,10 @@ public class RunwayTab extends Tab {
   private Label ctora, ctoda, casda, clda, cresa;
 
   @FXML
-  private TextArea toraCalc, todaCalc, asdaCalc, ldaCalc;
+  private Label thresholdOriginal, thresholdCalculated;
 
   @FXML
-  private Label thresholdOriginal, thresholdCalculated;
+  private TextArea toraCalc, todaCalc, asdaCalc, ldaCalc;
 
   @FXML
   private ChoiceBox<String> aircraftList, obstacleList;
@@ -105,7 +105,7 @@ public class RunwayTab extends Tab {
   }
 
   private void InitialiseAircraftList() {
-    // Set items of aircraftList UI to aircraftList model
+    // Initialise list by setting items of aircraftList UI to aircraftList model
     ArrayList<String> ids = new ArrayList<>();
     ids.add("None");
 
@@ -124,12 +124,12 @@ public class RunwayTab extends Tab {
         String id = list.getAddedSubList().get(0).getId();
 
         aircraftList.getItems().add(id);
-        aircraftList.setValue(id);
+        if (isSelected()) aircraftList.setValue(id);
       } else if (list.wasRemoved()) {
         String id = list.getRemoved().get(0).getId();
 
         aircraftList.getItems().remove(id);
-        aircraftList.setValue("None");
+        if (aircraftList.getValue().equals(id)) aircraftList.setValue("None");
       }
     });
 
@@ -138,6 +138,7 @@ public class RunwayTab extends Tab {
       if (newVal == null) return;
 
       logger.info("Aircraft selected named " + newVal);
+
       if (newVal.equals("None")) {
         runway.setCurrentAircraft(null);
 
@@ -155,7 +156,7 @@ public class RunwayTab extends Tab {
   }
 
   private void InitialiseObstacleList() {
-    // Set items of aircraftList UI to aircraftList model
+    // Initialise list by setting aircraftList UI to aircraftList model
     ArrayList<String> names = new ArrayList<>();
     names.add("None");
 
@@ -174,12 +175,12 @@ public class RunwayTab extends Tab {
         String name = list.getAddedSubList().get(0).getName();
 
         obstacleList.getItems().add(name);
-        obstacleList.setValue(name);
+        if (isSelected()) obstacleList.setValue(name);
       } else if (list.wasRemoved()) {
         String name = list.getRemoved().get(0).getName();
 
         obstacleList.getItems().remove(name);
-        obstacleList.setValue("None");
+        if (obstacleList.getValue().equals(name)) obstacleList.setValue("None");
       }
     });
 

@@ -25,6 +25,11 @@ public final class Calculator {
    */
   private Calculator() {}
 
+  /**
+   * Reset calculations when no obstacle or aircraft is present.
+   *
+   * @param runway the runway to reset values
+   */
   public static void resetCalculations(Runway runway) {
     runway.setCtora(runway.getTora());
     runway.setCtoda(runway.getToda());
@@ -33,7 +38,8 @@ public final class Calculator {
   }
 
   /**
-   * Calculate the take-off runway available (use toraTowardsObsPrettyPrint() for pretty print). Updates runway with new values.
+   * Calculate the take-off runway available (use toraTowardsObsPrettyPrint() for pretty print).
+   * Updates runway with new values.
    *
    * @param runway   the runway to perform the calculation on
    * @param obstacle the obstacle to perform the calculation on
@@ -55,7 +61,9 @@ public final class Calculator {
   }
 
   /**
-   * Function that calculates the take-off runway available, and pretty prints the output. Updates runway with new values.
+   * Function that calculates the take-off runway available, and pretty prints the output.
+   * Updates runway with new values.
+   * <p>
    * TORA for Take Off Away.
    * TORA = ASDA = TODA in this case.
    *
@@ -64,7 +72,6 @@ public final class Calculator {
    * @return A string detailing the steps of the calculation performed
    */
   public static String toraTowardsObsPP(Runway runway, Obstacle obstacle) {
-    ;
     StringBuilder calcSummary = new StringBuilder();
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {

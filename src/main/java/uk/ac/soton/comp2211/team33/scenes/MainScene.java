@@ -52,9 +52,9 @@ public class MainScene extends BaseScene {
       if (list.wasAdded()) {
         Runway runway = list.getAddedSubList().get(0);
         runwayTabs.getTabs().add(new RunwayTab(stage, state, runway));
+      } else if (list.wasRemoved()) {
+        //TODO: remove runways when tab is closed
       }
-
-      //TODO: remove runways when tab closed
     });
   }
 }
