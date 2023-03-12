@@ -28,6 +28,8 @@ public class MainScene extends BaseScene {
     logger.info("Building MainScene...");
 
     stage.setResizable(true);
+    stage.setMinWidth(800);
+    stage.setMinHeight(600);
     stage.setTitle("Runway Re-decleration Tool - " + state.getName());
 
     renderFXML("MainScene.fxml");

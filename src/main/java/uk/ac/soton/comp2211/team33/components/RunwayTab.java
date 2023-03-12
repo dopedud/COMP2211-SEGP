@@ -247,6 +247,15 @@ public class RunwayTab extends Tab {
   }
 
   @FXML
+  private void loadPredefinedObstacles() {
+    String oldValue = obstacleList.getValue();
+
+    state.loadPredefinedObstacles();
+
+    obstacleList.setValue(oldValue);
+  }
+
+  @FXML
   private void onEditObstacle() {
 
   }
