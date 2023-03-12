@@ -11,9 +11,9 @@
             xmlns:fx="http://javafx.com/fxml/1">
   <Label text="New runway details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
   <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-    <InputField fx:id="designator" label="Designator" />
+    <InputField fx:id="designator" label="Designator"/>
     <InputField fx:id="tora" label="TORA"/>
-    <InputField fx:id="toda" label="TODA" />
+    <InputField fx:id="toda" label="TODA"/>
     <InputField fx:id="asda" label="ASDA"/>
     <InputField fx:id="lda" label="LDA"/>
     <InputField fx:id="resa" label="RESA"/>

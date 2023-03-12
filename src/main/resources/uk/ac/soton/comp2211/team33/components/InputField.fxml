@@ -4,7 +4,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <fx:root type="AnchorPane"
          maxHeight="32.0" maxWidth="400.0"
          minHeight="32.0" minWidth="400.0"
