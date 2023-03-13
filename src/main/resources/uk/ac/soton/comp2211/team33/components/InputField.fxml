@@ -5,11 +5,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <fx:root type="AnchorPane"
-         maxHeight="32.0" maxWidth="400.0"
-         minHeight="32.0" minWidth="400.0"
-         prefHeight="32.0" prefWidth="400.0"
             xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-  <Label fx:id="label" text="Label" prefHeight="32.0" prefWidth="200.0"
+  <Label fx:id="label" text="Label" prefHeight="32.0" prefWidth="200.0" wrapText="true"
           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0"/>
   <TextField fx:id="textField" layoutY="3.0" prefWidth="150.0" AnchorPane.rightAnchor="20.0"/>
 </fx:root>

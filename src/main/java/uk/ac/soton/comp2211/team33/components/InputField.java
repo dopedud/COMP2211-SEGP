@@ -1,6 +1,5 @@
 package uk.ac.soton.comp2211.team33.components;
 
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -50,4 +49,11 @@ public class InputField extends AnchorPane {
     textField.setText(text);
   }
 
+  public Label labelProperty() {
+    return label;
+  }
+
+  public TextField textFieldProperty() {
+    return textField;
+  }
 }

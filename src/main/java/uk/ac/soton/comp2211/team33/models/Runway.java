@@ -57,7 +57,7 @@ public class Runway {
   /**
    * The distance of the obstacle from the threshold of the runway.
    */
-  private SimpleDoubleProperty obstacleDistance;
+  private final SimpleDoubleProperty obstacleDistance;
 
   public Runway(String designator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {

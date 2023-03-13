@@ -5,8 +5,10 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.models.Aircraft;
@@ -37,6 +39,9 @@ public class RunwayTab extends Tab {
   private Runway runway;
 
   @FXML
+  private AnchorPane listPanel, viewPanel, calcPanel;
+
+  @FXML
   private Label tora, toda, asda, lda, resa;
 
   @FXML
@@ -46,7 +51,7 @@ public class RunwayTab extends Tab {
   private Label thresholdOriginal, thresholdCalculated;
 
   @FXML
-  private TextArea toraCalc, todaCalc, asdaCalc, ldaCalc;
+  private TextArea calcBreakdown;
 
   @FXML
   private ChoiceBox<String> aircraftList, obstacleList;
@@ -54,8 +59,15 @@ public class RunwayTab extends Tab {
   @FXML
   private Label blastProtection, height, length, centerline;
 
+  @FXML
+  private DropdownField calcMode;
+  private boolean calcTowards;
+
+  @FXML
+  private InputField obsDistFromThresh;
+
   public RunwayTab(Stage stage, Airport state, Runway runway) {
-    logger.info("Creating new runway tab named " + runway.getDesignator() + "...");
+    logger.info("Creating new runway tab named " + runway.getDesignator());
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("RunwayTab.fxml"));
     loader.setRoot(this);
@@ -75,6 +87,8 @@ public class RunwayTab extends Tab {
     // Set tab name
     setText(runway.getDesignator());
 
+    resizeUI();
+
     // Set initial values of runway
     tora.setText(String.valueOf(runway.getTora()));
     toda.setText(String.valueOf(runway.getToda()));
@@ -88,9 +102,9 @@ public class RunwayTab extends Tab {
     // Set calculated values
     ctora.setText(String.valueOf(runway.getTora()));
     ctoda.setText(String.valueOf(runway.getToda()));
-    casda.setText(String.valueOf(runway.getCasda()));
-    clda.setText(String.valueOf(runway.getClda()));
-    cresa.setText(String.valueOf(runway.getCresa()));
+    casda.setText(String.valueOf(runway.getAsda()));
+    clda.setText(String.valueOf(runway.getLda()));
+    cresa.setText(String.valueOf(runway.getResa()));
 
     // Add listeners from calculated values UI to calculated values model
     runway.ctoraProperty().addListener(((obVal, oldVal, newVal) -> ctora.setText(String.valueOf(newVal))));
@@ -100,11 +114,39 @@ public class RunwayTab extends Tab {
     runway.cresaProperty().addListener(((obVal, oldVal, newVal) -> cresa.setText(String.valueOf(newVal))));
 
     // Initialise list UI to list models
-    InitialiseAircraftList();
-    InitialiseObstacleList();
+    initialiseAircraftList();
+    initialiseObstacleList();
+
+    // Set calculation mode to 2 modes, calculation towards obstacle and away from/over obstacle
+    // Also adds a listener
+    calcMode.dropdownProperty().valueProperty().addListener((obVal, oldVal, newVal) -> {
+      calcTowards = newVal.equals("Calculations Towards Obstacle");
+
+      recalculateRunwayValues();
+    });
+    calcMode.getDropdownList().add("Calculations Towards Obstacle");
+    calcMode.getDropdownList().add("Calculations Away From/Over Obstacle");
+    calcMode.setDropdownValue("Calculations Towards Obstacle");
+
+    obsDistFromThresh.textFieldProperty().textProperty().
+        bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
+    runway.obstacleDistanceProperty().addListener((obVal, oldVal, newVal) -> recalculateRunwayValues());
   }
 
-  private void InitialiseAircraftList() {
+  private void resizeUI() {
+    // Set minimum size for panels
+    listPanel.setMinWidth(300);
+    calcPanel.setMinWidth(300);
+
+    // Set wrap text for obsDistFromThreshold label
+    obsDistFromThresh.labelProperty().setPrefHeight(40);
+    obsDistFromThresh.labelProperty().setPrefWidth(100);
+
+    // Set alignment for obsDistFromThreshold text field
+    obsDistFromThresh.textFieldProperty().setLayoutY(8);
+  }
+
+  private void initialiseAircraftList() {
     // Initialise list by setting items of aircraftList UI to aircraftList model
     ArrayList<String> ids = new ArrayList<>();
     ids.add("None");
@@ -151,11 +193,11 @@ public class RunwayTab extends Tab {
         blastProtection.setText(String.valueOf(runway.getCurrentAircraft().getBlastProtection()));
       }
 
-      calculateRunwayValues();
+      recalculateRunwayValues();
     });
   }
 
-  private void InitialiseObstacleList() {
+  private void initialiseObstacleList() {
     // Initialise list by setting aircraftList UI to aircraftList model
     ArrayList<String> names = new ArrayList<>();
     names.add("None");
@@ -205,21 +247,26 @@ public class RunwayTab extends Tab {
         centerline.setText(String.valueOf(runway.getCurrentObstacle().getCenterline()));
       }
 
-      calculateRunwayValues();
+      recalculateRunwayValues();
     });
   }
 
-  private void calculateRunwayValues() {
-    if (runway.getCurrentObstacle() == null) {
-      Calculator.resetCalculations(runway);
-    } else if (runway.getCurrentAircraft() == null) {
-      Calculator.toraTowardsObs(runway, runway.getCurrentObstacle());
-      Calculator.ldaTowardsObs(runway, runway.getCurrentObstacle());
+  private void recalculateRunwayValues() {
+    if (calcTowards) {
+      if (runway.getCurrentObstacle() == null) {
+        calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
+      } else {
+        calcBreakdown.setText(Calculator.toraTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
+            Calculator.ldaTowardsObsPP(runway, runway.getCurrentObstacle()));
+      }
     } else {
-      Calculator.toraTowardsObs(runway, runway.getCurrentObstacle());
-      Calculator.ldaTowardsObs(runway, runway.getCurrentObstacle());
-      Calculator.toraAwayObs(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft());
-      Calculator.ldaOverObs(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft());
+      if (runway.getCurrentObstacle() == null || runway.getCurrentAircraft() == null) {
+        calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
+      } else {
+        calcBreakdown.setText(Calculator.
+            toraAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
+            Calculator.ldaOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()));
+      }
     }
   }
 

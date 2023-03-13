@@ -38,6 +38,20 @@ public final class Calculator {
   }
 
   /**
+   * Pretty print output.
+   *
+   * @param runway the runway to reset values
+   */
+  public static String resetCalculationsPP(Runway runway) {
+    runway.setCtora(runway.getTora());
+    runway.setCtoda(runway.getToda());
+    runway.setCasda(runway.getAsda());
+    runway.setClda(runway.getLda());
+
+    return "Runway values do not need to be re-declared.\n\nSelect an obstacle and an aircraft to re-declare values.";
+  }
+
+  /**
    * Calculate the take-off runway available (use toraTowardsObsPrettyPrint() for pretty print).
    * Updates runway with new values.
    *

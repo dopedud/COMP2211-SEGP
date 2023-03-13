@@ -13,13 +13,15 @@
 
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
+<?import uk.ac.soton.comp2211.team33.components.DropdownField?>
 <fx:root type="Tab" onClosed="#onCloseRunway"
          xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <AnchorPane>
     <SplitPane dividerPositions="0.2, 0.8"
                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <AnchorPane>
+      <AnchorPane fx:id="listPanel">
         <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
           <TitledPane animated="false" collapsible="false" text="Aircraft"
@@ -104,12 +106,17 @@
               </AnchorPane>
             </VBox>
           </TitledPane>
+          <AnchorPane>
+            <InputField fx:id="obsDistFromThresh" label="Obstacle Distance from Threshold"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"
+            AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
+          </AnchorPane>
         </VBox>
       </AnchorPane>
-      <AnchorPane>
+      <AnchorPane fx:id="viewPanel">
         <!--CANVAS/2D-VIEW-->
       </AnchorPane>
-      <AnchorPane>
+      <AnchorPane fx:id="calcPanel">
         <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
           <TitledPane animated="false" collapsible="false" text="Runway Values"
@@ -150,40 +157,16 @@
           <TitledPane animated="false" collapsible="false" text="Breakdown of Calculations"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <AnchorPane>
-              <TabPane tabClosingPolicy="UNAVAILABLE"
-                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <Tab closable="false" text="TORA">
-                  <AnchorPane>
-                    <TextArea fx:id="toraCalc" editable="false"
-                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                  </AnchorPane>
-                </Tab>
-                <Tab closable="false" text="TODA">
-                  <AnchorPane>
-                    <TextArea fx:id="todaCalc" editable="false"
-                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                  </AnchorPane>
-                </Tab>
-                <Tab closable="false" text="ASDA">
-                  <AnchorPane>
-                    <TextArea fx:id="asdaCalc" editable="false"
-                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                  </AnchorPane>
-                </Tab>
-                <Tab closable="false" text="LDA">
-                  <AnchorPane>
-                    <TextArea fx:id="ldaCalc" editable="false"
-                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                  </AnchorPane>
-                </Tab>
-              </TabPane>
+              <TextArea fx:id="calcBreakdown" editable="false"
+                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
             </AnchorPane>
           </TitledPane>
+          <AnchorPane>
+            <DropdownField fx:id="calcMode" label="Calculation Mode"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+          </AnchorPane>
         </VBox>
       </AnchorPane>
     </SplitPane>
