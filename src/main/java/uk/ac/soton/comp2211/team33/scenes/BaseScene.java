@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import uk.ac.soton.comp2211.team33.models.AppState;
+import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
  * An abstract class to create scenes.
@@ -16,6 +16,7 @@ import uk.ac.soton.comp2211.team33.models.AppState;
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
 abstract class BaseScene {
+
   /**
    * The application window this scene is rendered in.
    */
@@ -24,7 +25,7 @@ abstract class BaseScene {
   /**
    * Global application state.
    */
-  protected AppState state;
+  protected Airport state;
 
   /**
    * Instantiate a scene.
@@ -32,19 +33,17 @@ abstract class BaseScene {
    * @param stage The application stage to render the scene in
    * @param state The global application state
    */
-  BaseScene(Stage stage, AppState state) {
+  BaseScene(Stage stage, Airport state) {
     this.stage = stage;
     this.state = state;
 
-    this.build();
+    build();
   }
 
   /**
    * A method to implement to build the scene.
    */
   protected abstract void build();
-
-  // ======== SCENE UTILITY METHODS ========
 
   /**
    * A utility method to render the FXML markup of this scene.
@@ -54,19 +53,18 @@ abstract class BaseScene {
   protected void renderFXML(String fxmlUri) {
     FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlUri));
     loader.setController(this);
-
     try {
       Parent root = loader.load();
       stage.setScene(new Scene(root));
       stage.show();
     }
-    catch (IOException ex) {
-      ex.printStackTrace();
+    catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
   /**
-   * Create a modal stage that is owned by the stage of this scene
+   * Create a modal stage that is owned by the stage of this scene.
    *
    * @return The created stage to render in
    */
@@ -74,6 +72,13 @@ abstract class BaseScene {
     Stage modal = new Stage();
     modal.initOwner(stage);
     modal.initModality(Modality.WINDOW_MODAL);
+
+    return modal;
+  }
+
+  protected Stage createNewStage() {
+    Stage modal = new Stage();
+    modal.initModality(Modality.NONE);
 
     return modal;
   }

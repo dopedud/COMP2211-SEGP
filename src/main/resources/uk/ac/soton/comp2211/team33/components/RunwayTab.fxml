@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+
+<?import uk.ac.soton.comp2211.team33.components.InputField?>
+<?import uk.ac.soton.comp2211.team33.components.DropdownField?>
+
+<fx:root type="Tab" onClosed="#onCloseRunway"
+         xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+  <AnchorPane>
+    <SplitPane dividerPositions="0.2, 0.8"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="listPanel">
+        <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+          <TitledPane animated="false" collapsible="false" text="Aircraft"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox spacing="10.0">
+              <HBox alignment="CENTER" spacing="10.0">
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Edit" onAction="#onEditAircraft"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Add" onAction="#onAddAircraft"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteAircraft"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+              </HBox>
+              <AnchorPane>
+                <ChoiceBox fx:id="aircraftList"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Blast Protection"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                <Label fx:id="blastProtection"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+            </VBox>
+          </TitledPane>
+          <TitledPane animated="false" collapsible="false" text="Obstacles"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox spacing="10.0">
+              <AnchorPane>
+                <Button fx:id="loadPredefinedObs"
+                        mnemonicParsing="false" text="Load Pre-defined Obstacles" onAction="#loadPredefinedObstacles"
+                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <HBox alignment="CENTER" spacing="10.0">
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Edit" onAction="#onEditObstacle"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Add" onAction="#onAddObstacle"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <AnchorPane HBox.hgrow="ALWAYS">
+                  <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteObstacle"
+                          AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+              </HBox>
+              <AnchorPane>
+                <ChoiceBox fx:id="obstacleList"
+                            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Height" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+                <Label fx:id="height" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Length" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+                <Label fx:id="length" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+              <AnchorPane>
+                <Label text="Centerline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+                <Label fx:id="centerline" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       AnchorPane.topAnchor="0.0"/>
+              </AnchorPane>
+            </VBox>
+          </TitledPane>
+          <AnchorPane>
+            <InputField fx:id="obsDistFromThresh" labelText="Obstacle Distance from Threshold"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"
+            AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
+          </AnchorPane>
+        </VBox>
+      </AnchorPane>
+      <AnchorPane fx:id="viewPanel">
+        <!--CANVAS/2D-VIEW-->
+      </AnchorPane>
+      <AnchorPane fx:id="calcPanel">
+        <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+          <TitledPane animated="false" collapsible="false" text="Runway Values"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" spacing="50.0">
+              <VBox alignment="CENTER" spacing="5.0">
+                <Label text="Values"/>
+                <Separator/>
+                <Label text="TORA"/>
+                <Label text="TODA"/>
+                <Label text="ASDA"/>
+                <Label text="LDA"/>
+                <Label text="RESA"/>
+                <Label text="Threshold"/>
+              </VBox>
+              <VBox alignment="CENTER" spacing="5.0">
+                <Label text="Original"/>
+                <Separator/>
+                <Label fx:id="tora"/>
+                <Label fx:id="toda"/>
+                <Label fx:id="asda"/>
+                <Label fx:id="lda"/>
+                <Label fx:id="resa"/>
+                <Label fx:id="thresholdOriginal"/>
+              </VBox>
+              <VBox alignment="CENTER" spacing="5.0">
+                <Label text="Calculated"/>
+                <Separator/>
+                <Label fx:id="ctora"/>
+                <Label fx:id="ctoda"/>
+                <Label fx:id="casda"/>
+                <Label fx:id="clda"/>
+                <Label fx:id="cresa"/>
+                <Label fx:id="thresholdCalculated"/>
+              </VBox>
+            </HBox>
+          </TitledPane>
+          <TitledPane animated="false" collapsible="false" text="Breakdown of Calculations"
+                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane>
+              <TextArea fx:id="calcBreakdown" editable="false"
+                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            </AnchorPane>
+          </TitledPane>
+          <AnchorPane>
+            <DropdownField fx:id="calcMode" labelText="Calculation Mode"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+          </AnchorPane>
+        </VBox>
+      </AnchorPane>
+    </SplitPane>
+  </AnchorPane>
+</fx:root>

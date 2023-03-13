@@ -3,6 +3,7 @@ package uk.ac.soton.comp2211.team33.models;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,7 @@ public class Runway {
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end.
    */
-  private final String designator;
+  private final SimpleStringProperty designator;
 
   /**
    * Initial values of the runway.
@@ -31,51 +32,36 @@ public class Runway {
   /**
    * Currently used runway values (after calculation).
    */
-  private SimpleDoubleProperty ctora = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty ctoda = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty casda = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty clda = new SimpleDoubleProperty();
+  private final SimpleDoubleProperty ctora, ctoda, casda, clda, cresa;
 
   /**
-   * RESA value of the runway, could be re-declared
+   * Displaced threshold, clearway, and stopway.
    */
-  private SimpleDoubleProperty cresa = new SimpleDoubleProperty();
+  private final SimpleDoubleProperty threshold, clearway, stopway;
 
   /**
-   * TOCS constant 50m.
+   * TOCS constant of 50m, ALS constant of 50m, and strip end constant of 60m.
    */
-  private final double tocs = 50;
+  private final double tocs = 50, als = 50, stripEnd = 60;
 
   /**
-   * ALS constant 50m.
+   * Currently selected aircraft for this runway.
    */
-  private final double als = 50;
+  private final SimpleObjectProperty<Aircraft> currentAircraft;
 
   /**
-   * Displaced threshold, clearway, stopway, and strip end.
+   * Currently selected obstacle for this runway.
    */
-  private SimpleDoubleProperty clearway = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty stopway = new SimpleDoubleProperty();
-
-  private SimpleDoubleProperty threshold = new SimpleDoubleProperty();
-
-  /**
-   * Strip end constant of 60m.
-   */
-  private final double stripEnd = 60;
+  private final SimpleObjectProperty<Obstacle> currentObstacle;
 
   /**
    * The distance of the obstacle from the threshold of the runway.
    */
-  private SimpleDoubleProperty obstacleDistance = new SimpleDoubleProperty(0);
+  private final SimpleDoubleProperty obstacleDistance;
 
   public Runway(String designator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
-    this.designator = designator;
+    this.designator = new SimpleStringProperty(designator);
 
     this.tora = tora;
     this.toda = toda;
@@ -85,28 +71,30 @@ public class Runway {
     if (resa < 240) {
       logger.info("RESA value below 240m. Setting it as 240m minimum value...");
       this.resa = 240;
-      this.cresa.set(240);
+      cresa = new SimpleDoubleProperty(240);
     } else {
       this.resa = resa;
-      this.cresa.set(resa);
+      cresa = new SimpleDoubleProperty(resa);
     }
 
-    this.ctora.set(tora);
-    this.ctoda.set(toda);
-    this.casda.set(asda);
-    this.clda.set(lda);
+    ctora = new SimpleDoubleProperty(tora);
+    ctoda = new SimpleDoubleProperty(toda);
+    casda = new SimpleDoubleProperty(asda);
+    clda = new SimpleDoubleProperty(lda);
 
-    clearway.set(toda - tora);
-    stopway.set(asda - tora);
-    this.threshold.set(threshold);
+    this.threshold = new SimpleDoubleProperty(threshold);
+    clearway = new SimpleDoubleProperty(toda - tora);
+    stopway = new SimpleDoubleProperty(asda - tora);
+
+    currentAircraft = new SimpleObjectProperty<>();
+    currentObstacle = new SimpleObjectProperty<>();
+    obstacleDistance = new SimpleDoubleProperty();
   }
 
+  // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
 
-  /**
-   * Below are getters and setters for some values that don't have to change but may be used in certain calculations.
-   */
   public String getDesignator() {
-    return designator;
+    return designator.get();
   }
 
   public double getTora() {
@@ -129,9 +117,75 @@ public class Runway {
     return resa;
   }
 
-  public SimpleDoubleProperty cresaProperty() {
-    return cresa;
+  // Below are getters and setter for values that would be re-declared.
+
+  public double getCtora() {
+    return ctora.get();
   }
+
+  public double getCtoda() {
+    return ctoda.get();
+  }
+
+  public double getCasda() {
+    return casda.get();
+  }
+
+  public double getClda() {
+    return clda.get();
+  }
+
+  public double getCresa() {
+    return cresa.get();
+  }
+
+  public void setCtora(double ctora) {
+    this.ctora.set(ctora);
+  }
+
+  public void setCtoda(double ctoda) {
+    this.ctoda.set(ctoda);
+  }
+
+  public void setCasda(double casda) {
+    this.casda.set(casda);
+  }
+
+  public void setClda(double clda) {
+    this.clda.set(clda);
+  }
+
+  public void setCresa(double resa) {
+    this.cresa.set(resa);
+  }
+
+  // Constants of a runway.
+
+  public double getThreshold() {
+    return threshold.get();
+  }
+
+  public double getClearway() {
+    return clearway.get();
+  }
+
+  public double getStopway() {
+    return stopway.get();
+  }
+
+  public double getAls() {
+    return als;
+  }
+
+  public double getTocs() {
+    return tocs;
+  }
+
+  public double getStripEnd() {
+    return stripEnd;
+  }
+
+  // Properties for re-declared values.
 
   public SimpleDoubleProperty ctoraProperty() {
     return ctora;
@@ -149,112 +203,51 @@ public class Runway {
     return clda;
   }
 
-  public double getClearway() {
-    return clearway.get();
-  }
-
-  public SimpleDoubleProperty clearwayProperty() {
-    return clearway;
-  }
-
-  public double getStopway() {
-    return stopway.get();
-  }
-
-  public SimpleDoubleProperty stopwayProperty() {
-    return stopway;
-  }
-
-  public double getThreshold() {
-    return threshold.get();
+  public SimpleDoubleProperty cresaProperty() {
+    return cresa;
   }
 
   public SimpleDoubleProperty thresholdProperty() {
     return threshold;
   }
 
-  public double getStripEnd() {
-    return stripEnd;
+  public SimpleDoubleProperty clearwayProperty() {
+    return clearway;
   }
 
-  public double getCresa() {
-    return cresa.get();
+  public SimpleDoubleProperty stopwayProperty() {
+    return stopway;
   }
 
-  public void setCresa(double resa) {
-    this.cresa.set(resa);
+  public Aircraft getCurrentAircraft() {
+    return currentAircraft.get();
   }
 
-  public double getCtora() {
-    return ctora.get();
+  public Obstacle getCurrentObstacle() {
+    return currentObstacle.get();
   }
 
-  public void setCtora(double ctora) {
-    this.ctora.set(ctora);
+  public double getObstacleDistance() {
+    return obstacleDistance.get();
   }
 
-  public double getCtoda() {
-    return ctoda.get();
+  public void setCurrentAircraft(Aircraft aircraft) {
+    currentAircraft.set(aircraft);
   }
 
-  public void setCtoda(double ctoda) {
-    this.ctoda.set(ctoda);
+  public void setCurrentObstacle(Obstacle obstacle) {
+    currentObstacle.set(obstacle);
   }
 
-  public double getCasda() {
-    return casda.get();
+  public SimpleObjectProperty<Aircraft> currentAircraftProperty() {
+    return currentAircraft;
   }
 
-  public void setCasda(double casda) {
-    this.casda.set(casda);
-  }
-
-  public double getClda() {
-    return clda.get();
-  }
-
-  public void setClda(double clda) {
-    this.clda.set(clda);
-  }
-
-  /**
-   *  Getters and setter for all current values that can be changed by a re-declaration.
-   */
-
-  public double getAls() {
-    return als;
-  }
-
-  public double getTocs() {
-    return tocs;
+  public SimpleObjectProperty<Obstacle> currentObstacleProperty() {
+    return currentObstacle;
   }
 
   public SimpleDoubleProperty obstacleDistanceProperty() {
     return obstacleDistance;
-  }
-
-
-  public double getObstacleDistance() {
-      return obstacleDistance.get();
-  }
-
-  public String toString() {
-    return designator;
-  }
-
-  public String getInformationString() {
-    return "TORA: " + tora + "\n" +
-      "TODA: " + toda + "\n" +
-      "ASDA: " + asda + "\n" +
-      "LDA: " + lda + "\n" +
-      "RESA: " + resa + "\n";
-  }
-
-  public String getCInformationString() {
-    return "TORA: " + ctora.get() + "\n" +
-      "TODA: " + ctoda.get() + "\n" +
-      "ASDA: " + casda.get() + "\n" +
-      "LDA: " + clda.get() + "\n" +
-      "RESA: " + cresa.get() + "\n";
   }
 }

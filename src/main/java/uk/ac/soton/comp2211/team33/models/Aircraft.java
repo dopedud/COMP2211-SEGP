@@ -40,11 +40,7 @@ public class Aircraft {
     }
   }
 
-  /**
-   * Getters and setters for class properties
-   * @return
-   */
-
+  // Below are the usual accessors and mutators for the instance variables of this class.
   public String getId() {
     return id;
   }

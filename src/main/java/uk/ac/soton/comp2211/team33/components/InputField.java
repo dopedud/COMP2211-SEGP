@@ -1,22 +1,19 @@
 package uk.ac.soton.comp2211.team33.components;
 
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
 /**
- * The class InputField is a custom component that contains a label and a text field.
+ * The InputField class is a custom component that contains a label and a text field.
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */
-public class InputField extends HBox {
+public class InputField extends AnchorPane implements BaseComponent {
 
   @FXML
   private Label label;
@@ -25,22 +22,14 @@ public class InputField extends HBox {
   private TextField textField;
 
   public InputField() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("inputField.fxml"));
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException exception) {
-      throw new RuntimeException(exception);
-    }
+    renderFXML("InputField.fxml");
   }
 
-  public String getLabel() {
+  public String getLabelText() {
     return label.getText();
   }
 
-  public void setLabel(String label) {
+  public void setLabelText(String label) {
     this.label.setText(label);
   }
 
@@ -52,14 +41,11 @@ public class InputField extends HBox {
     textField.setText(text);
   }
 
-
-  public StringProperty inputTextProperty() {
-    return textField.textProperty();
+  public Label getLabel() {
+    return label;
   }
 
-  public void setTextProperty(String text) {
-    textField.textProperty().set(text);
+  public TextField getTextField() {
+    return textField;
   }
-
-
 }

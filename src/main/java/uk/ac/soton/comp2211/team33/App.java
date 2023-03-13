@@ -5,8 +5,7 @@ import org.apache.logging.log4j.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.models.AppState;
-import uk.ac.soton.comp2211.team33.scenes.MainScene;
+import uk.ac.soton.comp2211.team33.scenes.NewAirportScene;
 
 /**
  * The main class to execute when running the application.
@@ -17,11 +16,10 @@ public class App extends Application {
 
   private static final Logger logger = LogManager.getLogger(App.class);
 
-
   /**
    * The main method to execute when starting the application.
    *
-   * @param args
+   * @param args command-line arguments
    */
   public static void main(String[] args) {
     logger.info("Starting application...");
@@ -35,6 +33,6 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) {
-    new MainScene(stage, new AppState());
+    new NewAirportScene(stage, null);
   }
 }
