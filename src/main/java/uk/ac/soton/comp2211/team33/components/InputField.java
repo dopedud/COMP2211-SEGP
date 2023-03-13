@@ -33,11 +33,11 @@ public class InputField extends AnchorPane {
     }
   }
 
-  public String getLabel() {
+  public String getLabelText() {
     return label.getText();
   }
 
-  public void setLabel(String label) {
+  public void setLabelText(String label) {
     this.label.setText(label);
   }
 
@@ -49,11 +49,11 @@ public class InputField extends AnchorPane {
     textField.setText(text);
   }
 
-  public Label labelProperty() {
+  public Label getLabel() {
     return label;
   }
 
-  public TextField textFieldProperty() {
+  public TextField getTextField() {
     return textField;
   }
 }

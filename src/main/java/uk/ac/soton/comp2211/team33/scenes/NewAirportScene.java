@@ -1,9 +1,6 @@
 package uk.ac.soton.comp2211.team33.scenes;
 
-import com.google.common.collect.Multimap;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import org.apache.commons.collections4.MultiValuedMap;
@@ -78,7 +75,7 @@ public class NewAirportScene extends BaseScene {
     name.getDropdownList().add("-");
     name.setDropdownValue("-");
 
-    city.dropdownProperty().valueProperty().addListener((obVal, oldVal, newVal) -> {
+    city.getDropdown().valueProperty().addListener((obVal, oldVal, newVal) -> {
       if (newVal == null) return;
 
       name.setDropdownList(FXCollections.observableArrayList(cityNamePairs.get(newVal)));

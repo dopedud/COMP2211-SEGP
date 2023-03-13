@@ -48,7 +48,7 @@ public class MainScene extends BaseScene {
   }
 
   private void renderTabs() {
-    state.getRunwayList().addListener((ListChangeListener<? super Runway>) list -> {
+    state.runwayListProperty().addListener((ListChangeListener<? super Runway>) (list) -> {
       list.next();
 
       if (list.wasAdded()) {

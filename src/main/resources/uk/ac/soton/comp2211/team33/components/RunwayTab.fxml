@@ -109,7 +109,7 @@
             </VBox>
           </TitledPane>
           <AnchorPane>
-            <InputField fx:id="obsDistFromThresh" label="Obstacle Distance from Threshold"
+            <InputField fx:id="obsDistFromThresh" labelText="Obstacle Distance from Threshold"
             AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"
             AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
           </AnchorPane>
@@ -165,7 +165,7 @@
             </AnchorPane>
           </TitledPane>
           <AnchorPane>
-            <DropdownField fx:id="calcMode" label="Calculation Mode"
+            <DropdownField fx:id="calcMode" labelText="Calculation Mode"
             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
             AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
           </AnchorPane>

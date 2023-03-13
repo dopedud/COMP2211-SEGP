@@ -94,8 +94,7 @@ public class RunwayTab extends Tab {
     resizeUI();
 
     // Enable or disable load pre-defined obstacles button, and add listener from state
-    loadPredefinedObs.setDisable(state.getObstaclesLoaded());
-    state.getObstaclesLoadedProperty().addListener((obVal, oldVal, newVal) -> loadPredefinedObs.setDisable(newVal));
+    state.obstaclesLoadedProperty().addListener((obVal, oldVal, newVal) -> loadPredefinedObs.setDisable(newVal));
 
     // Set initial values of runway
     tora.setText(String.valueOf(runway.getTora()));
@@ -126,13 +125,13 @@ public class RunwayTab extends Tab {
     initialiseObstacleList();
 
     // Live update when obstacle distance from threshold value is changed
-    obsDistFromThresh.textFieldProperty().textProperty().
+    obsDistFromThresh.getTextField().textProperty().
         bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
     runway.obstacleDistanceProperty().addListener((obVal, oldVal, newVal) -> recalculateRunwayValues());
 
     // Set calculation mode to 2 modes, calculation towards obstacle and away from/over obstacle
     // Also adds a listener to re-calculate values based on which modes selected
-    calcMode.dropdownProperty().valueProperty().addListener((obVal, oldVal, newVal) -> {
+    calcMode.getDropdown().valueProperty().addListener((obVal, oldVal, newVal) -> {
       calcTowards = newVal.equals("Calculations Towards Obstacle");
 
       recalculateRunwayValues();
@@ -140,6 +139,12 @@ public class RunwayTab extends Tab {
     calcMode.getDropdownList().add("Calculations Towards Obstacle");
     calcMode.getDropdownList().add("Calculations Away From/Over Obstacle");
     calcMode.setDropdownValue("Calculations Towards Obstacle");
+
+    Visualisation visualisation = new Visualisation(runway);
+    visualisation.heightProperty().bind(viewPanel.heightProperty());
+    visualisation.widthProperty().bind(viewPanel.widthProperty());
+    viewPanel.getChildren().add(visualisation);
+    visualisation.renderTopDown();
   }
 
   private void resizeUI() {
@@ -148,11 +153,11 @@ public class RunwayTab extends Tab {
     calcPanel.setMinWidth(300);
 
     // Set wrap text for obsDistFromThreshold label
-    obsDistFromThresh.labelProperty().setPrefHeight(40);
-    obsDistFromThresh.labelProperty().setPrefWidth(100);
+    obsDistFromThresh.getLabel().setPrefHeight(40);
+    obsDistFromThresh.getLabel().setPrefWidth(100);
 
     // Set alignment for obsDistFromThreshold text field
-    obsDistFromThresh.textFieldProperty().setLayoutY(8);
+    obsDistFromThresh.getTextField().setLayoutY(8);
   }
 
   private void initialiseAircraftList() {
@@ -160,7 +165,7 @@ public class RunwayTab extends Tab {
     ArrayList<String> ids = new ArrayList<>();
     ids.add("None");
 
-    for (Aircraft aircraft : state.getAircraftList()) {
+    for (Aircraft aircraft : state.aircraftListProperty()) {
       ids.add(aircraft.getId());
     }
 
@@ -168,7 +173,7 @@ public class RunwayTab extends Tab {
     aircraftList.setValue("None");
 
     // Add listeners from aircraftList UI to aircraftList model
-    state.getAircraftList().addListener((ListChangeListener<? super Aircraft>) list -> {
+    state.aircraftListProperty().addListener((ListChangeListener<? super Aircraft>) list -> {
       list.next();
 
       if (list.wasAdded()) {
@@ -195,7 +200,7 @@ public class RunwayTab extends Tab {
 
         blastProtection.setText("");
       } else {
-        runway.setCurrentAircraft(state.getAircraftList().stream().
+        runway.setCurrentAircraft(state.aircraftListProperty().stream().
             filter(aircraft -> aircraft.getId().equals(aircraftList.getValue())).
             findAny().get());
 
@@ -211,7 +216,7 @@ public class RunwayTab extends Tab {
     ArrayList<String> names = new ArrayList<>();
     names.add("None");
 
-    for (Obstacle obstacle : state.getObstacleList()) {
+    for (Obstacle obstacle : state.obstacleListProperty()) {
       names.add(obstacle.getName());
     }
 
@@ -219,7 +224,7 @@ public class RunwayTab extends Tab {
     obstacleList.setValue("None");
 
     // Add listeners from obstacleList UI to obstacleList model
-    state.getObstacleList().addListener((ListChangeListener<? super Obstacle>) list -> {
+    state.obstacleListProperty().addListener((ListChangeListener<? super Obstacle>) list -> {
       list.next();
 
       if (list.wasAdded()) {
@@ -247,7 +252,7 @@ public class RunwayTab extends Tab {
         length.setText("");
         centerline.setText("");
       } else {
-        runway.setCurrentObstacle(state.getObstacleList().stream().
+        runway.setCurrentObstacle(state.obstacleListProperty().stream().
             filter(obstacle -> obstacle.getName().equals(obstacleList.getValue())).
             findAny().get());
 

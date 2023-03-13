@@ -2,7 +2,6 @@ package uk.ac.soton.comp2211.team33.models;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
@@ -22,28 +21,28 @@ public class Airport {
   /**
    * City in which this airport is situated at.
    */
-  private final SimpleStringProperty city;
+  private final String city;
 
   /**
    * Name of the airport.
    */
-  private final SimpleStringProperty name;
+  private final String name;
 
   /**
    * List of runways.
    */
-  private final ObservableList<Runway> runwayList;
+  private final SimpleListProperty<Runway> runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
   /**
    * List of aircraft.
    */
-  private final ObservableList<Aircraft> aircraftList;
+  private final SimpleListProperty<Aircraft> aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
   /**
    * List of obstacles.
    */
-  private final ObservableList<Obstacle> obstacleList;
-  private SimpleBooleanProperty obstaclesLoaded;
+  private final SimpleListProperty<Obstacle> obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private SimpleBooleanProperty obstaclesLoaded = new SimpleBooleanProperty(false);
 
   /**
    * Class constructor.
@@ -52,13 +51,8 @@ public class Airport {
    * @param name name of the airport
    */
   public Airport(String city, String name) {
-    this.city = new SimpleStringProperty(city);
-    this.name = new SimpleStringProperty(name);
-
-    obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    obstaclesLoaded = new SimpleBooleanProperty();
+    this.city = city;
+    this.name = name;
   }
 
   public void addRunway(String designator, double tora, double toda, double asda, double lda,
@@ -103,38 +97,26 @@ public class Airport {
 
 
   public String getCity() {
-    return city.get();
-  }
-
-  public String getName() {
-    return name.get();
-  }
-
-  public ObservableList<Runway> getRunwayList() {
-    return runwayList;
-  }
-
-  public ObservableList<Aircraft> getAircraftList() {
-    return aircraftList;
-  }
-
-  public ObservableList<Obstacle> getObstacleList() {
-    return obstacleList;
-  }
-
-  public boolean getObstaclesLoaded() {
-    return obstaclesLoaded.get();
-  }
-
-  public SimpleStringProperty getCityProperty() {
     return city;
   }
 
-  public SimpleStringProperty getNameProperty() {
+  public String getName() {
     return name;
   }
 
-  public SimpleBooleanProperty getObstaclesLoadedProperty() {
+  public SimpleListProperty<Runway> runwayListProperty() {
+    return runwayList;
+  }
+
+  public SimpleListProperty<Aircraft> aircraftListProperty() {
+    return aircraftList;
+  }
+
+  public SimpleListProperty<Obstacle> obstacleListProperty() {
+    return obstacleList;
+  }
+
+  public SimpleBooleanProperty obstaclesLoadedProperty() {
     return obstaclesLoaded;
   }
 }

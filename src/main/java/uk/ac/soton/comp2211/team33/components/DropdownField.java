@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -34,11 +33,11 @@ public class DropdownField extends AnchorPane {
       throw new RuntimeException(e);
     }
   }
-  public String getLabel() {
+  public String getLabelText() {
     return label.getText();
   }
 
-  public void setLabel(String label) {
+  public void setLabelText(String label) {
     this.label.setText(label);
   }
 
@@ -58,7 +57,7 @@ public class DropdownField extends AnchorPane {
     dropdown.setItems(list);
   }
 
-  public ChoiceBox<String> dropdownProperty() {
+  public ChoiceBox<String> getDropdown() {
     return dropdown;
   }
 }

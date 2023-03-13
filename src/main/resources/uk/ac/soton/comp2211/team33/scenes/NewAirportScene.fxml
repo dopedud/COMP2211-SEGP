@@ -10,8 +10,8 @@
             xmlns:fx="http://javafx.com/fxml/1">
   <Label text="New airport details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
   <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-    <DropdownField fx:id="city" label="City"/>
-    <DropdownField fx:id="name" label="Name"/>
+    <DropdownField fx:id="city" labelText="City"/>
+    <DropdownField fx:id="name" labelText="Name"/>
     <AnchorPane>
       <Button mnemonicParsing="false" text="Submit" onAction="#onSubmitAirport"
               prefHeight="30.0" prefWidth="100.0"

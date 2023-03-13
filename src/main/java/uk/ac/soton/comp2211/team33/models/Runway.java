@@ -239,31 +239,15 @@ public class Runway {
     currentObstacle.set(obstacle);
   }
 
-  public SimpleObjectProperty<Aircraft> aircraftProperty() {
+  public SimpleObjectProperty<Aircraft> currentAircraftProperty() {
     return currentAircraft;
   }
 
-  public SimpleObjectProperty<Obstacle> obstacleProperty() {
+  public SimpleObjectProperty<Obstacle> currentObstacleProperty() {
     return currentObstacle;
   }
 
   public SimpleDoubleProperty obstacleDistanceProperty() {
     return obstacleDistance;
-  }
-
-  public String getInformationString() {
-    return "TORA: " + tora + "\n" +
-      "TODA: " + toda + "\n" +
-      "ASDA: " + asda + "\n" +
-      "LDA: " + lda + "\n" +
-      "RESA: " + resa + "\n";
-  }
-
-  public String getCInformationString() {
-    return "TORA: " + ctora.get() + "\n" +
-      "TODA: " + ctoda.get() + "\n" +
-      "ASDA: " + casda.get() + "\n" +
-      "LDA: " + clda.get() + "\n" +
-      "RESA: " + cresa.get() + "\n";
   }
 }
