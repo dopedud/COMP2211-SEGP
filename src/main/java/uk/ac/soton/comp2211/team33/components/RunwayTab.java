@@ -66,6 +66,9 @@ public class RunwayTab extends Tab {
   @FXML
   private InputField obsDistFromThresh;
 
+  @FXML
+  private Button loadPredefinedObs;
+
   public RunwayTab(Stage stage, Airport state, Runway runway) {
     logger.info("Creating new runway tab named " + runway.getDesignator());
 
@@ -87,7 +90,12 @@ public class RunwayTab extends Tab {
     // Set tab name
     setText(runway.getDesignator());
 
+    // Resize input field UI
     resizeUI();
+
+    // Enable or disable load pre-defined obstacles button, and add listener from state
+    loadPredefinedObs.setDisable(state.getObstaclesLoaded());
+    state.getObstaclesLoadedProperty().addListener((obVal, oldVal, newVal) -> loadPredefinedObs.setDisable(newVal));
 
     // Set initial values of runway
     tora.setText(String.valueOf(runway.getTora()));
@@ -117,8 +125,13 @@ public class RunwayTab extends Tab {
     initialiseAircraftList();
     initialiseObstacleList();
 
+    // Live update when obstacle distance from threshold value is changed
+    obsDistFromThresh.textFieldProperty().textProperty().
+        bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
+    runway.obstacleDistanceProperty().addListener((obVal, oldVal, newVal) -> recalculateRunwayValues());
+
     // Set calculation mode to 2 modes, calculation towards obstacle and away from/over obstacle
-    // Also adds a listener
+    // Also adds a listener to re-calculate values based on which modes selected
     calcMode.dropdownProperty().valueProperty().addListener((obVal, oldVal, newVal) -> {
       calcTowards = newVal.equals("Calculations Towards Obstacle");
 
@@ -127,10 +140,6 @@ public class RunwayTab extends Tab {
     calcMode.getDropdownList().add("Calculations Towards Obstacle");
     calcMode.getDropdownList().add("Calculations Away From/Over Obstacle");
     calcMode.setDropdownValue("Calculations Towards Obstacle");
-
-    obsDistFromThresh.textFieldProperty().textProperty().
-        bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
-    runway.obstacleDistanceProperty().addListener((obVal, oldVal, newVal) -> recalculateRunwayValues());
   }
 
   private void resizeUI() {

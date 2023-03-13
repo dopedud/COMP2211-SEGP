@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.models;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -31,17 +32,18 @@ public class Airport {
   /**
    * List of runways.
    */
-  private final SimpleListProperty<Runway> runwayList;
+  private final ObservableList<Runway> runwayList;
 
   /**
    * List of aircraft.
    */
-  private final SimpleListProperty<Aircraft> aircraftList;
+  private final ObservableList<Aircraft> aircraftList;
 
   /**
    * List of obstacles.
    */
-  private final SimpleListProperty<Obstacle> obstacleList;
+  private final ObservableList<Obstacle> obstacleList;
+  private SimpleBooleanProperty obstaclesLoaded;
 
   /**
    * Class constructor.
@@ -56,6 +58,7 @@ public class Airport {
     obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
     aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
     runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    obstaclesLoaded = new SimpleBooleanProperty();
   }
 
   public void addRunway(String designator, double tora, double toda, double asda, double lda,
@@ -78,6 +81,8 @@ public class Airport {
   public void loadPredefinedObstacles() {
     logger.info("Loading obstacles from CSV file...");
 
+    if (obstaclesLoaded.get()) return;
+
     try {
       InputStream stream = getClass().getResourceAsStream("/uk/ac/soton/comp2211/team33/data/obstacles.csv");
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
@@ -87,6 +92,8 @@ public class Airport {
         String[] values = line.split(",");
         addObstacle(values[0], Double.parseDouble(values[1]), Double.parseDouble(values[2]));
       }
+
+      obstaclesLoaded.set(true);
     }
     catch (IOException e) {
       logger.error("Error loading obstacles from CSV file.");
@@ -104,15 +111,19 @@ public class Airport {
   }
 
   public ObservableList<Runway> getRunwayList() {
-    return runwayList.get();
+    return runwayList;
   }
 
   public ObservableList<Aircraft> getAircraftList() {
-    return aircraftList.get();
+    return aircraftList;
   }
 
   public ObservableList<Obstacle> getObstacleList() {
-    return obstacleList.get();
+    return obstacleList;
+  }
+
+  public boolean getObstaclesLoaded() {
+    return obstaclesLoaded.get();
   }
 
   public SimpleStringProperty getCityProperty() {
@@ -123,15 +134,7 @@ public class Airport {
     return name;
   }
 
-  public SimpleListProperty<Obstacle> getObstacleListProperty() {
-    return obstacleList;
-  }
-
-  public SimpleListProperty<Aircraft> getAircraftListProperty() {
-    return aircraftList;
-  }
-
-  public SimpleListProperty<Runway> getRunwayListProperty() {
-    return runwayList;
+  public SimpleBooleanProperty getObstaclesLoadedProperty() {
+    return obstaclesLoaded;
   }
 }

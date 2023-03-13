@@ -10,11 +10,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Separator?>
-
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+
 <?import uk.ac.soton.comp2211.team33.components.InputField?>
 <?import uk.ac.soton.comp2211.team33.components.DropdownField?>
+
 <fx:root type="Tab" onClosed="#onCloseRunway"
          xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <AnchorPane>
@@ -50,9 +50,10 @@
                             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
               </AnchorPane>
               <AnchorPane>
-                <Label text="Blast Protection"/>
-                <Label fx:id="blastProtection" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                       AnchorPane.topAnchor="0.0"/>
+                <Label text="Blast Protection"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                <Label fx:id="blastProtection"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
               </AnchorPane>
             </VBox>
           </TitledPane>
@@ -60,7 +61,8 @@
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <VBox spacing="10.0">
               <AnchorPane>
-                <Button mnemonicParsing="false" text="Load Pre-defined Obstacles" onAction="#loadPredefinedObstacles"
+                <Button fx:id="loadPredefinedObs"
+                        mnemonicParsing="false" text="Load Pre-defined Obstacles" onAction="#loadPredefinedObstacles"
                         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
               </AnchorPane>
