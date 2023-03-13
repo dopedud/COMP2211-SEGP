@@ -141,8 +141,8 @@ public class RunwayTab extends Tab {
     calcMode.setDropdownValue("Calculations Towards Obstacle");
 
     Visualisation visualisation = new Visualisation(runway);
-    visualisation.heightProperty().bind(viewPanel.heightProperty());
-    visualisation.widthProperty().bind(viewPanel.widthProperty());
+    // visualisation.heightProperty().bind(viewPanel.heightProperty());
+    // visualisation.widthProperty().bind(viewPanel.widthProperty());
     viewPanel.getChildren().add(visualisation);
     visualisation.renderTopDown();
   }
