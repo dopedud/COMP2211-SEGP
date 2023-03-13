@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class RunwayTab extends Tab {
+public class RunwayTab extends Tab implements BaseComponent {
 
   private static final Logger logger = LogManager.getLogger(RunwayTab.class);
 
@@ -72,15 +72,7 @@ public class RunwayTab extends Tab {
   public RunwayTab(Stage stage, Airport state, Runway runway) {
     logger.info("Creating new runway tab named " + runway.getDesignator());
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("RunwayTab.fxml"));
-    loader.setRoot(this);
-    loader.setController(this);
-
-    try {
-      loader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    renderFXML("RunwayTab.fxml");
 
     // Set the stage this tab belongs to, the state of the airport and the runway this tab possesses
     this.stage = stage;

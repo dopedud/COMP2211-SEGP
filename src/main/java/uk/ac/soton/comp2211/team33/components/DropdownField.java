@@ -14,7 +14,7 @@ import java.io.IOException;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class DropdownField extends AnchorPane {
+public class DropdownField extends AnchorPane implements BaseComponent {
 
   @FXML
   private Label label;
@@ -23,15 +23,7 @@ public class DropdownField extends AnchorPane {
   private ChoiceBox<String> dropdown;
 
   public DropdownField() {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("DropdownField.fxml"));
-    loader.setRoot(this);
-    loader.setController(this);
-
-    try {
-      loader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    renderFXML("DropdownField.fxml");
   }
   public String getLabelText() {
     return label.getText();

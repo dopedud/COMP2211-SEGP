@@ -13,7 +13,7 @@ import java.io.IOException;
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */
-public class InputField extends AnchorPane {
+public class InputField extends AnchorPane implements BaseComponent {
 
   @FXML
   private Label label;
@@ -22,15 +22,7 @@ public class InputField extends AnchorPane {
   private TextField textField;
 
   public InputField() {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("InputField.fxml"));
-    loader.setRoot(this);
-    loader.setController(this);
-
-    try {
-      loader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    renderFXML("InputField.fxml");
   }
 
   public String getLabelText() {
