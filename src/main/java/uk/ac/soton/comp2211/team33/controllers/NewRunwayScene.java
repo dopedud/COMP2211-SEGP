@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.scenes;
+package uk.ac.soton.comp2211.team33.controllers;
 
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
-import uk.ac.soton.comp2211.team33.models.Runway;
 
 public class NewRunwayScene extends BaseScene {
 

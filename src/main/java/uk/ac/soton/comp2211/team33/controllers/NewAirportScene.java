@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.scenes;
+package uk.ac.soton.comp2211.team33.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

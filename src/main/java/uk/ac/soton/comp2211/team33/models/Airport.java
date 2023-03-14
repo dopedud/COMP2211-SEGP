@@ -31,18 +31,22 @@ public class Airport {
   /**
    * List of runways.
    */
-  private final SimpleListProperty<Runway> runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Runway> runwayList;
 
   /**
    * List of aircraft.
    */
-  private final SimpleListProperty<Aircraft> aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Aircraft> aircraftList;
 
   /**
    * List of obstacles.
    */
-  private final SimpleListProperty<Obstacle> obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
-  private SimpleBooleanProperty obstaclesLoaded = new SimpleBooleanProperty(false);
+  private final SimpleListProperty<Obstacle> obstacleList;
+
+  /**
+   * Trigger to only load pre-defined obstacles once.
+   */
+  private final SimpleBooleanProperty obstaclesLoaded;
 
   /**
    * Class constructor.
@@ -53,6 +57,12 @@ public class Airport {
   public Airport(String city, String name) {
     this.city = city;
     this.name = name;
+
+    runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    obstaclesLoaded = new SimpleBooleanProperty(false);
   }
 
   public void addRunway(String designator, double tora, double toda, double asda, double lda,
@@ -62,10 +72,6 @@ public class Airport {
 
   public void addAircraft(String id, double blastProtection) {
     aircraftList.add(new Aircraft(id, blastProtection));
-  }
-
-  public void addObstacle(String name, double height, double length) {
-    obstacleList.add(new Obstacle(name, height, length));
   }
 
   public void addObstacle(String name, double height, double length, double centerline) {
@@ -84,7 +90,8 @@ public class Airport {
 
       while ((line = br.readLine()) != null) {
         String[] values = line.split(",");
-        addObstacle(values[0], Double.parseDouble(values[1]), Double.parseDouble(values[2]));
+        addObstacle(values[0], Double.parseDouble(values[1]),
+            Double.parseDouble(values[2]), Double.parseDouble(values[3]));
       }
 
       obstaclesLoaded.set(true);
@@ -94,7 +101,6 @@ public class Airport {
       e.printStackTrace();
     }
   }
-
 
   public String getCity() {
     return city;

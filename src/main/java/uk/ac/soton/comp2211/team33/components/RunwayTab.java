@@ -3,7 +3,6 @@ package uk.ac.soton.comp2211.team33.components;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -15,11 +14,10 @@ import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
-import uk.ac.soton.comp2211.team33.scenes.AircraftScene;
-import uk.ac.soton.comp2211.team33.scenes.ObstacleScene;
+import uk.ac.soton.comp2211.team33.controllers.AircraftScene;
+import uk.ac.soton.comp2211.team33.controllers.ObstacleScene;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -276,14 +274,6 @@ public class RunwayTab extends Tab implements BaseComponent {
     }
   }
 
-  private Stage createModalStage() {
-    Stage modal = new Stage();
-    modal.initOwner(stage);
-    modal.initModality(Modality.WINDOW_MODAL);
-
-    return modal;
-  }
-
   @FXML
   private void onEditAircraft() {
 
@@ -291,7 +281,7 @@ public class RunwayTab extends Tab implements BaseComponent {
 
   @FXML
   private void onAddAircraft() {
-    new AircraftScene(createModalStage(), state, false);
+    new AircraftScene(createModalStage(stage), state, false);
   }
 
   @FXML
@@ -315,7 +305,7 @@ public class RunwayTab extends Tab implements BaseComponent {
 
   @FXML
   private void onAddObstacle() {
-    new ObstacleScene(createModalStage(), state, false);
+    new ObstacleScene(createModalStage(stage), state, false);
   }
 
   @FXML

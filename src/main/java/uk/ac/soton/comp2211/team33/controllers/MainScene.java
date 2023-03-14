@@ -1,9 +1,7 @@
-package uk.ac.soton.comp2211.team33.scenes;
+package uk.ac.soton.comp2211.team33.controllers;
 
-import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;

@@ -49,10 +49,10 @@ public class Obstacle {
   /**
    * Creates a new obstacle with the specified name, height, length, and distance from center-line.
    *
-   * @param name              name of the obstacle
-   * @param height            height of the obstacle
-   * @param length            the length of the obstacle
-   * @param centerline        Distance from center-line (+ if North, - if South)
+   * @param name name of the obstacle
+   * @param height height of the obstacle
+   * @param length the length of the obstacle
+   * @param centerline Distance from center-line (+ if North, - if South)
    */
   public Obstacle(String name, double height, double length, double centerline) {
     this(name, height, length);

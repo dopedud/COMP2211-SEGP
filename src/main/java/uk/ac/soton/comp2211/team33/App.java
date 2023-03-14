@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.scenes.NewAirportScene;
+import uk.ac.soton.comp2211.team33.controllers.NewAirportScene;
 
 /**
  * The main class to execute when running the application.

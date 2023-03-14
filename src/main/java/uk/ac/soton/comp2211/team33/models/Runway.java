@@ -42,7 +42,7 @@ public class Runway {
   /**
    * TOCS constant of 50m, ALS constant of 50m, and strip end constant of 60m.
    */
-  private final double tocs = 50, als = 50, stripEnd = 60;
+  private static final double tocs = 50, als = 50, stripEnd = 60;
 
   /**
    * Currently selected aircraft for this runway.
