@@ -10,7 +10,7 @@ import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 
 /**
- * The static class Calculator is a utility class that handles the main calculation involved in a runway re-declaration.
+ * The Calculator static class is a utility class that handles the main calculation involved in a runway re-declaration.
  * <p>
  * Corresponds to user story #3, #5, #6.
  *
@@ -81,8 +81,8 @@ public final class Calculator {
    * TORA for Take Off Away.
    * TORA = ASDA = TODA in this case.
    *
-   * @param runway   the runway to perform the calculation on
-   * @param obstacle the obstacle to perform the calculation on
+   * @param runway    the runway to perform the calculation on
+   * @param obstacle  the obstacle to perform the calculation on
    * @return A string detailing the steps of the calculation performed
    */
   public static String toraTowardsObsPP(Runway runway, Obstacle obstacle) {
@@ -159,7 +159,7 @@ public final class Calculator {
    * For ASDA and TODA, if there exists any clearway and/or stopway then those values should be added to the reduced
    * TORA for the TODA and ASDA values.
    *
-   * @param runway the runway being calculated
+   * @param  runway the runway being calculated
    * @return string detailing the calculations
    */
   public static String toraAwayObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
@@ -279,13 +279,12 @@ public final class Calculator {
     }
   }
 
-
   /**
    * Pretty prints the calculations for LDA over obstacle. Updates the runway object with the new calculated values.
    *
-   * @param runway   the runway to perform calculations on
-   * @param obstacle the obstacle to base calculations on
-   * @param aircraft the aircraft to base calculations on
+   * @param runway    the runway to perform calculations on
+   * @param obstacle  the obstacle to base calculations on
+   * @param aircraft  the aircraft to base calculations on
    * @return a string containing the calculations performed
    */
   public static String ldaOverObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
@@ -352,7 +351,8 @@ public final class Calculator {
 
 
   /**
-   * Function that re-declares the LDA after an obstacle appears, and pretty prints the calculations. Updates runway object with new values.
+   * Function that re-declares the LDA after an obstacle appears, and pretty prints the calculations. Updates runway
+   * object with new values.
    * When landing towards, only the LDA has to change.
    *
    * @param runway   the runway to perform calculations on
