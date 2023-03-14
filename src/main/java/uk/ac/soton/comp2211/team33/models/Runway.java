@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * The class Runway models a runway and its values for re-declaration in an airport.
- *
+ * <p>
  * Corresponds to user story #3.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
@@ -42,7 +42,7 @@ public class Runway {
   /**
    * TOCS constant of 50m, ALS constant of 50m, and strip end constant of 60m.
    */
-  private final double tocs = 50, als = 50, stripEnd = 60;
+  private static final double tocs = 50, als = 50, stripEnd = 60;
 
   /**
    * Currently selected aircraft for this runway.
@@ -59,6 +59,17 @@ public class Runway {
    */
   private final SimpleDoubleProperty obstacleDistance;
 
+  /**
+   * Class constructor.
+   *
+   * @param designator runway designator
+   * @param tora take-off runway available
+   * @param toda take-off distance available
+   * @param asda acceleration-stop distance available
+   * @param lda landing distance availabl
+   * @param resa runway end safety area
+   * @param threshold displaced threshold of the runway
+   */
   public Runway(String designator, double tora, double toda, double asda, double lda,
                 double resa, double threshold) {
     this.designator = new SimpleStringProperty(designator);

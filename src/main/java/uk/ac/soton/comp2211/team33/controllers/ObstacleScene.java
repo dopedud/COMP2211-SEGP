@@ -1,4 +1,4 @@
-package uk.ac.soton.comp2211.team33.scenes;
+package uk.ac.soton.comp2211.team33.controllers;
 
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -7,6 +7,11 @@ import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
+/**
+ * The ObstacleScene class that manages deletion or edition of the list of obstacles.
+ *
+ * @author Abeed (mabs1u21@soton.ac.uk)
+ */
 public class ObstacleScene extends BaseScene {
 
   private static final Logger logger = LogManager.getLogger(ObstacleScene.class);
@@ -16,12 +21,6 @@ public class ObstacleScene extends BaseScene {
   @FXML
   private InputField name, height, length, centerline;
 
-  /**
-   * Instantiate a scene.
-   *
-   * @param stage The application stage to render the scene in
-   * @param state The global application state
-   */
   public ObstacleScene(Stage stage, Airport state, boolean isEdit) {
     super(stage, state);
     this.isEdit = isEdit;

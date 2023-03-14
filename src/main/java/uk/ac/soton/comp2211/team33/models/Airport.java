@@ -11,6 +11,8 @@ import java.io.*;
 
 /**
  * The Airport class that acts as a container for the collection of runways, aircraft, and obstacles.
+ * <p>
+ * Corresponds to user story #1.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
@@ -31,18 +33,22 @@ public class Airport {
   /**
    * List of runways.
    */
-  private final SimpleListProperty<Runway> runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Runway> runwayList;
 
   /**
    * List of aircraft.
    */
-  private final SimpleListProperty<Aircraft> aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Aircraft> aircraftList;
 
   /**
    * List of obstacles.
    */
-  private final SimpleListProperty<Obstacle> obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
-  private SimpleBooleanProperty obstaclesLoaded = new SimpleBooleanProperty(false);
+  private final SimpleListProperty<Obstacle> obstacleList;
+
+  /**
+   * Trigger to only load pre-defined obstacles once.
+   */
+  private final SimpleBooleanProperty obstaclesLoaded;
 
   /**
    * Class constructor.
@@ -53,7 +59,15 @@ public class Airport {
   public Airport(String city, String name) {
     this.city = city;
     this.name = name;
+
+    runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    obstaclesLoaded = new SimpleBooleanProperty(false);
   }
+
+  // Below are methods to add and load objects in an airport.
 
   public void addRunway(String designator, double tora, double toda, double asda, double lda,
                         double resa, double threshold) {
@@ -62,10 +76,6 @@ public class Airport {
 
   public void addAircraft(String id, double blastProtection) {
     aircraftList.add(new Aircraft(id, blastProtection));
-  }
-
-  public void addObstacle(String name, double height, double length) {
-    obstacleList.add(new Obstacle(name, height, length));
   }
 
   public void addObstacle(String name, double height, double length, double centerline) {
@@ -84,7 +94,8 @@ public class Airport {
 
       while ((line = br.readLine()) != null) {
         String[] values = line.split(",");
-        addObstacle(values[0], Double.parseDouble(values[1]), Double.parseDouble(values[2]));
+        addObstacle(values[0], Double.parseDouble(values[1]),
+            Double.parseDouble(values[2]), Double.parseDouble(values[3]));
       }
 
       obstaclesLoaded.set(true);
@@ -95,6 +106,7 @@ public class Airport {
     }
   }
 
+  // Below are the usual accessors and mutators for the member variables of this class.
 
   public String getCity() {
     return city;

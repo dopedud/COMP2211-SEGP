@@ -1,9 +1,7 @@
-package uk.ac.soton.comp2211.team33.scenes;
+package uk.ac.soton.comp2211.team33.controllers;
 
-import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +10,11 @@ import uk.ac.soton.comp2211.team33.components.RunwayTab;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Runway;
 
+/**
+ * The MainScene class that acts as the main workspace for the runway re-declaration.
+ *
+ * @author Geeth (gv2g21@soton.ac.uk), Abeed (mabs1u21@soton.ac.uk)
+ */
 public class MainScene extends BaseScene {
 
   private static final Logger logger = LogManager.getLogger(MainScene.class);
@@ -48,7 +51,7 @@ public class MainScene extends BaseScene {
   }
 
   private void renderTabs() {
-    state.runwayListProperty().addListener((ListChangeListener<? super Runway>) (list) -> {
+    state.runwayListProperty().addListener((ListChangeListener<? super Runway>) list -> {
       list.next();
 
       if (list.wasAdded()) {
