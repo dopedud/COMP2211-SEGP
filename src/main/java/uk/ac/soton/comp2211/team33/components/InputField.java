@@ -21,6 +21,9 @@ public class InputField extends AnchorPane implements BaseComponent {
   @FXML
   private TextField textField;
 
+  @FXML
+  private Label unitLabel;
+
   public InputField() {
     renderFXML("InputField.fxml");
   }
@@ -47,5 +50,12 @@ public class InputField extends AnchorPane implements BaseComponent {
 
   public TextField getTextField() {
     return textField;
+  }
+
+  public String getUnit() {
+    return unitLabel.getText();
+  }
+  public void setUnit(String unit) {
+      unitLabel.setText(unit);
   }
 }
