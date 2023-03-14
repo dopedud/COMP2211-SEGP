@@ -11,6 +11,8 @@ import java.io.*;
 
 /**
  * The Airport class that acts as a container for the collection of runways, aircraft, and obstacles.
+ * <p>
+ * Corresponds to user story #1.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
@@ -65,6 +67,8 @@ public class Airport {
     obstaclesLoaded = new SimpleBooleanProperty(false);
   }
 
+  // Below are methods to add and load objects in an airport.
+
   public void addRunway(String designator, double tora, double toda, double asda, double lda,
                         double resa, double threshold) {
     runwayList.add(new Runway(designator, tora, toda, asda, lda, resa, threshold));
@@ -101,6 +105,8 @@ public class Airport {
       e.printStackTrace();
     }
   }
+
+  // Below are the usual accessors and mutators for the member variables of this class.
 
   public String getCity() {
     return city;

@@ -11,7 +11,7 @@ import java.io.IOException;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * An abstract class to create scenes.
+ * The BaseScene abstract class to create scenes.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
@@ -64,7 +64,7 @@ abstract class BaseScene {
   }
 
   /**
-   * Create a modal stage that is owned by the stage of this scene.
+   * Creates a modal stage that is owned by the stage of this scene.
    *
    * @return The created stage to render in
    */
@@ -76,6 +76,11 @@ abstract class BaseScene {
     return modal;
   }
 
+  /**
+   * Creates a new independent stage.
+   *
+   * @return The created stage to render in
+   */
   protected Stage createNewStage() {
     Stage modal = new Stage();
     modal.initModality(Modality.NONE);

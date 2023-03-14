@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * The class Aircraft models what attributes an aircraft has when runway is being re-declared.
- *
+ * <p>
  * Corresponds to user story #3.
  *
  * @author Jackson (jl14u21@soton.ac.uk)

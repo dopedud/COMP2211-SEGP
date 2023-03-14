@@ -16,6 +16,11 @@ import java.io.InputStreamReader;
 import uk.ac.soton.comp2211.team33.components.DropdownField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
+/**
+ * The NewAirportScene class that creates a new airport upon user request.
+ *
+ * @author Abeed (mabs1u21@soton.ac.uk)
+ */
 public class NewAirportScene extends BaseScene {
 
   private static final Logger logger = LogManager.getLogger(NewAirportScene.class);

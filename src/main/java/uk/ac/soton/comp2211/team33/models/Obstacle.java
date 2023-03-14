@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * The class Obstacle specifies what attributes should an obstacle have in a runway re-declaration.
- *
+ * <p>
  * Corresponds to user story #3, #4.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)

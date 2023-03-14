@@ -5,6 +5,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import uk.ac.soton.comp2211.team33.models.Runway;
 
+/**
+ * The Visualisation class is a custom component that renders the 2D top-down and side-on view.
+ *
+ * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk)
+ */
 public class Visualisation extends Canvas {
 
   private Runway runway;
