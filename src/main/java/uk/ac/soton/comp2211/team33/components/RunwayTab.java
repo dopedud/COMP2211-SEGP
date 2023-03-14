@@ -5,18 +5,19 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.controllers.AircraftScene;
-import uk.ac.soton.comp2211.team33.controllers.ObstacleScene;
+import uk.ac.soton.comp2211.team33.controllers.ObstacleController;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class RunwayTab extends Tab implements BaseComponent {
+public class RunwayTab extends Tab {
 
   private static final Logger logger = LogManager.getLogger(RunwayTab.class);
 
@@ -70,7 +71,7 @@ public class RunwayTab extends Tab implements BaseComponent {
   public RunwayTab(Stage stage, Airport state, Runway runway) {
     logger.info("Creating new runway tab named " + runway.getDesignator());
 
-    renderFXML("RunwayTab.fxml");
+    ProjectHelpers.renderRoot("/components/RunwayTab.fxml", this, this);
 
     // Set the stage this tab belongs to, the state of the airport and the runway this tab possesses
     this.stage = stage;
@@ -248,7 +249,7 @@ public class RunwayTab extends Tab implements BaseComponent {
 
         height.setText(String.valueOf(runway.getCurrentObstacle().getHeight()));
         length.setText(String.valueOf(runway.getCurrentObstacle().getLength()));
-        centerline.setText(String.valueOf(runway.getCurrentObstacle().getCenterline()));
+        centerline.setText(String.valueOf(runway.getCurrentObstacle().getCenterLine()));
       }
 
       recalculateRunwayValues();
@@ -281,7 +282,7 @@ public class RunwayTab extends Tab implements BaseComponent {
 
   @FXML
   private void onAddAircraft() {
-    new AircraftScene(createModalStage(stage), state, false);
+    new AircraftScene(ProjectHelpers.createModalStage(stage), state, false);
   }
 
   @FXML
@@ -305,7 +306,7 @@ public class RunwayTab extends Tab implements BaseComponent {
 
   @FXML
   private void onAddObstacle() {
-    new ObstacleScene(createModalStage(stage), state, false);
+    new ObstacleController(ProjectHelpers.createModalStage(stage), state, false);
   }
 
   @FXML

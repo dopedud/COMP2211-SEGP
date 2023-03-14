@@ -17,6 +17,10 @@ public class Visualisation extends Canvas {
   public Visualisation(Runway runway) {
 
     this.runway = runway;
+
+    widthProperty().addListener(((observableValue, oldWidth, newWidth) -> renderTopDown()));
+    heightProperty().addListener(((observableValue, oldWidth, newWidth) -> renderTopDown()));
+    renderTopDown();
   }
 
   public void renderTopDown() {

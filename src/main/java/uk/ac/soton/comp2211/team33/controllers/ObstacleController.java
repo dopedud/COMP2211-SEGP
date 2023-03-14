@@ -12,32 +12,32 @@ import uk.ac.soton.comp2211.team33.models.Airport;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class ObstacleScene extends BaseScene {
+public class ObstacleController extends BaseController {
 
-  private static final Logger logger = LogManager.getLogger(ObstacleScene.class);
+  private static final Logger logger = LogManager.getLogger(ObstacleController.class);
 
   private boolean isEdit;
 
   @FXML
   private InputField name, height, length, centerline;
 
-  public ObstacleScene(Stage stage, Airport state, boolean isEdit) {
+  public ObstacleController(Stage stage, Airport state, boolean isEdit) {
     super(stage, state);
     this.isEdit = isEdit;
   }
 
   @Override
-  protected void build() {
+  protected void initialise() {
     logger.info("Building ObstacleScene...");
 
     stage.setResizable(false);
 
     if (isEdit) {
       stage.setTitle("Edit Current Obstacle");
-      renderFXML("EditObstacleScene.fxml");
+      buildScene("/views/EditObstacleView.fxml");
     } else {
       stage.setTitle("New Obstacle");
-      renderFXML("AddObstacleScene.fxml");
+      buildScene("/views/AddObstacleView.fxml");
     }
   }
 

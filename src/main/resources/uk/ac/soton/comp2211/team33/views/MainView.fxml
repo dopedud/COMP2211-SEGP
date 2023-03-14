@@ -16,8 +16,6 @@
       <SeparatorMenuItem mnemonicParsing="false"/>
       <MenuItem mnemonicParsing="false" text="Save As…"/>
       <SeparatorMenuItem mnemonicParsing="false"/>
-      <!--<MenuItem mnemonicParsing="false" text="Preferences…"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>-->
       <MenuItem mnemonicParsing="false" text="Quit"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Help">

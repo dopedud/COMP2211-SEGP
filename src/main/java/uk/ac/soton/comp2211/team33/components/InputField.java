@@ -1,19 +1,18 @@
 package uk.ac.soton.comp2211.team33.components;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The InputField class is a custom component that contains a label and a text field.
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */
-public class InputField extends AnchorPane implements BaseComponent {
+public class InputField extends AnchorPane {
 
   @FXML
   private Label label;
@@ -22,7 +21,7 @@ public class InputField extends AnchorPane implements BaseComponent {
   private TextField textField;
 
   public InputField() {
-    renderFXML("InputField.fxml");
+    ProjectHelpers.renderRoot("/components/InputField.fxml", this, this);
   }
 
   public String getLabelText() {
