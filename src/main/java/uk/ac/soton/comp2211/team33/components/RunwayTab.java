@@ -126,9 +126,9 @@ public class RunwayTab extends Tab implements BaseComponent {
 
       recalculateRunwayValues();
     });
-    calcMode.getDropdownList().add("Calculations Towards Obstacle");
-    calcMode.getDropdownList().add("Calculations Away From/Over Obstacle");
-    calcMode.setDropdownValue("Calculations Towards Obstacle");
+    calcMode.getDropdownList().add("Towards Obstacle");
+    calcMode.getDropdownList().add("Away From/Over Obstacle");
+    calcMode.setDropdownValue("Towards Obstacle");
 
     Visualisation visualisation = new Visualisation(runway);
     // visualisation.heightProperty().bind(viewPanel.heightProperty());
