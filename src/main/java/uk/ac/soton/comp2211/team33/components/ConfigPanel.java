@@ -72,7 +72,7 @@ public class ConfigPanel extends AnchorPane {
 
     // Live update when obstacle distance from threshold value is changed
     obsDistFromThresh.getTextField().textProperty().
-        bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
+        bindBidirectional(runway.obsDistFromThreshProperty(), new NumberStringConverter());
   }
 
   private void initialiseAircraftList() {
@@ -171,7 +171,7 @@ public class ConfigPanel extends AnchorPane {
 
         height.setText(String.valueOf(runway.getCurrentObstacle().getHeight()));
         length.setText(String.valueOf(runway.getCurrentObstacle().getLength()));
-        centerLine.setText(String.valueOf(runway.getCurrentObstacle().getCenterLine()));
+        centerLine.setText(String.valueOf(runway.getCurrentObstacle().getCenterline()));
       }
     });
   }

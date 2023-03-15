@@ -59,7 +59,7 @@ public class CalcPanel extends AnchorPane {
     runway.cresaProperty().addListener(((obVal, oldVal, newVal) -> cresa.setText(String.valueOf(newVal))));
 
     // Initialise list UI to list models
-    runway.obstacleDistanceProperty().addListener(ignored -> recalculateRunwayValues());
+    runway.obsDistFromThreshProperty().addListener(ignored -> recalculateRunwayValues());
     runway.currentAircraftProperty().addListener(ignored -> recalculateRunwayValues());
     runway.currentObstacleProperty().addListener(ignored -> recalculateRunwayValues());
 
@@ -80,16 +80,16 @@ public class CalcPanel extends AnchorPane {
       if (runway.getCurrentObstacle() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
-        calcBreakdown.setText(Calculator.toraTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
-                Calculator.ldaTowardsObsPP(runway, runway.getCurrentObstacle()));
+        calcBreakdown.setText(Calculator.takeOffTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
+                Calculator.landingTowardsObsPP(runway, runway.getCurrentObstacle()));
       }
     } else {
       if (runway.getCurrentObstacle() == null || runway.getCurrentAircraft() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
         calcBreakdown.setText(Calculator.
-                toraAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
-                Calculator.ldaOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()));
+            takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
+                Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()));
       }
     }
   }
