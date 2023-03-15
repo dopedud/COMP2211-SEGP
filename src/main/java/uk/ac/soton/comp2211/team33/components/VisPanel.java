@@ -42,7 +42,7 @@ public class VisPanel extends StackPane {
     runway.cldaProperty().addListener((obVal, oldVal, newVal) -> draw());
     runway.cresaProperty().addListener((obVal, oldVal, newVal) -> draw());
 
-    drawTopDown();
+    draw();
   }
 
   @FXML
