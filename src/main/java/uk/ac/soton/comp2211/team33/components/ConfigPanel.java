@@ -175,7 +175,7 @@ public class ConfigPanel extends AnchorPane {
   }
 
   @FXML
-  private void loadPredefinedObstacles() {
+  private void onLoadPredefinedObstacles() {
     String oldValue = obstacleList.getValue();
 
     state.loadPredefinedObstacles();

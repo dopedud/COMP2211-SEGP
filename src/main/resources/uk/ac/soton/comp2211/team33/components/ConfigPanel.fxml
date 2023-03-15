@@ -48,7 +48,7 @@
         <VBox spacing="10.0">
           <AnchorPane>
             <Button fx:id="loadPredefinedObs"
-                    mnemonicParsing="false" text="Load Pre-defined Obstacles" onAction="#loadPredefinedObstacles"
+                    mnemonicParsing="false" text="Load Pre-defined Obstacles" onAction="#onLoadPredefinedObstacles"
                     AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
           </AnchorPane>

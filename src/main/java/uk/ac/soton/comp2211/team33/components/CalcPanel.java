@@ -66,9 +66,9 @@ public class CalcPanel extends AnchorPane {
     runway.cresaProperty().addListener(((obVal, oldVal, newVal) -> cresa.setText(String.valueOf(newVal))));
 
     // Initialise list UI to list models
-    runway.obstacleDistanceProperty().addListener((obVal, oldVal, newVal) -> recalculateRunwayValues());
-    runway.currentAircraftProperty().addListener((obVal, oldCurrAircraft, newCurrAircraft) -> recalculateRunwayValues());
-    runway.currentObstacleProperty().addListener((obVal, oldCurrObs, newCurrObs) -> recalculateRunwayValues());
+    runway.obstacleDistanceProperty().addListener(ignored -> recalculateRunwayValues());
+    runway.currentAircraftProperty().addListener(ignored -> recalculateRunwayValues());
+    runway.currentObstacleProperty().addListener(ignored -> recalculateRunwayValues());
 
     // Set calculation mode to 2 modes, calculation towards obstacle and away from/over obstacle
     // Also adds a listener to re-calculate values based on which modes selected
