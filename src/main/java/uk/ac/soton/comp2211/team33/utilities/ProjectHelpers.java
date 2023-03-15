@@ -11,7 +11,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 public final class ProjectHelpers {
-  private static String BASE_PATH = "/uk/ac/soton/comp2211/team33";
+
+  private static final String BASE_PATH = "/uk/ac/soton/comp2211/team33";
 
   public static Object renderRoot(String path, Object controller, Object root) {
     FXMLLoader loader = new FXMLLoader(ProjectHelpers.getResource(path));

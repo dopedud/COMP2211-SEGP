@@ -12,7 +12,7 @@ import javafx.util.converter.NumberStringConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import uk.ac.soton.comp2211.team33.controllers.AircraftScene;
+import uk.ac.soton.comp2211.team33.controllers.AircraftController;
 import uk.ac.soton.comp2211.team33.controllers.ObstacleController;
 import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
@@ -25,25 +25,25 @@ import java.util.ArrayList;
 public class ConfigPanel extends AnchorPane {
   private static final Logger logger = LogManager.getLogger(ConfigPanel.class);
 
-  private RunwayTab runwayTab;
+  private final RunwayTab runwayTab;
 
-  private Stage stage;
+  private final Stage stage;
 
-  private Airport state;
+  private final Airport state;
 
-  private Runway runway;
-
-  @FXML
-  private Button loadPredefinedObs;
+  private final Runway runway;
 
   @FXML
   private ChoiceBox<String> aircraftList, obstacleList;
 
   @FXML
-  private InputField obsDistFromThresh;
+  private Label blastProtection, height, length, centerLine;
 
   @FXML
-  private Label blastProtection, height, length, centerLine;
+  private Button loadPredefinedObs;
+
+  @FXML
+  private InputField obsDistFromThresh;
 
   public ConfigPanel(RunwayTab runwayTab, Stage stage, Airport state, Runway runway) {
     this.runwayTab = runwayTab;
@@ -54,6 +54,7 @@ public class ConfigPanel extends AnchorPane {
     ProjectHelpers.renderRoot("/components/ConfigPanel.fxml", this, this);
 
     // Enable or disable load pre-defined obstacles button, and add listener from state
+    loadPredefinedObs.setDisable(state.getObstaclesLoaded());
     state.obstaclesLoadedProperty().addListener((obVal, oldVal, newVal) -> loadPredefinedObs.setDisable(newVal));
 
     initialiseObsDistFromThresh();
@@ -70,7 +71,8 @@ public class ConfigPanel extends AnchorPane {
     obsDistFromThresh.getTextField().setLayoutY(8);
 
     // Live update when obstacle distance from threshold value is changed
-    obsDistFromThresh.getTextField().textProperty().bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
+    obsDistFromThresh.getTextField().textProperty().
+        bindBidirectional(runway.obstacleDistanceProperty(), new NumberStringConverter());
   }
 
   private void initialiseAircraftList() {
@@ -155,8 +157,8 @@ public class ConfigPanel extends AnchorPane {
     obstacleList.valueProperty().addListener((obVal, oldVal, newVal) -> {
       if (newVal == null) return;
 
-      logger.info("Obstacle selected named " + obstacleList.getValue());
-      if (obstacleList.getSelectionModel().getSelectedItem().equals("None")) {
+      logger.info("Obstacle selected named " + newVal);
+      if (newVal.equals("None")) {
         runway.setCurrentObstacle(null);
 
         height.setText("");
@@ -190,7 +192,7 @@ public class ConfigPanel extends AnchorPane {
 
   @FXML
   private void onAddAircraft() {
-    new AircraftScene(ProjectHelpers.createModalStage(stage), state, false);
+    new AircraftController(ProjectHelpers.createModalStage(stage), state, false);
   }
 
   @FXML
