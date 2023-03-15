@@ -1,33 +1,55 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import uk.ac.soton.comp2211.team33.models.Runway;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The Visualisation class is a custom component that renders the 2D top-down and side-on view.
  *
  * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk)
  */
-public class Visualisation extends Canvas {
+public class VisPanel extends AnchorPane {
 
   private Runway runway;
 
-  public Visualisation(Runway runway) {
+  @FXML
+  private Canvas canvas;
 
+  public VisPanel(Runway runway) {
     this.runway = runway;
 
-    widthProperty().addListener(((observableValue, oldWidth, newWidth) -> renderTopDown()));
-    heightProperty().addListener(((observableValue, oldWidth, newWidth) -> renderTopDown()));
-    renderTopDown();
+    ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
+
+    canvas.widthProperty().bind(widthProperty());
+    canvas.heightProperty().bind(heightProperty());
+
+    canvas.widthProperty().addListener(((observableValue, oldWidth, newWidth) -> drawTopDown()));
+    canvas.heightProperty().addListener(((observableValue, oldWidth, newWidth) -> drawTopDown()));
+
+    runway.currentObstacleProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.currentAircraftProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.ctoraProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.ctodaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.casdaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.cldaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.cresaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+
+    drawTopDown();
   }
 
-  public void renderTopDown() {
-    GraphicsContext gc = this.getGraphicsContext2D();
+  public void drawTopDown() {
+    GraphicsContext gc = canvas.getGraphicsContext2D();
 
     double cw = this.getWidth();
     double ch = this.getHeight();
+
+    gc.clearRect(0, 0, cw, ch);
 
     // double toraL = otora; //Some given TORA to be passed in, dummy value
 
@@ -93,5 +115,11 @@ public class Visualisation extends Canvas {
     gc.setLineWidth(1);
     // gc.strokeText(formattedDes[0], cw * 0.18, ch * 0.5);
     // gc.strokeText(formattedDes[1], cw * 0.80, ch * 0.5);
+
+    if (runway.getCurrentObstacle() != null) {
+      gc.setFill(Color.RED);
+      gc.setFont(new Font(30));
+      gc.fillText(runway.getCurrentObstacle().getName(), cw / 2, ch / 2);
+    }
   }
 }
