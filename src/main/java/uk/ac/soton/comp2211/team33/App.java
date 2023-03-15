@@ -1,11 +1,13 @@
 package uk.ac.soton.comp2211.team33;
 
+import javafx.scene.Scene;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import uk.ac.soton.comp2211.team33.controllers.NewAirportScene;
+import uk.ac.soton.comp2211.team33.controllers.NewAirportController;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The main class to execute when running the application.
@@ -33,6 +35,6 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) {
-    new NewAirportScene(stage, null);
+    new NewAirportController(stage, null);
   }
 }

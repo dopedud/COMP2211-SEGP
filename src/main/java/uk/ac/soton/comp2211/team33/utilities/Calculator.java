@@ -11,7 +11,6 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 
 /**
  * The Calculator static class is a utility class that handles the main calculation involved in a runway re-declaration.
- * <p>
  * Corresponds to user story #3, #5, #6.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
@@ -19,11 +18,6 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 public final class Calculator {
 
   private static final Logger logger = LogManager.getLogger(Calculator.class);
-
-  /**
-   * Private constructor to avoid instantiating.
-   */
-  private Calculator() {}
 
   /**
    * Reset calculations when no obstacle or aircraft is present.
@@ -59,7 +53,7 @@ public final class Calculator {
    * @param obstacle the obstacle to perform the calculation on
    */
   public static void toraTowardsObs(Runway runway, Obstacle obstacle) {
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       logger.info("Re-declaring TORA, TODA and ASDA for take-off towards obstacle...");
@@ -88,7 +82,7 @@ public final class Calculator {
   public static String toraTowardsObsPP(Runway runway, Obstacle obstacle) {
     StringBuilder calcSummary = new StringBuilder();
 
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No re-declaration needed...");
       calcSummary.append("\nTORA = " + runway.getTora());
       calcSummary.append("\nTODA = " + runway.getToda());
@@ -139,7 +133,7 @@ public final class Calculator {
    * @param runway the runway being calculated
    */
   public static void toraAwayObs(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
@@ -165,7 +159,7 @@ public final class Calculator {
   public static String toraAwayObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
     StringBuilder calcSummary = new StringBuilder();
 
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No re-declaration needed...");
       calcSummary.append("\nTORA = " + runway.getTora());
       calcSummary.append("\nTODA = " + runway.getToda());
@@ -259,7 +253,7 @@ public final class Calculator {
    * @param runway the runway being calculated
    */
   public static void ldaOverObs(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       logger.info("Re-declaring LDA for landing over obstacle...");
@@ -290,7 +284,7 @@ public final class Calculator {
   public static String ldaOverObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
     StringBuilder calcSummary = new StringBuilder();
 
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No need for re-declaration...");
       calcSummary.append("LDA  = " + runway.getLda());
       return calcSummary.toString();
@@ -340,7 +334,7 @@ public final class Calculator {
    * @param runway the runway being calculated
    */
   public static void ldaTowardsObs(Runway runway, Obstacle obstacle) {
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No need for re-declaration...");
     } else {
       logger.info("Re-declaring LDA for landing towards obstacle...");
@@ -362,7 +356,7 @@ public final class Calculator {
   public static String ldaTowardsObsPP(Runway runway, Obstacle obstacle) {
     StringBuilder calcSummary = new StringBuilder();
 
-    if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObstacleDistance() > -60)) {
+    if (!(Math.abs(obstacle.getCenterLine()) < 75 && runway.getObstacleDistance() > -60)) {
       logger.info("No need for re-declaration...");
       calcSummary.append("LDA  = " + runway.getLda());
       return calcSummary.toString();

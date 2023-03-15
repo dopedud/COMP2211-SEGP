@@ -12,7 +12,7 @@ import uk.ac.soton.comp2211.team33.models.Airport;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class AircraftScene extends BaseScene {
+public class AircraftScene extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(AircraftScene.class);
 
@@ -27,17 +27,17 @@ public class AircraftScene extends BaseScene {
   }
 
   @Override
-  protected void build() {
+  protected void initialise() {
     logger.info("Building AircraftScene...");
 
     stage.setResizable(false);
 
     if (isEdit) {
       stage.setTitle("Edit Current Aircraft");
-      renderFXML("EditAircraftScene.fxml");
+      buildScene("/views/EditAircraftView.fxml");
     } else {
       stage.setTitle("New Aircraft");
-      renderFXML("AddAircraftScene.fxml");
+      buildScene("/views/AddAircraftView.fxml");
     }
   }
 

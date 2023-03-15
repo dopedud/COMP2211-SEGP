@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * The class Obstacle specifies what attributes should an obstacle have in a runway re-declaration.
- * <p>
  * Corresponds to user story #3, #4.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
@@ -32,7 +31,7 @@ public class Obstacle {
   /**
    * Center-line displacement; North : positive number, South : negative number.
    */
-  private double centerline;
+  private double centerLine;
 
   /**
    * Creates a new obstacle with the specified name, height, and length.
@@ -52,11 +51,11 @@ public class Obstacle {
    * @param name name of the obstacle
    * @param height height of the obstacle
    * @param length the length of the obstacle
-   * @param centerline Distance from center-line (+ if North, - if South)
+   * @param centerLine Distance from center-line (+ if North, - if South)
    */
-  public Obstacle(String name, double height, double length, double centerline) {
+  public Obstacle(String name, double height, double length, double centerLine) {
     this(name, height, length);
-    this.centerline = centerline;
+    this.centerLine = centerLine;
   }
 
   // Below are the usual accessors and mutators for the instance variables of this class.
@@ -72,8 +71,8 @@ public class Obstacle {
     return length;
   }
 
-  public double getCenterline() {
-    return centerline;
+  public double getCenterLine() {
+    return centerLine;
   }
 
   @Override

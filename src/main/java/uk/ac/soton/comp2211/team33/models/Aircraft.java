@@ -5,13 +5,11 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * The class Aircraft models what attributes an aircraft has when runway is being re-declared.
- * <p>
  * Corresponds to user story #3.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
  */
 public class Aircraft {
-
   private static final Logger logger = LogManager.getLogger(Aircraft.class);
 
   /**
@@ -40,7 +38,6 @@ public class Aircraft {
     }
   }
 
-  // Below are the usual accessors and mutators for the instance variables of this class.
   public String getId() {
     return id;
   }
