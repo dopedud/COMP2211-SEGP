@@ -53,7 +53,7 @@ public class Runway {
   /**
    * The distance of the obstacle from the threshold of the runway.
    */
-  private final SimpleDoubleProperty obstacleDistance;
+  private final SimpleDoubleProperty obsDistFromThresh;
 
   /**
    * Class constructor.
@@ -66,8 +66,7 @@ public class Runway {
    * @param resa runway end safety area
    * @param threshold displaced threshold of the runway
    */
-  public Runway(String designator, double tora, double toda, double asda, double lda,
-                double resa, double threshold) {
+  public Runway(String designator, double tora, double toda, double asda, double lda, double resa, double threshold) {
     this.designator = designator;
 
     this.tora = tora;
@@ -95,7 +94,7 @@ public class Runway {
 
     currentAircraft = new SimpleObjectProperty<>();
     currentObstacle = new SimpleObjectProperty<>();
-    obstacleDistance = new SimpleDoubleProperty();
+    obsDistFromThresh = new SimpleDoubleProperty();
   }
 
   // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
@@ -234,8 +233,8 @@ public class Runway {
     return currentObstacle.get();
   }
 
-  public double getObstacleDistance() {
-    return obstacleDistance.get();
+  public double getObsDistFromThresh() {
+    return obsDistFromThresh.get();
   }
 
   public void setCurrentAircraft(Aircraft aircraft) {
@@ -246,6 +245,10 @@ public class Runway {
     currentObstacle.set(obstacle);
   }
 
+  public void setObsDistFromThresh(double obsDistFromThresh) {
+    this.obsDistFromThresh.set(obsDistFromThresh);
+  }
+
   public SimpleObjectProperty<Aircraft> currentAircraftProperty() {
     return currentAircraft;
   }
@@ -254,7 +257,7 @@ public class Runway {
     return currentObstacle;
   }
 
-  public SimpleDoubleProperty obstacleDistanceProperty() {
-    return obstacleDistance;
+  public SimpleDoubleProperty obsDistFromThreshProperty() {
+    return obsDistFromThresh;
   }
 }
