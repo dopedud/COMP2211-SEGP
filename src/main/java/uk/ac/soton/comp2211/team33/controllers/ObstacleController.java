@@ -28,7 +28,7 @@ public class ObstacleController extends BaseController {
 
   @Override
   protected void initialise() {
-    logger.info("Building ObstacleScene...");
+    logger.info("Building ObstacleController...");
 
     stage.setResizable(false);
 

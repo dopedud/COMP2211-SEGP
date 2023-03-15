@@ -42,9 +42,7 @@ public class RunwayTab extends Tab {
     setText(runway.getDesignator());
 
     splitPane.getItems().addAll(
-            new ConfigPanel(this, stage, state, runway),
-            new VisPanel(runway),
-            new CalcPanel(stage, state, runway));
+        new ConfigPanel(this, stage, state, runway), new VisPanel(runway), new CalcPanel(runway));
   }
 
   @FXML
