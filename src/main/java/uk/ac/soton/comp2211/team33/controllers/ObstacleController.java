@@ -16,7 +16,7 @@ public class ObstacleController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(ObstacleController.class);
 
-  private boolean isEdit;
+  private final boolean isEdit;
 
   @FXML
   private InputField name, height, length, centerline;

@@ -16,7 +16,7 @@ public class AircraftController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(AircraftController.class);
 
-  private boolean isEdit;
+  private final boolean isEdit;
 
   @FXML
   private InputField id, blastProtection;

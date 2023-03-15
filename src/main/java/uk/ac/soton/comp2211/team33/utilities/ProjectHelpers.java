@@ -10,9 +10,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * The ProjectHelpers static class that is tasked to render scenes and stages.
+ *
+ * @author Brian (dal1g21@soton.ac.uk)
+ */
 public final class ProjectHelpers {
 
   private static final String BASE_PATH = "/uk/ac/soton/comp2211/team33";
+
+  /**
+   * Private constructor to avoid instancing.
+   */
+  private ProjectHelpers() {}
 
   public static Object renderRoot(String path, Object controller, Object root) {
     FXMLLoader loader = new FXMLLoader(ProjectHelpers.getResource(path));

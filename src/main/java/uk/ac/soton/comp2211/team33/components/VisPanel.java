@@ -16,7 +16,7 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
  */
 public class VisPanel extends StackPane {
 
-  private Runway runway;
+  private final Runway runway;
 
   @FXML
   private Canvas canvas;

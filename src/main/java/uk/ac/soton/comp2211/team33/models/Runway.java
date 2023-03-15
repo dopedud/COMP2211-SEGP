@@ -62,7 +62,7 @@ public class Runway {
    * @param tora take-off runway available
    * @param toda take-off distance available
    * @param asda acceleration-stop distance available
-   * @param lda landing distance availabl
+   * @param lda landing distance available
    * @param resa runway end safety area
    * @param threshold displaced threshold of the runway
    */
