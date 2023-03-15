@@ -25,7 +25,7 @@ public class NewRunwayController extends BaseController {
 
   @Override
   protected void initialise() {
-    logger.info("Building NewRunwayScene...");
+    logger.info("Building NewRunwayController...");
 
     stage.setResizable(false);
     stage.setTitle("New Runway");

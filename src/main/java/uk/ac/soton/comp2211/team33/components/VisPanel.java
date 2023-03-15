@@ -16,7 +16,7 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
  */
 public class VisPanel extends StackPane {
 
-  private Runway runway;
+  private final Runway runway;
 
   @FXML
   private Canvas canvas;
@@ -31,16 +31,16 @@ public class VisPanel extends StackPane {
     canvas.widthProperty().bind(widthProperty());
     canvas.heightProperty().bind(heightProperty());
 
-    canvas.widthProperty().addListener(((observableValue, oldWidth, newWidth) -> draw()));
-    canvas.heightProperty().addListener(((observableValue, oldWidth, newWidth) -> draw()));
+    canvas.widthProperty().addListener(ignored -> draw());
+    canvas.heightProperty().addListener(ignored -> draw());
 
-    runway.currentObstacleProperty().addListener((obVal, oldVal, newVal) -> draw());
-    runway.currentAircraftProperty().addListener((obVal, oldVal, newVal) -> draw());
-    runway.ctoraProperty().addListener((obVal, oldVal, newVal) -> draw());
-    runway.ctodaProperty().addListener((obVal, oldVal, newVal) -> draw());
-    runway.casdaProperty().addListener((obVal, oldVal, newVal) -> draw());
-    runway.cldaProperty().addListener((obVal, oldVal, newVal) -> draw());
-    runway.cresaProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.currentObstacleProperty().addListener(ignored -> draw());
+    runway.currentAircraftProperty().addListener(ignored -> draw());
+    runway.ctoraProperty().addListener(ignored -> draw());
+    runway.ctodaProperty().addListener(ignored -> draw());
+    runway.casdaProperty().addListener(ignored-> draw());
+    runway.cldaProperty().addListener(ignored -> draw());
+    runway.cresaProperty().addListener(ignored -> draw());
 
     drawTopDown();
   }

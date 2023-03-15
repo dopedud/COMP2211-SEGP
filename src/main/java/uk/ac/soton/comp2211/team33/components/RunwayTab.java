@@ -19,11 +19,11 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 public class RunwayTab extends Tab {
   private static final Logger logger = LogManager.getLogger(RunwayTab.class);
 
-  private Stage stage;
+  private final Stage stage;
 
-  private Airport state;
+  private final Airport state;
 
-  private Runway runway;
+  private final Runway runway;
 
   @FXML
   private SplitPane splitPane;
@@ -42,9 +42,7 @@ public class RunwayTab extends Tab {
     setText(runway.getDesignator());
 
     splitPane.getItems().addAll(
-            new ConfigPanel(this, stage, state, runway),
-            new VisPanel(runway),
-            new CalcPanel(stage, state, runway));
+        new ConfigPanel(this, stage, state, runway), new VisPanel(runway), new CalcPanel(runway));
   }
 
   @FXML

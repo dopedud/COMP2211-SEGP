@@ -107,6 +107,10 @@ public class Airport {
     return name;
   }
 
+  public boolean getObstaclesLoaded() {
+    return obstaclesLoaded.get();
+  }
+
   public SimpleListProperty<Runway> runwayListProperty() {
     return runwayList;
   }
