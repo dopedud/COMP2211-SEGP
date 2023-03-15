@@ -73,7 +73,7 @@ public class VisPanel extends StackPane {
     gc.fillText("Sideways view", cw / 2, ch / 2);
   }
 
-  public void drawTopDown() {
+  private void drawTopDown() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
     double cw = this.getWidth();

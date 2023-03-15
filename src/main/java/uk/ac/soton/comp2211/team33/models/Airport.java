@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 import java.io.*;
 
@@ -79,7 +80,7 @@ public class Airport {
     if (obstaclesLoaded.get()) return;
 
     try {
-      InputStream stream = getClass().getResourceAsStream("/uk/ac/soton/comp2211/team33/data/obstacles.csv");
+      InputStream stream = ProjectHelpers.getResourceAsStream("/data/obstacles.csv");
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       String line;
 
