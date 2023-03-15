@@ -40,6 +40,8 @@ public class NewAirportController extends BaseController {
 
   @Override
   protected void initialise() {
+    logger.info("Building NewAirportController...");
+
     stage.setResizable(false);
     stage.setTitle("New Airport");
 

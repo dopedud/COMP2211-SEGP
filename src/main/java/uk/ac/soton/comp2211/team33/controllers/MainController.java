@@ -31,7 +31,7 @@ public class MainController extends BaseController {
 
   @Override
   protected void initialise() {
-    logger.info("Building MainScene...");
+    logger.info("Building MainController...");
 
     // Set stage properties
 
@@ -44,7 +44,7 @@ public class MainController extends BaseController {
     stage.setHeight(bounds.getHeight());
     stage.setResizable(true);
 
-    stage.setTitle("Runway Re-decleration Tool - " + state.getName());
+    stage.setTitle("Runway Re-decleration Tool - " + state.getName() + ", " + state.getCity());
 
     buildScene("/views/MainView.fxml");
 

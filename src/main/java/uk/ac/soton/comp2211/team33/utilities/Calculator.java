@@ -20,6 +20,11 @@ public final class Calculator {
   private static final Logger logger = LogManager.getLogger(Calculator.class);
 
   /**
+   * Private constructor to avoid instancing.
+   */
+  private Calculator() {}
+
+  /**
    * Reset calculations when no obstacle or aircraft is present.
    *
    * @param runway the runway to reset values

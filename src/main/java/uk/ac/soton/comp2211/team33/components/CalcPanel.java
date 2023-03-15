@@ -4,18 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 public class CalcPanel extends AnchorPane {
-  private Stage stage;
 
-  private Airport state;
-
-  private Runway runway;
+  private final Runway runway;
 
   @FXML
   private Label tora, toda, asda, lda, resa;
@@ -34,9 +29,7 @@ public class CalcPanel extends AnchorPane {
 
   private boolean calcTowards;
 
-  public CalcPanel(Stage stage, Airport state, Runway runway) {
-    this.state = state;
-    this.stage = stage;
+  public CalcPanel(Runway runway) {
     this.runway = runway;
 
     ProjectHelpers.renderRoot("/components/CalcPanel.fxml", this, this);
