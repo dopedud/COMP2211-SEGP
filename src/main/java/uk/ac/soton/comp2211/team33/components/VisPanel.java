@@ -3,7 +3,7 @@ package uk.ac.soton.comp2211.team33.components;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uk.ac.soton.comp2211.team33.models.Runway;
@@ -14,12 +14,14 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
  *
  * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk)
  */
-public class VisPanel extends AnchorPane {
+public class VisPanel extends StackPane {
 
   private Runway runway;
 
   @FXML
   private Canvas canvas;
+
+  private boolean isTopDownView = true;
 
   public VisPanel(Runway runway) {
     this.runway = runway;
@@ -29,18 +31,46 @@ public class VisPanel extends AnchorPane {
     canvas.widthProperty().bind(widthProperty());
     canvas.heightProperty().bind(heightProperty());
 
-    canvas.widthProperty().addListener(((observableValue, oldWidth, newWidth) -> drawTopDown()));
-    canvas.heightProperty().addListener(((observableValue, oldWidth, newWidth) -> drawTopDown()));
+    canvas.widthProperty().addListener(((observableValue, oldWidth, newWidth) -> draw()));
+    canvas.heightProperty().addListener(((observableValue, oldWidth, newWidth) -> draw()));
 
-    runway.currentObstacleProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
-    runway.currentAircraftProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
-    runway.ctoraProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
-    runway.ctodaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
-    runway.casdaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
-    runway.cldaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
-    runway.cresaProperty().addListener((obVal, oldVal, newVal) -> drawTopDown());
+    runway.currentObstacleProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.currentAircraftProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.ctoraProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.ctodaProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.casdaProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.cldaProperty().addListener((obVal, oldVal, newVal) -> draw());
+    runway.cresaProperty().addListener((obVal, oldVal, newVal) -> draw());
 
     drawTopDown();
+  }
+
+  @FXML
+  private void onSwitchView() {
+    isTopDownView = !isTopDownView;
+    draw();
+  }
+
+  private void draw() {
+    if (isTopDownView) {
+      drawTopDown();
+      return;
+    }
+
+    drawSideways();
+  }
+
+  private void drawSideways() {
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    double cw = this.getWidth();
+    double ch = this.getHeight();
+
+    gc.clearRect(0, 0, cw, ch);
+
+    gc.setFill(Color.RED);
+    gc.setFont(new Font(30));
+    gc.fillText("Sideways view", cw / 2, ch / 2);
   }
 
   public void drawTopDown() {
