@@ -37,7 +37,7 @@ public class ConfigPanel extends AnchorPane {
   private ChoiceBox<String> aircraftList, obstacleList;
 
   @FXML
-  private Label blastProtection, height, length, centerLine;
+  private Label blastProtection, height, length, centerline;
 
   @FXML
   private Button loadPredefinedObs;
@@ -163,7 +163,7 @@ public class ConfigPanel extends AnchorPane {
 
         height.setText("");
         length.setText("");
-        centerLine.setText("");
+        centerline.setText("");
       } else {
         runway.setCurrentObstacle(state.obstacleListProperty().stream().
                 filter(obstacle -> obstacle.getName().equals(obstacleList.getValue())).
@@ -171,7 +171,7 @@ public class ConfigPanel extends AnchorPane {
 
         height.setText(String.valueOf(runway.getCurrentObstacle().getHeight()));
         length.setText(String.valueOf(runway.getCurrentObstacle().getLength()));
-        centerLine.setText(String.valueOf(runway.getCurrentObstacle().getCenterline()));
+        centerline.setText(String.valueOf(runway.getCurrentObstacle().getCenterline()));
       }
     });
   }
