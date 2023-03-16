@@ -87,9 +87,10 @@ public class CalcPanel extends AnchorPane {
       if (runway.getCurrentObstacle() == null || runway.getCurrentAircraft() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
-        calcBreakdown.setText(Calculator.
-            takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
-                Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()));
+        calcBreakdown.setText(
+            Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
+                Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft())
+        );
       }
     }
   }
