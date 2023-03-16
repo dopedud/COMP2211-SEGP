@@ -95,7 +95,7 @@ public class ConfigPanel extends AnchorPane {
         String id = list.getAddedSubList().get(0).getId();
 
         aircraftList.getItems().add(id);
-        if (runwayTab.isSelected()) aircraftList.setValue(id);
+        //if (runwayTab.isSelected()) aircraftList.setValue(id);
       } else if (list.wasRemoved()) {
         String id = list.getRemoved().get(0).getId();
 
@@ -144,7 +144,7 @@ public class ConfigPanel extends AnchorPane {
         String name = list.getAddedSubList().get(0).getName();
 
         obstacleList.getItems().add(name);
-        if (runwayTab.isSelected()) obstacleList.setValue(name);
+        //if (runwayTab.isSelected()) obstacleList.setValue(name);
       } else if (list.wasRemoved()) {
         String name = list.getRemoved().get(0).getName();
 

@@ -8,12 +8,13 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<AnchorPane prefHeight="100.0" prefWidth="300.0"
+    xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
   <ImageView fitHeight="50.0" fitWidth="50.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true"
              AnchorPane.leftAnchor="20.0">
     <Image url="@../pictures/info.png"/>
   </ImageView>
-  <Label fx:id="message" wrapText="true"
-         AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0"
-         AnchorPane.topAnchor="20.0"/>
+  <Label fx:id="label" text="Runway values have been re-declared." wrapText="true"
+         AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0"
+         AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0"/>
 </AnchorPane>

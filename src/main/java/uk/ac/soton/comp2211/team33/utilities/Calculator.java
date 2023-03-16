@@ -59,7 +59,7 @@ public final class Calculator {
 
     logger.info("Re-declaring TORA, TODA, and ASDA for take-off towards obstacle...");
 
-    calcSummary.append("Summary of calculations for runway - " + runway.getDesignator() + "\n");
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Take-off towards obstacle: \n");
 
     calcSummary.append("\n");
@@ -124,7 +124,7 @@ public final class Calculator {
 
     logger.info("Re-declaring TORA, TODA and ASDA for take-off away from obstacle...");
 
-    calcSummary.append("Summary of calculations for runway - " + runway.getDesignator() + "\n");
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Take-off away from obstacle: \n");
 
     calcSummary.append("\n");
@@ -227,7 +227,7 @@ public final class Calculator {
 
     logger.info("Re-declaring LDA for landing towards obstacle...");
 
-    calcSummary.append("Summary of calculations for runway - " + runway.getDesignator() + "\n");
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Landing towards obstacle: \n");
 
     calcSummary.append("\n");
@@ -261,7 +261,7 @@ public final class Calculator {
 
     logger.info("Re-declaring LDA for landing over obstacle...");
 
-    calcSummary.append("Summary of calculations for runway - " + runway.getDesignator() + "\n");
+    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Landing over obstacle: \n");
 
     calcSummary.append("\n");

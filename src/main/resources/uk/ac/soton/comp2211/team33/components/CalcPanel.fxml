@@ -13,7 +13,7 @@
             minWidth="300">
   <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-    <TitledPane animated="true" collapsible="true" text="Value Descriptors"
+    <TitledPane animated="false" text="Value Descriptors"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <VBox>
         <Label text="TORA: Take Off Run Available"/>

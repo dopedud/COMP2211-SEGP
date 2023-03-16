@@ -12,16 +12,20 @@ public class NotiController extends BaseController {
   private static final Logger logger = LogManager.getLogger(NotiController.class);
 
   @FXML
-  private Label message;
+  private Label label;
+
+  private final String message = "";
 
   /**
    * Instantiate a scene.
    *
    * @param stage The application stage to render the scene in
    * @param state The global application state
+   * @param message the message of the notification
    */
   public NotiController(Stage stage, Airport state, String message) {
     super(stage, state);
+    label.setText(message);
   }
 
   @Override
@@ -29,12 +33,8 @@ public class NotiController extends BaseController {
     logger.info("Building NotiController...");
 
     stage.setResizable(false);
+    stage.setTitle("Notification");
 
     buildScene("/views/NotiView.fxml");
-  }
-
-  @FXML
-  private void onSubmit() {
-    stage.close();
   }
 }
