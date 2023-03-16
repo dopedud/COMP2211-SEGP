@@ -13,6 +13,17 @@
             minWidth="300">
   <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+    <TitledPane animated="true" collapsible="true" text="Value Descriptors"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox>
+        <Label text="TORA: Take Off Run Available"/>
+        <Label text="TODA: Take Off Distance Available"/>
+        <Label text="ASDA: Accelerate Stop Distance Available"/>
+        <Label text="LDA: Landing Distance Available"/>
+        <Label text="RESA: Runway End Safety Area"/>
+        <Label text="Threshold: The point at which the runway begins"/>
+      </VBox>
+    </TitledPane>
     <TitledPane animated="false" collapsible="false" text="Runway Values"
                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <HBox alignment="CENTER" spacing="50.0">
