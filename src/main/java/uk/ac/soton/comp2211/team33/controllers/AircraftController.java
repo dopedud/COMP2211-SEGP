@@ -12,32 +12,32 @@ import uk.ac.soton.comp2211.team33.models.Airport;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class AircraftScene extends BaseScene {
+public class AircraftController extends BaseController {
 
-  private static final Logger logger = LogManager.getLogger(AircraftScene.class);
+  private static final Logger logger = LogManager.getLogger(AircraftController.class);
 
-  private boolean isEdit;
+  private final boolean isEdit;
 
   @FXML
   private InputField id, blastProtection;
 
-  public AircraftScene(Stage stage, Airport state, boolean isEdit) {
+  public AircraftController(Stage stage, Airport state, boolean isEdit) {
     super(stage, state);
     this.isEdit = isEdit;
   }
 
   @Override
-  protected void build() {
-    logger.info("Building AircraftScene...");
+  protected void initialise() {
+    logger.info("Building AircraftController...");
 
     stage.setResizable(false);
 
     if (isEdit) {
       stage.setTitle("Edit Current Aircraft");
-      renderFXML("EditAircraftScene.fxml");
+      buildScene("/views/EditAircraftView.fxml");
     } else {
       stage.setTitle("New Aircraft");
-      renderFXML("AddAircraftScene.fxml");
+      buildScene("/views/AddAircraftView.fxml");
     }
   }
 

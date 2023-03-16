@@ -1,16 +1,12 @@
 package uk.ac.soton.comp2211.team33.models;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringExpression;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * The class Runway models a runway and its values for re-declaration in an airport.
- * <p>
  * Corresponds to user story #3.
  *
  * @author Jackson (jl14u21@soton.ac.uk)
@@ -22,7 +18,7 @@ public class Runway {
   /**
    * The designator for the runway. Usually 2 characters with L/R at the end.
    */
-  private final SimpleStringProperty designator;
+  private final String designator;
 
   /**
    * Initial values of the runway.
@@ -57,7 +53,7 @@ public class Runway {
   /**
    * The distance of the obstacle from the threshold of the runway.
    */
-  private final SimpleDoubleProperty obstacleDistance;
+  private final SimpleDoubleProperty obsDistFromThresh;
 
   /**
    * Class constructor.
@@ -66,13 +62,12 @@ public class Runway {
    * @param tora take-off runway available
    * @param toda take-off distance available
    * @param asda acceleration-stop distance available
-   * @param lda landing distance availabl
+   * @param lda landing distance available
    * @param resa runway end safety area
    * @param threshold displaced threshold of the runway
    */
-  public Runway(String designator, double tora, double toda, double asda, double lda,
-                double resa, double threshold) {
-    this.designator = new SimpleStringProperty(designator);
+  public Runway(String designator, double tora, double toda, double asda, double lda, double resa, double threshold) {
+    this.designator = designator;
 
     this.tora = tora;
     this.toda = toda;
@@ -99,13 +94,13 @@ public class Runway {
 
     currentAircraft = new SimpleObjectProperty<>();
     currentObstacle = new SimpleObjectProperty<>();
-    obstacleDistance = new SimpleDoubleProperty();
+    obsDistFromThresh = new SimpleDoubleProperty();
   }
 
   // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
 
   public String getDesignator() {
-    return designator.get();
+    return designator;
   }
 
   public double getTora() {
@@ -238,8 +233,8 @@ public class Runway {
     return currentObstacle.get();
   }
 
-  public double getObstacleDistance() {
-    return obstacleDistance.get();
+  public double getObsDistFromThresh() {
+    return obsDistFromThresh.get();
   }
 
   public void setCurrentAircraft(Aircraft aircraft) {
@@ -250,6 +245,10 @@ public class Runway {
     currentObstacle.set(obstacle);
   }
 
+  public void setObsDistFromThresh(double obsDistFromThresh) {
+    this.obsDistFromThresh.set(obsDistFromThresh);
+  }
+
   public SimpleObjectProperty<Aircraft> currentAircraftProperty() {
     return currentAircraft;
   }
@@ -258,7 +257,7 @@ public class Runway {
     return currentObstacle;
   }
 
-  public SimpleDoubleProperty obstacleDistanceProperty() {
-    return obstacleDistance;
+  public SimpleDoubleProperty obsDistFromThreshProperty() {
+    return obsDistFromThresh;
   }
 }

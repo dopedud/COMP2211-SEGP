@@ -2,52 +2,63 @@ package uk.ac.soton.comp2211.team33.controllers;
 
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TabPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.RunwayTab;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Runway;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The MainScene class that acts as the main workspace for the runway re-declaration.
  *
  * @author Geeth (gv2g21@soton.ac.uk), Abeed (mabs1u21@soton.ac.uk)
  */
-public class MainScene extends BaseScene {
+public class MainController extends BaseController {
 
-  private static final Logger logger = LogManager.getLogger(MainScene.class);
+  private static final Logger logger = LogManager.getLogger(MainController.class);
 
   @FXML
   private TabPane runwayTabs;
 
-  MainScene(Stage stage, Airport state) {
+  MainController(Stage stage, Airport state) {
     super(stage, state);
   }
 
   @Override
-  protected void build() {
-    logger.info("Building MainScene...");
+  protected void initialise() {
+    logger.info("Building MainController...");
 
+    // Set stage properties
+
+    Screen screen = Screen.getPrimary();
+    Rectangle2D bounds = screen.getVisualBounds();
+
+    stage.setX(bounds.getMinX());
+    stage.setY(bounds.getMinY());
+    stage.setWidth(bounds.getWidth());
+    stage.setHeight(bounds.getHeight());
     stage.setResizable(true);
-    stage.setMinWidth(800);
-    stage.setMinHeight(600);
-    stage.setTitle("Runway Re-decleration Tool - " + state.getName());
 
-    renderFXML("MainScene.fxml");
+    stage.setTitle("Runway Re-decleration Tool - " + state.getName() + ", " + state.getCity());
+
+    buildScene("/views/MainView.fxml");
 
     renderTabs();
   }
 
   @FXML
   private void onNewAirport() {
-    new NewAirportScene(createNewStage(), null);
+    new NewAirportController(new Stage(), null);
   }
 
   @FXML
   private void onNewRunway() {
-    new NewRunwayScene(createModalStage(), state);
+    new NewRunwayController(ProjectHelpers.createModalStage(stage), state);
   }
 
   private void renderTabs() {

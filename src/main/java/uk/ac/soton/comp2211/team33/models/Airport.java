@@ -3,21 +3,19 @@ package uk.ac.soton.comp2211.team33.models;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 import java.io.*;
 
 /**
  * The Airport class that acts as a container for the collection of runways, aircraft, and obstacles.
- * <p>
  * Corresponds to user story #1.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
 public class Airport {
-
   private static final Logger logger = LogManager.getLogger(Airport.class);
 
   /**
@@ -33,22 +31,22 @@ public class Airport {
   /**
    * List of runways.
    */
-  private final SimpleListProperty<Runway> runwayList;
+  private final SimpleListProperty<Runway> runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
   /**
    * List of aircraft.
    */
-  private final SimpleListProperty<Aircraft> aircraftList;
+  private final SimpleListProperty<Aircraft> aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
   /**
    * List of obstacles.
    */
-  private final SimpleListProperty<Obstacle> obstacleList;
+  private final SimpleListProperty<Obstacle> obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
 
   /**
    * Trigger to only load pre-defined obstacles once.
    */
-  private final SimpleBooleanProperty obstaclesLoaded;
+  private final SimpleBooleanProperty obstaclesLoaded = new SimpleBooleanProperty(false);
 
   /**
    * Class constructor.
@@ -59,12 +57,6 @@ public class Airport {
   public Airport(String city, String name) {
     this.city = city;
     this.name = name;
-
-    runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
-
-    obstaclesLoaded = new SimpleBooleanProperty(false);
   }
 
   // Below are methods to add and load objects in an airport.
@@ -88,7 +80,7 @@ public class Airport {
     if (obstaclesLoaded.get()) return;
 
     try {
-      InputStream stream = getClass().getResourceAsStream("/uk/ac/soton/comp2211/team33/data/obstacles.csv");
+      InputStream stream = ProjectHelpers.getResourceAsStream("/data/obstacles.csv");
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       String line;
 
@@ -114,6 +106,10 @@ public class Airport {
 
   public String getName() {
     return name;
+  }
+
+  public boolean getObstaclesLoaded() {
+    return obstaclesLoaded.get();
   }
 
   public SimpleListProperty<Runway> runwayListProperty() {

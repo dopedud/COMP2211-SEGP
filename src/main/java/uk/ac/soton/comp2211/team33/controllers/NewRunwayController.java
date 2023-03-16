@@ -12,25 +12,25 @@ import uk.ac.soton.comp2211.team33.models.Airport;
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class NewRunwayScene extends BaseScene {
+public class NewRunwayController extends BaseController {
 
-  private static final Logger logger = LogManager.getLogger(NewRunwayScene.class);
+  private static final Logger logger = LogManager.getLogger(NewRunwayController.class);
 
   @FXML
   private InputField designator, tora, toda, asda, lda, resa, threshold;
 
-  NewRunwayScene(Stage stage, Airport state) {
+  NewRunwayController(Stage stage, Airport state) {
     super(stage, state);
   }
 
   @Override
-  protected void build() {
-    logger.info("Building NewRunwayScene...");
+  protected void initialise() {
+    logger.info("Building NewRunwayController...");
 
     stage.setResizable(false);
     stage.setTitle("New Runway");
 
-    renderFXML("NewRunwayScene.fxml");
+    buildScene("/views/NewRunwayView.fxml");
   }
 
   @FXML

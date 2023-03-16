@@ -15,15 +15,16 @@ import java.io.InputStreamReader;
 
 import uk.ac.soton.comp2211.team33.components.DropdownField;
 import uk.ac.soton.comp2211.team33.models.Airport;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The NewAirportScene class that creates a new airport upon user request.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
-public class NewAirportScene extends BaseScene {
+public class NewAirportController extends BaseController {
 
-  private static final Logger logger = LogManager.getLogger(NewAirportScene.class);
+  private static final Logger logger = LogManager.getLogger(NewAirportController.class);
 
   @FXML
   private DropdownField city;
@@ -33,32 +34,31 @@ public class NewAirportScene extends BaseScene {
 
   private MultiValuedMap<String, String> cityNamePairs;
 
-  public NewAirportScene(Stage stage, Airport state) {
+  public NewAirportController(Stage stage, Airport state) {
     super(stage, state);
   }
 
   @Override
-  protected void build() {
-    logger.info("Building NewAirportScene...");
+  protected void initialise() {
+    logger.info("Building NewAirportController...");
 
     stage.setResizable(false);
     stage.setTitle("New Airport");
 
-    renderFXML("NewAirportScene.fxml");
-
+    buildScene("/views/NewAirportView.fxml");
     loadPredefinedAirports();
   }
 
   @FXML
   private void onSubmitAirport() {
-    new MainScene(stage, new Airport(city.getDropdownValue(), name.getDropdownValue()));
+    new MainController(stage, new Airport(city.getDropdownValue(), name.getDropdownValue()));
   }
 
   private void loadPredefinedAirports() {
     cityNamePairs = new ArrayListValuedHashMap<>();
 
     try {
-      InputStream stream = getClass().getResourceAsStream("/uk/ac/soton/comp2211/team33/data/airports.csv");
+      InputStream stream = ProjectHelpers.getResourceAsStream("/data/airports.csv");
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       String line;
 

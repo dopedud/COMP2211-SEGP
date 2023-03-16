@@ -1,29 +1,85 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import uk.ac.soton.comp2211.team33.models.Runway;
+import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The Visualisation class is a custom component that renders the 2D top-down and side-on view.
  *
  * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk)
  */
-public class Visualisation extends Canvas {
+public class VisPanel extends StackPane {
 
-  private Runway runway;
+  private final Runway runway;
 
-  public Visualisation(Runway runway) {
+  @FXML
+  private Canvas canvas;
 
+  private boolean isTopDownView = true;
+
+  public VisPanel(Runway runway) {
     this.runway = runway;
+
+    ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
+
+    canvas.widthProperty().bind(widthProperty());
+    canvas.heightProperty().bind(heightProperty());
+
+    canvas.widthProperty().addListener(ignored -> draw());
+    canvas.heightProperty().addListener(ignored -> draw());
+
+    runway.currentObstacleProperty().addListener(ignored -> draw());
+    runway.currentAircraftProperty().addListener(ignored -> draw());
+    runway.ctoraProperty().addListener(ignored -> draw());
+    runway.ctodaProperty().addListener(ignored -> draw());
+    runway.casdaProperty().addListener(ignored-> draw());
+    runway.cldaProperty().addListener(ignored -> draw());
+    runway.cresaProperty().addListener(ignored -> draw());
+
+    draw();
   }
 
-  public void renderTopDown() {
-    GraphicsContext gc = this.getGraphicsContext2D();
+  @FXML
+  private void onSwitchView() {
+    isTopDownView = !isTopDownView;
+    draw();
+  }
+
+  private void draw() {
+    if (isTopDownView) {
+      drawTopDown();
+      return;
+    }
+
+    drawSideways();
+  }
+
+  private void drawSideways() {
+    GraphicsContext gc = canvas.getGraphicsContext2D();
 
     double cw = this.getWidth();
     double ch = this.getHeight();
+
+    gc.clearRect(0, 0, cw, ch);
+
+    gc.setFill(Color.RED);
+    gc.setFont(new Font(30));
+    gc.fillText("Sideways view", cw / 2, ch / 2);
+  }
+
+  private void drawTopDown() {
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    double cw = this.getWidth();
+    double ch = this.getHeight();
+
+    gc.clearRect(0, 0, cw, ch);
 
     // double toraL = otora; //Some given TORA to be passed in, dummy value
 
@@ -89,5 +145,11 @@ public class Visualisation extends Canvas {
     gc.setLineWidth(1);
     // gc.strokeText(formattedDes[0], cw * 0.18, ch * 0.5);
     // gc.strokeText(formattedDes[1], cw * 0.80, ch * 0.5);
+
+    if (runway.getCurrentObstacle() != null) {
+      gc.setFill(Color.RED);
+      gc.setFont(new Font(30));
+      gc.fillText(runway.getCurrentObstacle().getName(), cw / 2, ch / 2);
+    }
   }
 }
