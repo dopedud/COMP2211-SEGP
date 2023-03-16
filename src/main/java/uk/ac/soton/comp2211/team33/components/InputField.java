@@ -3,6 +3,7 @@ package uk.ac.soton.comp2211.team33.components;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
@@ -57,4 +58,17 @@ public class InputField extends AnchorPane {
   public void setUnit(String unit) {
       unitLabel.setText(unit);
   }
+
+  public void setTooltip(String tooltip) {
+      Tooltip t = new Tooltip(tooltip);
+      Tooltip.install(this.label, t);
+  }
+
+  public String getTooltip() {
+      return this.label.getTooltip().getText();
+  }
+  public void removeTooltip() {
+      this.label.setTooltip(null);
+  }
+
 }

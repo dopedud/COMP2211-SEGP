@@ -14,7 +14,7 @@
     <InputField fx:id="name" labelText="Name" unit="m"/>
     <InputField fx:id="height" labelText="Height" unit="m"/>
     <InputField fx:id="length" labelText="Length" unit="m" />
-    <InputField fx:id="centerline" labelText="Center-line" unit="m" />
+    <InputField fx:id="centerline" labelText="Center-line" unit="m" tooltip="The smallest distance between the obstacle and the runway centreline"/>
     <AnchorPane>
       <Button mnemonicParsing="false" text="Submit" onAction="#onSubmitNewObstacle"
               prefHeight="30.0" prefWidth="100.0"
