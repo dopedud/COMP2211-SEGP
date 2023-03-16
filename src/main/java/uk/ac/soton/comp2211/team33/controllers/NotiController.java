@@ -20,9 +20,8 @@ public class NotiController extends BaseController {
    * @param stage The application stage to render the scene in
    * @param state The global application state
    */
-  NotiController(Stage stage, Airport state, String message) {
+  public NotiController(Stage stage, Airport state, String message) {
     super(stage, state);
-    this.message.setText(message);
   }
 
   @Override

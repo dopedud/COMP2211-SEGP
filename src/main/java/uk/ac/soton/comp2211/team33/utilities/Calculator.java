@@ -89,7 +89,13 @@ public final class Calculator {
     calcSummary.append("TORA = Obstacle Distance from Threshold + Displaced Threshold - " + tempName + " - Strip End\n");
     calcSummary.append("TORA = " + runway.getObsDistFromThresh() + " + " + runway.getThreshold() + " - " + temp + " - " + runway.getStripEnd() + "\n");
     calcSummary.append("TORA = " + newTora + "\n");
+
+    calcSummary.append("\n");
+
     calcSummary.append("TODA = TORA = " + newTora + "\n");
+
+    calcSummary.append("\n");
+
     calcSummary.append("ASDA = TORA = " + newTora + "\n");
 
     // updating runway with new values
@@ -139,15 +145,15 @@ public final class Calculator {
 
     calcSummary.append("\n");
 
-    calcSummary.append("ASDA = TORA + STOPWAY\n");
-    calcSummary.append("ASDA = " + newTora + " + " + runway.getStopway() + "\n");
-    calcSummary.append("ASDA = " + (newTora + runway.getStopway()) + "\n");
-
-    calcSummary.append("\n");
-
     calcSummary.append("TODA = TORA + CLEARWAY\n");
     calcSummary.append("TODA = " + newTora + " + " + runway.getClearway() + "\n");
     calcSummary.append("TODA = " + (newTora + runway.getClearway()) + "\n");
+
+    calcSummary.append("\n");
+
+    calcSummary.append("ASDA = TORA + STOPWAY\n");
+    calcSummary.append("ASDA = " + newTora + " + " + runway.getStopway() + "\n");
+    calcSummary.append("ASDA = " + (newTora + runway.getStopway()) + "\n");
 
     runway.setCtora(newTora);
     runway.setCtoda(newTora + runway.getClearway());
@@ -215,12 +221,13 @@ public final class Calculator {
     StringBuilder calcSummary = new StringBuilder();
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObsDistFromThresh() > -60)) {
-      logger.info("No need for re-declaration...");
+      logger.info("No re-declaration needed...");
       return "Runway values do not need to be re-declared.\n\nCurrent obstacle does not require runway re-declaration.";
     }
 
     logger.info("Re-declaring LDA for landing towards obstacle...");
-    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
+
+    calcSummary.append("Summary of calculations for runway - " + runway.getDesignator() + "\n");
     calcSummary.append("Landing towards obstacle: \n");
 
     calcSummary.append("\n");
@@ -229,8 +236,9 @@ public final class Calculator {
     calcSummary.append("LDA = Obstacle distance from Threshold - Strip End - RESA\n");
     calcSummary.append("LDA = " + runway.getObsDistFromThresh() + " - " + runway.getStripEnd() + " - " + runway.getResa() + "\n");
 
+    calcSummary.append("LDA = " + newLda + "\n");
+
     runway.setClda(newLda);
-    calcSummary.append("LDA = " + runway.getClda() + "\n");
 
     return calcSummary.toString();
   }
@@ -247,7 +255,7 @@ public final class Calculator {
     StringBuilder calcSummary = new StringBuilder();
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObsDistFromThresh() > -60)) {
-      logger.info("No need for re-declaration...");
+      logger.info("No re-declaration needed...");
       return "Runway values do not need to be re-declared.\n\nCurrent obstacle does not require runway re-declaration.";
     }
 
@@ -291,8 +299,9 @@ public final class Calculator {
       newLda = runway.getLda() - runway.getObsDistFromThresh() - runway.getResa();
     }
 
+    calcSummary.append("LDA = " + newLda + "\n");
+
     runway.setClda(newLda);
-    calcSummary.append("LDA = " + runway.getClda() + "\n");
 
     return calcSummary.toString();
   }

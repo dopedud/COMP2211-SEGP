@@ -4,11 +4,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import uk.ac.soton.comp2211.team33.controllers.NotiController;
+import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 public class CalcPanel extends AnchorPane {
+
+  private final Stage stage;
+
+  private final Airport state;
 
   private final Runway runway;
 
@@ -29,7 +36,9 @@ public class CalcPanel extends AnchorPane {
 
   private boolean calcTowards;
 
-  public CalcPanel(Runway runway) {
+  public CalcPanel(Stage stage, Airport state, Runway runway) {
+    this.stage = stage;
+    this.state = state;
     this.runway = runway;
 
     ProjectHelpers.renderRoot("/components/CalcPanel.fxml", this, this);
@@ -79,18 +88,26 @@ public class CalcPanel extends AnchorPane {
     if (calcTowards) {
       if (runway.getCurrentObstacle() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
+
+        new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been reset.");
       } else {
         calcBreakdown.setText(Calculator.takeOffTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
                 Calculator.landingTowardsObsPP(runway, runway.getCurrentObstacle()));
+
+        new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been re-declared.");
       }
     } else {
       if (runway.getCurrentObstacle() == null || runway.getCurrentAircraft() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
+
+        new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been reset.");
       } else {
         calcBreakdown.setText(
             Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
                 Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft())
         );
+
+        new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been re-declared.");
       }
     }
   }
