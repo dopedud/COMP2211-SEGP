@@ -35,7 +35,7 @@ public class CalcPanel extends AnchorPane {
   @FXML
   private DropdownField calcMode;
 
-  private boolean calcTowards;
+  private boolean calcTowards = true;
 
   @FXML
   private Button switchNotifications;
