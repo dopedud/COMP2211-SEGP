@@ -91,19 +91,21 @@ public class VisPanel extends StackPane {
     var gc = canvas.getGraphicsContext2D();
     gc.setFont(new Font(20));
 
+    //Width and height of the canvas
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
 
-    gc.clearRect(-300, -300, cw * 3, ch * 3);
+    gc.clearRect(-500, -500, cw * 5, ch * 5);
 
     var designator = runway.getDesignator();
 
     var formattedDes = formatDesignators(designator);
 
-    // TODO: 15/03/2023 Abeed can use this for looking up the threshold
     //The opposing side's designator formatted into a string of no spaces, ready to use for searching
     var otherDesignator = formattedDes[1].replaceAll("[\r\n]+", "").replaceAll(" ", "");
 
+    //This is a boolean that determines if the threshold should be switched
+    boolean leftT = checkThresh(otherDesignator);
 
     double threshold = runway.getThreshold();
 
@@ -123,11 +125,13 @@ public class VisPanel extends StackPane {
 //    }
 
     gc.save();
-    double toraL = 3550; //Some given TORA to be passed in, dummy value
+
+    //Some given TORA to be passed in, dummy value
+    double toraL = 3550;
 
     //Surrounding area
     gc.setFill(Color.valueOf("#7CB342"));
-    gc.fillRect(-500, -500, canvas.getWidth() * 5, canvas.getHeight() * 5);
+    gc.fillRect(-500, -500, cw * 5, ch * 5);
 
     double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
     double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
@@ -163,7 +167,7 @@ public class VisPanel extends StackPane {
     var tempB = ch * 0.44;
     var tempC = cw * 0.16;
     var tempD = ch * 0.44;
-    while (tempB < ch * 0.53) {
+    while (tempB < ch * 0.52) {
       gc.strokeLine(tempA, tempB, tempC, tempD);
       tempB += 5;
       tempD += 5;
@@ -173,17 +177,22 @@ public class VisPanel extends StackPane {
     var tempF = cw * 0.86;
     tempB = ch * 0.44;
     tempD = ch * 0.44;
-    while (tempB < ch * 0.53) {
+    while (tempB < ch * 0.52) {
       gc.strokeLine(tempE, tempB, tempF, tempD);
       tempB += 5;
       tempD += 5;
     }
 
-    //Write the runway designators in the 2D view
+    //Show the runway designators in the 2D view
     gc.setLineWidth(1);
     gc.setFill(Color.valueOf("#ffffff"));
-    gc.fillText(formattedDes[0], cw * 0.17, ch * 0.48);
-    gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
+    if (leftT) {
+      gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
+      gc.fillText(formattedDes[0], cw * 0.77, ch * 0.48);
+    } else {
+      gc.fillText(formattedDes[0], cw * 0.17, ch * 0.48);
+      gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
+    }
 
     //Add a threshold if it exists
     if (threshold != 0) {
@@ -191,16 +200,23 @@ public class VisPanel extends StackPane {
       gc.setLineDashes(6);
       gc.setStroke(Color.valueOf("#FF5733"));
       gc.setFill(Color.valueOf("#FF5733"));
-      gc.strokeLine(cw * 0.20, ch * 0.41, cw * 0.20, ch * 0.57);
-      //Write metrics over threshold
+      if (leftT){
+        gc.strokeLine(cw * 0.8, ch * 0.41, cw * 0.8, ch * 0.57);
+        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+      } else {
+        gc.strokeLine(cw * 0.20, ch * 0.41, cw * 0.20, ch * 0.57);
+        //Write metrics next to threshold
+        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+      }
       gc.setLineDashes(0);
-      gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
     }
 
     gc.setFont(new Font(16));
     gc.setLineWidth(1);
     double stopwayPar = 0.87 + 0.08;
+
     //Stopway on runway end
+    // TODO: 17/03/2023 Abeed apply switching here 
     if (stopway != 0) {
       gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#f7ff00"));
@@ -211,8 +227,9 @@ public class VisPanel extends StackPane {
       gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.88, ch * 0.38);
     }
 
-    double clearwayPar = 0.87;
     //Clearway on runway end
+    double clearwayPar = 0.87;
+    // TODO: 17/03/2023 Abeed change this 
     if (clearway != 0) {
       gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#ff8b00"));
@@ -241,8 +258,9 @@ public class VisPanel extends StackPane {
     gc.strokeText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
 
     //Draw the direction arrow
+    // TODO: 17/03/2023 Abeed change this to make the arrow point to the other way 
     drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, rotationAngle);
-    gc.fillText("Take-off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
+    gc.fillText("Take-Off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
 
     //Picked an object
     if (runway.getCurrentObstacle() != null) {
@@ -253,6 +271,7 @@ public class VisPanel extends StackPane {
     gc.setFont(new Font(20));
 
     //Runway distances
+    // TODO: 17/03/2023 Abeed make the like start from the other end of the rectangle instead
     gc.setLineWidth(1.5);
     gc.setLineDashes(5);
     gc.setStroke(Color.valueOf("#000000"));
@@ -262,6 +281,7 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(0);
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
+    // TODO: 17/03/2023 Abeed change this. I will do this one - Jackson
     if (runway.getClda() < 0) {
       logger.error("Negative value, not drawing LDA");
     } else {
@@ -279,7 +299,7 @@ public class VisPanel extends StackPane {
 
       //ratio flipped around for the end of the distance line
       var revratio = runway.getClda() / runway.getLda();
-
+      
       if (runway.getClda() != runway.getLda() && threshold == 0) {
         //Changes LDA start point based on where the obstacle is located
         if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
@@ -314,6 +334,7 @@ public class VisPanel extends StackPane {
     }
 
     //Displays TORA value and adjusts length to current TORA
+    // TODO: 17/03/2023 Abeed change this 
     if (runway.getCtora() < 0) {
       logger.error("Negative value, not drawing TORA");
     } else {
@@ -329,6 +350,7 @@ public class VisPanel extends StackPane {
     }
 
     //Displays ASDA value and adjusts length to current ASDA
+    // TODO: 17/03/2023 Abeed change this 
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
@@ -347,6 +369,7 @@ public class VisPanel extends StackPane {
     }
 
     //Displays TODA value and adjusts length to current TODA
+    // TODO: 17/03/2023 Abeed change this
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
@@ -366,6 +389,34 @@ public class VisPanel extends StackPane {
 
     //gc.setLineDashes(0);
     gc.setFont(new Font(20));
+  }
+
+  /**
+   * Checks if the threshold of the matching runway is smaller than the selected runway.
+   * If yes, returns true. Otherwise, it returns false.
+   *
+   * @param otherDesignator the runway designator of the other side.
+   * @return a boolean that determines if the designator should be switched or not
+   */
+  private boolean checkThresh(String otherDesignator) {
+    boolean leftT = false;
+    var found = false;
+    var i = 0;
+    while (!found && i < state.runwayListProperty().size()) {
+      var runway = state.runwayListProperty().get(i);
+      if (runway.getDesignator().equals(otherDesignator)) {
+        if (runway.getThreshold() < this.runway.getThreshold()) {
+          leftT = true;
+        } else {
+          leftT = false;
+        }
+        found = true;
+      }
+    }
+    if (!found) {
+      logger.info("No matching designator found, keeping the selected runway to the left");
+    }
+    return leftT;
   }
 
 
@@ -410,7 +461,7 @@ public class VisPanel extends StackPane {
    */
   private String[] formatDesignators(String designator) {
 
-    //Throw error if designator is not of the correct format (e.g. 09L, 26)
+    //Throw error if designator is not of the correct format (e.g. correct formats are 09L, 26)
     if (designator.length() != 3 && designator.length() != 2) {
       logger.error("Bad format for designator.");
     }
