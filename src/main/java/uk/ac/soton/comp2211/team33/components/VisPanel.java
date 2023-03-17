@@ -11,6 +11,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
@@ -22,6 +23,8 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 public class VisPanel extends StackPane {
   private static final Logger logger = LogManager.getLogger(VisPanel.class);
 
+  private final Airport state;
+
   private final Runway runway;
 
   @FXML
@@ -29,16 +32,18 @@ public class VisPanel extends StackPane {
 
   private boolean isTopDownView = true;
 
-  public VisPanel(Runway runway) {
+  public VisPanel(Airport state, Runway runway) {
     this.runway = runway;
+    this.state = state;
 
     ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
 
-    canvas.widthProperty().bind(widthProperty());
-    canvas.heightProperty().bind(heightProperty());
-
     canvas.widthProperty().addListener(ignored -> draw());
     canvas.heightProperty().addListener(ignored -> draw());
+
+    canvas.setManaged(false);
+    canvas.widthProperty().bind(widthProperty());
+    canvas.heightProperty().bind(heightProperty());
 
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
@@ -67,12 +72,26 @@ public class VisPanel extends StackPane {
   }
 
   private void drawSideways() {
-    var gc = canvas.getGraphicsContext2D();
-
+    GraphicsContext gc = canvas.getGraphicsContext2D();
     double cw = this.getWidth();
     double ch = this.getHeight();
 
-    gc.clearRect(0, 0, cw, ch);
+    double grassDepth = ch / 20;
+
+    // Sky
+
+    gc.setFill(Color.rgb(56, 179, 232));
+    gc.fillRect(0, 0, cw, ch);
+
+    // Grass
+
+    gc.setFill(Color.rgb(73, 145, 99));
+    gc.fillRect(0, (double) 2 / 3 * ch, cw, ch);
+
+    // Dust
+
+    gc.setFill(Color.rgb(50, 50 ,50));
+    gc.fillRect(0, ((double) 2 / 3 * ch) + grassDepth, cw, ch);
 
     gc.setFill(Color.RED);
     gc.setFont(new Font(30));

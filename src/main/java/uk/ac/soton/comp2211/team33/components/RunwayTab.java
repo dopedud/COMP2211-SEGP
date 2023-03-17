@@ -43,7 +43,7 @@ public class RunwayTab extends Tab {
 
     splitPane.getItems().addAll(
         new ConfigPanel(this, stage, state, runway),
-        new VisPanel(runway),
+        new VisPanel(state, runway),
         new CalcPanel(stage, state, runway)
     );
   }
