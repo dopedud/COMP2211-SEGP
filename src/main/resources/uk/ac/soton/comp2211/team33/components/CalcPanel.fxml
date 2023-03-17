@@ -35,24 +35,24 @@
           <Label text="Threshold"/>
         </VBox>
         <VBox alignment="CENTER" spacing="5.0">
-          <Label text="Original"/>
+          <Label text="Original (m)"/>
           <Separator/>
           <Label fx:id="tora"/>
           <Label fx:id="toda"/>
           <Label fx:id="asda"/>
           <Label fx:id="lda"/>
           <Label fx:id="resa"/>
-          <Label fx:id="thresholdOriginal"/>
+          <Label fx:id="threshold"/>
         </VBox>
         <VBox alignment="CENTER" spacing="5.0">
-          <Label text="Calculated"/>
+          <Label text="Re-declared (m)"/>
           <Separator/>
           <Label fx:id="ctora"/>
           <Label fx:id="ctoda"/>
           <Label fx:id="casda"/>
           <Label fx:id="clda"/>
           <Label fx:id="cresa"/>
-          <Label fx:id="thresholdCalculated"/>
+          <Label text="-" />
         </VBox>
       </HBox>
     </TitledPane>
@@ -68,6 +68,11 @@
       <DropdownField fx:id="calcMode" label="Calculation Mode"
                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                      AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
+    </AnchorPane>
+    <AnchorPane>
+      <Button fx:id="switchNotifications" onAction="#onSwitchNoti"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"/>
     </AnchorPane>
   </VBox>
 </fx:root>
