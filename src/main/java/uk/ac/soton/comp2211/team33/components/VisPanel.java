@@ -11,6 +11,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
@@ -22,6 +23,8 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 public class VisPanel extends StackPane {
   private static final Logger logger = LogManager.getLogger(VisPanel.class);
 
+  private final Airport state;
+
   private final Runway runway;
 
   @FXML
@@ -29,8 +32,9 @@ public class VisPanel extends StackPane {
 
   private boolean isTopDownView = true;
 
-  public VisPanel(Runway runway) {
+  public VisPanel(Airport state, Runway runway) {
     this.runway = runway;
+    this.state = state;
 
     ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
 
@@ -44,7 +48,7 @@ public class VisPanel extends StackPane {
     runway.currentAircraftProperty().addListener(ignored -> draw());
     runway.ctoraProperty().addListener(ignored -> draw());
     runway.ctodaProperty().addListener(ignored -> draw());
-    runway.casdaProperty().addListener(ignored-> draw());
+    runway.casdaProperty().addListener(ignored -> draw());
     runway.cldaProperty().addListener(ignored -> draw());
     runway.cresaProperty().addListener(ignored -> draw());
 
@@ -250,11 +254,12 @@ public class VisPanel extends StackPane {
 
     //Runway distances
     gc.setLineWidth(1.5);
-    //gc.setLineDashes(5);
+    gc.setLineDashes(5);
     gc.setStroke(Color.valueOf("#000000"));
     gc.setFill(Color.valueOf("#000000"));
     gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
     gc.setFont(new Font(15));
+    gc.setLineDashes(0);
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
     if (runway.getClda() < 0) {
@@ -262,26 +267,49 @@ public class VisPanel extends StackPane {
     } else {
       //Main height
       var heightA = ch * 0.41;
+
       //Displaced upwards parameter
       var heightB = ch * 0.4;
+
       //Displaced downwards parameter
       var heightC = ch * 0.42;
+
+      //ratio to multiply with to adjust length
+      var ratio = runway.getLda() / runway.getClda();
+
+      //ratio flipped around for the end of the distance line
+      var revratio = runway.getClda() / runway.getLda();
+
       if (runway.getClda() != runway.getLda() && threshold == 0) {
-        gc.strokeLine(cw * 0.1 * (runway.getLda() / runway.getClda()), heightA, cw * 0.87, heightA);
-        gc.strokeLine(cw * 0.1 * (runway.getLda() / runway.getClda()), heightB,
-          cw * 0.1 * (runway.getLda() / runway.getClda()), heightC);
+        //Changes LDA start point based on where the obstacle is located
+        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
+          gc.strokeLine(cw * 0.1 * ratio, heightA, cw * 0.87, heightA);
+          gc.strokeLine(cw * 0.1 * ratio, heightB, cw * 0.1 * ratio, heightC);
+          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+        } else {
+          gc.strokeLine(cw * 0.1, heightA, cw * 0.87 * revratio, heightA);
+          gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
+          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
+        }
       } else if (runway.getClda() != runway.getLda() && threshold != 0) {
-        gc.strokeLine(cw * 0.2 * (runway.getLda() / runway.getClda()), heightA, cw * 0.87, heightA);
-        gc.strokeLine(cw * 0.2 * (runway.getLda() / runway.getClda()), heightB,
-          cw * 0.2 * (runway.getLda() / runway.getClda()), heightC);
+        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
+          gc.strokeLine(cw * 0.2 * ratio, heightA, cw * 0.87, heightA);
+          gc.strokeLine(cw * 0.2 * ratio, heightB, cw * 0.2 * ratio, heightC);
+          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+        } else {
+          gc.strokeLine(cw * 0.2, heightA, cw * 0.87 * revratio, heightA);
+          gc.strokeLine(cw * 0.2, heightB, cw * 0.2, heightC);
+          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
+        }
       } else if (threshold != 0) {
         gc.strokeLine(cw * 0.2, heightA, cw * 0.87, heightA);
         gc.strokeLine(cw * 0.2, heightB, cw * 0.2, heightC);
+        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
       } else {
         gc.strokeLine(cw * 0.1, heightA, cw * 0.87, heightA);
         gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
+        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
       }
-      gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
       gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.3, heightB);
     }
 
@@ -304,34 +332,42 @@ public class VisPanel extends StackPane {
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
-      if (runway.getCasda() != runway.getAsda()){
-        gc.strokeLine(cw * 0.1, ch * 0.35, cw * stopwayPar * (runway.getAsda()/runway.getCasda()), ch * 0.35);
-        gc.strokeLine(cw * stopwayPar * (runway.getAsda()/runway.getCasda()), ch * 0.34,
-          cw * stopwayPar * (runway.getAsda()/runway.getCasda()), ch * 0.36);
+      var heightU = ch * 0.34;
+      var heightM = ch * 0.35;
+      var heightD = ch * 0.36;
+      if (runway.getCasda() != runway.getAsda()) {
+        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightM);
+        gc.strokeLine(cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightU,
+          cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightD);
       } else {
-        gc.strokeLine(cw * 0.1, ch * 0.35, cw * stopwayPar, ch * 0.35);
-        gc.strokeLine(cw * stopwayPar, ch * 0.34, cw * stopwayPar, ch * 0.36);
+        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar, heightM);
+        gc.strokeLine(cw * stopwayPar, heightU, cw * stopwayPar, heightD);
       }
-      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.3, ch * 0.34);
+      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.3, heightU);
     }
-    
+
     //Displays TODA value and adjusts length to current TODA
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
+      var heightU = ch * 0.31;
+      var heightM = ch * 0.32;
+      var heightD = ch * 0.33;
       if (runway.getCtoda() != runway.getToda()) {
-        gc.strokeLine(cw * 0.1, ch * 0.32, cw * clearwayPar * (runway.getTora()/runway.getCtora()), ch * 0.32);
-        gc.strokeLine(cw *  clearwayPar * (runway.getTora()/runway.getCtora()),
-          ch * 0.31, clearwayPar * (runway.getTora()/runway.getCtora()), ch * 0.33);
+        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * (runway.getCtora() / runway.getTora()), heightM);
+        gc.strokeLine(cw * clearwayPar * (runway.getCtora() / runway.getTora()),
+          heightU, cw * clearwayPar * (runway.getCtora() / runway.getTora()), heightD);
       } else {
-        gc.strokeLine(cw * 0.1, ch * 0.32, cw * clearwayPar , ch * 0.32);
-        gc.strokeLine(cw * clearwayPar, ch * 0.31, cw * clearwayPar , ch * 0.33);
+        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar, heightM);
+        gc.strokeLine(cw * clearwayPar, heightU, cw * clearwayPar, heightD);
       }
-      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.3, ch * 0.31);
+      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.3, heightU);
     }
+
     //gc.setLineDashes(0);
     gc.setFont(new Font(20));
   }
+
 
   /**
    * Draws a direction arrown on the canvas
@@ -376,7 +412,7 @@ public class VisPanel extends StackPane {
 
     //Throw error if designator is not of the correct format (e.g. 09L, 26)
     if (designator.length() != 3 && designator.length() != 2) {
-      System.err.println("Bad format for designator.");
+      logger.error("Bad format for designator.");
     }
 
     //The runway designator of the other side
@@ -391,7 +427,7 @@ public class VisPanel extends StackPane {
         numDes = Integer.parseInt(designator);
       }
     } catch (NumberFormatException e) {
-      System.err.println("Bad number format for designator.");
+      logger.error("Bad number format for designator.");
     }
 
     //Get the other sides designator by adding 180 and modding by 360
