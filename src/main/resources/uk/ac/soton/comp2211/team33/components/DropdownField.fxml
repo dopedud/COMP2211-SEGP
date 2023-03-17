@@ -6,7 +6,7 @@
 
 <fx:root type="AnchorPane"
          xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-  <Label fx:id="label" text="Label" prefHeight="32.0" prefWidth="200.0"
+  <Label fx:id="labelNode" text="Label" prefHeight="32.0" prefWidth="200.0"
          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0"/>
-  <ChoiceBox fx:id="dropdown" layoutY="3.0" prefWidth="150.0" AnchorPane.rightAnchor="20.0"/>
+  <ChoiceBox fx:id="dropdownNode" layoutY="3.0" prefWidth="150.0" AnchorPane.rightAnchor="20.0"/>
 </fx:root>

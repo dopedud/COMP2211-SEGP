@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -9,66 +10,74 @@ import javafx.scene.layout.AnchorPane;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The InputField class is a custom component that contains a label and a text field.
+ * The InputField class is a custom component that contains a label, a text field and an optional suffix text.
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */
 public class InputField extends AnchorPane {
 
   @FXML
-  private Label label;
+  private Label labelNode;
 
   @FXML
-  private TextField textField;
+  private TextField textFieldNode;
 
   @FXML
-  private Label unitLabel;
+  private Label suffixNode;
 
   public InputField() {
     ProjectHelpers.renderRoot("/components/InputField.fxml", this, this);
   }
 
-  public String getLabelText() {
-    return label.getText();
+  public String getLabel() {
+    return labelNode.getText();
   }
 
-  public void setLabelText(String label) {
-    this.label.setText(label);
+  public void setLabel(String label) {
+    labelNode.setText(label);
+  }
+
+  public Label getLabelNode() {
+    return labelNode;
   }
 
   public String getText() {
-    return textField.getText();
+    return textFieldNode.getText();
   }
 
   public void setText(String text) {
-    textField.setText(text);
+    textFieldNode.setText(text);
   }
 
-  public Label getLabel() {
-    return label;
+  public StringProperty textProperty() {
+    return textFieldNode.textProperty();
   }
 
-  public TextField getTextField() {
-    return textField;
+  public TextField getTextFieldNode() {
+    return textFieldNode;
   }
 
-  public String getUnit() {
-    return unitLabel.getText();
+  public String getSuffix() {
+    return suffixNode.getText();
   }
-  public void setUnit(String unit) {
-      unitLabel.setText(unit);
+  public void setSuffix(String suffix) {
+      suffixNode.setText(suffix);
+  }
+
+  public Label getSuffixNode() {
+    return suffixNode;
   }
 
   public void setTooltip(String tooltip) {
       Tooltip t = new Tooltip(tooltip);
-      Tooltip.install(this.label, t);
+      Tooltip.install(labelNode, t);
   }
 
   public String getTooltip() {
-      return this.label.getTooltip().getText();
+      return labelNode.getTooltip().getText();
   }
   public void removeTooltip() {
-      this.label.setTooltip(null);
+      labelNode.setTooltip(null);
   }
 
 }
