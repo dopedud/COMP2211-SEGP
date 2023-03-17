@@ -51,7 +51,7 @@ public class Runway {
   private final SimpleObjectProperty<Obstacle> currentObstacle;
 
   /**
-   * The distance of the obstacle from the threshold of the runway.
+   * The distance of the obstacle from the runway threshold.
    */
   private final SimpleDoubleProperty obsDistFromThresh;
 
@@ -97,7 +97,10 @@ public class Runway {
     obsDistFromThresh = new SimpleDoubleProperty();
   }
 
-  // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
+  /**
+   * Below are getters and setters for some values that don't have to change but may be used in certain calculations.
+   */
+
 
   public String getDesignator() {
     return designator;
