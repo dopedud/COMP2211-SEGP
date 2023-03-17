@@ -64,14 +64,14 @@ public class ConfigPanel extends AnchorPane {
 
   private void initialiseObsDistFromThresh() {
     // Set wrap text for obsDistFromThreshold label
-    obsDistFromThresh.getLabel().setPrefHeight(40);
-    obsDistFromThresh.getLabel().setPrefWidth(100);
+    obsDistFromThresh.getLabelNode().setPrefWidth(100);
+    obsDistFromThresh.getLabelNode().setPrefHeight(40);
 
     // Set alignment for obsDistFromThreshold text field
-    obsDistFromThresh.getTextField().setLayoutY(8);
+    obsDistFromThresh.getTextFieldNode().setLayoutY(8);
 
     // Live update when obstacle distance from threshold value is changed
-    obsDistFromThresh.getTextField().textProperty().
+    obsDistFromThresh.textProperty().
         bindBidirectional(runway.obsDistFromThreshProperty(), new NumberStringConverter());
   }
 

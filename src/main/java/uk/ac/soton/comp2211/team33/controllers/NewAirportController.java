@@ -51,7 +51,7 @@ public class NewAirportController extends BaseController {
 
   @FXML
   private void onSubmitAirport() {
-    new MainController(stage, new Airport(city.getDropdownValue(), name.getDropdownValue()));
+    new MainController(stage, new Airport(city.getValue(), name.getValue()));
   }
 
   private void loadPredefinedAirports() {
@@ -73,19 +73,19 @@ public class NewAirportController extends BaseController {
       e.printStackTrace();
     }
 
-    city.setDropdownList(FXCollections.observableArrayList(cityNamePairs.keySet()));
-    city.getDropdownList().add("-");
-    city.setDropdownValue("-");
+    city.setItems(FXCollections.observableArrayList(cityNamePairs.keySet()));
+    city.getItems().add("-");
+    city.setValue("-");
 
-    name.getDropdownList().add("-");
-    name.setDropdownValue("-");
+    name.getItems().add("-");
+    name.setValue("-");
 
-    city.getDropdown().valueProperty().addListener((obVal, oldVal, newVal) -> {
+    city.valueProperty().addListener((obVal, oldVal, newVal) -> {
       if (newVal == null) return;
 
-      name.setDropdownList(FXCollections.observableArrayList(cityNamePairs.get(newVal)));
-      name.getDropdownList().add("-");
-      name.setDropdownValue("-");
+      name.setItems(FXCollections.observableArrayList(cityNamePairs.get(newVal)));
+      name.getItems().add("-");
+      name.setValue("-");
     });
   }
 }

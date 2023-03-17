@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -19,13 +20,13 @@ public class DropdownField extends AnchorPane {
    * The label of the dropdown field
    */
   @FXML
-  private Label label;
+  private Label labelNode;
 
   /**
    * The choice box (dropdown input) of the dropdown field
    */
   @FXML
-  private ChoiceBox<String> dropdown;
+  private ChoiceBox<String> dropdownNode;
 
   public DropdownField() {
     ProjectHelpers.renderRoot("/components/DropdownField.fxml", this, this);
@@ -34,8 +35,8 @@ public class DropdownField extends AnchorPane {
   /**
    * @return The text of the label
    */
-  public String getLabelText() {
-    return label.getText();
+  public String getLabel() {
+    return labelNode.getText();
   }
 
   /**
@@ -43,22 +44,22 @@ public class DropdownField extends AnchorPane {
    *
    * @param label The text the label is being set to
    */
-  public void setLabelText(String label) {
-    this.label.setText(label);
+  public void setLabel(String label) {
+    labelNode.setText(label);
   }
 
   /**
    * @return The current selected value of the dropdown field
    */
-  public String getDropdownValue() {
-    return dropdown.getValue();
+  public String getValue() {
+    return dropdownNode.getValue();
   }
 
   /**
    * @return The list of values the dropdown field is displaying
    */
-  public ObservableList<String> getDropdownList() {
-    return dropdown.getItems();
+  public ObservableList<String> getItems() {
+    return dropdownNode.getItems();
   }
 
   /**
@@ -66,8 +67,8 @@ public class DropdownField extends AnchorPane {
    *
    * @param value The value the selected value is being set to
    */
-  public void setDropdownValue(String value) {
-    dropdown.setValue(value);
+  public void setValue(String value) {
+    dropdownNode.setValue(value);
   }
 
   /**
@@ -75,14 +76,14 @@ public class DropdownField extends AnchorPane {
    *
    * @param list The list of values the dropdown field is having
    */
-  public void setDropdownList(ObservableList<String> list) {
-    dropdown.setItems(list);
+  public void setItems(ObservableList<String> list) {
+    dropdownNode.setItems(list);
   }
 
   /**
    * @return The choice box (dropdown input) of the dropdown field
    */
-  public ChoiceBox<String> getDropdown() {
-    return dropdown;
+  public ObjectProperty<String> valueProperty() {
+    return dropdownNode.valueProperty();
   }
 }

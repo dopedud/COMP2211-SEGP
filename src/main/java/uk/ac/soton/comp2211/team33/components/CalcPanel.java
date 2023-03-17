@@ -78,17 +78,17 @@ public class CalcPanel extends AnchorPane {
       notifyRecalculation();
     });
 
+    calcMode.getItems().add("Towards Obstacle");
+    calcMode.getItems().add("Away From/Over Obstacle");
+    calcMode.setValue("Towards Obstacle");
+
     // Set calculation mode to 2 modes, calculation towards obstacle and away from/over obstacle
     // Also adds a listener to re-calculate values based on which modes selected
-    calcMode.getDropdown().valueProperty().addListener((obVal, oldVal, newVal) -> {
+    calcMode.valueProperty().addListener((obVal, oldVal, newVal) -> {
       calcTowards = newVal.equals("Towards Obstacle");
       recalculateRunwayValues();
       notifyRecalculation();
     });
-
-    calcMode.getDropdownList().add("Towards Obstacle");
-    calcMode.getDropdownList().add("Away From/Over Obstacle");
-    calcMode.setDropdownValue("Towards Obstacle");
   }
 
   private void recalculateRunwayValues() {

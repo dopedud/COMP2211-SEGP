@@ -11,13 +11,13 @@
             xmlns:fx="http://javafx.com/fxml/1">
   <Label text="New runway details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
   <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-    <InputField fx:id="designator" labelText="Designator" tooltip="The designator of the runway" />
-    <InputField fx:id="tora" labelText="TORA" unit="m" tooltip="Take Off Run Available"/>
-    <InputField fx:id="toda" labelText="TODA" unit="m" tooltip="Take Off Distance Available"/>
-    <InputField fx:id="asda" labelText="ASDA" unit="m" tooltip="Accelerate Stop Distance Available"/>
-    <InputField fx:id="lda" labelText="LDA" unit="m" tooltip="Landing Distance Available"/>
-    <InputField fx:id="resa" labelText="RESA" unit="m" tooltip="Runway End Safety Area"/>
-    <InputField fx:id="threshold" labelText="Threshold" unit="m" tooltip="The threshold position of the runway"/>
+    <InputField fx:id="designator" label="Designator" tooltip="The designator of the runway" />
+    <InputField fx:id="tora" label="TORA" suffix="m" tooltip="Take Off Run Available"/>
+    <InputField fx:id="toda" label="TODA" suffix="m" tooltip="Take Off Distance Available"/>
+    <InputField fx:id="asda" label="ASDA" suffix="m" tooltip="Accelerate Stop Distance Available"/>
+    <InputField fx:id="lda" label="LDA" suffix="m" tooltip="Landing Distance Available"/>
+    <InputField fx:id="resa" label="RESA" suffix="m" tooltip="Runway End Safety Area"/>
+    <InputField fx:id="threshold" label="Threshold" suffix="m" tooltip="The threshold position of the runway"/>
     <AnchorPane>
       <Button mnemonicParsing="false" text="Submit" onAction="#onSubmitRunway"
               prefHeight="30.0" prefWidth="100.0"
