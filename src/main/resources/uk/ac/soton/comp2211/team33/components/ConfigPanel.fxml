@@ -7,7 +7,7 @@
 
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minWidth="300">
+            minWidth="300" maxWidth="500">
     <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <TitledPane animated="false" collapsible="false" text="Aircraft"
