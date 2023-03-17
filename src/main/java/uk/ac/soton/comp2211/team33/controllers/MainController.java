@@ -49,10 +49,12 @@ public class MainController extends BaseController {
     buildScene("/views/MainView.fxml");
 
     renderTabs();
+
+    addInitialRunways();
   }
 
   @FXML
-  private void onNewAirport() {
+  private void onChangeAirport() {
     new NewAirportController(new Stage(), null);
   }
 
@@ -72,5 +74,12 @@ public class MainController extends BaseController {
         //TODO: remove runways when tab is closed
       }
     });
+  }
+
+  private void addInitialRunways() {
+    state.addRunway("09L", 3902, 3902, 3902, 3595, 240, 306);
+    state.addRunway("27R", 3884, 3962, 3884, 3884, 240, 0);
+    state.addRunway("09R", 3660, 3660, 3660, 3353, 240, 307);
+    state.addRunway("27L", 3660, 3660, 3660, 3660, 240, 0);
   }
 }
