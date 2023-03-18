@@ -90,7 +90,7 @@ public class VisPanel extends StackPane {
 
     // Dust
 
-    gc.setFill(Color.rgb(50, 50 ,50));
+    gc.setFill(Color.rgb(50, 50, 50));
     gc.fillRect(0, ((double) 2 / 3 * ch) + grassDepth, cw, ch);
 
     gc.setFill(Color.RED);
@@ -209,19 +209,22 @@ public class VisPanel extends StackPane {
       gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
     }
 
+    //A variable threshold parameter
+    var thresh = (0.1 + 0.77 * (runway.getThreshold() / runway.getTora()));
+
     //Add a threshold if it exists
     if (threshold != 0) {
       gc.setLineWidth(1.5);
       gc.setLineDashes(6);
       gc.setStroke(Color.valueOf("#FF5733"));
       gc.setFill(Color.valueOf("#FF5733"));
-      if (leftT){
-        gc.strokeLine(cw * 0.8, ch * 0.41, cw * 0.8, ch * 0.57);
+      if (leftT) {
+        gc.strokeLine(cw * (1 - thresh), ch * 0.41, cw * (1 - thresh), ch * 0.57);
         gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
       } else {
-        gc.strokeLine(cw * 0.20, ch * 0.41, cw * 0.20, ch * 0.57);
+        gc.strokeLine(cw * thresh, ch * 0.41, cw * thresh, ch * 0.57);
         //Write metrics next to threshold
-        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+        gc.fillText(threshold + "m", cw * (thresh - 0.02), ch * 0.6);
       }
       gc.setLineDashes(0);
     }
@@ -286,66 +289,86 @@ public class VisPanel extends StackPane {
     gc.setFont(new Font(20));
 
     //Runway distances
-    // TODO: 17/03/2023 Abeed make the like start from the other end of the rectangle instead
     gc.setLineWidth(1.5);
     gc.setLineDashes(5);
     gc.setStroke(Color.valueOf("#000000"));
     gc.setFill(Color.valueOf("#000000"));
-    gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
+    if (leftT) {
+      gc.strokeLine(cw * 0.87, ch * 0.3, cw * 0.87, ch * 0.43);
+    } else {
+      gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
+    }
     gc.setFont(new Font(15));
     gc.setLineDashes(0);
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
-    // TODO: 17/03/2023 Abeed change this. I will do this one - Jackson
+    // TODO: 17/03/2023 I will do this one - Jackson
     if (runway.getClda() < 0) {
       logger.error("Negative value, not drawing LDA");
     } else {
       //Main height
-      var heightA = ch * 0.41;
+      var heightM = ch * 0.41;
 
       //Displaced upwards parameter
-      var heightB = ch * 0.4;
+      var heightU = ch * 0.4;
 
       //Displaced downwards parameter
-      var heightC = ch * 0.42;
+      var heightD = ch * 0.42;
 
       //ratio to multiply with to adjust length
       var ratio = runway.getLda() / runway.getClda();
 
       //ratio flipped around for the end of the distance line
       var revratio = runway.getClda() / runway.getLda();
-      
-      if (runway.getClda() != runway.getLda() && threshold == 0) {
-        //Changes LDA start point based on where the obstacle is located
-        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * 0.1 * ratio, heightA, cw * 0.87, heightA);
-          gc.strokeLine(cw * 0.1 * ratio, heightB, cw * 0.1 * ratio, heightC);
-          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+
+      if (leftT){
+        if(runway.getObsDistFromThresh() < runway.getTora() / 2){
+          gc.strokeLine(cw * (1 - thresh) * ratio, heightM, cw * 0.1, heightM);
+          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         } else {
-          gc.strokeLine(cw * 0.1, heightA, cw * 0.87 * revratio, heightA);
-          gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
-          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
+          gc.strokeLine(cw * (1 - thresh) * revratio, heightM, cw * 0.1 * revratio, heightM);
+          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         }
-      } else if (runway.getClda() != runway.getLda() && threshold != 0) {
-        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * 0.2 * ratio, heightA, cw * 0.87, heightA);
-          gc.strokeLine(cw * 0.2 * ratio, heightB, cw * 0.2 * ratio, heightC);
-          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
-        } else {
-          gc.strokeLine(cw * 0.2, heightA, cw * 0.87 * revratio, heightA);
-          gc.strokeLine(cw * 0.2, heightB, cw * 0.2, heightC);
-          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
-        }
-      } else if (threshold != 0) {
-        gc.strokeLine(cw * 0.2, heightA, cw * 0.87, heightA);
-        gc.strokeLine(cw * 0.2, heightB, cw * 0.2, heightC);
-        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
       } else {
-        gc.strokeLine(cw * 0.1, heightA, cw * 0.87, heightA);
-        gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
-        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+        if (runway.getObsDistFromThresh() < runway.getTora() / 2){
+          gc.strokeLine(cw * thresh * ratio, heightM, cw * 0.87, heightM);
+          gc.strokeLine(cw * 0.87, heightU, cw * 0.87, heightD);
+        } else {
+          gc.strokeLine(cw * thresh, heightM, cw * 0.87 * revratio, heightM);
+          gc.strokeLine(cw * 0.87 * revratio, heightU, cw * 0.87 * revratio, heightD);
+        }
       }
-      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.3, heightB);
+//      if (runway.getClda() != runway.getLda() && threshold == 0) {
+//        //Changes LDA start point based on where the obstacle is located
+//        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
+//          gc.strokeLine(cw * 0.1 * ratio, heightA, cw * 0.87, heightA);
+//          gc.strokeLine(cw * 0.1 * ratio, heightB, cw * 0.1 * ratio, heightC);
+//          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+//        } else {
+//          gc.strokeLine(cw * 0.1, heightA, cw * 0.87 * revratio, heightA);
+//          gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
+//          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
+//        }
+//      } else if (runway.getClda() != runway.getLda() && threshold != 0) {
+//        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
+//          gc.strokeLine(cw * thresh * ratio, heightA, cw * 0.87, heightA);
+//          gc.strokeLine(cw * thresh * ratio, heightB, cw * thresh * ratio, heightC);
+//          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+//        } else {
+//          gc.strokeLine(cw * thresh, heightA, cw * 0.87 * revratio, heightA);
+//          gc.strokeLine(cw * thresh, heightB, cw * thresh, heightC);
+//          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
+//        }
+//      } else if (threshold != 0) {
+//        gc.strokeLine(cw * thresh, heightA, cw * 0.87, heightA);
+//        gc.strokeLine(cw * thresh, heightB, cw * thresh, heightC);
+//        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+//      } else {
+//        gc.strokeLine(cw * 0.1, heightA, cw * 0.87, heightA);
+//        gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
+//        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+//      }
+      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.3, heightU);
     }
 
     //Displays TORA value and adjusts length to current TORA
