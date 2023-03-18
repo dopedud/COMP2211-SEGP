@@ -8,7 +8,22 @@
 <fx:root type="StackPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
   <Canvas fx:id="canvas" />
-  <Button text="Switch view" StackPane.alignment="BOTTOM_RIGHT" onAction="#onSwitchView">
+
+  <VBox StackPane.alignment="BOTTOM_RIGHT" spacing="5">
     <StackPane.margin><Insets top="8" right="8" bottom="8" left="8" /></StackPane.margin>
-  </Button>
+    <Button text="Reset" onAction="#resetTransform" />
+    <Region minHeight="20" />
+    <Button text="Rotate Left" onAction="#rotateLeft" />
+    <Button text="Rotate Right" onAction="#rotateRight" />
+    <Region minHeight="20" />
+    <Button text="Translate Left" onAction="#translateLeft" />
+    <Button text="Translate Right" onAction="#translateRight" />
+    <Button text="Translate Up" onAction="#translateUp" />
+    <Button text="Translate Down" onAction="#translateDown" />
+    <Region minHeight="20" />
+    <Button text="Zoom in" onAction="#zoomIn" />
+    <Button text="Zoom out" onAction="#zoomOut" />
+    <Region minHeight="20" />
+    <Button text="Switch view"  onAction="#onSwitchView" />
+  </VBox>
 </fx:root>

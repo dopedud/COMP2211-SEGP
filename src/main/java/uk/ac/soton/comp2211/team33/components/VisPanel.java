@@ -1,6 +1,8 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -32,6 +34,36 @@ public class VisPanel extends StackPane {
 
   private boolean isTopDownView = true;
 
+
+  /**
+   * The scale factor of the visualisation.
+   */
+  private double scale = 1;
+
+  /**
+   * The translation of the visualisation, expressed as a proportion of the canvas width / height.
+   * For example, a value of 0.5 would translate the visualisation by half the width of the canvas.
+   * On a 1000x1000 canvas, this would translate the visualisation by 500 pixels.
+   */
+  private double translateX = 0;
+
+  /**
+   * The translation of the visualisation, expressed as a proportion of the canvas width / height.
+   * For example, a value of 0.5 would translate the visualisation by half the height of the canvas.
+   * On a 1000x1000 canvas, this would translate the visualisation by 500 pixels.
+   */
+  private double translateY = 0;
+
+  /**
+   * The rotation of the vis in degrees.
+   */
+  private double rotation = 0;
+
+  /**
+   * The current transform of the visualisation.
+   */
+  private SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
+
   public VisPanel(Airport state, Runway runway) {
     this.runway = runway;
     this.state = state;
@@ -53,14 +85,95 @@ public class VisPanel extends StackPane {
     runway.cldaProperty().addListener(ignored -> draw());
     runway.cresaProperty().addListener(ignored -> draw());
 
+    transform.addListener(ignored -> draw());
+
     draw();
   }
 
   @FXML
   private void onSwitchView() {
     isTopDownView = !isTopDownView;
+    resetTransform();
     draw();
   }
+
+  /**
+   * Resets the transform to the default values.
+   */
+  @FXML
+  private void resetTransform() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    rotation = 0;
+    updateTransform();
+  }
+
+  /**
+   * Updates the transform property based on the current scale, translation and rotation values.
+   */
+  private void updateTransform() {
+    var t = new Affine();
+    t.appendScale(scale, scale, getCurrentCenter());
+    t.appendTranslation(translateX * canvas.getWidth(), translateY * canvas.getHeight());
+    t.appendRotation(rotation, canvas.getWidth() / 2, canvas.getHeight() / 2);
+    transform.set(t);
+  }
+
+  private Point2D getCurrentCenter() {
+    var x = (0.5 + translateX) * canvas.getWidth();
+    var y = (0.5 + translateY) * canvas.getHeight();
+    return new Point2D(x, y);
+  }
+
+  @FXML
+  private void zoomIn() {
+    scale *= 1.1;
+    updateTransform();
+  }
+
+  @FXML
+  private void zoomOut() {
+    scale /= 1.1;
+    updateTransform();
+  }
+
+  @FXML
+  private void rotateLeft() {
+    rotation += 5;
+    updateTransform();
+  }
+
+  @FXML
+  private void rotateRight() {
+    rotation -= 5;
+    updateTransform();
+  }
+
+  @FXML
+  private void translateLeft() {
+    translateX += 0.1;
+    updateTransform();
+  }
+
+  @FXML
+  private void translateRight() {
+    translateX -= 0.1;
+    updateTransform();
+  }
+
+  @FXML
+  private void translateUp() {
+    translateY += 0.1;
+    updateTransform();
+  }
+
+  @FXML
+  private void translateDown() {
+    translateY -= 0.1;
+    updateTransform();
+  }
+
 
   private void draw() {
     if (isTopDownView) {
@@ -71,12 +184,18 @@ public class VisPanel extends StackPane {
     drawSideways();
   }
 
+
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
+    gc.setTransform(transform.get());
     double cw = this.getWidth();
     double ch = this.getHeight();
 
     double grassDepth = ch / 20;
+
+    // Clearing the canvas
+    gc.clearRect(0, 0, cw, ch);
+
 
     // Sky
 
@@ -104,13 +223,12 @@ public class VisPanel extends StackPane {
    */
   private void drawTopDown() {
     var gc = canvas.getGraphicsContext2D();
+    gc.setTransform(transform.get());
     gc.setFont(new Font(20));
 
     //Width and height of the canvas
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
-
-    gc.clearRect(-500, -500, cw * 5, ch * 5);
 
     var designator = runway.getDesignator();
 
@@ -128,11 +246,11 @@ public class VisPanel extends StackPane {
 
     double clearway = runway.getClearway();
 
-    double rotationAngle = 0;
-
-    //Rotation
-    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
-    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+//    double rotationAngle = 0;
+//
+//    //Rotation
+//    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
+//    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 
 //    if(rotationAngle != 0 || rotationAngle != 90 || rotationAngle != 180 || rotationAngle != 270
 //      || rotationAngle != 360){
@@ -143,6 +261,13 @@ public class VisPanel extends StackPane {
 
     //Some given TORA to be passed in, dummy value
     double toraL = 3550;
+
+
+
+
+    // Clears the canvas
+    gc.clearRect(-500, -500, cw * 5, ch * 5);
+
 
     //Surrounding area
     gc.setFill(Color.valueOf("#7CB342"));
@@ -274,7 +399,7 @@ public class VisPanel extends StackPane {
 
     //Draw the direction arrow
     // TODO: 17/03/2023 Abeed change this to make the arrow point to the other way 
-    drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, rotationAngle);
+    drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, 0);
     gc.fillText("Take-Off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
 
     //Picked an object
@@ -457,10 +582,10 @@ public class VisPanel extends StackPane {
     double angle = Math.atan2(dy, dx);
     int len = (int) Math.sqrt(dx * dx + dy * dy);
 
-    Transform transform = Transform.translate(x1, y1);
-    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
-    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
-    gc.setTransform(new Affine(transform));
+//    Transform transform = Transform.translate(x1, y1);
+//    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
+//    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
+//    gc.setTransform(new Affine(transform));
 
 
     gc.strokeLine(0, 0, len, 0);
