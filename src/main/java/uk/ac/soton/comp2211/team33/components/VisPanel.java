@@ -338,36 +338,6 @@ public class VisPanel extends StackPane {
           gc.strokeLine(cw * 0.87 * revratio, heightU, cw * 0.87 * revratio, heightD);
         }
       }
-//      if (runway.getClda() != runway.getLda() && threshold == 0) {
-//        //Changes LDA start point based on where the obstacle is located
-//        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-//          gc.strokeLine(cw * 0.1 * ratio, heightA, cw * 0.87, heightA);
-//          gc.strokeLine(cw * 0.1 * ratio, heightB, cw * 0.1 * ratio, heightC);
-//          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
-//        } else {
-//          gc.strokeLine(cw * 0.1, heightA, cw * 0.87 * revratio, heightA);
-//          gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
-//          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
-//        }
-//      } else if (runway.getClda() != runway.getLda() && threshold != 0) {
-//        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-//          gc.strokeLine(cw * thresh * ratio, heightA, cw * 0.87, heightA);
-//          gc.strokeLine(cw * thresh * ratio, heightB, cw * thresh * ratio, heightC);
-//          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
-//        } else {
-//          gc.strokeLine(cw * thresh, heightA, cw * 0.87 * revratio, heightA);
-//          gc.strokeLine(cw * thresh, heightB, cw * thresh, heightC);
-//          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
-//        }
-//      } else if (threshold != 0) {
-//        gc.strokeLine(cw * thresh, heightA, cw * 0.87, heightA);
-//        gc.strokeLine(cw * thresh, heightB, cw * thresh, heightC);
-//        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
-//      } else {
-//        gc.strokeLine(cw * 0.1, heightA, cw * 0.87, heightA);
-//        gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
-//        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
-//      }
       gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.3, heightU);
     }
 
@@ -452,9 +422,9 @@ public class VisPanel extends StackPane {
       }
       i++;
     }
-    if (!found) {
-      logger.info("No matching designator found, keeping the selected runway to the left");
-    }
+//    if (!found) {
+//      logger.info("No matching designator found, keeping the selected runway to the left");
+//    }
     return leftT;
   }
 
