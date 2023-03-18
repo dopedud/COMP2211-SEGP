@@ -412,6 +412,7 @@ public class VisPanel extends StackPane {
         }
         found = true;
       }
+      i++;
     }
     if (!found) {
       logger.info("No matching designator found, keeping the selected runway to the left");
