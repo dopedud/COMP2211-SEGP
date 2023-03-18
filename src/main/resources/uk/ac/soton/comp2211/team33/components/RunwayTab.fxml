@@ -7,7 +7,7 @@
 <fx:root type="Tab" onClosed="#onCloseRunway"
          xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <AnchorPane>
-    <SplitPane fx:id="splitPane" dividerPositions="0.2, 0.8"
+    <SplitPane fx:id="splitPane" dividerPositions="0.1, 0.9"
                AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     </SplitPane>

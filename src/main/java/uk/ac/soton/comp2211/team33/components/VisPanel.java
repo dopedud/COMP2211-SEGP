@@ -38,11 +38,12 @@ public class VisPanel extends StackPane {
 
     ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
 
-    canvas.widthProperty().bind(widthProperty());
-    canvas.heightProperty().bind(heightProperty());
-
     canvas.widthProperty().addListener(ignored -> draw());
     canvas.heightProperty().addListener(ignored -> draw());
+
+    canvas.setManaged(false);
+    canvas.widthProperty().bind(widthProperty());
+    canvas.heightProperty().bind(heightProperty());
 
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
@@ -71,12 +72,26 @@ public class VisPanel extends StackPane {
   }
 
   private void drawSideways() {
-    var gc = canvas.getGraphicsContext2D();
-
+    GraphicsContext gc = canvas.getGraphicsContext2D();
     double cw = this.getWidth();
     double ch = this.getHeight();
 
-    gc.clearRect(0, 0, cw, ch);
+    double grassDepth = ch / 20;
+
+    // Sky
+
+    gc.setFill(Color.rgb(56, 179, 232));
+    gc.fillRect(0, 0, cw, ch);
+
+    // Grass
+
+    gc.setFill(Color.rgb(73, 145, 99));
+    gc.fillRect(0, (double) 2 / 3 * ch, cw, ch);
+
+    // Dust
+
+    gc.setFill(Color.rgb(50, 50 ,50));
+    gc.fillRect(0, ((double) 2 / 3 * ch) + grassDepth, cw, ch);
 
     gc.setFill(Color.RED);
     gc.setFont(new Font(30));
