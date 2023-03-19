@@ -90,6 +90,9 @@ public class VisPanel extends StackPane {
     draw();
   }
 
+  /**
+   * Switches between the top-down and side-on view.
+   */
   @FXML
   private void onSwitchView() {
     isTopDownView = !isTopDownView;
@@ -120,54 +123,82 @@ public class VisPanel extends StackPane {
     transform.set(t);
   }
 
+  /**
+   * Get the centre of the canvas as a coordinate
+   * @return The current center of the visualisation, in canvas coordinates.
+   */
   private Point2D getCurrentCenter() {
     var x = (0.5 + translateX) * canvas.getWidth();
     var y = (0.5 + translateY) * canvas.getHeight();
     return new Point2D(x, y);
   }
 
+  /**
+   * Zooms in by 10%.
+   */
   @FXML
   private void zoomIn() {
     scale *= 1.1;
     updateTransform();
   }
 
+  /**
+   * Zooms out by 10%.
+   */
   @FXML
   private void zoomOut() {
     scale /= 1.1;
     updateTransform();
   }
 
+  /**
+   * Rotates the visualisation by 5 degrees to the left.
+   */
   @FXML
   private void rotateLeft() {
     rotation += 5;
     updateTransform();
   }
 
+  /**
+   * Rotates the visualisation by 5 degrees to the right.
+   */
   @FXML
   private void rotateRight() {
     rotation -= 5;
     updateTransform();
   }
 
+  /**
+   * Translates the visualisation to the left by 10% of the canvas width.
+   */
   @FXML
   private void translateLeft() {
     translateX += 0.1;
     updateTransform();
   }
 
+  /**
+   * Translates the visualisation to the right by 10% of the canvas width.
+   */
   @FXML
   private void translateRight() {
     translateX -= 0.1;
     updateTransform();
   }
 
+  /**
+   * Translates the visualisation up by 10% of the canvas height.
+   */
   @FXML
   private void translateUp() {
     translateY += 0.1;
     updateTransform();
   }
 
+  /**
+   * Translates the visualisation down by 10% of the canvas height.
+   */
   @FXML
   private void translateDown() {
     translateY -= 0.1;
@@ -223,7 +254,11 @@ public class VisPanel extends StackPane {
    */
   private void drawTopDown() {
     var gc = canvas.getGraphicsContext2D();
+
+    // Setting the transform of the canvas to the current one
     gc.setTransform(transform.get());
+
+
     gc.setFont(new Font(20));
 
     //Width and height of the canvas
@@ -265,7 +300,7 @@ public class VisPanel extends StackPane {
 
 
 
-    // Clears the canvas
+    // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
     gc.clearRect(-5000, -5000, 10000, 10000);
 
 
