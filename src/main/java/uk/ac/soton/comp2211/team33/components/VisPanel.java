@@ -266,12 +266,12 @@ public class VisPanel extends StackPane {
 
 
     // Clears the canvas
-    gc.clearRect(-500, -500, cw * 5, ch * 5);
+    gc.clearRect(-5000, -5000, 10000, 10000);
 
 
     //Surrounding area
     gc.setFill(Color.valueOf("#7CB342"));
-    gc.fillRect(-500, -500, cw * 5, ch * 5);
+    gc.fillRect(-5000, -5000, 10000, 10000);
 
     double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
     double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
