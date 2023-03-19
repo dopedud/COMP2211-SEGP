@@ -10,6 +10,8 @@
          xmlns:fx="http://javafx.com/fxml">
   <Canvas fx:id="canvas" />
 
+  // TODO: Figure out how to make stackpane align children properly, below they are set to show in the bottom right corner but don't
+
   <VBox StackPane.alignment="BOTTOM_RIGHT" spacing="5">
     <StackPane.margin><Insets top="8" right="8" bottom="8" left="8" /></StackPane.margin>
     <Button text="Reset" onAction="#resetTransform" />
@@ -23,7 +25,7 @@
 
     <Region minHeight="20" />
 
-    <BorderPane maxHeight="150" maxWidth="150">
+    <BorderPane maxHeight="100" maxWidth="100">
       <left>
         <IconButton icon="/pictures/arrow_left.png" onAction="#translateLeft" BorderPane.alignment="CENTER_LEFT"/>
       </left>
