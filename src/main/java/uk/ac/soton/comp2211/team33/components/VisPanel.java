@@ -60,6 +60,12 @@ public class VisPanel extends StackPane {
   private double rotation = 0;
 
   /**
+   * The offset of the rotation in degrees - used to correctly rotate the vis to match compass heading depending on which side the threshold is
+   * If the threshold is on the left, the offset is 0 degrees, if it is on the right, the offset is 180 degrees.
+   */
+  private int compassOffset = 0;
+
+  /**
    * The current transform of the visualisation.
    */
   private SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
@@ -166,6 +172,18 @@ public class VisPanel extends StackPane {
   @FXML
   private void rotateRight() {
     rotation -= 5;
+    updateTransform();
+  }
+
+  /**
+   * Rotates the visualisation to the runway heading. Only works in top-down view.
+   */
+  @FXML
+  private void rotateToRunwayHeading() {
+    if (!isTopDownView) {
+      return;
+    }
+    rotation = (runway.getCompassHeading() + 270 + compassOffset) % 360;
     updateTransform();
   }
 

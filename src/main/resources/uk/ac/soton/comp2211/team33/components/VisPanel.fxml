@@ -21,6 +21,7 @@
     <HBox spacing="20">
       <IconButton icon="/pictures/rotate_anticlockwise.png" onAction="#rotateRight" />
       <IconButton icon="/pictures/rotate_clockwise.png" onAction="#rotateLeft" />
+      <IconButton icon="/pictures/compass.png" onAction="#rotateToRunwayHeading" />
     </HBox>
 
     <Region minHeight="20" />
