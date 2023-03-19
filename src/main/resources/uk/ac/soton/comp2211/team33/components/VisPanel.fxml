@@ -10,7 +10,7 @@
          xmlns:fx="http://javafx.com/fxml">
   <Canvas fx:id="canvas" />
 
-  // TODO: Figure out how to make stackpane align children properly, below they are set to show in the bottom right corner but don't
+  <!--TODO: Figure out how to make stackpane align children properly, below they are set to show in the bottom right corner but don't-->
 
   <VBox StackPane.alignment="BOTTOM_RIGHT" spacing="5">
     <StackPane.margin><Insets top="8" right="8" bottom="8" left="8" /></StackPane.margin>
@@ -19,8 +19,8 @@
     <Region minHeight="20" />
 
     <HBox spacing="20">
-      <IconButton icon="/pictures/rotate_anticlockwise.png" onAction="#rotateLeft" />
-      <IconButton icon="/pictures/rotate_clockwise.png" onAction="#rotateRight" />
+      <IconButton icon="/pictures/rotate_anticlockwise.png" onAction="#rotateRight" />
+      <IconButton icon="/pictures/rotate_clockwise.png" onAction="#rotateLeft" />
     </HBox>
 
     <Region minHeight="20" />
