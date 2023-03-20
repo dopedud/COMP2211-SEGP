@@ -245,6 +245,8 @@ public class VisPanel extends StackPane {
       gc.setFill(Color.valueOf("#f7ff00"));
       //Write metrics over threshold and draw rectangles
       if (leftT) {
+        stopwayS = 0.1;
+        stopwayPar = stopwayS - stopwayW;
         if (otherRunway != null && otherRunway.getStopway() != 0) {
           gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
           gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
@@ -424,17 +426,21 @@ public class VisPanel extends StackPane {
     }
 
     //Displays ASDA value and adjusts length to current ASDA
-    // TODO: 17/03/2023 Abeed change this 
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
-      var heightU = ch * 0.34;
-      var heightM = ch * 0.35;
-      var heightD = ch * 0.36;
+      double heightU = ch * 0.34;
+      double heightM = ch * 0.35;
+      double heightD = ch * 0.36;
+      double ratio = runway.getCasda() / runway.getAsda();
       if (runway.getCasda() != runway.getAsda()) {
-        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightM);
-        gc.strokeLine(cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightU,
-          cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightD);
+        if (leftT){
+          gc.strokeLine(cw * 0.87, heightM, cw * stopwayPar * (1/ratio), heightM);
+          gc.strokeLine(cw * stopwayPar * (1/ratio), heightU,cw * stopwayPar * (1/ratio), heightD);
+        } else {
+          gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
+          gc.strokeLine(cw * stopwayPar * ratio, heightU,cw * stopwayPar * ratio, heightD);
+        }
       } else {
         gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar, heightM);
         gc.strokeLine(cw * stopwayPar, heightU, cw * stopwayPar, heightD);
@@ -443,17 +449,21 @@ public class VisPanel extends StackPane {
     }
 
     //Displays TODA value and adjusts length to current TODA
-    // TODO: 17/03/2023 Abeed change this
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
-      var heightU = ch * 0.31;
-      var heightM = ch * 0.32;
-      var heightD = ch * 0.33;
+      double heightU = ch * 0.31;
+      double heightM = ch * 0.32;
+      double heightD = ch * 0.33;
+      double ratio = runway.getCtora() / runway.getTora();
       if (runway.getCtoda() != runway.getToda()) {
-        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * (runway.getCtora() / runway.getTora()), heightM);
-        gc.strokeLine(cw * clearwayPar * (runway.getCtora() / runway.getTora()),
-          heightU, cw * clearwayPar * (runway.getCtora() / runway.getTora()), heightD);
+        if(leftT){
+          gc.strokeLine(cw * 0.87, heightM, cw * clearwayPar * (1/ratio), heightM);
+          gc.strokeLine(cw * clearwayPar * (1/ratio), heightU, cw * clearwayPar * (1/ratio), heightD);
+        } else {
+          gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * ratio, heightM);
+          gc.strokeLine(cw * clearwayPar * ratio, heightU, cw * clearwayPar * ratio, heightD);
+        }
       } else {
         gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar, heightM);
         gc.strokeLine(cw * clearwayPar, heightU, cw * clearwayPar, heightD);
@@ -461,7 +471,6 @@ public class VisPanel extends StackPane {
       gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.3, heightU);
     }
 
-    //gc.setLineDashes(0);
     gc.setFont(new Font(20));
   }
 
@@ -527,7 +536,7 @@ public class VisPanel extends StackPane {
    * @param arrowSize the size of the arrow head
    * @param right     determines whether the arrow is pointing left (false) or right (true)
    */
-  private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2,, double arrowSize, boolean right) {
+  private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2, double arrowSize, boolean right) {
 
     var arrowColour = Color.valueOf("#000000");
     gc.setStroke(arrowColour);
