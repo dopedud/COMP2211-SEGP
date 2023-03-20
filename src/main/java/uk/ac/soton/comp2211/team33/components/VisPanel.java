@@ -1,17 +1,21 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import uk.ac.soton.comp2211.team33.models.Airport;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
@@ -32,6 +36,36 @@ public class VisPanel extends StackPane {
 
   private boolean isTopDownView = true;
 
+
+  /**
+   * The scale factor of the visualisation.
+   */
+  private double scale = 1;
+
+  /**
+   * The translation of the visualisation, expressed as a proportion of the canvas width / height.
+   * For example, a value of 0.5 would translate the visualisation by half the width of the canvas.
+   * On a 1000x1000 canvas, this would translate the visualisation by 500 pixels.
+   */
+  private double translateX = 0;
+
+  /**
+   * The translation of the visualisation, expressed as a proportion of the canvas width / height.
+   * For example, a value of 0.5 would translate the visualisation by half the height of the canvas.
+   * On a 1000x1000 canvas, this would translate the visualisation by 500 pixels.
+   */
+  private double translateY = 0;
+
+  /**
+   * The rotation of the vis in degrees.
+   */
+  private double rotation = 0;
+
+  /**
+   * The current transform of the visualisation.
+   */
+  private SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
+
   public VisPanel(Airport state, Runway runway) {
     this.runway = runway;
     this.state = state;
@@ -47,20 +81,135 @@ public class VisPanel extends StackPane {
 
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
+    runway.obsDistFromThreshProperty().addListener(ignored -> draw());
     runway.ctoraProperty().addListener(ignored -> draw());
     runway.ctodaProperty().addListener(ignored -> draw());
     runway.casdaProperty().addListener(ignored -> draw());
     runway.cldaProperty().addListener(ignored -> draw());
     runway.cresaProperty().addListener(ignored -> draw());
 
+    transform.addListener(ignored -> draw());
+
     draw();
   }
 
+  /**
+   * Switches between the top-down and side-on view.
+   */
   @FXML
   private void onSwitchView() {
     isTopDownView = !isTopDownView;
+    resetTransform();
     draw();
   }
+
+  /**
+   * Resets the transform to the default values.
+   */
+  @FXML
+  private void resetTransform() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    rotation = 0;
+    updateTransform();
+  }
+
+  /**
+   * Updates the transform property based on the current scale, translation and rotation values.
+   */
+  private void updateTransform() {
+    var t = new Affine();
+    t.appendScale(scale, scale, getCurrentCenter());
+    t.appendTranslation(translateX * canvas.getWidth(), translateY * canvas.getHeight());
+    t.appendRotation(rotation, canvas.getWidth() / 2, canvas.getHeight() / 2);
+    transform.set(t);
+  }
+
+  /**
+   * Get the centre of the canvas as a coordinate
+   * @return The current center of the visualisation, in canvas coordinates.
+   */
+  private Point2D getCurrentCenter() {
+    var x = (0.5 + translateX) * canvas.getWidth();
+    var y = (0.5 + translateY) * canvas.getHeight();
+    return new Point2D(x, y);
+  }
+
+  /**
+   * Zooms in by 10%.
+   */
+  @FXML
+  private void zoomIn() {
+    scale *= 1.1;
+    updateTransform();
+  }
+
+  /**
+   * Zooms out by 10%.
+   */
+  @FXML
+  private void zoomOut() {
+    scale /= 1.1;
+    updateTransform();
+  }
+
+  /**
+   * Rotates the visualisation by 5 degrees to the left.
+   */
+  @FXML
+  private void rotateLeft() {
+    rotation += 5;
+    updateTransform();
+  }
+
+  /**
+   * Rotates the visualisation by 5 degrees to the right.
+   */
+  @FXML
+  private void rotateRight() {
+    rotation -= 5;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation to the left by 10% of the canvas width.
+   */
+  @FXML
+  private void translateLeft() {
+    // TODO: Trigger on mouse drag
+    translateX += 0.1;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation to the right by 10% of the canvas width.
+   */
+  @FXML
+  private void translateRight() {
+    // TODO: Trigger on mouse drag
+    translateX -= 0.1;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation up by 10% of the canvas height.
+   */
+  @FXML
+  private void translateUp() {
+    translateY += 0.1;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation down by 10% of the canvas height.
+   */
+  @FXML
+  private void translateDown() {
+    translateY -= 0.1;
+    updateTransform();
+  }
+
 
   private void draw() {
     if (isTopDownView) {
@@ -71,12 +220,22 @@ public class VisPanel extends StackPane {
     drawSideways();
   }
 
+
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    // TODO: disable rotating
+
+    gc.setTransform(transform.get());
+
+    gc.setFont(new Font(20));
+    gc.setTextBaseline(VPos.CENTER);
+    gc.setTextAlign(TextAlignment.CENTER);
+
     double cw = this.getWidth();
     double ch = this.getHeight();
-
-    double grassDepth = ch / 20;
+    double layerDepth = ch / 40;
+    double grassStartY = (double) 2 / 3 * ch;
 
     // Sky
 
@@ -86,16 +245,148 @@ public class VisPanel extends StackPane {
     // Grass
 
     gc.setFill(Color.rgb(73, 145, 99));
-    gc.fillRect(0, (double) 2 / 3 * ch, cw, ch);
+    gc.fillRect(0, grassStartY, cw, layerDepth);
 
     // Dust
 
+    gc.setFill(Color.rgb(82, 50, 38));
+    gc.fillRect(0, grassStartY + layerDepth, cw, ch);
+
+    // Overall runway properties
+
+    double runwayLengthPx = cw / 1.5;
+    double runwayStartX = cw / 2 - runwayLengthPx / 2;
+    double runwayStartY = grassStartY - layerDepth;
+    double runwayEndX = runwayStartX + runwayLengthPx;
+    double runwayEndY = grassStartY;
+
+    // Draw toda
+
+    double toda = runway.getCtoda();
+
+    drawDistanceLegend(gc, "Toda: " + toda + " m", Color.BLACK, runwayStartX, runwayEndY - 500, runwayLengthPx, 500);
+
+
+    // Print designator
+
+    String[] designators = formatDesignators(runway.getDesignator());
+    String designator = designators[0];
+    String oppositeDesignator = designators[1];
+    double designatorStartY = runwayStartY + layerDepth / 2;
+
+    gc.setFill(Color.BLACK);
+    gc.fillText(designator, runwayStartX - 60, designatorStartY);
+    gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY);
+
+    // Draw tora
+
+    double tora = runway.getCtora();
+    double toraLengthPx = (tora / toda) * runwayLengthPx;
+    double runwayBodyEndX = runwayStartX + toraLengthPx;
+
     gc.setFill(Color.rgb(50, 50, 50));
-    gc.fillRect(0, ((double) 2 / 3 * ch) + grassDepth, cw, ch);
+    gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Tora: " + tora + " m", Color.BLACK, runwayStartX, runwayEndY - 200, toraLengthPx, 200);
+
+    // Draw clearway
+
+    double clearway = runway.getClearway();
+    double clearwayLengthPx = (clearway / toda) * runwayLengthPx;
+    Color clearwayColor = Color.RED;
+
+    gc.setFill(clearwayColor);
+    gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Clearway: " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 300, clearwayLengthPx, 300);
+
+    // Draw stopway
+
+    double stopway = runway.getStopway();
+    double stopwayLengthPx = (stopway / toda) * runwayLengthPx;
+    Color stopwayColor = Color.rgb(240, 173, 58);
+
+    gc.setFill(stopwayColor);
+    gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Stopway: " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
+
+    // Draw asda
+
+    double asda = runway.getCasda();
+    double asdaLengthPx = toraLengthPx + stopwayLengthPx;
+
+    drawDistanceLegend(gc, "Asda: " + asda + " m", Color.BLACK, runwayStartX, runwayEndY - 400, asdaLengthPx, 400);
+
+    // Draw threshold
+
+    double threshold = runway.getThreshold();
+    double thresholdStartX = (threshold / toda) * runwayLengthPx + runwayStartX;
+    double thresholdLineLengthPx = 100;
+    double thresholdEndY = runwayStartY + thresholdLineLengthPx;
+
+    gc.beginPath();
+    gc.setStroke(Color.RED);
+    gc.setLineDashes(5);
+    gc.moveTo(thresholdStartX, runwayStartY);
+    gc.lineTo(thresholdStartX, thresholdEndY);
+    gc.stroke();
 
     gc.setFill(Color.RED);
-    gc.setFont(new Font(30));
-    gc.fillText("Sideways view", cw / 2, ch / 2);
+    gc.fillText("Thres: " + threshold + " m", thresholdStartX, thresholdEndY + 20);
+
+    // Draw lda
+
+    double lda = runway.getClda();
+
+    drawDistanceLegend(gc, "LDA: " + lda + " m", Color.BLACK, thresholdStartX, runwayEndY - 300, runwayBodyEndX - thresholdStartX, 300);
+
+    // Draw obstacle
+
+    Obstacle obstacle = runway.getCurrentObstacle();
+    if (obstacle == null) {
+      return;
+    }
+
+    double obstacleDistance = runway.getObsDistFromThresh();
+    double obstacleLengthPx = (obstacle.getLength() / toda) * runwayLengthPx;
+    double obstacleHeightPx = (obstacle.getHeight() / obstacle.getLength()) * obstacleLengthPx;
+
+    double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
+
+    gc.setFill(Color.ORANGE);
+    gc.fillRect(obstacleStartX, runwayStartY - obstacleHeightPx, obstacleLengthPx, obstacleHeightPx);
+  }
+
+  private void drawDistanceLegend(GraphicsContext gc, String legend, Color color, double startX, double startY, double width, double height) {
+    gc.beginPath();
+
+    gc.setStroke(color);
+    gc.setLineDashes(5);
+
+    // First endpoint
+
+    gc.moveTo(startX, startY);
+    gc.lineTo(startX, startY + height);
+
+    // Second endpoint
+
+    gc.moveTo(startX + width, startY);
+    gc.lineTo(startX + width, startY + height);
+
+    // Top line
+
+    gc.moveTo(startX, startY);
+    gc.lineTo(startX + width, startY);
+
+    // Stroke everything
+
+    gc.stroke();
+
+    // Add legend
+
+    gc.setFill(color);
+    gc.fillText(legend, startX + width / 2, startY - 20);
   }
 
   /**
@@ -104,13 +395,20 @@ public class VisPanel extends StackPane {
    */
   private void drawTopDown() {
     var gc = canvas.getGraphicsContext2D();
+
+    // Setting the transform of the canvas to the current one
+    gc.setTransform(transform.get());
+
+
     gc.setFont(new Font(20));
+    gc.setTextAlign(TextAlignment.LEFT);
+    gc.setTextBaseline(VPos.BASELINE);
 
     //Width and height of the canvas
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
 
-    gc.clearRect(-500, -500, cw * 5, ch * 5);
+    //gc.clearRect(-500, -500, cw * 5, ch * 5);
 
     var designator = runway.getDesignator();
 
@@ -130,11 +428,11 @@ public class VisPanel extends StackPane {
 
     double clearway = runway.getClearway();
 
-    double rotationAngle = 0;
-
-    //Rotation
-    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
-    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+//    double rotationAngle = 0;
+//
+//    //Rotation
+//    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
+//    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 
 //    if(rotationAngle != 0 || rotationAngle != 90 || rotationAngle != 180 || rotationAngle != 270
 //      || rotationAngle != 360){
@@ -146,9 +444,16 @@ public class VisPanel extends StackPane {
     //Some given TORA to be passed in, dummy value
     double toraL = 3550;
 
+
+
+
+    // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
+    gc.clearRect(-5000, -5000, 10000, 10000);
+
+
     //Surrounding area
     gc.setFill(Color.valueOf("#7CB342"));
-    gc.fillRect(-500, -500, cw * 5, ch * 5);
+    gc.fillRect(-5000, -5000, 10000, 10000);
 
     //X and Y coordinates
     double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
