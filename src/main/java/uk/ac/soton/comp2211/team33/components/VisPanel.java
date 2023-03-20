@@ -119,6 +119,8 @@ public class VisPanel extends StackPane {
     //The opposing side's designator formatted into a string of no spaces, ready to use for searching
     var otherDesignator = formattedDes[1].replaceAll("[\r\n]+", "").replaceAll(" ", "");
 
+    var otherRunway = fetchRunway(otherDesignator);
+
     //This is a boolean that determines if the threshold should be switched
     boolean leftT = checkThresh(otherDesignator);
 
@@ -232,40 +234,90 @@ public class VisPanel extends StackPane {
 
     gc.setFont(new Font(16));
     gc.setLineWidth(1);
-    double stopwayPar = 0.87 + 0.08;
+    double stopwayS = 0.87;
+    double stopwayW = 0.07;
+    double boxHeight = 0.1;
+    double stopwayPar = stopwayS + stopwayW;
 
     //Stopway on runway end
-    // TODO: 17/03/2023 Abeed apply switching here 
     if (stopway != 0) {
-      gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#f7ff00"));
       gc.setFill(Color.valueOf("#f7ff00"));
-      gc.strokeRect(cw * 0.87, ch * 0.43, cw * 0.08, ch * 0.1);
-      //Write metrics over threshold
-      gc.setLineDashes(0);
-      gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.88, ch * 0.38);
+      //Write metrics over threshold and draw rectangles
+      if (leftT) {
+        if (otherRunway != null && otherRunway.getStopway() != 0) {
+          gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+          gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
+        }
+        gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
+      } else {
+        gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
+        if (otherRunway != null && otherRunway.getStopway() != 0) {
+          gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
+          gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
+        }
+      }
     }
 
     //Clearway on runway end
     double clearwayPar = 0.87;
-    // TODO: 17/03/2023 Abeed change this 
+    double rectS = 0.87;
+    double rectH = 0.425;
+    double rectHeight = 0.11;
+
     if (clearway != 0) {
-      gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#ff8b00"));
       gc.setFill(Color.valueOf("#ff8b00"));
-      if (clearway < stopway) {
-        gc.strokeRect(cw * 0.87, ch * 0.425, cw * 0.05, ch * 0.11);
-        clearwayPar += 0.05;
-      } else if (clearway > stopway) {
-        gc.strokeRect(cw * 0.87, ch * 0.425, cw * 0.1, ch * 0.11);
-        clearwayPar += 0.1;
+      if (leftT) {
+        clearwayPar = 0.1;
+        //Write metrics over threshold
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * 0.58);
+        if (clearway < stopway) {
+          gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
+          clearwayPar -= 0.06;
+        } else if (clearway > stopway) {
+          gc.strokeRect(cw * 0.01, ch * rectH, cw * 0.09, ch * rectHeight);
+          clearwayPar -= 0.09;
+        } else {
+          gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
+          clearwayPar -= 0.07;
+        }
+        if (otherRunway != null && otherRunway.getClearway() != 0) {
+          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.88, ch * 0.58);
+          if (otherRunway.getClearway() < otherRunway.getStopway()) {
+            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
+          } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
+            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.09, ch * rectHeight);
+          } else {
+            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
+          }
+        }
       } else {
-        gc.strokeRect(cw * 0.87, ch * 0.425, cw * 0.08, ch * 0.11);
-        clearwayPar += 0.08;
+        if (clearway < stopway) {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
+          clearwayPar += 0.05;
+        } else if (clearway > stopway) {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.09, ch * rectHeight);
+          clearwayPar += 0.09;
+        } else {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
+          clearwayPar += 0.07;
+        }
+        //Write metrics over threshold
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.88, ch * 0.58);
+        if (otherRunway != null && otherRunway.getClearway() != 0) {
+          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.09, ch * 0.58);
+          if (otherRunway.getClearway() < otherRunway.getStopway()) {
+            gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
+          } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
+            gc.strokeRect(cw * 0.01, ch * rectH, cw * 0.09, ch * rectHeight);
+          } else {
+            gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
+          }
+        }
       }
-      //Write metrics over threshold
-      gc.setLineDashes(0);
-      gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.88, ch * 0.58);
     }
     gc.setFont(new Font(20));
 
@@ -277,9 +329,14 @@ public class VisPanel extends StackPane {
     gc.strokeText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
 
     //Draw the direction arrow
-    // TODO: 17/03/2023 Abeed change this to make the arrow point to the other way 
-    drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, rotationAngle);
-    gc.fillText("Take-Off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
+    double arrowH = 0.1;
+    if (leftT) {
+      drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9,  arrowH, false);
+      gc.fillText("Take-Off/Landing", cw * 0.7, ch * 0.7 + 5, 160);
+    } else {
+      drawDirectionArrow(gc, cw * arrowH, ch * arrowH, cw * 0.3,  arrowH, true);
+      gc.fillText("Take-Off/Landing", cw * arrowH, ch * arrowH - 5, 160);
+    }
 
     //Picked an object
     if (runway.getCurrentObstacle() != null) {
@@ -322,8 +379,8 @@ public class VisPanel extends StackPane {
       //ratio flipped around for the end of the distance line
       var revratio = runway.getClda() / runway.getLda();
 
-      if (leftT){
-        if(runway.getObsDistFromThresh() < runway.getTora() / 2){
+      if (leftT) {
+        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
           gc.strokeLine(cw * (1 - thresh) * ratio, heightM, cw * 0.1, heightM);
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         } else {
@@ -331,7 +388,7 @@ public class VisPanel extends StackPane {
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         }
       } else {
-        if (runway.getObsDistFromThresh() < runway.getTora() / 2){
+        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
           gc.strokeLine(cw * thresh * ratio, heightM, cw * 0.87, heightM);
           gc.strokeLine(cw * 0.87, heightU, cw * 0.87, heightD);
         } else {
@@ -400,6 +457,28 @@ public class VisPanel extends StackPane {
     gc.setFont(new Font(20));
   }
 
+
+  /**
+   * Fetches the other runway object if it exists
+   *
+   * @param des
+   * @return
+   */
+  private Runway fetchRunway(String des) {
+    Runway otherRunway = null;
+    var found = false;
+    var i = 0;
+    while (!found && i < state.runwayListProperty().size()) {
+      var runway = state.runwayListProperty().get(i);
+      if (runway.getDesignator().equals(des)) {
+        otherRunway = runway;
+        found = true;
+      }
+      i++;
+    }
+    return otherRunway;
+  }
+
   /**
    * Checks if the threshold of the matching runway is smaller than the selected runway.
    * If yes, returns true. Otherwise, it returns false.
@@ -431,36 +510,49 @@ public class VisPanel extends StackPane {
 
 
   /**
-   * Draws a direction arrown on the canvas
+   * Draws a parallel direction arrow on the canvas
    *
    * @param gc        the graphics context
    * @param x1        the x coordinate of the start of the arrow
-   * @param y1        the y coordinate of the start of the arrow
+   * @param y1        the height of the arrow as a y coordinate
    * @param x2        the x coordinate of the end of the arrow
-   * @param y2        the y coordinate of the end of the arrow
    * @param arrowSize the size of the arrow head
+   * @param right     determines whether the arrow is pointing left (false) or right (true)
    */
-  private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2, double y2, double arrowSize,
-                                  double rotation) {
+  private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2,, double arrowSize, boolean right) {
 
     var arrowColour = Color.valueOf("#000000");
     gc.setStroke(arrowColour);
     gc.setFill(arrowColour);
 
-    double dx = x2 - x1, dy = y2 - y1;
-    double angle = Math.atan2(dy, dx);
-    int len = (int) Math.sqrt(dx * dx + dy * dy);
+    gc.strokeLine(x1, y1, x2, y1);
 
-    Transform transform = Transform.translate(x1, y1);
-    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
-    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
-    gc.setTransform(new Affine(transform));
+    double[] xs;
+    double[] ys;
 
+    if (right) {
+      xs = new double[]{x2, x2 + arrowSize, x2};
+      ys = new double[]{y1 + arrowSize, y1, y1 + arrowSize};
+    } else {
+      xs = new double[]{x1, x1 - arrowSize, x1};
+      ys = new double[]{y1 + arrowSize, y1, y1 + arrowSize};
+    }
 
-    gc.strokeLine(0, 0, len, 0);
-    gc.fillPolygon(new double[]{dx, dx - arrowSize, dx - arrowSize, dx}, new double[]{0, arrowSize, -arrowSize, 0}, 4);
+    gc.fillPolygon(xs,ys,3);
 
-    gc.restore();
+//    double dx = x2 - x1, dy = y2 - y1;
+//    double angle = Math.atan2(dy, dx);
+//    int len = (int) Math.sqrt(dx * dx + dy * dy);
+//
+//    Transform transform = Transform.translate(x1, y1);
+//    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
+//    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
+//    gc.setTransform(new Affine(transform));
+//
+//    gc.strokeLine(0, 0, len, 0);
+//    gc.fillPolygon(new double[]{dx, dx - arrowSize, dx - arrowSize, dx}, new double[]{0, arrowSize, -arrowSize, 0}, 4);
+//
+//    gc.restore();
   }
 
   /**
