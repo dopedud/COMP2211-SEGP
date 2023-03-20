@@ -548,7 +548,6 @@ public class VisPanel extends StackPane {
       //Write metrics over threshold and draw rectangles
       if (leftT) {
         stopwayPar = 0.1 - 0.07;
-        System.out.println(runway.getDesignator() + "The stopwayPar is " + stopwayPar);
         if (otherRunway != null && otherRunway.getStopway() != 0) {
           gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
           gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
@@ -733,7 +732,6 @@ public class VisPanel extends StackPane {
       if (leftT) {
         gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
         gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
-        System.out.println(runway.getDesignator() + " I changed? stopwayPar = " + stopwayPar );
       } else {
         gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
         gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
