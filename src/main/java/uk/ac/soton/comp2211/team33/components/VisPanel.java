@@ -438,8 +438,11 @@ public class VisPanel extends StackPane {
 
     var otherRunway = fetchRunway(otherDesignator);
 
-    //This is a boolean that determines if the threshold should be switched
+    //This is a boolean that determines if the threshold should be switched.
     boolean leftT = checkThresh(otherDesignator);
+    if (leftT) {
+      this.compassOffset = 180;
+    }
 
     double threshold = runway.getThreshold();
 
