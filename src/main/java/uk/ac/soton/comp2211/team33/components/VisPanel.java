@@ -331,10 +331,10 @@ public class VisPanel extends StackPane {
     //Draw the direction arrow
     double arrowH = 0.1;
     if (leftT) {
-      drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9,  arrowH, false);
+      drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9, arrowH, false);
       gc.fillText("Take-Off/Landing", cw * 0.7, ch * 0.7 + 5, 160);
     } else {
-      drawDirectionArrow(gc, cw * arrowH, ch * arrowH, cw * 0.3,  arrowH, true);
+      drawDirectionArrow(gc, cw * arrowH, ch * arrowH, cw * 0.3, arrowH, true);
       gc.fillText("Take-Off/Landing", cw * arrowH, ch * arrowH - 5, 160);
     }
 
@@ -360,7 +360,6 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(0);
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
-    // TODO: 17/03/2023 I will do this one - Jackson
     if (runway.getClda() < 0) {
       logger.error("Negative value, not drawing LDA");
     } else {
@@ -400,19 +399,28 @@ public class VisPanel extends StackPane {
     }
 
     //Displays TORA value and adjusts length to current TORA
-    // TODO: 17/03/2023 Abeed change this 
     if (runway.getCtora() < 0) {
       logger.error("Negative value, not drawing TORA");
     } else {
+      double ratio = runway.getCtora() / runway.getTora();
+      double start = 0.1;
+      double end = 0.87;
+      double heightU = 0.37;
+      double heightM = 0.38;
+      double heightD = 0.39;
       if (runway.getCtora() != runway.getTora()) {
-        gc.strokeLine(cw * 0.1, ch * 0.38, cw * 0.87 * (runway.getCtora() / runway.getTora()), ch * 0.38);
-        gc.strokeLine(cw * 0.87 * (runway.getCtora() / runway.getTora()), ch * 0.37,
-          cw * 0.87 * (runway.getCtora() / runway.getTora()), ch * 0.39);
+        if (leftT) {
+          gc.strokeLine(cw * end, ch * heightM, cw * start * (1 / ratio), ch * heightM);
+          gc.strokeLine(cw * start * (1 / ratio), ch * heightU, cw * start * (1 / ratio), ch * heightD);
+        } else {
+          gc.strokeLine(cw * start, ch * heightM, cw * end * ratio, ch * heightM);
+          gc.strokeLine(cw * end * ratio, ch * heightU, cw * end * ratio, ch * heightD);
+        }
       } else {
-        gc.strokeLine(cw * 0.1, ch * 0.38, cw * 0.87, ch * 0.38);
-        gc.strokeLine(cw * 0.87, ch * 0.37, cw * 0.87, ch * 0.39);
+        gc.strokeLine(cw * start, ch * heightM, cw * end, ch * heightM);
+        gc.strokeLine(cw * end, ch * heightU, cw * end, ch * heightD);
       }
-      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.3, ch * 0.37);
+      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.3, ch * heightU);
     }
 
     //Displays ASDA value and adjusts length to current ASDA
@@ -538,7 +546,7 @@ public class VisPanel extends StackPane {
       ys = new double[]{y1 + arrowSize, y1, y1 + arrowSize};
     }
 
-    gc.fillPolygon(xs,ys,3);
+    gc.fillPolygon(xs, ys, 3);
 
 //    double dx = x2 - x1, dy = y2 - y1;
 //    double angle = Math.atan2(dy, dx);
