@@ -1,17 +1,21 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import uk.ac.soton.comp2211.team33.models.Airport;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
@@ -32,6 +36,36 @@ public class VisPanel extends StackPane {
 
   private boolean isTopDownView = true;
 
+
+  /**
+   * The scale factor of the visualisation.
+   */
+  private double scale = 1;
+
+  /**
+   * The translation of the visualisation, expressed as a proportion of the canvas width / height.
+   * For example, a value of 0.5 would translate the visualisation by half the width of the canvas.
+   * On a 1000x1000 canvas, this would translate the visualisation by 500 pixels.
+   */
+  private double translateX = 0;
+
+  /**
+   * The translation of the visualisation, expressed as a proportion of the canvas width / height.
+   * For example, a value of 0.5 would translate the visualisation by half the height of the canvas.
+   * On a 1000x1000 canvas, this would translate the visualisation by 500 pixels.
+   */
+  private double translateY = 0;
+
+  /**
+   * The rotation of the vis in degrees.
+   */
+  private double rotation = 0;
+
+  /**
+   * The current transform of the visualisation.
+   */
+  private SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
+
   public VisPanel(Airport state, Runway runway) {
     this.runway = runway;
     this.state = state;
@@ -47,20 +81,135 @@ public class VisPanel extends StackPane {
 
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
+    runway.obsDistFromThreshProperty().addListener(ignored -> draw());
     runway.ctoraProperty().addListener(ignored -> draw());
     runway.ctodaProperty().addListener(ignored -> draw());
     runway.casdaProperty().addListener(ignored -> draw());
     runway.cldaProperty().addListener(ignored -> draw());
     runway.cresaProperty().addListener(ignored -> draw());
 
+    transform.addListener(ignored -> draw());
+
     draw();
   }
 
+  /**
+   * Switches between the top-down and side-on view.
+   */
   @FXML
   private void onSwitchView() {
     isTopDownView = !isTopDownView;
+    resetTransform();
     draw();
   }
+
+  /**
+   * Resets the transform to the default values.
+   */
+  @FXML
+  private void resetTransform() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    rotation = 0;
+    updateTransform();
+  }
+
+  /**
+   * Updates the transform property based on the current scale, translation and rotation values.
+   */
+  private void updateTransform() {
+    var t = new Affine();
+    t.appendScale(scale, scale, getCurrentCenter());
+    t.appendTranslation(translateX * canvas.getWidth(), translateY * canvas.getHeight());
+    t.appendRotation(rotation, canvas.getWidth() / 2, canvas.getHeight() / 2);
+    transform.set(t);
+  }
+
+  /**
+   * Get the centre of the canvas as a coordinate
+   * @return The current center of the visualisation, in canvas coordinates.
+   */
+  private Point2D getCurrentCenter() {
+    var x = (0.5 + translateX) * canvas.getWidth();
+    var y = (0.5 + translateY) * canvas.getHeight();
+    return new Point2D(x, y);
+  }
+
+  /**
+   * Zooms in by 10%.
+   */
+  @FXML
+  private void zoomIn() {
+    scale *= 1.1;
+    updateTransform();
+  }
+
+  /**
+   * Zooms out by 10%.
+   */
+  @FXML
+  private void zoomOut() {
+    scale /= 1.1;
+    updateTransform();
+  }
+
+  /**
+   * Rotates the visualisation by 5 degrees to the left.
+   */
+  @FXML
+  private void rotateLeft() {
+    rotation += 5;
+    updateTransform();
+  }
+
+  /**
+   * Rotates the visualisation by 5 degrees to the right.
+   */
+  @FXML
+  private void rotateRight() {
+    rotation -= 5;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation to the left by 10% of the canvas width.
+   */
+  @FXML
+  private void translateLeft() {
+    // TODO: Trigger on mouse drag
+    translateX += 0.1;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation to the right by 10% of the canvas width.
+   */
+  @FXML
+  private void translateRight() {
+    // TODO: Trigger on mouse drag
+    translateX -= 0.1;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation up by 10% of the canvas height.
+   */
+  @FXML
+  private void translateUp() {
+    translateY += 0.1;
+    updateTransform();
+  }
+
+  /**
+   * Translates the visualisation down by 10% of the canvas height.
+   */
+  @FXML
+  private void translateDown() {
+    translateY -= 0.1;
+    updateTransform();
+  }
+
 
   private void draw() {
     if (isTopDownView) {
@@ -71,12 +220,22 @@ public class VisPanel extends StackPane {
     drawSideways();
   }
 
+
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    // TODO: disable rotating
+
+    gc.setTransform(transform.get());
+
+    gc.setFont(new Font(20));
+    gc.setTextBaseline(VPos.CENTER);
+    gc.setTextAlign(TextAlignment.CENTER);
+
     double cw = this.getWidth();
     double ch = this.getHeight();
-
-    double grassDepth = ch / 20;
+    double layerDepth = ch / 40;
+    double grassStartY = (double) 2 / 3 * ch;
 
     // Sky
 
@@ -86,16 +245,148 @@ public class VisPanel extends StackPane {
     // Grass
 
     gc.setFill(Color.rgb(73, 145, 99));
-    gc.fillRect(0, (double) 2 / 3 * ch, cw, ch);
+    gc.fillRect(0, grassStartY, cw, layerDepth);
 
     // Dust
 
-    gc.setFill(Color.rgb(50, 50 ,50));
-    gc.fillRect(0, ((double) 2 / 3 * ch) + grassDepth, cw, ch);
+    gc.setFill(Color.rgb(82, 50, 38));
+    gc.fillRect(0, grassStartY + layerDepth, cw, ch);
+
+    // Overall runway properties
+
+    double runwayLengthPx = cw / 1.5;
+    double runwayStartX = cw / 2 - runwayLengthPx / 2;
+    double runwayStartY = grassStartY - layerDepth;
+    double runwayEndX = runwayStartX + runwayLengthPx;
+    double runwayEndY = grassStartY;
+
+    // Draw toda
+
+    double toda = runway.getCtoda();
+
+    drawDistanceLegend(gc, "Toda: " + toda + " m", Color.BLACK, runwayStartX, runwayEndY - 500, runwayLengthPx, 500);
+
+
+    // Print designator
+
+    String[] designators = formatDesignators(runway.getDesignator());
+    String designator = designators[0];
+    String oppositeDesignator = designators[1];
+    double designatorStartY = runwayStartY + layerDepth / 2;
+
+    gc.setFill(Color.BLACK);
+    gc.fillText(designator, runwayStartX - 60, designatorStartY);
+    gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY);
+
+    // Draw tora
+
+    double tora = runway.getCtora();
+    double toraLengthPx = (tora / toda) * runwayLengthPx;
+    double runwayBodyEndX = runwayStartX + toraLengthPx;
+
+    gc.setFill(Color.rgb(50, 50, 50));
+    gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Tora: " + tora + " m", Color.BLACK, runwayStartX, runwayEndY - 200, toraLengthPx, 200);
+
+    // Draw clearway
+
+    double clearway = runway.getClearway();
+    double clearwayLengthPx = (clearway / toda) * runwayLengthPx;
+    Color clearwayColor = Color.RED;
+
+    gc.setFill(clearwayColor);
+    gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Clearway: " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 300, clearwayLengthPx, 300);
+
+    // Draw stopway
+
+    double stopway = runway.getStopway();
+    double stopwayLengthPx = (stopway / toda) * runwayLengthPx;
+    Color stopwayColor = Color.rgb(240, 173, 58);
+
+    gc.setFill(stopwayColor);
+    gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Stopway: " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
+
+    // Draw asda
+
+    double asda = runway.getCasda();
+    double asdaLengthPx = toraLengthPx + stopwayLengthPx;
+
+    drawDistanceLegend(gc, "Asda: " + asda + " m", Color.BLACK, runwayStartX, runwayEndY - 400, asdaLengthPx, 400);
+
+    // Draw threshold
+
+    double threshold = runway.getThreshold();
+    double thresholdStartX = (threshold / toda) * runwayLengthPx + runwayStartX;
+    double thresholdLineLengthPx = 100;
+    double thresholdEndY = runwayStartY + thresholdLineLengthPx;
+
+    gc.beginPath();
+    gc.setStroke(Color.RED);
+    gc.setLineDashes(5);
+    gc.moveTo(thresholdStartX, runwayStartY);
+    gc.lineTo(thresholdStartX, thresholdEndY);
+    gc.stroke();
 
     gc.setFill(Color.RED);
-    gc.setFont(new Font(30));
-    gc.fillText("Sideways view", cw / 2, ch / 2);
+    gc.fillText("Thres: " + threshold + " m", thresholdStartX, thresholdEndY + 20);
+
+    // Draw lda
+
+    double lda = runway.getClda();
+
+    drawDistanceLegend(gc, "LDA: " + lda + " m", Color.BLACK, thresholdStartX, runwayEndY - 300, runwayBodyEndX - thresholdStartX, 300);
+
+    // Draw obstacle
+
+    Obstacle obstacle = runway.getCurrentObstacle();
+    if (obstacle == null) {
+      return;
+    }
+
+    double obstacleDistance = runway.getObsDistFromThresh();
+    double obstacleLengthPx = (obstacle.getLength() / toda) * runwayLengthPx;
+    double obstacleHeightPx = (obstacle.getHeight() / obstacle.getLength()) * obstacleLengthPx;
+
+    double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
+
+    gc.setFill(Color.ORANGE);
+    gc.fillRect(obstacleStartX, runwayStartY - obstacleHeightPx, obstacleLengthPx, obstacleHeightPx);
+  }
+
+  private void drawDistanceLegend(GraphicsContext gc, String legend, Color color, double startX, double startY, double width, double height) {
+    gc.beginPath();
+
+    gc.setStroke(color);
+    gc.setLineDashes(5);
+
+    // First endpoint
+
+    gc.moveTo(startX, startY);
+    gc.lineTo(startX, startY + height);
+
+    // Second endpoint
+
+    gc.moveTo(startX + width, startY);
+    gc.lineTo(startX + width, startY + height);
+
+    // Top line
+
+    gc.moveTo(startX, startY);
+    gc.lineTo(startX + width, startY);
+
+    // Stroke everything
+
+    gc.stroke();
+
+    // Add legend
+
+    gc.setFill(color);
+    gc.fillText(legend, startX + width / 2, startY - 20);
   }
 
   /**
@@ -104,21 +395,28 @@ public class VisPanel extends StackPane {
    */
   private void drawTopDown() {
     var gc = canvas.getGraphicsContext2D();
-    gc.setFont(new Font(20));
 
+    // Setting the transform of the canvas to the current one
+    gc.setTransform(transform.get());
+
+
+    gc.setFont(new Font(20));
+    gc.setTextAlign(TextAlignment.LEFT);
+    gc.setTextBaseline(VPos.BASELINE);
+
+    //Width and height of the canvas
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
-
-    gc.clearRect(-300, -300, cw * 3, ch * 3);
 
     var designator = runway.getDesignator();
 
     var formattedDes = formatDesignators(designator);
 
-    // TODO: 15/03/2023 Abeed can use this for looking up the threshold
     //The opposing side's designator formatted into a string of no spaces, ready to use for searching
     var otherDesignator = formattedDes[1].replaceAll("[\r\n]+", "").replaceAll(" ", "");
 
+    //This is a boolean that determines if the threshold should be switched
+    boolean leftT = checkThresh(otherDesignator);
 
     double threshold = runway.getThreshold();
 
@@ -126,11 +424,11 @@ public class VisPanel extends StackPane {
 
     double clearway = runway.getClearway();
 
-    double rotationAngle = 0;
-
-    //Rotation
-    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
-    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+//    double rotationAngle = 0;
+//
+//    //Rotation
+//    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
+//    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 
 //    if(rotationAngle != 0 || rotationAngle != 90 || rotationAngle != 180 || rotationAngle != 270
 //      || rotationAngle != 360){
@@ -138,11 +436,20 @@ public class VisPanel extends StackPane {
 //    }
 
     gc.save();
-    double toraL = 3550; //Some given TORA to be passed in, dummy value
+
+    //Some given TORA to be passed in, dummy value
+    double toraL = 3550;
+
+
+
+
+    // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
+    gc.clearRect(-5000, -5000, 10000, 10000);
+
 
     //Surrounding area
     gc.setFill(Color.valueOf("#7CB342"));
-    gc.fillRect(-500, -500, canvas.getWidth() * 5, canvas.getHeight() * 5);
+    gc.fillRect(-5000, -5000, 10000, 10000);
 
     double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
     double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
@@ -178,7 +485,7 @@ public class VisPanel extends StackPane {
     var tempB = ch * 0.44;
     var tempC = cw * 0.16;
     var tempD = ch * 0.44;
-    while (tempB < ch * 0.53) {
+    while (tempB < ch * 0.52) {
       gc.strokeLine(tempA, tempB, tempC, tempD);
       tempB += 5;
       tempD += 5;
@@ -188,17 +495,22 @@ public class VisPanel extends StackPane {
     var tempF = cw * 0.86;
     tempB = ch * 0.44;
     tempD = ch * 0.44;
-    while (tempB < ch * 0.53) {
+    while (tempB < ch * 0.52) {
       gc.strokeLine(tempE, tempB, tempF, tempD);
       tempB += 5;
       tempD += 5;
     }
 
-    //Write the runway designators in the 2D view
+    //Show the runway designators in the 2D view
     gc.setLineWidth(1);
     gc.setFill(Color.valueOf("#ffffff"));
-    gc.fillText(formattedDes[0], cw * 0.17, ch * 0.48);
-    gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
+    if (leftT) {
+      gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
+      gc.fillText(formattedDes[0], cw * 0.77, ch * 0.48);
+    } else {
+      gc.fillText(formattedDes[0], cw * 0.17, ch * 0.48);
+      gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
+    }
 
     //Add a threshold if it exists
     if (threshold != 0) {
@@ -206,16 +518,23 @@ public class VisPanel extends StackPane {
       gc.setLineDashes(6);
       gc.setStroke(Color.valueOf("#FF5733"));
       gc.setFill(Color.valueOf("#FF5733"));
-      gc.strokeLine(cw * 0.20, ch * 0.41, cw * 0.20, ch * 0.57);
-      //Write metrics over threshold
+      if (leftT){
+        gc.strokeLine(cw * 0.8, ch * 0.41, cw * 0.8, ch * 0.57);
+        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+      } else {
+        gc.strokeLine(cw * 0.20, ch * 0.41, cw * 0.20, ch * 0.57);
+        //Write metrics next to threshold
+        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+      }
       gc.setLineDashes(0);
-      gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
     }
 
     gc.setFont(new Font(16));
     gc.setLineWidth(1);
     double stopwayPar = 0.87 + 0.08;
+
     //Stopway on runway end
+    // TODO: 17/03/2023 Abeed apply switching here
     if (stopway != 0) {
       gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#f7ff00"));
@@ -226,8 +545,9 @@ public class VisPanel extends StackPane {
       gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.88, ch * 0.38);
     }
 
-    double clearwayPar = 0.87;
     //Clearway on runway end
+    double clearwayPar = 0.87;
+    // TODO: 17/03/2023 Abeed change this
     if (clearway != 0) {
       gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#ff8b00"));
@@ -256,8 +576,9 @@ public class VisPanel extends StackPane {
     gc.strokeText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
 
     //Draw the direction arrow
-    drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, rotationAngle);
-    gc.fillText("Take-off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
+    // TODO: 17/03/2023 Abeed change this to make the arrow point to the other way
+    drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, 0);
+    gc.fillText("Take-Off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
 
     //Picked an object
     if (runway.getCurrentObstacle() != null) {
@@ -268,6 +589,7 @@ public class VisPanel extends StackPane {
     gc.setFont(new Font(20));
 
     //Runway distances
+    // TODO: 17/03/2023 Abeed make the like start from the other end of the rectangle instead
     gc.setLineWidth(1.5);
     gc.setLineDashes(5);
     gc.setStroke(Color.valueOf("#000000"));
@@ -277,6 +599,7 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(0);
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
+    // TODO: 17/03/2023 Abeed change this. I will do this one - Jackson
     if (runway.getClda() < 0) {
       logger.error("Negative value, not drawing LDA");
     } else {
@@ -329,6 +652,7 @@ public class VisPanel extends StackPane {
     }
 
     //Displays TORA value and adjusts length to current TORA
+    // TODO: 17/03/2023 Abeed change this
     if (runway.getCtora() < 0) {
       logger.error("Negative value, not drawing TORA");
     } else {
@@ -344,6 +668,7 @@ public class VisPanel extends StackPane {
     }
 
     //Displays ASDA value and adjusts length to current ASDA
+    // TODO: 17/03/2023 Abeed change this
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
@@ -362,6 +687,7 @@ public class VisPanel extends StackPane {
     }
 
     //Displays TODA value and adjusts length to current TODA
+    // TODO: 17/03/2023 Abeed change this
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
@@ -381,6 +707,35 @@ public class VisPanel extends StackPane {
 
     //gc.setLineDashes(0);
     gc.setFont(new Font(20));
+  }
+
+  /**
+   * Checks if the threshold of the matching runway is smaller than the selected runway.
+   * If yes, returns true. Otherwise, it returns false.
+   *
+   * @param otherDesignator the runway designator of the other side.
+   * @return a boolean that determines if the designator should be switched or not
+   */
+  private boolean checkThresh(String otherDesignator) {
+    boolean leftT = false;
+    var found = false;
+    var i = 0;
+    while (!found && i < state.runwayListProperty().size()) {
+      var runway = state.runwayListProperty().get(i);
+      if (runway.getDesignator().equals(otherDesignator)) {
+        if (runway.getThreshold() < this.runway.getThreshold()) {
+          leftT = true;
+        } else {
+          leftT = false;
+        }
+        found = true;
+      }
+      i++;
+    }
+    if (!found) {
+      logger.info("No matching designator found, keeping the selected runway to the left");
+    }
+    return leftT;
   }
 
 
@@ -405,10 +760,10 @@ public class VisPanel extends StackPane {
     double angle = Math.atan2(dy, dx);
     int len = (int) Math.sqrt(dx * dx + dy * dy);
 
-    Transform transform = Transform.translate(x1, y1);
-    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
-    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
-    gc.setTransform(new Affine(transform));
+//    Transform transform = Transform.translate(x1, y1);
+//    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
+//    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
+//    gc.setTransform(new Affine(transform));
 
 
     gc.strokeLine(0, 0, len, 0);
@@ -425,7 +780,7 @@ public class VisPanel extends StackPane {
    */
   private String[] formatDesignators(String designator) {
 
-    //Throw error if designator is not of the correct format (e.g. 09L, 26)
+    //Throw error if designator is not of the correct format (e.g. correct formats are 09L, 26)
     if (designator.length() != 3 && designator.length() != 2) {
       logger.error("Bad format for designator.");
     }
