@@ -128,6 +128,7 @@ public class VisPanel extends StackPane {
 
   /**
    * Get the centre of the canvas as a coordinate
+   *
    * @return The current center of the visualisation, in canvas coordinates.
    */
   private Point2D getCurrentCenter() {
@@ -441,12 +442,6 @@ public class VisPanel extends StackPane {
 
     gc.save();
 
-    //Some given TORA to be passed in, dummy value
-    double toraL = 3550;
-
-
-
-
     // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
     gc.clearRect(-5000, -5000, 10000, 10000);
 
@@ -467,16 +462,16 @@ public class VisPanel extends StackPane {
 
     //Runway body
     gc.setFill(Color.valueOf("#242424"));
-    gc.fillRect(cw * 0.1, ch * 0.43, cw * 0.77, ch * 0.1);
+    gc.fillRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(0.25);
-    gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.77, ch * 0.1);
+    gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
 
     //Dashed centre line, lower dash number to get more dashes in the line.
     gc.setStroke(Color.valueOf("#ffffff"));
     gc.setLineWidth(1);
     int dashes = 9;
-    if (toraL >= 3500) {
+    if (runway.getTora() >= 3250) {
       dashes = 5;
     }
     gc.setLineDashes(dashes);
@@ -496,8 +491,8 @@ public class VisPanel extends StackPane {
       tempD += 5;
     }
 
-    var tempE = cw * 0.81;
-    var tempF = cw * 0.86;
+    var tempE = cw * 0.84;
+    var tempF = cw * 0.89;
     tempB = ch * 0.44;
     tempD = ch * 0.44;
     while (tempB < ch * 0.52) {
@@ -511,15 +506,16 @@ public class VisPanel extends StackPane {
     gc.setFill(Color.valueOf("#ffffff"));
     if (leftT) {
       gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
-      gc.fillText(formattedDes[0], cw * 0.77, ch * 0.48);
+      gc.fillText(formattedDes[0], cw * 0.8, ch * 0.48);
     } else {
       gc.fillText(formattedDes[0], cw * 0.17, ch * 0.48);
-      gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
+      gc.fillText(formattedDes[1], cw * 0.8, ch * 0.48);
     }
 
     //A variable threshold parameter
-    var thresh = (0.1 + 0.77 * (runway.getThreshold() / runway.getTora()));
-
+    var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getTora());
+    var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getTora());
+    var forLDA = thresh;
     //Add a threshold if it exists
     if (threshold != 0) {
       gc.setLineWidth(1.5);
@@ -527,22 +523,23 @@ public class VisPanel extends StackPane {
       gc.setStroke(Color.valueOf("#FF5733"));
       gc.setFill(Color.valueOf("#FF5733"));
       if (leftT) {
-        gc.strokeLine(cw * (1 - thresh), ch * 0.41, cw * (1 - thresh), ch * 0.57);
-        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+        gc.strokeLine(cw * opthresh, ch * 0.41, cw * opthresh, ch * 0.57);
+        gc.fillText(threshold + "m", cw * (opthresh - 0.03), ch * 0.6);
+        forLDA = opthresh;
       } else {
         gc.strokeLine(cw * thresh, ch * 0.41, cw * thresh, ch * 0.57);
         //Write metrics next to threshold
-        gc.fillText(threshold + "m", cw * (thresh - 0.02), ch * 0.6);
+        gc.fillText(threshold + "m", cw * (thresh - 0.03), ch * 0.6);
       }
       gc.setLineDashes(0);
     }
 
     gc.setFont(new Font(16));
     gc.setLineWidth(1);
-    double stopwayS = 0.87;
+    double stopwayS = 0.9;
     double stopwayW = 0.07;
     double boxHeight = 0.1;
-    double stopwayPar = stopwayS + stopwayW;
+    double stopwayPar = 0.9 + 0.07;
 
     //Stopway on runway end
     if (stopway != 0) {
@@ -550,13 +547,13 @@ public class VisPanel extends StackPane {
       gc.setFill(Color.valueOf("#f7ff00"));
       //Write metrics over threshold and draw rectangles
       if (leftT) {
-        stopwayS = 0.1;
-        stopwayPar = stopwayS - stopwayW;
+        stopwayPar = 0.1 - 0.07;
+        System.out.println(runway.getDesignator() + "The stopwayPar is " + stopwayPar);
         if (otherRunway != null && otherRunway.getStopway() != 0) {
           gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
           gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
         }
-        gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.strokeRect(cw * 0.03, ch * 0.43, cw * stopwayW, ch * boxHeight);
         gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
       } else {
         gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
@@ -569,8 +566,8 @@ public class VisPanel extends StackPane {
     }
 
     //Clearway on runway end
-    double clearwayPar = 0.87;
-    double rectS = 0.87;
+    double clearwayPar = 0.9;
+    double rectS = 0.9;
     double rectH = 0.425;
     double rectHeight = 0.11;
 
@@ -592,7 +589,7 @@ public class VisPanel extends StackPane {
           clearwayPar -= 0.07;
         }
         if (otherRunway != null && otherRunway.getClearway() != 0) {
-          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.88, ch * 0.58);
+          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.91, ch * 0.58);
           if (otherRunway.getClearway() < otherRunway.getStopway()) {
             gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
           } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
@@ -613,9 +610,9 @@ public class VisPanel extends StackPane {
           clearwayPar += 0.07;
         }
         //Write metrics over threshold
-        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.88, ch * 0.58);
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * 0.58);
         if (otherRunway != null && otherRunway.getClearway() != 0) {
-          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.09, ch * 0.58);
+          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.07, ch * 0.57);
           if (otherRunway.getClearway() < otherRunway.getStopway()) {
             gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
           } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
@@ -638,11 +635,11 @@ public class VisPanel extends StackPane {
     //Draw the direction arrow
     double arrowH = 0.1;
     if (leftT) {
-      drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9, arrowH, false);
-      gc.fillText("Take-Off/Landing", cw * 0.7, ch * 0.7 + 5, 160);
+      drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9, 10.0, false);
+      gc.fillText("Take-Off/Landing", cw * 0.75, ch * arrowH - 5, 160);
     } else {
-      drawDirectionArrow(gc, cw * arrowH, ch * arrowH, cw * 0.3, arrowH, true);
-      gc.fillText("Take-Off/Landing", cw * arrowH, ch * arrowH - 5, 160);
+      drawDirectionArrow(gc, cw * 0.1, ch * arrowH, cw * 0.3, 10.0, true);
+      gc.fillText("Take-Off/Landing", cw * 0.1, ch * arrowH - 5, 160);
     }
 
     //Picked an object
@@ -659,7 +656,7 @@ public class VisPanel extends StackPane {
     gc.setStroke(Color.valueOf("#000000"));
     gc.setFill(Color.valueOf("#000000"));
     if (leftT) {
-      gc.strokeLine(cw * 0.87, ch * 0.3, cw * 0.87, ch * 0.43);
+      gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
     } else {
       gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
     }
@@ -687,22 +684,22 @@ public class VisPanel extends StackPane {
 
       if (leftT) {
         if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * (1 - thresh) * ratio, heightM, cw * 0.1, heightM);
+          gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.1, heightM);
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         } else {
-          gc.strokeLine(cw * (1 - thresh) * revratio, heightM, cw * 0.1 * revratio, heightM);
+          gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1 * revratio, heightM);
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         }
       } else {
         if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * thresh * ratio, heightM, cw * 0.87, heightM);
-          gc.strokeLine(cw * 0.87, heightU, cw * 0.87, heightD);
+          gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.9, heightM);
+          gc.strokeLine(cw * 0.9, heightU, cw * 0.9, heightD);
         } else {
-          gc.strokeLine(cw * thresh, heightM, cw * 0.87 * revratio, heightM);
-          gc.strokeLine(cw * 0.87 * revratio, heightU, cw * 0.87 * revratio, heightD);
+          gc.strokeLine(cw * forLDA, heightM, cw * 0.9 * revratio, heightM);
+          gc.strokeLine(cw * 0.9 * revratio, heightU, cw * 0.9 * revratio, heightD);
         }
       }
-      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.3, heightU);
+      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TORA value and adjusts length to current TORA
@@ -711,23 +708,18 @@ public class VisPanel extends StackPane {
     } else {
       double ratio = runway.getCtora() / runway.getTora();
       double start = 0.1;
-      double end = 0.87;
+      double end = 0.9;
       double heightU = 0.37;
       double heightM = 0.38;
       double heightD = 0.39;
-      if (runway.getCtora() != runway.getTora()) {
-        if (leftT) {
-          gc.strokeLine(cw * end, ch * heightM, cw * start * (1 / ratio), ch * heightM);
-          gc.strokeLine(cw * start * (1 / ratio), ch * heightU, cw * start * (1 / ratio), ch * heightD);
-        } else {
-          gc.strokeLine(cw * start, ch * heightM, cw * end * ratio, ch * heightM);
-          gc.strokeLine(cw * end * ratio, ch * heightU, cw * end * ratio, ch * heightD);
-        }
+      if (leftT) {
+        gc.strokeLine(cw * end, ch * heightM, cw * start * (1 / ratio), ch * heightM);
+        gc.strokeLine(cw * start * (1 / ratio), ch * heightU, cw * start * (1 / ratio), ch * heightD);
       } else {
-        gc.strokeLine(cw * start, ch * heightM, cw * end, ch * heightM);
-        gc.strokeLine(cw * end, ch * heightU, cw * end, ch * heightD);
+        gc.strokeLine(cw * start, ch * heightM, cw * end * ratio, ch * heightM);
+        gc.strokeLine(cw * end * ratio, ch * heightU, cw * end * ratio, ch * heightD);
       }
-      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.3, ch * heightU);
+      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.45, ch * heightU);
     }
 
     //Displays ASDA value and adjusts length to current ASDA
@@ -738,19 +730,15 @@ public class VisPanel extends StackPane {
       double heightM = ch * 0.35;
       double heightD = ch * 0.36;
       double ratio = runway.getCasda() / runway.getAsda();
-      if (runway.getCasda() != runway.getAsda()) {
-        if (leftT){
-          gc.strokeLine(cw * 0.87, heightM, cw * stopwayPar * (1/ratio), heightM);
-          gc.strokeLine(cw * stopwayPar * (1/ratio), heightU,cw * stopwayPar * (1/ratio), heightD);
-        } else {
-          gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
-          gc.strokeLine(cw * stopwayPar * ratio, heightU,cw * stopwayPar * ratio, heightD);
-        }
+      if (leftT) {
+        gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
+        gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
+        System.out.println(runway.getDesignator() + " I changed? stopwayPar = " + stopwayPar );
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar, heightM);
-        gc.strokeLine(cw * stopwayPar, heightU, cw * stopwayPar, heightD);
+        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
+        gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
       }
-      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.3, heightU);
+      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TODA value and adjusts length to current TODA
@@ -761,19 +749,14 @@ public class VisPanel extends StackPane {
       double heightM = ch * 0.32;
       double heightD = ch * 0.33;
       double ratio = runway.getCtora() / runway.getTora();
-      if (runway.getCtoda() != runway.getToda()) {
-        if(leftT){
-          gc.strokeLine(cw * 0.87, heightM, cw * clearwayPar * (1/ratio), heightM);
-          gc.strokeLine(cw * clearwayPar * (1/ratio), heightU, cw * clearwayPar * (1/ratio), heightD);
-        } else {
-          gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * ratio, heightM);
-          gc.strokeLine(cw * clearwayPar * ratio, heightU, cw * clearwayPar * ratio, heightD);
-        }
+      if (leftT) {
+        gc.strokeLine(cw * 0.9, heightM, cw * clearwayPar * (1 / ratio), heightM);
+        gc.strokeLine(cw * clearwayPar * (1 / ratio), heightU, cw * clearwayPar * (1 / ratio), heightD);
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar, heightM);
-        gc.strokeLine(cw * clearwayPar, heightU, cw * clearwayPar, heightD);
+        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * ratio, heightM);
+        gc.strokeLine(cw * clearwayPar * ratio, heightU, cw * clearwayPar * ratio, heightD);
       }
-      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.3, heightU);
+      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.45, heightU);
     }
 
     gc.setFont(new Font(20));
@@ -849,18 +832,15 @@ public class VisPanel extends StackPane {
 
     gc.strokeLine(x1, y1, x2, y1);
 
-    double[] xs;
-    double[] ys;
-
     if (right) {
-      xs = new double[]{x2, x2 + arrowSize, x2};
-      ys = new double[]{y1 + arrowSize, y1, y1 + arrowSize};
+      var xs = new double[]{x2, x2 + arrowSize, x2};
+      var ys = new double[]{y1 + arrowSize, y1, y1 - arrowSize};
+      gc.fillPolygon(xs, ys, 3);
     } else {
-      xs = new double[]{x1, x1 - arrowSize, x1};
-      ys = new double[]{y1 + arrowSize, y1, y1 + arrowSize};
+      var xs = new double[]{x1, x1 - arrowSize, x1};
+      var ys = new double[]{y1 + arrowSize, y1, y1 - arrowSize};
+      gc.fillPolygon(xs, ys, 3);
     }
-
-    gc.fillPolygon(xs, ys, 3);
 
 //    double dx = x2 - x1, dy = y2 - y1;
 //    double angle = Math.atan2(dy, dx);
