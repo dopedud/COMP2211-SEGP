@@ -764,7 +764,7 @@ public class VisPanel extends StackPane {
   /**
    * Fetches the other runway object if it exists
    *
-   * @param des
+   * @param des the designator of the runway to be searched.
    * @return
    */
   private Runway fetchRunway(String des) {
