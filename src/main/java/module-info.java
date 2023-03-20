@@ -1,7 +1,6 @@
 module uk.ac.soton.comp2211.team33 {
   requires org.apache.logging.log4j;
   requires org.apache.commons.collections4;
-  requires com.google.common;
   requires javafx.controls;
   requires javafx.fxml;
 
