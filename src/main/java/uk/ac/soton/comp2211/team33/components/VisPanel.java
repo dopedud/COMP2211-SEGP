@@ -148,8 +148,9 @@ public class VisPanel extends StackPane {
     gc.setFill(Color.valueOf("#7CB342"));
     gc.fillRect(-500, -500, cw * 5, ch * 5);
 
-    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
+    //X and Y coordinates
     double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
+    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
 
     //The polygon around the runway
     gc.setFill(Color.valueOf("#0072C6"));
