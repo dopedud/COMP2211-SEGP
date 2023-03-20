@@ -128,6 +128,7 @@ public class VisPanel extends StackPane {
 
   /**
    * Get the centre of the canvas as a coordinate
+   *
    * @return The current center of the visualisation, in canvas coordinates.
    */
   private Point2D getCurrentCenter() {
@@ -408,12 +409,16 @@ public class VisPanel extends StackPane {
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
 
+    //gc.clearRect(-500, -500, cw * 5, ch * 5);
+
     var designator = runway.getDesignator();
 
     var formattedDes = formatDesignators(designator);
 
     //The opposing side's designator formatted into a string of no spaces, ready to use for searching
     var otherDesignator = formattedDes[1].replaceAll("[\r\n]+", "").replaceAll(" ", "");
+
+    var otherRunway = fetchRunway(otherDesignator);
 
     //This is a boolean that determines if the threshold should be switched
     boolean leftT = checkThresh(otherDesignator);
@@ -437,12 +442,6 @@ public class VisPanel extends StackPane {
 
     gc.save();
 
-    //Some given TORA to be passed in, dummy value
-    double toraL = 3550;
-
-
-
-
     // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
     gc.clearRect(-5000, -5000, 10000, 10000);
 
@@ -451,8 +450,9 @@ public class VisPanel extends StackPane {
     gc.setFill(Color.valueOf("#7CB342"));
     gc.fillRect(-5000, -5000, 10000, 10000);
 
-    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
+    //X and Y coordinates
     double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
+    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
 
     //The polygon around the runway
     gc.setFill(Color.valueOf("#0072C6"));
@@ -462,16 +462,16 @@ public class VisPanel extends StackPane {
 
     //Runway body
     gc.setFill(Color.valueOf("#242424"));
-    gc.fillRect(cw * 0.1, ch * 0.43, cw * 0.77, ch * 0.1);
+    gc.fillRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(0.25);
-    gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.77, ch * 0.1);
+    gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
 
     //Dashed centre line, lower dash number to get more dashes in the line.
     gc.setStroke(Color.valueOf("#ffffff"));
     gc.setLineWidth(1);
     int dashes = 9;
-    if (toraL >= 3500) {
+    if (runway.getTora() >= 3250) {
       dashes = 5;
     }
     gc.setLineDashes(dashes);
@@ -491,8 +491,8 @@ public class VisPanel extends StackPane {
       tempD += 5;
     }
 
-    var tempE = cw * 0.81;
-    var tempF = cw * 0.86;
+    var tempE = cw * 0.84;
+    var tempF = cw * 0.89;
     tempB = ch * 0.44;
     tempD = ch * 0.44;
     while (tempB < ch * 0.52) {
@@ -506,65 +506,121 @@ public class VisPanel extends StackPane {
     gc.setFill(Color.valueOf("#ffffff"));
     if (leftT) {
       gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
-      gc.fillText(formattedDes[0], cw * 0.77, ch * 0.48);
+      gc.fillText(formattedDes[0], cw * 0.8, ch * 0.48);
     } else {
       gc.fillText(formattedDes[0], cw * 0.17, ch * 0.48);
-      gc.fillText(formattedDes[1], cw * 0.77, ch * 0.48);
+      gc.fillText(formattedDes[1], cw * 0.8, ch * 0.48);
     }
 
+    //A variable threshold parameter
+    var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getTora());
+    var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getTora());
+    var forLDA = thresh;
     //Add a threshold if it exists
     if (threshold != 0) {
       gc.setLineWidth(1.5);
       gc.setLineDashes(6);
       gc.setStroke(Color.valueOf("#FF5733"));
       gc.setFill(Color.valueOf("#FF5733"));
-      if (leftT){
-        gc.strokeLine(cw * 0.8, ch * 0.41, cw * 0.8, ch * 0.57);
-        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+      if (leftT) {
+        gc.strokeLine(cw * opthresh, ch * 0.41, cw * opthresh, ch * 0.57);
+        gc.fillText(threshold + "m", cw * (opthresh - 0.03), ch * 0.6);
+        forLDA = opthresh;
       } else {
-        gc.strokeLine(cw * 0.20, ch * 0.41, cw * 0.20, ch * 0.57);
+        gc.strokeLine(cw * thresh, ch * 0.41, cw * thresh, ch * 0.57);
         //Write metrics next to threshold
-        gc.fillText(threshold + "m", cw * 0.18, ch * 0.6);
+        gc.fillText(threshold + "m", cw * (thresh - 0.03), ch * 0.6);
       }
       gc.setLineDashes(0);
     }
 
     gc.setFont(new Font(16));
     gc.setLineWidth(1);
-    double stopwayPar = 0.87 + 0.08;
+    double stopwayS = 0.9;
+    double stopwayW = 0.07;
+    double boxHeight = 0.1;
+    double stopwayPar = 0.9 + 0.07;
 
     //Stopway on runway end
-    // TODO: 17/03/2023 Abeed apply switching here
     if (stopway != 0) {
-      gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#f7ff00"));
       gc.setFill(Color.valueOf("#f7ff00"));
-      gc.strokeRect(cw * 0.87, ch * 0.43, cw * 0.08, ch * 0.1);
-      //Write metrics over threshold
-      gc.setLineDashes(0);
-      gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.88, ch * 0.38);
+      //Write metrics over threshold and draw rectangles
+      if (leftT) {
+        stopwayPar = 0.1 - 0.07;
+        if (otherRunway != null && otherRunway.getStopway() != 0) {
+          gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+          gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
+        }
+        gc.strokeRect(cw * 0.03, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
+      } else {
+        gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
+        if (otherRunway != null && otherRunway.getStopway() != 0) {
+          gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
+          gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
+        }
+      }
     }
 
     //Clearway on runway end
-    double clearwayPar = 0.87;
-    // TODO: 17/03/2023 Abeed change this
+    double clearwayPar = 0.9;
+    double rectS = 0.9;
+    double rectH = 0.425;
+    double rectHeight = 0.11;
+
     if (clearway != 0) {
-      gc.setLineDashes(0);
       gc.setStroke(Color.valueOf("#ff8b00"));
       gc.setFill(Color.valueOf("#ff8b00"));
-      if (clearway < stopway) {
-        gc.strokeRect(cw * 0.87, ch * 0.425, cw * 0.05, ch * 0.11);
-        clearwayPar += 0.05;
-      } else if (clearway > stopway) {
-        gc.strokeRect(cw * 0.87, ch * 0.425, cw * 0.1, ch * 0.11);
-        clearwayPar += 0.1;
+      if (leftT) {
+        clearwayPar = 0.1;
+        //Write metrics over threshold
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * 0.58);
+        if (clearway < stopway) {
+          gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
+          clearwayPar -= 0.06;
+        } else if (clearway > stopway) {
+          gc.strokeRect(cw * 0.01, ch * rectH, cw * 0.09, ch * rectHeight);
+          clearwayPar -= 0.09;
+        } else {
+          gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
+          clearwayPar -= 0.07;
+        }
+        if (otherRunway != null && otherRunway.getClearway() != 0) {
+          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.91, ch * 0.58);
+          if (otherRunway.getClearway() < otherRunway.getStopway()) {
+            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
+          } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
+            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.09, ch * rectHeight);
+          } else {
+            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
+          }
+        }
       } else {
-        gc.strokeRect(cw * 0.87, ch * 0.425, cw * 0.08, ch * 0.11);
-        clearwayPar += 0.08;
+        if (clearway < stopway) {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
+          clearwayPar += 0.05;
+        } else if (clearway > stopway) {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.09, ch * rectHeight);
+          clearwayPar += 0.09;
+        } else {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
+          clearwayPar += 0.07;
+        }
+        //Write metrics over threshold
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * 0.58);
+        if (otherRunway != null && otherRunway.getClearway() != 0) {
+          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.07, ch * 0.57);
+          if (otherRunway.getClearway() < otherRunway.getStopway()) {
+            gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
+          } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
+            gc.strokeRect(cw * 0.01, ch * rectH, cw * 0.09, ch * rectHeight);
+          } else {
+            gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
+          }
+        }
       }
-      //Write metrics over threshold
-      gc.setLineDashes(0);
-      gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.88, ch * 0.58);
     }
     gc.setFont(new Font(20));
 
@@ -576,9 +632,14 @@ public class VisPanel extends StackPane {
     gc.strokeText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
 
     //Draw the direction arrow
-    // TODO: 17/03/2023 Abeed change this to make the arrow point to the other way
-    drawDirectionArrow(gc, cw * 0.1, ch * 0.1, cw * 0.3, ch * 0.1, 10.0, 0);
-    gc.fillText("Take-Off/Landing", cw * 0.1, ch * 0.1 - 5, 160);
+    double arrowH = 0.1;
+    if (leftT) {
+      drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9, 10.0, false);
+      gc.fillText("Take-Off/Landing", cw * 0.75, ch * arrowH - 5, 160);
+    } else {
+      drawDirectionArrow(gc, cw * 0.1, ch * arrowH, cw * 0.3, 10.0, true);
+      gc.fillText("Take-Off/Landing", cw * 0.1, ch * arrowH - 5, 160);
+    }
 
     //Picked an object
     if (runway.getCurrentObstacle() != null) {
@@ -589,28 +650,30 @@ public class VisPanel extends StackPane {
     gc.setFont(new Font(20));
 
     //Runway distances
-    // TODO: 17/03/2023 Abeed make the like start from the other end of the rectangle instead
     gc.setLineWidth(1.5);
     gc.setLineDashes(5);
     gc.setStroke(Color.valueOf("#000000"));
     gc.setFill(Color.valueOf("#000000"));
-    gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
+    if (leftT) {
+      gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
+    } else {
+      gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
+    }
     gc.setFont(new Font(15));
     gc.setLineDashes(0);
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
-    // TODO: 17/03/2023 Abeed change this. I will do this one - Jackson
     if (runway.getClda() < 0) {
       logger.error("Negative value, not drawing LDA");
     } else {
       //Main height
-      var heightA = ch * 0.41;
+      var heightM = ch * 0.41;
 
       //Displaced upwards parameter
-      var heightB = ch * 0.4;
+      var heightU = ch * 0.4;
 
       //Displaced downwards parameter
-      var heightC = ch * 0.42;
+      var heightD = ch * 0.42;
 
       //ratio to multiply with to adjust length
       var ratio = runway.getLda() / runway.getClda();
@@ -618,95 +681,105 @@ public class VisPanel extends StackPane {
       //ratio flipped around for the end of the distance line
       var revratio = runway.getClda() / runway.getLda();
 
-      if (runway.getClda() != runway.getLda() && threshold == 0) {
-        //Changes LDA start point based on where the obstacle is located
+      if (leftT) {
         if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * 0.1 * ratio, heightA, cw * 0.87, heightA);
-          gc.strokeLine(cw * 0.1 * ratio, heightB, cw * 0.1 * ratio, heightC);
-          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+          gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.1, heightM);
+          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         } else {
-          gc.strokeLine(cw * 0.1, heightA, cw * 0.87 * revratio, heightA);
-          gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
-          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
+          gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1 * revratio, heightM);
+          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         }
-      } else if (runway.getClda() != runway.getLda() && threshold != 0) {
-        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * 0.2 * ratio, heightA, cw * 0.87, heightA);
-          gc.strokeLine(cw * 0.2 * ratio, heightB, cw * 0.2 * ratio, heightC);
-          gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
-        } else {
-          gc.strokeLine(cw * 0.2, heightA, cw * 0.87 * revratio, heightA);
-          gc.strokeLine(cw * 0.2, heightB, cw * 0.2, heightC);
-          gc.strokeLine(cw * 0.87 * revratio, heightB, cw * 0.87 * revratio, heightC);
-        }
-      } else if (threshold != 0) {
-        gc.strokeLine(cw * 0.2, heightA, cw * 0.87, heightA);
-        gc.strokeLine(cw * 0.2, heightB, cw * 0.2, heightC);
-        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
       } else {
-        gc.strokeLine(cw * 0.1, heightA, cw * 0.87, heightA);
-        gc.strokeLine(cw * 0.1, heightB, cw * 0.1, heightC);
-        gc.strokeLine(cw * 0.87, heightB, cw * 0.87, heightC);
+        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
+          gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.9, heightM);
+          gc.strokeLine(cw * 0.9, heightU, cw * 0.9, heightD);
+        } else {
+          gc.strokeLine(cw * forLDA, heightM, cw * 0.9 * revratio, heightM);
+          gc.strokeLine(cw * 0.9 * revratio, heightU, cw * 0.9 * revratio, heightD);
+        }
       }
-      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.3, heightB);
+      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TORA value and adjusts length to current TORA
-    // TODO: 17/03/2023 Abeed change this
     if (runway.getCtora() < 0) {
       logger.error("Negative value, not drawing TORA");
     } else {
-      if (runway.getCtora() != runway.getTora()) {
-        gc.strokeLine(cw * 0.1, ch * 0.38, cw * 0.87 * (runway.getCtora() / runway.getTora()), ch * 0.38);
-        gc.strokeLine(cw * 0.87 * (runway.getCtora() / runway.getTora()), ch * 0.37,
-          cw * 0.87 * (runway.getCtora() / runway.getTora()), ch * 0.39);
+      double ratio = runway.getCtora() / runway.getTora();
+      double start = 0.1;
+      double end = 0.9;
+      double heightU = 0.37;
+      double heightM = 0.38;
+      double heightD = 0.39;
+      if (leftT) {
+        gc.strokeLine(cw * end, ch * heightM, cw * start * (1 / ratio), ch * heightM);
+        gc.strokeLine(cw * start * (1 / ratio), ch * heightU, cw * start * (1 / ratio), ch * heightD);
       } else {
-        gc.strokeLine(cw * 0.1, ch * 0.38, cw * 0.87, ch * 0.38);
-        gc.strokeLine(cw * 0.87, ch * 0.37, cw * 0.87, ch * 0.39);
+        gc.strokeLine(cw * start, ch * heightM, cw * end * ratio, ch * heightM);
+        gc.strokeLine(cw * end * ratio, ch * heightU, cw * end * ratio, ch * heightD);
       }
-      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.3, ch * 0.37);
+      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.45, ch * heightU);
     }
 
     //Displays ASDA value and adjusts length to current ASDA
-    // TODO: 17/03/2023 Abeed change this
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
-      var heightU = ch * 0.34;
-      var heightM = ch * 0.35;
-      var heightD = ch * 0.36;
-      if (runway.getCasda() != runway.getAsda()) {
-        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightM);
-        gc.strokeLine(cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightU,
-          cw * stopwayPar * (runway.getCasda() / runway.getAsda()), heightD);
+      double heightU = ch * 0.34;
+      double heightM = ch * 0.35;
+      double heightD = ch * 0.36;
+      double ratio = runway.getCasda() / runway.getAsda();
+      if (leftT) {
+        gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
+        gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar, heightM);
-        gc.strokeLine(cw * stopwayPar, heightU, cw * stopwayPar, heightD);
+        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
+        gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
       }
-      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.3, heightU);
+      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TODA value and adjusts length to current TODA
-    // TODO: 17/03/2023 Abeed change this
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
-      var heightU = ch * 0.31;
-      var heightM = ch * 0.32;
-      var heightD = ch * 0.33;
-      if (runway.getCtoda() != runway.getToda()) {
-        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * (runway.getCtora() / runway.getTora()), heightM);
-        gc.strokeLine(cw * clearwayPar * (runway.getCtora() / runway.getTora()),
-          heightU, cw * clearwayPar * (runway.getCtora() / runway.getTora()), heightD);
+      double heightU = ch * 0.31;
+      double heightM = ch * 0.32;
+      double heightD = ch * 0.33;
+      double ratio = runway.getCtora() / runway.getTora();
+      if (leftT) {
+        gc.strokeLine(cw * 0.9, heightM, cw * clearwayPar * (1 / ratio), heightM);
+        gc.strokeLine(cw * clearwayPar * (1 / ratio), heightU, cw * clearwayPar * (1 / ratio), heightD);
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar, heightM);
-        gc.strokeLine(cw * clearwayPar, heightU, cw * clearwayPar, heightD);
+        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * ratio, heightM);
+        gc.strokeLine(cw * clearwayPar * ratio, heightU, cw * clearwayPar * ratio, heightD);
       }
-      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.3, heightU);
+      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.45, heightU);
     }
 
-    //gc.setLineDashes(0);
     gc.setFont(new Font(20));
+  }
+
+
+  /**
+   * Fetches the other runway object if it exists
+   *
+   * @param des
+   * @return
+   */
+  private Runway fetchRunway(String des) {
+    Runway otherRunway = null;
+    var found = false;
+    var i = 0;
+    while (!found && i < state.runwayListProperty().size()) {
+      var runway = state.runwayListProperty().get(i);
+      if (runway.getDesignator().equals(des)) {
+        otherRunway = runway;
+        found = true;
+      }
+      i++;
+    }
+    return otherRunway;
   }
 
   /**
@@ -732,44 +805,54 @@ public class VisPanel extends StackPane {
       }
       i++;
     }
-    if (!found) {
-      logger.info("No matching designator found, keeping the selected runway to the left");
-    }
+//    if (!found) {
+//      logger.info("No matching designator found, keeping the selected runway to the left");
+//    }
     return leftT;
   }
 
 
   /**
-   * Draws a direction arrown on the canvas
+   * Draws a parallel direction arrow on the canvas
    *
    * @param gc        the graphics context
    * @param x1        the x coordinate of the start of the arrow
-   * @param y1        the y coordinate of the start of the arrow
+   * @param y1        the height of the arrow as a y coordinate
    * @param x2        the x coordinate of the end of the arrow
-   * @param y2        the y coordinate of the end of the arrow
    * @param arrowSize the size of the arrow head
+   * @param right     determines whether the arrow is pointing left (false) or right (true)
    */
-  private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2, double y2, double arrowSize,
-                                  double rotation) {
+  private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2, double arrowSize, boolean right) {
 
     var arrowColour = Color.valueOf("#000000");
     gc.setStroke(arrowColour);
     gc.setFill(arrowColour);
 
-    double dx = x2 - x1, dy = y2 - y1;
-    double angle = Math.atan2(dy, dx);
-    int len = (int) Math.sqrt(dx * dx + dy * dy);
+    gc.strokeLine(x1, y1, x2, y1);
 
+    if (right) {
+      var xs = new double[]{x2, x2 + arrowSize, x2};
+      var ys = new double[]{y1 + arrowSize, y1, y1 - arrowSize};
+      gc.fillPolygon(xs, ys, 3);
+    } else {
+      var xs = new double[]{x1, x1 - arrowSize, x1};
+      var ys = new double[]{y1 + arrowSize, y1, y1 - arrowSize};
+      gc.fillPolygon(xs, ys, 3);
+    }
+
+//    double dx = x2 - x1, dy = y2 - y1;
+//    double angle = Math.atan2(dy, dx);
+//    int len = (int) Math.sqrt(dx * dx + dy * dy);
+//
 //    Transform transform = Transform.translate(x1, y1);
 //    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
 //    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
 //    gc.setTransform(new Affine(transform));
-
-
-    gc.strokeLine(0, 0, len, 0);
-    gc.fillPolygon(new double[]{dx, dx - arrowSize, dx - arrowSize, dx}, new double[]{0, arrowSize, -arrowSize, 0}, 4);
-
-    gc.restore();
+//
+//    gc.strokeLine(0, 0, len, 0);
+//    gc.fillPolygon(new double[]{dx, dx - arrowSize, dx - arrowSize, dx}, new double[]{0, arrowSize, -arrowSize, 0}, 4);
+//
+//    gc.restore();
   }
 
   /**
