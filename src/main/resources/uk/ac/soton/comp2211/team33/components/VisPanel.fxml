@@ -6,6 +6,8 @@
 <?import javafx.geometry.Insets?>
 
 <?import uk.ac.soton.comp2211.team33.components.IconButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <fx:root type="StackPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
   <Canvas fx:id="canvas" />
@@ -51,5 +53,10 @@
     <Region minHeight="20" />
 
     <Button text="Switch view"  onAction="#onSwitchView" />
+
+    <Region minHeight="20" />
+
+    <ImageView fx:id="directionIndicator"/>
+
   </VBox>
 </fx:root>
