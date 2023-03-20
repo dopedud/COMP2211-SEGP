@@ -177,6 +177,7 @@ public class VisPanel extends StackPane {
    */
   @FXML
   private void translateLeft() {
+    // TODO: Trigger on mouse drag
     translateX += 0.1;
     updateTransform();
   }
@@ -186,6 +187,7 @@ public class VisPanel extends StackPane {
    */
   @FXML
   private void translateRight() {
+    // TODO: Trigger on mouse drag
     translateX -= 0.1;
     updateTransform();
   }
@@ -222,7 +224,9 @@ public class VisPanel extends StackPane {
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
-    // Transform changes from Geeth's part has been disabled for now
+    // TODO: disable rotating
+
+    gc.setTransform(transform.get());
 
     gc.setFont(new Font(20));
     gc.setTextBaseline(VPos.CENTER);
@@ -344,11 +348,9 @@ public class VisPanel extends StackPane {
       return;
     }
 
-    double mToPx = 5; // 1m = 25px
-
     double obstacleDistance = runway.getObsDistFromThresh();
     double obstacleLengthPx = (obstacle.getLength() / toda) * runwayLengthPx;
-    double obstacleHeightPx = obstacle.getHeight() * mToPx;
+    double obstacleHeightPx = (obstacle.getHeight() / obstacle.getLength()) * obstacleLengthPx;
 
     double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
 
