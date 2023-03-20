@@ -1,17 +1,21 @@
 package uk.ac.soton.comp2211.team33.components;
 
 import javafx.fxml.FXML;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import uk.ac.soton.comp2211.team33.models.Airport;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
@@ -47,6 +51,7 @@ public class VisPanel extends StackPane {
 
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
+    runway.obsDistFromThreshProperty().addListener(ignored -> draw());
     runway.ctoraProperty().addListener(ignored -> draw());
     runway.ctodaProperty().addListener(ignored -> draw());
     runway.casdaProperty().addListener(ignored-> draw());
@@ -73,10 +78,15 @@ public class VisPanel extends StackPane {
 
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
+
+    gc.setFont(new Font(20));
+    gc.setTextBaseline(VPos.CENTER);
+    gc.setTextAlign(TextAlignment.CENTER);
+
     double cw = this.getWidth();
     double ch = this.getHeight();
-
-    double grassDepth = ch / 20;
+    double layerDepth = ch / 40;
+    double grassStartY = (double) 2 / 3 * ch;
 
     // Sky
 
@@ -86,16 +96,150 @@ public class VisPanel extends StackPane {
     // Grass
 
     gc.setFill(Color.rgb(73, 145, 99));
-    gc.fillRect(0, (double) 2 / 3 * ch, cw, ch);
+    gc.fillRect(0, grassStartY, cw, layerDepth);
 
     // Dust
 
-    gc.setFill(Color.rgb(50, 50 ,50));
-    gc.fillRect(0, ((double) 2 / 3 * ch) + grassDepth, cw, ch);
+    gc.setFill(Color.rgb(82, 50, 38));
+    gc.fillRect(0, grassStartY + layerDepth, cw, ch);
+
+    // Overall runway properties
+
+    double runwayLengthPx = cw / 1.5;
+    double runwayStartX = cw / 2 - runwayLengthPx / 2;
+    double runwayStartY = grassStartY - layerDepth;
+    double runwayEndX = runwayStartX + runwayLengthPx;
+    double runwayEndY = grassStartY;
+
+    // Draw toda
+
+    double toda = runway.getCtoda();
+
+    drawDistanceLegend(gc, "Toda: " + toda + " m", Color.BLACK, runwayStartX, runwayEndY - 500, runwayLengthPx, 500);
+
+
+    // Print designator
+
+    String[] designators = formatDesignators(runway.getDesignator());
+    String designator = designators[0];
+    String oppositeDesignator = designators[1];
+    double designatorStartY = runwayStartY + layerDepth / 2;
+
+    gc.setFill(Color.BLACK);
+    gc.fillText(designator, runwayStartX - 60, designatorStartY);
+    gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY);
+
+    // Draw tora
+
+    double tora = runway.getCtora();
+    double toraLengthPx = (tora / toda) * runwayLengthPx;
+    double runwayBodyEndX = runwayStartX + toraLengthPx;
+
+    gc.setFill(Color.rgb(50, 50, 50));
+    gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Tora: " + tora + " m", Color.BLACK, runwayStartX, runwayEndY - 200, toraLengthPx, 200);
+
+    // Draw clearway
+
+    double clearway = runway.getClearway();
+    double clearwayLengthPx = (clearway / toda) * runwayLengthPx;
+    Color clearwayColor = Color.RED;
+
+    gc.setFill(clearwayColor);
+    gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Clearway: " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 300, clearwayLengthPx, 300);
+
+    // Draw stopway
+
+    double stopway = runway.getStopway();
+    double stopwayLengthPx = (stopway / toda) * runwayLengthPx;
+    Color stopwayColor = Color.rgb(240, 173, 58);
+
+    gc.setFill(stopwayColor);
+    gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
+
+    drawDistanceLegend(gc, "Stopway: " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
+
+    // Draw asda
+
+    double asda = runway.getCasda();
+    double asdaLengthPx = toraLengthPx + stopwayLengthPx;
+
+    drawDistanceLegend(gc, "Asda: " + asda + " m", Color.BLACK, runwayStartX, runwayEndY - 400, asdaLengthPx, 400);
+
+    // Draw threshold
+
+    double threshold = runway.getThreshold();
+    double thresholdStartX = (threshold / toda) * runwayLengthPx + runwayStartX;
+    double thresholdLineLengthPx = 100;
+    double thresholdEndY = runwayStartY + thresholdLineLengthPx;
+
+    gc.beginPath();
+    gc.setStroke(Color.RED);
+    gc.setLineDashes(5);
+    gc.moveTo(thresholdStartX, runwayStartY);
+    gc.lineTo(thresholdStartX, thresholdEndY);
+    gc.stroke();
 
     gc.setFill(Color.RED);
-    gc.setFont(new Font(30));
-    gc.fillText("Sideways view", cw / 2, ch / 2);
+    gc.fillText("Thres: " + threshold + " m", thresholdStartX, thresholdEndY + 20);
+
+    // Draw lda
+
+    double lda = runway.getClda();
+
+    drawDistanceLegend(gc, "LDA: " + lda + " m", Color.BLACK, thresholdStartX, runwayEndY - 300, runwayBodyEndX - thresholdStartX, 300);
+
+    // Draw obstacle
+
+    Obstacle obstacle = runway.getCurrentObstacle();
+    if (obstacle == null) {
+      return;
+    }
+
+    double mToPx = 5; // 1m = 25px
+
+    double obstacleDistance = runway.getObsDistFromThresh();
+    double obstacleLengthPx = (obstacle.getLength() / toda) * runwayLengthPx;
+    double obstacleHeightPx = obstacle.getHeight() * mToPx;
+
+    double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
+
+    gc.setFill(Color.ORANGE);
+    gc.fillRect(obstacleStartX, runwayStartY - obstacleHeightPx, obstacleLengthPx, obstacleHeightPx);
+  }
+
+  private void drawDistanceLegend(GraphicsContext gc, String legend, Color color, double startX, double startY, double width, double height) {
+    gc.beginPath();
+
+    gc.setStroke(color);
+    gc.setLineDashes(5);
+
+    // First endpoint
+
+    gc.moveTo(startX, startY);
+    gc.lineTo(startX, startY + height);
+
+    // Second endpoint
+
+    gc.moveTo(startX + width, startY);
+    gc.lineTo(startX + width, startY + height);
+
+    // Top line
+
+    gc.moveTo(startX, startY);
+    gc.lineTo(startX + width, startY);
+
+    // Stroke everything
+
+    gc.stroke();
+
+    // Add legend
+
+    gc.setFill(color);
+    gc.fillText(legend, startX + width / 2, startY - 20);
   }
 
   /**
@@ -105,6 +249,8 @@ public class VisPanel extends StackPane {
   private void drawTopDown() {
     var gc = canvas.getGraphicsContext2D();
     gc.setFont(new Font(20));
+    gc.setTextAlign(TextAlignment.LEFT);
+    gc.setTextBaseline(VPos.BASELINE);
 
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
