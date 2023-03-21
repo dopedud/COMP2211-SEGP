@@ -243,6 +243,9 @@ public class VisPanel extends StackPane {
   }
 
 
+  /**
+   * Function for drawing the 2D views
+   */
   private void draw() {
     if (isTopDownView) {
       drawTopDown();
@@ -434,7 +437,6 @@ public class VisPanel extends StackPane {
     // Setting the transform of the canvas to the current one
     gc.setTransform(transform.get());
 
-
     gc.setFont(new Font(20));
     gc.setTextAlign(TextAlignment.LEFT);
     gc.setTextBaseline(VPos.BASELINE);
@@ -456,6 +458,9 @@ public class VisPanel extends StackPane {
 
     //This is a boolean that determines if the threshold should be switched.
     boolean leftT = checkThresh(otherDesignator);
+    if(otherRunway == null) {
+      System.out.println(designator + " Runway is null " + otherDesignator);
+    }
     if (leftT) {
       this.compassOffset = 180;
     }
@@ -577,6 +582,9 @@ public class VisPanel extends StackPane {
     double stopwayW = 0.07;
     double boxHeight = 0.1;
     double stopwayPar = 0.9 + 0.07;
+    if (leftT){
+      stopwayPar = 0.1 - 0.07;
+    }
 
     //Stopway on runway end
     if (stopway != 0) {
@@ -584,7 +592,6 @@ public class VisPanel extends StackPane {
       gc.setFill(Color.valueOf("#f7ff00"));
       //Write metrics over threshold and draw rectangles
       if (leftT) {
-        stopwayPar = 0.1 - 0.07;
         if (otherRunway != null && otherRunway.getStopway() != 0) {
           gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
           gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
@@ -606,12 +613,14 @@ public class VisPanel extends StackPane {
     double rectS = 0.9;
     double rectH = 0.425;
     double rectHeight = 0.11;
+    if(leftT){
+      clearwayPar = 0.1;
+    }
 
     if (clearway != 0) {
       gc.setStroke(Color.valueOf("#ff8b00"));
       gc.setFill(Color.valueOf("#ff8b00"));
       if (leftT) {
-        clearwayPar = 0.1;
         //Write metrics over threshold
         gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * 0.58);
         if (clearway < stopway) {
