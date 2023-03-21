@@ -22,6 +22,13 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 import java.util.ArrayList;
 
+/**
+ * The ConfigPanel class is a custom component that handles edition, addition, and deletion of aircraft and obstacles,
+ * as well as loading pre-defined obstacles and setting obstacle distance from threshold.
+ * Corresponds to user story #3, #4.
+ *
+ * @author Abeed (mabs1u21@soton.ac.uk)
+ */
 public class ConfigPanel extends AnchorPane {
   private static final Logger logger = LogManager.getLogger(ConfigPanel.class);
 

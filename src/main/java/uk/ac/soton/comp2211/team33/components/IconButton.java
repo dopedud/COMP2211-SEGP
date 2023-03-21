@@ -6,7 +6,10 @@ import javafx.scene.image.ImageView;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The IconButton class is a custom component that contains a button with an icon. The icon can be set using the setIcon method
+ * The IconButton class is a custom component that contains a button with an icon.
+ * Corresponds to user story #16.
+ *
+ * @author Geeth (gv2g21@soton.ac.uk)
  */
 public class IconButton extends Button {
 

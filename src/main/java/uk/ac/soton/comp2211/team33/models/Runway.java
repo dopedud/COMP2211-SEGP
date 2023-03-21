@@ -16,7 +16,7 @@ public class Runway {
   private static final Logger logger = LogManager.getLogger(Runway.class);
 
   /**
-   * The designator for the runway. Usually 2 characters with L/R at the end.
+   * The designator for the runway. It can have the character L, R, C, or none appended at the end of the designator.
    */
   private final String designator;
 
@@ -26,7 +26,7 @@ public class Runway {
   private final double tora, toda, asda, lda, resa;
 
   /**
-   * Currently used runway values (after calculation).
+   * Currently used runway values (after calculation), would also be called calculated values.
    */
   private final SimpleDoubleProperty ctora, ctoda, casda, clda, cresa;
 
@@ -97,10 +97,7 @@ public class Runway {
     obsDistFromThresh = new SimpleDoubleProperty();
   }
 
-  /**
-   * Below are getters and setters for some values that don't have to change but may be used in certain calculations.
-   */
-
+  // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
 
   public String getDesignator() {
     return designator;
@@ -227,6 +224,8 @@ public class Runway {
   public SimpleDoubleProperty stopwayProperty() {
     return stopway;
   }
+
+  // Methods to get, set, and return properties that would be considered in a runway re-declaration.
 
   public Aircraft getCurrentAircraft() {
     return currentAircraft.get();

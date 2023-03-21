@@ -19,6 +19,7 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The NewAirportScene class that creates a new airport upon user request.
+ * Corresponds to user story #1.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
@@ -26,12 +27,21 @@ public class NewAirportController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(NewAirportController.class);
 
+  /**
+   * A JavaFX UI element to select a city for the airport.
+   */
   @FXML
   private DropdownField city;
 
+  /**
+   * A JavaFX UI element to select a name for the airport.
+   */
   @FXML
   private DropdownField name;
 
+  /**
+   * Multiple key-value pairs to store different commercial airports throughout the UK.
+   */
   private MultiValuedMap<String, String> cityNamePairs;
 
   public NewAirportController(Stage stage, Airport state) {

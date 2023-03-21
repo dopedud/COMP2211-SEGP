@@ -13,19 +13,19 @@ public class Aircraft {
   private static final Logger logger = LogManager.getLogger(Aircraft.class);
 
   /**
-   * A name to identify the aircraft.
+   * Name to identify the aircraft.
    */
   private String id;
 
   /**
-   * The blast protection value which is dependent on the aircraft.
+   * Blast protection value which is dependent on the aircraft.
    */
   private double blastProtection;
 
   /**
-   * Constructor to create a new Aircraft object.
+   * Creates a new aircraft with the specified id and blast protection.
    *
-   * @param id              id of the aircraft
+   * @param id id of the aircraft
    * @param blastProtection blast protection of the aircraft
    */
   public Aircraft(String id, double blastProtection) {
@@ -38,6 +38,8 @@ public class Aircraft {
     }
   }
 
+  // Below are the usual accessors and mutators for the instance variables of this class.
+
   public String getId() {
     return id;
   }
@@ -48,10 +50,6 @@ public class Aircraft {
 
   public double getBlastProtection() {
     return blastProtection;
-  }
-
-  public void setBlastProtection(double blastProtection) {
-    this.blastProtection = blastProtection;
   }
 
   @Override

@@ -36,8 +36,16 @@ abstract class BaseController {
     this.initialise();
   }
 
+  /**
+   * Abstract method to initialise the scene.
+   */
   abstract protected void initialise();
 
+  /**
+   * Protected method to build the scene.
+   *
+   * @param filename name of the FXML file for this scene
+   */
   protected void buildScene(String filename) {
     Scene scene = ProjectHelpers.renderScene(filename, this);
     stage.setScene(scene);

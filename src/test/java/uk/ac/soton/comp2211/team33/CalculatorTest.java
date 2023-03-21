@@ -34,11 +34,11 @@ public class CalculatorTest {
     runway09R = new Runway("09R", 3660, 3660, 3660, 3353, 240, 307);
     runway27L = new Runway("27L", 3660, 3660, 3660, 3660, 240, 0);
 
-    obstacle12H0N = new Obstacle("BrokenAirplane", 12, 0, 0);
-    obstacle25H20S = new Obstacle("BrokenAirplane", 25, 0, -20);
-    obstacle15H60N = new Obstacle("BrokenAirplane", 15, 0, 60);
-    obstacle20H20N = new Obstacle("BrokenAirplane", 20, 0, 20);
-    obstacle20H100S = new Obstacle("BrokenAirplane", 20, 0, -100);
+    obstacle12H0N = new Obstacle("Obstacle 1", 12, 0, 0);
+    obstacle25H20S = new Obstacle("Obstacle 2", 25, 0, -20);
+    obstacle15H60N = new Obstacle("Obstacle 3", 15, 0, 60);
+    obstacle20H20N = new Obstacle("Obstacle 4", 20, 0, 20);
+    obstacle20H100S = new Obstacle("Obstacle 5", 20, 0, -100);
 
     aircraft = new Aircraft("A380", 300);
   }

@@ -2,7 +2,7 @@ package uk.ac.soton.comp2211.team33;
 
 /**
  * The Launcher class that allows the application to be built into a shaded jar file which then loads JavaFX. This
- * Launcher is used when running as a shaded .jar file.
+ * class is used when running as a shaded .jar file.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */

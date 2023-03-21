@@ -11,12 +11,15 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * The ProjectHelpers static class that is tasked to render scenes and stages.
+ * The ProjectHelpers static class that is tasked to render scenes and stages and to fetch JavaFX resources.
  *
  * @author Brian (dal1g21@soton.ac.uk)
  */
 public final class ProjectHelpers {
 
+  /**
+   * Base path to fetch all files associated with the project.
+   */
   private static final String BASE_PATH = "/uk/ac/soton/comp2211/team33";
 
   /**
@@ -24,14 +27,20 @@ public final class ProjectHelpers {
    */
   private ProjectHelpers() {}
 
+  /**
+   * Method to render an object in JavaFX.
+   *
+   * @param path file path to the JavaFX FXML file
+   * @param controller controller class for this object
+   * @param root parent for this object if one exists, null if this object is the root
+   * @return an object to render
+   */
   public static Object renderRoot(String path, Object controller, Object root) {
     FXMLLoader loader = new FXMLLoader(ProjectHelpers.getResource(path));
 
     loader.setController(controller);
 
-    if (root != null) {
-      loader.setRoot(root);
-    }
+    if (root != null) loader.setRoot(root);
 
     try {
       return loader.load();
@@ -41,22 +50,47 @@ public final class ProjectHelpers {
     }
   }
 
+  /**
+   * Method to render a JavaFX scene.
+   *
+   * @param path file path to the JavaFX FXML file
+   * @param controller controller class for this scene
+   * @return a scene to render
+   */
   public static Scene renderScene(String path, Object controller) {
     return new Scene((Parent) renderRoot(path, controller, null));
   }
 
-  public static Stage createModalStage(Stage ownerStage) {
+  /**
+   * Method to create a modal stage.
+   *
+   * @param owner owner of the modal stage
+   * @return a modal stage to render
+   */
+  public static Stage createModalStage(Stage owner) {
     Stage modal = new Stage();
-    modal.initOwner(ownerStage);
+    modal.initOwner(owner);
     modal.initModality(Modality.WINDOW_MODAL);
 
     return modal;
   }
 
+  /**
+   * Method to read text files.
+   *
+   * @param path file path to the text file
+   * @return an input stream of data from file
+   */
   public static InputStream getResourceAsStream(String path) {
     return ProjectHelpers.class.getResourceAsStream(BASE_PATH + path);
   }
 
+  /**
+   * Method to get JavaFX resources.
+   *
+   * @param path file path to the JavaFX resource
+   * @return a URL containing the JavaFX resource
+   */
   public static URL getResource(String path) {
     return ProjectHelpers.class.getResource(BASE_PATH + path);
   }

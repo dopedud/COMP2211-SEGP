@@ -8,7 +8,8 @@ import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The ObstacleScene class that manages deletion or edition of the list of obstacles.
+ * The ObstacleScene class that manages edition or addition of the list of obstacles.
+ * Corresponds to user story #3, #4.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
@@ -16,8 +17,14 @@ public class ObstacleController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(ObstacleController.class);
 
+  /**
+   * Boolean to decide if this scene is to edit current obstacle or add a new obstacle.
+   */
   private final boolean isEdit;
 
+  /**
+   * Multiple JavaFX UI elements to store different values of an obstacle.
+   */
   @FXML
   private InputField name, height, length, centerline;
 

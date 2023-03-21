@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The InputField class is a custom component that contains a label, a text field and an optional suffix text.
+ * The InputField class is a custom component that contains a label, a text field, and an optional suffix text.
  *
  * @author Geeth (gv2g21@soton.ac.uk)
  */

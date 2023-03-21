@@ -20,7 +20,8 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The Visualisation class is a custom component that renders the 2D top-down and side-on view.
+ * The VisPanel class is a custom component that renders the 2D top-down and side-on view.
+ * Corresponds to user story #2, #8a, #8b, #8c, #9, #10, #11, #12, #16.
  *
  * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk)
  */

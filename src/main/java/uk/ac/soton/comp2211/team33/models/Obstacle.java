@@ -29,12 +29,13 @@ public class Obstacle {
   private double length;
 
   /**
-   * Center-line displacement; North : positive number, South : negative number.
+   * Center-line displacement. North : positive number, South : negative number.
    */
   private double centerline;
 
   /**
    * Creates a new obstacle with the specified name, height, and length.
+   *
    * @param name A name to identify the obstacle
    * @param height Height of the obstacle
    * @param length Length of the obstacle
@@ -59,6 +60,7 @@ public class Obstacle {
   }
 
   // Below are the usual accessors and mutators for the instance variables of this class.
+
   public String getName() {
     return name;
   }

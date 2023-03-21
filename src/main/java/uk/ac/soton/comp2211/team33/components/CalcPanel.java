@@ -12,6 +12,13 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
+/**
+ * The CalcPanel class is a custom component that handles calculations of runway values and also breaking down the
+ * calculation steps.
+ * Corresponds to user story #3, #5, #6, #14.
+ *
+ * @author Abeed (mabs1u21@soton.ac.uk)
+ */
 public class CalcPanel extends AnchorPane {
 
   private final Stage stage;
@@ -117,6 +124,14 @@ public class CalcPanel extends AnchorPane {
     switchNotifications.setText("Enable Notifications");
   }
 
+  @FXML
+  private void onSwitchNoti() {
+    switchNoti = !switchNoti;
+
+    if (switchNoti) switchNotifications.setText("Disable Notifications");
+    else switchNotifications.setText("Enable Notifications");
+  }
+
   private void recalculateRunwayValues() {
     if (calcTowards) {
       if (runway.getCurrentObstacle() == null) {
@@ -153,13 +168,5 @@ public class CalcPanel extends AnchorPane {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been re-declared.");
       }
     }
-  }
-
-  @FXML
-  private void onSwitchNoti() {
-    switchNoti = !switchNoti;
-
-    if (switchNoti) switchNotifications.setText("Disable Notifications");
-    else switchNotifications.setText("Enable Notifications");
   }
 }

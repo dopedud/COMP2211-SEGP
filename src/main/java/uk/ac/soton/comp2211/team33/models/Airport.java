@@ -11,7 +11,7 @@ import java.io.*;
 
 /**
  * The Airport class that acts as a container for the collection of runways, aircraft, and obstacles.
- * Corresponds to user story #1.
+ * Corresponds to user story #1, #4, #13.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
@@ -31,25 +31,25 @@ public class Airport {
   /**
    * List of runways.
    */
-  private final SimpleListProperty<Runway> runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Runway> runwayList;
 
   /**
    * List of aircraft.
    */
-  private final SimpleListProperty<Aircraft> aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Aircraft> aircraftList;
 
   /**
    * List of obstacles.
    */
-  private final SimpleListProperty<Obstacle> obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
+  private final SimpleListProperty<Obstacle> obstacleList;
 
   /**
    * Trigger to only load pre-defined obstacles once.
    */
-  private final SimpleBooleanProperty obstaclesLoaded = new SimpleBooleanProperty(false);
+  private final SimpleBooleanProperty obstaclesLoaded;
 
   /**
-   * Class constructor.
+   * Creates a new airport with the specified city and name.
    *
    * @param city city this airport is situated at
    * @param name name of the airport
@@ -57,6 +57,11 @@ public class Airport {
   public Airport(String city, String name) {
     this.city = city;
     this.name = name;
+
+    runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    obstaclesLoaded = new SimpleBooleanProperty(false);
   }
 
   // Below are methods to add and load objects in an airport.
@@ -98,7 +103,7 @@ public class Airport {
     }
   }
 
-  // Below are the usual accessors and mutators for the member variables of this class.
+  // Below are the usual accessors and mutators for the instance variables of this class.
 
   public String getCity() {
     return city;
