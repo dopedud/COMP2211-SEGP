@@ -6,6 +6,8 @@ import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -33,6 +35,9 @@ public class VisPanel extends StackPane {
 
   @FXML
   private Canvas canvas;
+
+  @FXML
+  private ImageView directionIndicator;
 
   private boolean isTopDownView = true;
 
@@ -62,6 +67,12 @@ public class VisPanel extends StackPane {
   private double rotation = 0;
 
   /**
+   * The offset of the rotation in degrees - used to correctly rotate the vis to match compass heading depending on which side the threshold is
+   * If the threshold is on the left, the offset is 0 degrees, if it is on the right, the offset is 180 degrees.
+   */
+  private int compassOffset = 0;
+
+  /**
    * The current transform of the visualisation.
    */
   private SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
@@ -71,6 +82,10 @@ public class VisPanel extends StackPane {
     this.state = state;
 
     ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
+
+    directionIndicator.setImage(new Image(ProjectHelpers.getResource("/pictures/direction_indicator.png").toExternalForm()));
+    directionIndicator.setPreserveRatio(true);
+    directionIndicator.setFitHeight(50);
 
     canvas.widthProperty().addListener(ignored -> draw());
     canvas.heightProperty().addListener(ignored -> draw());
@@ -171,6 +186,22 @@ public class VisPanel extends StackPane {
   private void rotateRight() {
     rotation -= 5;
     updateTransform();
+  }
+
+  /**
+   * Rotates the visualisation to the runway heading. Only works in top-down view.
+   */
+  @FXML
+  private void rotateToRunwayHeading() {
+    if (!isTopDownView) {
+      return;
+    }
+    rotation = (runway.getCompassHeading() + 270 + compassOffset) % 360;
+    updateTransform();
+  }
+
+  private void rotateIndicator() {
+    directionIndicator.setRotate((rotation - runway.getCompassHeading() - 270 - compassOffset) % 360);
   }
 
   /**
@@ -397,6 +428,9 @@ public class VisPanel extends StackPane {
   private void drawTopDown() {
     var gc = canvas.getGraphicsContext2D();
 
+    // Direction Indicator
+    rotateIndicator();
+
     // Setting the transform of the canvas to the current one
     gc.setTransform(transform.get());
 
@@ -420,8 +454,11 @@ public class VisPanel extends StackPane {
 
     var otherRunway = fetchRunway(otherDesignator);
 
-    //This is a boolean that determines if the threshold should be switched
+    //This is a boolean that determines if the threshold should be switched.
     boolean leftT = checkThresh(otherDesignator);
+    if (leftT) {
+      this.compassOffset = 180;
+    }
 
     double threshold = runway.getThreshold();
 
@@ -759,6 +796,7 @@ public class VisPanel extends StackPane {
 
     gc.setFont(new Font(20));
   }
+
 
 
   /**
