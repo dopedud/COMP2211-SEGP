@@ -458,9 +458,7 @@ public class VisPanel extends StackPane {
 
     //This is a boolean that determines if the threshold should be switched.
     boolean leftT = checkThresh(otherDesignator);
-    if(otherRunway == null) {
-      System.out.println(designator + " Runway is null " + otherDesignator);
-    }
+
     if (leftT) {
       this.compassOffset = 180;
     }
@@ -581,30 +579,35 @@ public class VisPanel extends StackPane {
     double stopwayS = 0.9;
     double stopwayW = 0.07;
     double boxHeight = 0.1;
-    double stopwayPar = 0.9 + 0.07;
-    if (leftT){
-      stopwayPar = 0.1 - 0.07;
+    double stopwayPar = 0.9;
+    if (leftT) {
+      stopwayPar = 0.1;
     }
 
     //Stopway on runway end
-    if (stopway != 0) {
-      gc.setStroke(Color.valueOf("#f7ff00"));
-      gc.setFill(Color.valueOf("#f7ff00"));
-      //Write metrics over threshold and draw rectangles
-      if (leftT) {
-        if (otherRunway != null && otherRunway.getStopway() != 0) {
-          gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
-          gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
-        }
+    gc.setStroke(Color.valueOf("#f7ff00"));
+    gc.setFill(Color.valueOf("#f7ff00"));
+    //Write metrics over threshold and draw rectangles
+    if (leftT) {
+      if (otherRunway != null && otherRunway.getStopway() != 0) {
+        gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
+      }
+      if (stopway != 0) {
+        stopwayPar -= stopwayW;
         gc.strokeRect(cw * 0.03, ch * 0.43, cw * stopwayW, ch * boxHeight);
         gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
-      } else {
+      }
+    } else {
+      if (stopway != 0) {
+        stopwayPar += stopwayW;
         gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
         gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
-        if (otherRunway != null && otherRunway.getStopway() != 0) {
-          gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
-          gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
-        }
+      }
+      if (otherRunway != null && otherRunway.getStopway() != 0) {
+        gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
+        gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
+
       }
     }
 
@@ -613,10 +616,33 @@ public class VisPanel extends StackPane {
     double rectS = 0.9;
     double rectH = 0.425;
     double rectHeight = 0.11;
-    if(leftT){
+    //Includes setting the clearway for the other runway
+    if (leftT) {
       clearwayPar = 0.1;
+      if (otherRunway != null && otherRunway.getClearway() != 0) {
+        gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.91, ch * 0.58);
+        if (otherRunway.getClearway() < otherRunway.getStopway()) {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
+        } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.09, ch * rectHeight);
+        } else {
+          gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
+        }
+      }
+    } else {
+      if (otherRunway != null && otherRunway.getClearway() != 0) {
+        gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.07, ch * 0.57);
+        if (otherRunway.getClearway() < otherRunway.getStopway()) {
+          gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
+        } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
+          gc.strokeRect(cw * 0.01, ch * rectH, cw * 0.09, ch * rectHeight);
+        } else {
+          gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
+        }
+      }
     }
 
+    //For this runway, if the clearway exists
     if (clearway != 0) {
       gc.setStroke(Color.valueOf("#ff8b00"));
       gc.setFill(Color.valueOf("#ff8b00"));
@@ -633,16 +659,7 @@ public class VisPanel extends StackPane {
           gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
           clearwayPar -= 0.07;
         }
-        if (otherRunway != null && otherRunway.getClearway() != 0) {
-          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.91, ch * 0.58);
-          if (otherRunway.getClearway() < otherRunway.getStopway()) {
-            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
-          } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
-            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.09, ch * rectHeight);
-          } else {
-            gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
-          }
-        }
+
       } else {
         if (clearway < stopway) {
           gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
@@ -656,16 +673,6 @@ public class VisPanel extends StackPane {
         }
         //Write metrics over threshold
         gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * 0.58);
-        if (otherRunway != null && otherRunway.getClearway() != 0) {
-          gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.07, ch * 0.57);
-          if (otherRunway.getClearway() < otherRunway.getStopway()) {
-            gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
-          } else if (otherRunway.getClearway() > otherRunway.getStopway()) {
-            gc.strokeRect(cw * 0.01, ch * rectH, cw * 0.09, ch * rectHeight);
-          } else {
-            gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
-          }
-        }
       }
     }
     gc.setFont(new Font(20));
@@ -776,9 +783,11 @@ public class VisPanel extends StackPane {
       double heightD = ch * 0.36;
       double ratio = runway.getCasda() / runway.getAsda();
       if (leftT) {
+        //System.out.println(designator + " leftT " + stopwayPar + " " + (1 / ratio));
         gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
         gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
       } else {
+        //System.out.println(designator + " NOleftT " + stopwayPar + " " + ratio);
         gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
         gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
       }
@@ -805,7 +814,6 @@ public class VisPanel extends StackPane {
 
     gc.setFont(new Font(20));
   }
-
 
 
   /**
