@@ -40,6 +40,8 @@ public class Runway {
    */
   private static final double tocs = 50, als = 50, stripEnd = 60;
 
+  private int compassHeading;
+
   /**
    * Currently selected aircraft for this runway.
    */
@@ -95,6 +97,19 @@ public class Runway {
     currentAircraft = new SimpleObjectProperty<>();
     currentObstacle = new SimpleObjectProperty<>();
     obsDistFromThresh = new SimpleDoubleProperty();
+
+    determineCompassHeading();
+  }
+
+  private void determineCompassHeading() {
+    var filter = new StringBuilder();
+    for (int i = 0; i < this.designator.length(); i++) {
+      char c = this.designator.charAt(i);
+      if (Character.isDigit(c)) {
+        filter.append(c);
+      }
+    }
+    compassHeading = (Integer.parseInt(filter.toString()) * 10) % 360;
   }
 
   // Below are getters and setters for some values that don't have to change but may be used in certain calculations.
@@ -189,6 +204,10 @@ public class Runway {
 
   public double getStripEnd() {
     return stripEnd;
+  }
+
+  public int getCompassHeading() {
+    return compassHeading;
   }
 
   // Properties for re-declared values.
