@@ -7,7 +7,7 @@ import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The BaseScene abstract class to create scenes.
+ * The BaseController abstract class to create scenes.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */

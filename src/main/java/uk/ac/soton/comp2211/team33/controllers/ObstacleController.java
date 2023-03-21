@@ -8,7 +8,7 @@ import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The ObstacleScene class that manages edition or addition of the list of obstacles.
+ * The ObstacleController class that manages edition or addition of the list of obstacles.
  * Corresponds to user story #3, #4.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)

@@ -8,7 +8,7 @@ import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The AircraftScene class that manages edition or addition of the list of aircraft.
+ * The AircraftController class that manages edition or addition of the list of aircraft.
  * Corresponds to user story #3.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
