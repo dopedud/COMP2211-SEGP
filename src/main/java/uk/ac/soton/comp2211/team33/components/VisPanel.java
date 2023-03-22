@@ -685,7 +685,8 @@ public class VisPanel extends StackPane {
     gc.strokeText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
 
     //Draw the direction arrow
-    double arrowH = 0.1;
+    //Height of the arrow
+    double arrowH = 0.15;
     if (leftT) {
       drawDirectionArrow(gc, cw * 0.7, ch * arrowH, cw * 0.9, 10.0, false);
       gc.fillText("Take-Off/Landing", cw * 0.75, ch * arrowH - 5, 160);
