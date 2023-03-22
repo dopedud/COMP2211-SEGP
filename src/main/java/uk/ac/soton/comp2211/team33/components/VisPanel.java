@@ -619,6 +619,9 @@ public class VisPanel extends StackPane {
     var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getTora());
     var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getTora());
     var forLDA = thresh;
+    if (leftT) {
+      forLDA = opthresh;
+    }
     //Add a threshold if it exists
     if (threshold != 0) {
       gc.setLineWidth(1.5);
@@ -628,7 +631,6 @@ public class VisPanel extends StackPane {
       if (leftT) {
         gc.strokeLine(cw * opthresh, ch * 0.41, cw * opthresh, ch * 0.57);
         gc.fillText(threshold + "m", cw * (opthresh - 0.03), ch * 0.6);
-        forLDA = opthresh;
       } else {
         gc.strokeLine(cw * thresh, ch * 0.41, cw * thresh, ch * 0.57);
         //Write metrics next to threshold
@@ -799,17 +801,19 @@ public class VisPanel extends StackPane {
       var revratio = runway.getClda() / runway.getLda();
 
       if (leftT) {
-        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
-          gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.1, heightM);
+        if (runway.getObsDistFromThresh() > runway.getTora() / 2) {
+          gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1, heightM);
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
+          gc.strokeLine(cw * forLDA * revratio, heightU, cw * forLDA * revratio, heightD);
         } else {
-          gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1 * revratio, heightM);
+          gc.strokeLine(cw * forLDA, heightM, cw * 0.1 * ratio, heightM);
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
         }
       } else {
         if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
           gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.9, heightM);
           gc.strokeLine(cw * 0.9, heightU, cw * 0.9, heightD);
+          gc.strokeLine(cw * forLDA * ratio, heightU, cw * forLDA * ratio, heightD);
         } else {
           gc.strokeLine(cw * forLDA, heightM, cw * 0.9 * revratio, heightM);
           gc.strokeLine(cw * 0.9 * revratio, heightU, cw * 0.9 * revratio, heightD);
