@@ -759,11 +759,11 @@ public class VisPanel extends StackPane {
     }
 
     //Picked an object
-    if (runway.getCurrentObstacle() != null) {
-      gc.setFill(Color.RED);
-      gc.setFont(new Font(30));
-      gc.fillText(runway.getCurrentObstacle().getName(), cw * (0.1 + ((runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora())), ch / 2);
-    }
+//    if (runway.getCurrentObstacle() != null) {
+//      gc.setFill(Color.RED);
+//      gc.setFont(new Font(30));
+//      gc.fillText(runway.getCurrentObstacle().getName(), cw * (0.1 + ((runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora())), ch / 2);
+//    }
     gc.setFont(new Font(20));
 
     //Runway distances
