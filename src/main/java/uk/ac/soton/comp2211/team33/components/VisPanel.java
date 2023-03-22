@@ -299,8 +299,9 @@ public class VisPanel extends StackPane {
 
     double toda = runway.getCtoda();
 
-    drawDistanceLegend(gc, "Toda: " + toda + " m", Color.BLACK, runwayStartX, runwayEndY - 500, runwayLengthPx, 500);
-
+    if(0 < toda) {
+      drawDistanceLegend(gc, "TODA= " + toda + " m", Color.BLACK, runwayStartX, runwayEndY - 500, runwayLengthPx, 500);
+    }
 
     // Print designator
 
@@ -308,6 +309,11 @@ public class VisPanel extends StackPane {
     String designator = designators[0];
     String oppositeDesignator = designators[1];
     double designatorStartY = runwayStartY + layerDepth / 2;
+
+    //The opposing side's designator formatted into a string of no spaces, ready to use for searching
+    var otherDesignator = designators[1].replaceAll("[\r\n]+", "").replaceAll(" ", "");
+
+    var otherRunway = fetchRunway(otherDesignator);
 
     gc.setFill(Color.BLACK);
     gc.fillText(designator, runwayStartX - 60, designatorStartY);
@@ -322,7 +328,9 @@ public class VisPanel extends StackPane {
     gc.setFill(Color.rgb(50, 50, 50));
     gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
 
-    drawDistanceLegend(gc, "Tora: " + tora + " m", Color.BLACK, runwayStartX, runwayEndY - 200, toraLengthPx, 200);
+    if(0 < tora) {
+      drawDistanceLegend(gc, "TORA= " + tora + " m", Color.BLACK, runwayStartX, runwayEndY - 200, toraLengthPx, 200);
+    }
 
     // Draw clearway
 
@@ -333,7 +341,7 @@ public class VisPanel extends StackPane {
     gc.setFill(clearwayColor);
     gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
 
-    drawDistanceLegend(gc, "Clearway: " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 300, clearwayLengthPx, 300);
+    drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 300, clearwayLengthPx, 300);
 
     // Draw stopway
 
@@ -344,14 +352,16 @@ public class VisPanel extends StackPane {
     gc.setFill(stopwayColor);
     gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
 
-    drawDistanceLegend(gc, "Stopway: " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
+    drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColor, runwayBodyEndX + 10, runwayEndY - 200, stopwayLengthPx, 200);
 
     // Draw asda
 
     double asda = runway.getCasda();
     double asdaLengthPx = toraLengthPx + stopwayLengthPx;
 
-    drawDistanceLegend(gc, "Asda: " + asda + " m", Color.BLACK, runwayStartX, runwayEndY - 400, asdaLengthPx, 400);
+    if(0 < asda) {
+      drawDistanceLegend(gc, "ASDA= " + asda + " m", Color.BLACK, runwayStartX, runwayEndY - 400, asdaLengthPx, 400);
+    }
 
     // Draw threshold
 
@@ -368,13 +378,15 @@ public class VisPanel extends StackPane {
     gc.stroke();
 
     gc.setFill(Color.RED);
-    gc.fillText("Thres: " + threshold + " m", thresholdStartX, thresholdEndY + 20);
+    gc.fillText("Threshold= " + threshold + " m", thresholdStartX, thresholdEndY + 20);
 
     // Draw lda
 
     double lda = runway.getClda();
 
-    drawDistanceLegend(gc, "LDA: " + lda + " m", Color.BLACK, thresholdStartX, runwayEndY - 300, runwayBodyEndX - thresholdStartX, 300);
+    if (0 < lda) {
+      drawDistanceLegend(gc, "LDA= " + lda + " m", Color.BLACK, thresholdStartX, runwayEndY - 300, runwayBodyEndX - thresholdStartX, 300);
+    }
 
     // Draw obstacle
 
@@ -393,6 +405,16 @@ public class VisPanel extends StackPane {
     gc.fillRect(obstacleStartX, runwayStartY - obstacleHeightPx, obstacleLengthPx, obstacleHeightPx);
   }
 
+  /**
+   * Draws the distance indicators for the runway when called
+   * @param gc      graphics context
+   * @param legend  distance label
+   * @param color   colour
+   * @param startX
+   * @param startY
+   * @param width
+   * @param height
+   */
   private void drawDistanceLegend(GraphicsContext gc, String legend, Color color, double startX, double startY, double width, double height) {
     gc.beginPath();
 
@@ -444,8 +466,6 @@ public class VisPanel extends StackPane {
     //Width and height of the canvas
     double cw = canvas.getWidth();
     double ch = canvas.getHeight();
-
-    //gc.clearRect(-500, -500, cw * 5, ch * 5);
 
     var designator = runway.getDesignator();
 
