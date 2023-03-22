@@ -310,8 +310,8 @@ public class VisPanel extends StackPane {
     var otherRunway = fetchRunway(otherDesignator);
 
     gc.setFill(Color.BLACK);
-    gc.fillText(designator, runwayStartX - 60, designatorStartY);
-    gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY);
+    gc.fillText(designator, runwayStartX - 60, designatorStartY - 10);
+    gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY - 10);
 
     // Draw runway body
 
