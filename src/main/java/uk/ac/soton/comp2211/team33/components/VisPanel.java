@@ -97,6 +97,7 @@ public class VisPanel extends StackPane {
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
     runway.obsDistFromThreshProperty().addListener(ignored -> draw());
+    state.runwayListProperty().addListener((ov, oldV, newV) -> draw());
     runway.ctoraProperty().addListener(ignored -> draw());
     runway.ctodaProperty().addListener(ignored -> draw());
     runway.casdaProperty().addListener(ignored -> draw());
@@ -294,14 +295,7 @@ public class VisPanel extends StackPane {
     double runwayStartY = grassStartY - layerDepth;
     double runwayEndX = runwayStartX + runwayLengthPx;
     double runwayEndY = grassStartY;
-
-    // Draw toda
-
-    double toda = runway.getCtoda();
-
-    if(0 < toda) {
-      drawDistanceLegend(gc, "TODA= " + toda + " m", Color.BLACK, runwayStartX, runwayEndY - 500, runwayLengthPx, 500);
-    }
+    double toda = runway.getToda();
 
     // Print designator
 
@@ -319,18 +313,14 @@ public class VisPanel extends StackPane {
     gc.fillText(designator, runwayStartX - 60, designatorStartY);
     gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY);
 
-    // Draw tora
+    // Draw runway body
 
-    double tora = runway.getCtora();
+    double tora = runway.getTora();
     double toraLengthPx = (tora / toda) * runwayLengthPx;
     double runwayBodyEndX = runwayStartX + toraLengthPx;
 
     gc.setFill(Color.rgb(50, 50, 50));
     gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
-
-    if(0 < tora) {
-      drawDistanceLegend(gc, "TORA= " + tora + " m", Color.BLACK, runwayStartX, runwayEndY - 200, toraLengthPx, 200);
-    }
 
     // Draw clearway
 
@@ -341,8 +331,6 @@ public class VisPanel extends StackPane {
     gc.setFill(clearwayColor);
     gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
 
-    drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 300, clearwayLengthPx, 300);
-
     // Draw stopway
 
     double stopway = runway.getStopway();
@@ -352,16 +340,41 @@ public class VisPanel extends StackPane {
     gc.setFill(stopwayColor);
     gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
 
-    drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColor, runwayBodyEndX + 10, runwayEndY - 200, stopwayLengthPx, 200);
+    // Draw ctoda legend
 
-    // Draw asda
+    double ctoda = runway.getCtoda();
+    double ctodaLengthPx = (ctoda / toda) * runwayLengthPx;
 
-    double asda = runway.getCasda();
-    double asdaLengthPx = toraLengthPx + stopwayLengthPx;
+    drawDistanceLegend(gc, "TODA: " + ctoda + " m", Color.BLACK, runwayEndX - ctodaLengthPx, runwayEndY - 500, ctodaLengthPx, 500);
 
-    if(0 < asda) {
-      drawDistanceLegend(gc, "ASDA= " + asda + " m", Color.BLACK, runwayStartX, runwayEndY - 400, asdaLengthPx, 400);
-    }
+    // Draw ctora legend
+
+    double ctora = runway.getCtora();
+    double ctoraLengthPx = (ctora / toda) * runwayLengthPx;
+
+    drawDistanceLegend(gc, "TORA: " + tora + " m", Color.BLACK, runwayBodyEndX - ctoraLengthPx, runwayEndY - 200, ctoraLengthPx, 200);
+
+    // Draw clda legend
+
+    double clda = runway.getClda();
+    double cldaLengthPx = (clda / toda) * runwayLengthPx;
+
+    drawDistanceLegend(gc, "LDA: " + clda + " m", Color.BLACK, runwayBodyEndX - cldaLengthPx, runwayEndY - 300, cldaLengthPx, 300);
+
+    // Draw casda
+
+    double casda = runway.getCasda();
+    double casdaLengthPx = (casda / toda) * runwayLengthPx;
+
+    drawDistanceLegend(gc, "ASDA: " + casda + " m", Color.BLACK, runwayBodyEndX + stopwayLengthPx - casdaLengthPx, runwayEndY - 400, casdaLengthPx, 400);
+
+    // Draw clearway legend
+
+    drawDistanceLegend(gc, "Clearway: " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 250, clearwayLengthPx, 250);
+
+    // Draw stopway legend
+
+    drawDistanceLegend(gc, "Stopway: " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
 
     // Draw threshold
 
@@ -380,29 +393,47 @@ public class VisPanel extends StackPane {
     gc.setFill(Color.RED);
     gc.fillText("Threshold= " + threshold + " m", thresholdStartX, thresholdEndY + 20);
 
-    // Draw lda
-
-    double lda = runway.getClda();
-
-    if (0 < lda) {
-      drawDistanceLegend(gc, "LDA= " + lda + " m", Color.BLACK, thresholdStartX, runwayEndY - 300, runwayBodyEndX - thresholdStartX, 300);
-    }
-
     // Draw obstacle
 
     Obstacle obstacle = runway.getCurrentObstacle();
-    if (obstacle == null) {
-      return;
+    if (obstacle != null) {
+      double mHeightToPx = 4;
+      double obstacleDistance = runway.getObsDistFromThresh();
+      double obstacleLengthPx = (obstacle.getLength() / toda) * runwayLengthPx;
+      double trueObstacleHeightPx = (obstacle.getHeight() / obstacle.getLength()) * obstacleLengthPx;
+      double scaledObstacleHeightPx = obstacle.getHeight() * mHeightToPx;
+
+      double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
+      double obstacleStartY = runwayStartY - scaledObstacleHeightPx;
+
+      gc.setFill(Color.ORANGE);
+      gc.fillRect(obstacleStartX, obstacleStartY, obstacleLengthPx, scaledObstacleHeightPx);
+
+      // Draw landing slope
+
+      gc.beginPath();
+      gc.setStroke(Color.BLUE);
+      gc.setLineDashes(5);
+      gc.moveTo(obstacleStartX, obstacleStartY - (obstacleLengthPx * scaledObstacleHeightPx) / (50 * trueObstacleHeightPx - obstacleLengthPx));
+      gc.lineTo(obstacleStartX + trueObstacleHeightPx * 50, runwayStartY);
+      gc.stroke();
+
+      drawDistanceLegend(gc, "Slope: " + obstacle.getHeight() * 50 + " m", Color.BLUE, obstacleStartX, runwayStartY - 200, trueObstacleHeightPx * 50, 200);
+
+      // Draw RESA legend
+
+      double obstacleEndX = obstacleStartX + obstacleLengthPx;
+      double resa = runway.getResa();
+      double resaLengthPx = (resa / toda) * runwayLengthPx;
+
+      drawDistanceLegend(gc, "RESA: " + resa + " m", Color.RED, obstacleEndX, runwayEndY - 150, resaLengthPx, 150);
+
+      // Draw safety distance
+
+      double safetyDistanceStartX = Math.max(obstacleEndX + resaLengthPx, obstacleStartX + trueObstacleHeightPx * 50);
+      double safetyDistancePx = 60 / toda * runwayLengthPx;
+      drawDistanceLegend(gc, "Safety distance", Color.GREEN, safetyDistanceStartX, runwayEndY - 150, safetyDistancePx, 150);
     }
-
-    double obstacleDistance = runway.getObsDistFromThresh();
-    double obstacleLengthPx = (obstacle.getLength() / toda) * runwayLengthPx;
-    double obstacleHeightPx = (obstacle.getHeight() / obstacle.getLength()) * obstacleLengthPx;
-
-    double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
-
-    gc.setFill(Color.ORANGE);
-    gc.fillRect(obstacleStartX, runwayStartY - obstacleHeightPx, obstacleLengthPx, obstacleHeightPx);
   }
 
   /**
@@ -804,11 +835,9 @@ public class VisPanel extends StackPane {
       double heightD = ch * 0.36;
       double ratio = runway.getCasda() / runway.getAsda();
       if (leftT) {
-        //System.out.println(designator + " leftT " + stopwayPar + " " + (1 / ratio));
         gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
         gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
       } else {
-        //System.out.println(designator + " NOleftT " + stopwayPar + " " + ratio);
         gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
         gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
       }
