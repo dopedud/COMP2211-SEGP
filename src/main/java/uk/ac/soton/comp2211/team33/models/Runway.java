@@ -40,6 +40,9 @@ public class Runway {
    */
   private static final double tocs = 50, als = 50, stripEnd = 60;
 
+  /**
+   * The compass heading of the runway
+   */
   private int compassHeading;
 
   /**
