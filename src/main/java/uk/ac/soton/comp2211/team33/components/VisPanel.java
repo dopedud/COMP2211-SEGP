@@ -412,10 +412,19 @@ public class VisPanel extends StackPane {
       drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
     }
 
+    if (rightClearyway > 0) {
+      drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColor, runwayStartX - rightClearwayLengthPx, runwayEndY - 250, rightClearwayLengthPx, 250);
+    }
+
+    if (rightStopway > 0) {
+      drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColor, runwayStartX - rightStopwayLengthPx, runwayEndY - 250, rightStopwayLengthPx, 250);
+    }
+
     // Draw threshold
 
     double threshold = runway.getThreshold();
-    double thresholdStartX = (threshold / toda) * runwayLengthPx + runwayStartX;
+    double thresholdLengthPx = (threshold / toda) * runwayLengthPx;
+    double thresholdStartX = drawLegendFromLeft ? thresholdLengthPx + runwayStartX : runwayBodyEndX - thresholdLengthPx;
     double thresholdLineLengthPx = 100;
     double thresholdEndY = runwayStartY + thresholdLineLengthPx;
 
@@ -440,7 +449,8 @@ public class VisPanel extends StackPane {
       double scaledObstacleHeightPx = obstacle.getHeight() * mHeightToPx;
       double heightTimes50Px = (obstacle.getHeight() * 50 / toda) * runwayLengthPx;
 
-      double obstacleStartX = (obstacleDistance / toda) * runwayLengthPx + thresholdStartX;
+      double obstacleDistancePx = (obstacleDistance / toda) * runwayLengthPx;
+      double obstacleStartX = drawLegendFromLeft ? obstacleDistancePx + thresholdStartX : thresholdStartX - obstacleDistancePx;
       //double obstacleStartY = runwayStartY - scaledObstacleHeightPx;
 
       //gc.setFill(Color.ORANGE);
@@ -454,23 +464,27 @@ public class VisPanel extends StackPane {
       gc.setStroke(Color.BLUE);
       gc.setLineDashes(5);
       gc.moveTo(obstacleStartX, runwayStartY - scaledObstacleHeightPx);
-      gc.lineTo(obstacleStartX + heightTimes50Px, runwayStartY);
+      gc.lineTo(drawLegendFromLeft ? obstacleStartX + heightTimes50Px : obstacleStartX - heightTimes50Px, runwayStartY);
       gc.stroke();
 
-      drawDistanceLegend(gc, "ALS/TOCS= " + obstacle.getHeight() * 50 + " m", Color.BLUE, obstacleStartX, runwayStartY - 200, heightTimes50Px, 200);
+      double slopeLegendStartX = drawLegendFromLeft ? obstacleStartX : obstacleStartX - heightTimes50Px;
+      drawDistanceLegend(gc, "ALS/TOCS= " + obstacle.getHeight() * 50 + " m", Color.BLUE, slopeLegendStartX, runwayStartY - 200, heightTimes50Px, 200);
 
       // Draw RESA legend
 
-      double obstacleEndX = obstacleStartX + obstacleLengthPx;
+      double obstacleEndX = drawLegendFromLeft ? obstacleStartX + obstacleLengthPx : obstacleStartX - obstacleLengthPx;
       double resa = runway.getResa();
       double resaLengthPx = (resa / toda) * runwayLengthPx;
 
-      drawDistanceLegend(gc, "RESA= " + resa + " m", Color.RED, obstacleEndX, runwayEndY - 150, resaLengthPx, 150);
+      double resaLegendStartX = drawLegendFromLeft ? obstacleEndX : obstacleEndX - resaLengthPx;
+      drawDistanceLegend(gc, "RESA= " + resa + " m", Color.RED, resaLegendStartX, runwayEndY - 150, resaLengthPx, 150);
 
       // Draw safety distance
 
-      double safetyDistanceStartX = Math.max(obstacleEndX + resaLengthPx, obstacleStartX + heightTimes50Px);
       double safetyDistancePx = 60 / toda * runwayLengthPx;
+      double safetyDistanceStartX = drawLegendFromLeft
+              ? Math.max(obstacleEndX + resaLengthPx, obstacleStartX + heightTimes50Px)
+              : Math.min(obstacleEndX - resaLengthPx, obstacleStartX - heightTimes50Px) - safetyDistancePx;
       drawDistanceLegend(gc, "Safety distance", Color.GREEN, safetyDistanceStartX, runwayEndY - 150, safetyDistancePx, 150);
     }
   }
