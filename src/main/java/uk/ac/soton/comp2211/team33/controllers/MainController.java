@@ -4,6 +4,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TabPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -64,6 +65,17 @@ public class MainController extends BaseController {
   @FXML
   private void onNewRunway() {
     new NewRunwayController(ProjectHelpers.createModalStage(stage), state);
+  }
+
+  @FXML
+  private void onImport() {
+    var fileChooser = new FileChooser();
+    fileChooser.setTitle("Import Airport State");
+    var file = fileChooser.showOpenDialog(stage);
+
+    if (file != null) {
+      logger.info(file.getPath());
+    }
   }
 
   /**
