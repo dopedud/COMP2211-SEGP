@@ -673,6 +673,8 @@ public class VisPanel extends StackPane {
     double rectS = 0.9;
     double rectH = 0.425;
     double rectHeight = 0.11;
+    gc.setStroke(Color.valueOf("#ff8b00"));
+    gc.setFill(Color.valueOf("#ff8b00"));
     //Includes setting the clearway for the other runway
     if (leftT) {
       clearwayPar = 0.1;
@@ -701,8 +703,6 @@ public class VisPanel extends StackPane {
 
     //For this runway, if the clearway exists
     if (clearway != 0) {
-      gc.setStroke(Color.valueOf("#ff8b00"));
-      gc.setFill(Color.valueOf("#ff8b00"));
       if (leftT) {
         //Write metrics over threshold
         gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * 0.58);
