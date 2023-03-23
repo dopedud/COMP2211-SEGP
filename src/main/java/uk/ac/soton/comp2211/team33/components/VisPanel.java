@@ -375,7 +375,7 @@ public class VisPanel extends StackPane {
     if (ctora > 0) {
       double ctoraLengthPx = (ctora / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX - ctoraLengthPx : runwayStartX;
-      drawDistanceLegend(gc, "TORA= " + tora + " m", Color.BLACK,
+      drawDistanceLegend(gc, "TORA= " + ctora + " m", Color.BLACK,
         startX, runwayEndY - 200, ctoraLengthPx, 200);
     }
 
