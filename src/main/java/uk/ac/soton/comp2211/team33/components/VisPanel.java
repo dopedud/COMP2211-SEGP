@@ -597,17 +597,6 @@ public class VisPanel extends StackPane {
 
     double clearway = runway.getClearway();
 
-//    double rotationAngle = 0;
-//
-//    //Rotation
-//    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
-//    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
-
-//    if(rotationAngle != 0 || rotationAngle != 90 || rotationAngle != 180 || rotationAngle != 270
-//      || rotationAngle != 360){
-//      gc.scale(0.8,0.8);
-//    }
-
     gc.save();
 
     // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
@@ -746,6 +735,8 @@ public class VisPanel extends StackPane {
     double rectS = 0.9;
     double rectH = 0.425;
     double rectHeight = 0.11;
+    gc.setStroke(Color.valueOf("#ff8b00"));
+    gc.setFill(Color.valueOf("#ff8b00"));
     //Includes setting the clearway for the other runway
     if (leftT) {
       clearwayPar = 0.1;
@@ -774,8 +765,6 @@ public class VisPanel extends StackPane {
 
     //For this runway, if the clearway exists
     if (clearway != 0) {
-      gc.setStroke(Color.valueOf("#ff8b00"));
-      gc.setFill(Color.valueOf("#ff8b00"));
       if (leftT) {
         //Write metrics over threshold
         gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * 0.58);
