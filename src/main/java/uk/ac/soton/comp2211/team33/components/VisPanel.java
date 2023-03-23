@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
+import uk.ac.soton.comp2211.team33.utilities.Pair;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
@@ -293,55 +294,68 @@ public class VisPanel extends StackPane {
 
     // Overall runway properties
 
+    Pair<Runway, Runway> runwayPair = getRunwayPair();
+    Runway leftRunway = runwayPair.fst();
+    Runway rightRunway = runwayPair.snd();
+    boolean drawLegendFromLeft = runway == leftRunway;
+
     double runwayLengthPx = cw / 1.5;
     double runwayStartX = cw / 2 - runwayLengthPx / 2;
     double runwayStartY = grassStartY - layerDepth;
     double runwayEndX = runwayStartX + runwayLengthPx;
     double runwayEndY = grassStartY;
-    double toda = runway.getToda();
+    double toda = leftRunway.getToda();
 
     // Print designator
 
-    String[] designators = formatDesignators(runway.getDesignator());
-    String designator = designators[0];
-    String oppositeDesignator = designators[1];
     double designatorStartY = runwayStartY + layerDepth / 2;
 
-    //The opposing side's designator formatted into a string of no spaces, ready to use for searching
-    var otherDesignator = designators[1].replaceAll("[\r\n]+", "").replaceAll(" ", "");
-
-    var otherRunway = fetchRunway(otherDesignator);
-
     gc.setFill(Color.BLACK);
-    gc.fillText(designator, runwayStartX - 60, designatorStartY - 10);
-    gc.fillText(oppositeDesignator, runwayEndX + 60, designatorStartY - 10);
+    gc.fillText(leftRunway.getDesignator(), runwayStartX - 60, designatorStartY - 10);
+    gc.fillText(rightRunway.getDesignator(), runwayEndX + 60, designatorStartY - 10);
 
     // Draw runway body
 
-    double tora = runway.getTora();
+    double tora = leftRunway.getTora();
     double toraLengthPx = (tora / toda) * runwayLengthPx;
     double runwayBodyEndX = runwayStartX + toraLengthPx;
 
     gc.setFill(Color.rgb(50, 50, 50));
     gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
 
-    // Draw clearway
+    // Draw primary clearway
 
-    double clearway = runway.getClearway();
+    double clearway = leftRunway.getClearway();
     double clearwayLengthPx = (clearway / toda) * runwayLengthPx;
     Color clearwayColor = Color.RED;
 
     gc.setFill(clearwayColor);
     gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
 
-    // Draw stopway
+    // Draw primary stopway
 
-    double stopway = runway.getStopway();
+    double stopway = leftRunway.getStopway();
     double stopwayLengthPx = (stopway / toda) * runwayLengthPx;
     Color stopwayColor = Color.rgb(240, 173, 58);
 
     gc.setFill(stopwayColor);
     gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
+
+    // Draw right clearway
+
+    double rightClearyway = rightRunway == null ? 0 : rightRunway.getClearway();
+    double rightClearwayLengthPx = (rightClearyway / toda) * runwayLengthPx;
+
+    gc.setFill(clearwayColor);
+    gc.fillRect(runwayStartX - rightClearwayLengthPx, runwayStartY, rightClearwayLengthPx, layerDepth);
+
+    // Draw right stopway
+
+    double rightStopway = rightRunway == null ? 0 : rightRunway.getStopway();
+    double rightStopwayLengthPx = (rightStopway / toda) * runwayLengthPx;
+
+    gc.setFill(stopwayColor);
+    gc.fillRect(runwayStartX - rightStopwayLengthPx, runwayStartY, rightStopwayLengthPx, layerDepth);
 
     // Draw ctoda legend
 
@@ -349,8 +363,9 @@ public class VisPanel extends StackPane {
 
     if (ctoda > 0) {
       double ctodaLengthPx = (ctoda / toda) * runwayLengthPx;
+      double startX = drawLegendFromLeft ? runwayEndX - ctodaLengthPx : runwayStartX - rightClearwayLengthPx;
       drawDistanceLegend(gc, "TODA= " + ctoda + " m", Color.BLACK,
-        runwayEndX - ctodaLengthPx, runwayEndY - 500, ctodaLengthPx, 500);
+        startX, runwayEndY - 500, ctodaLengthPx, 500);
     }
 
     // Draw ctora legend
@@ -359,8 +374,9 @@ public class VisPanel extends StackPane {
 
     if (ctora > 0) {
       double ctoraLengthPx = (ctora / toda) * runwayLengthPx;
+      double startX = drawLegendFromLeft ? runwayBodyEndX - ctoraLengthPx : runwayStartX;
       drawDistanceLegend(gc, "TORA= " + tora + " m", Color.BLACK,
-        runwayBodyEndX - ctoraLengthPx, runwayEndY - 200, ctoraLengthPx, 200);
+        startX, runwayEndY - 200, ctoraLengthPx, 200);
     }
 
     // Draw clda legend
@@ -369,7 +385,8 @@ public class VisPanel extends StackPane {
 
     if (clda > 0) {
       double cldaLengthPx = (clda / toda) * runwayLengthPx;
-      drawDistanceLegend(gc, "LDA= " + clda + " m", Color.BLACK, runwayBodyEndX - cldaLengthPx, runwayEndY - 300, cldaLengthPx, 300);
+      double startX = drawLegendFromLeft ? runwayBodyEndX - cldaLengthPx : runwayStartX;
+      drawDistanceLegend(gc, "LDA= " + clda + " m", Color.BLACK, startX, runwayEndY - 300, cldaLengthPx, 300);
     }
 
     // Draw casda
@@ -378,7 +395,8 @@ public class VisPanel extends StackPane {
 
     if (casda > 0) {
       double casdaLengthPx = (casda / toda) * runwayLengthPx;
-      drawDistanceLegend(gc, "ASDA= " + casda + " m", Color.BLACK, runwayBodyEndX + stopwayLengthPx - casdaLengthPx,
+      double startX = drawLegendFromLeft ? runwayBodyEndX + stopwayLengthPx - casdaLengthPx : runwayStartX - rightStopwayLengthPx;
+      drawDistanceLegend(gc, "ASDA= " + casda + " m", Color.BLACK, startX,
         runwayEndY - 400, casdaLengthPx, 400);
     }
 
@@ -497,6 +515,29 @@ public class VisPanel extends StackPane {
 
     gc.setFill(color);
     gc.fillText(legend, startX + width / 2, startY - 20);
+  }
+
+  /**
+   * Returns a pair of matching runways. The runway with a shorter threshold will be the first item.
+   * @return Pair of runways
+   */
+  private Pair<Runway, Runway> getRunwayPair() {
+    // TODO: Move this method to Runway class, and remove the other 2 methods
+
+    String oppositeDesignator = formatDesignators(runway.getDesignator())[1];
+    Runway oppositeRunway = fetchRunway(oppositeDesignator.replaceAll("[\r\n ]+", ""));
+
+    System.out.println(oppositeRunway);
+
+    if (oppositeRunway == null) {
+      return new Pair(runway, null);
+    }
+
+    if (runway.getThreshold() <= oppositeRunway.getThreshold()) {
+      return new Pair(runway, oppositeRunway);
+    }
+
+    return new Pair(oppositeRunway, runway);
   }
 
   /**
