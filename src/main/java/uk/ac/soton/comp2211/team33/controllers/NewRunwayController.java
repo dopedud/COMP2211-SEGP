@@ -35,15 +35,20 @@ public class NewRunwayController extends BaseController {
 
   @FXML
   private void onSubmitRunway() {
-    double toraDouble = Double.parseDouble(tora.getText());
-    double todaDouble = Double.parseDouble(toda.getText());
-    double asdaDouble = Double.parseDouble(asda.getText());
-    double ldaDouble = Double.parseDouble(lda.getText());
-    double resaDouble = Double.parseDouble(resa.getText());
-    double thresholdDouble = Double.parseDouble(threshold.getText());
+    try {
+      double toraDouble = Double.parseDouble(tora.getText());
+      double todaDouble = Double.parseDouble(toda.getText());
+      double asdaDouble = Double.parseDouble(asda.getText());
+      double ldaDouble = Double.parseDouble(lda.getText());
+      double resaDouble = Double.parseDouble(resa.getText());
+      double thresholdDouble = Double.parseDouble(threshold.getText());
 
-    state.addRunway(designator.getText(), toraDouble, todaDouble, asdaDouble, ldaDouble, resaDouble, thresholdDouble);
+      state.addRunway(designator.getText(), toraDouble, todaDouble, asdaDouble, ldaDouble, resaDouble, thresholdDouble);
 
-    stage.close();
+      stage.close();
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+      //TODO: create a modal stage informing the user that value entered is not in correct format
+    }
   }
 }

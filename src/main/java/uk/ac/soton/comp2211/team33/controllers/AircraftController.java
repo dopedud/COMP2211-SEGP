@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.InputField;
+import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
@@ -43,14 +44,22 @@ public class AircraftController extends BaseController {
 
   @FXML
   private void onSubmitNewAircraft() {
-    String id = this.id.getText();
-    double blastProtection = Double.parseDouble(this.blastProtection.getText());
+    try {
+      String id = this.id.getText();
+      double blastProtection = Double.parseDouble(this.blastProtection.getText());
 
-    state.addAircraft(id, blastProtection);
+      state.addAircraft(id, blastProtection);
 
-    logger.info("New aircraft added - " + id);
+      logger.info("New aircraft added - " + id);
 
-    stage.close();
+      stage.close();
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+      //TODO: create a modal stage informing the user that value entered is not in correct format
+    } catch (OutOfRangeException e) {
+      e.printStackTrace();
+      //TODO: create a modal stage informing the user that value entered is out of range
+    }
   }
 
   @FXML
