@@ -535,17 +535,6 @@ public class VisPanel extends StackPane {
 
     double clearway = runway.getClearway();
 
-//    double rotationAngle = 0;
-//
-//    //Rotation
-//    Rotate r = new Rotate(rotationAngle, cw * 0.5, ch * 0.5);
-//    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
-
-//    if(rotationAngle != 0 || rotationAngle != 90 || rotationAngle != 180 || rotationAngle != 270
-//      || rotationAngle != 360){
-//      gc.scale(0.8,0.8);
-//    }
-
     gc.save();
 
     // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
