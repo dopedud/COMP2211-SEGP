@@ -274,20 +274,23 @@ public class VisPanel extends StackPane {
     double layerDepth = ch / 40;
     double grassStartY = (double) 2 / 3 * ch;
 
+    // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
+    gc.clearRect(-5000, -5000, 10000, 10000);
+
     // Sky
 
     gc.setFill(Color.rgb(56, 179, 232));
-    gc.fillRect(0, 0, cw, ch);
+    gc.fillRect(-5000, -5000, 10000, 10000);
 
     // Grass
 
     gc.setFill(Color.rgb(73, 145, 99));
-    gc.fillRect(0, grassStartY, cw, layerDepth);
+    gc.fillRect(-5000, grassStartY, 10000, layerDepth*10);
 
     // Dust
 
     gc.setFill(Color.rgb(82, 50, 38));
-    gc.fillRect(0, grassStartY + layerDepth, cw, ch);
+    gc.fillRect(-5000, grassStartY + layerDepth, cw*100, ch*100);
 
     // Overall runway properties
 
