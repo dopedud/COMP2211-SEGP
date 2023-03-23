@@ -7,7 +7,8 @@ import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The BaseScene abstract class to create scenes.
+ * The BaseController abstract class to create scenes.
+ * This class acts a base controller for all controller classes.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
@@ -36,8 +37,16 @@ abstract class BaseController {
     this.initialise();
   }
 
+  /**
+   * Abstract method to initialise the scene.
+   */
   abstract protected void initialise();
 
+  /**
+   * Protected method to build the scene.
+   *
+   * @param filename name of the FXML file for this scene
+   */
   protected void buildScene(String filename) {
     Scene scene = ProjectHelpers.renderScene(filename, this);
     stage.setScene(scene);

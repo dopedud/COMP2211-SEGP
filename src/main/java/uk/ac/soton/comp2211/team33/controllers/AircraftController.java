@@ -9,7 +9,8 @@ import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The AircraftScene class that manages deletion or edition of the list of aircraft.
+ * The AircraftController controller class that manages edition or addition of the list of aircraft.
+ * Corresponds to user story #3.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
@@ -17,8 +18,14 @@ public class AircraftController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(AircraftController.class);
 
+  /**
+   * Boolean to decide if this scene is to edit current aircraft or add a new aircraft.
+   */
   private final boolean isEdit;
 
+  /**
+   * Multiple JavaFX UI elements to store different values of an aircraft.
+   */
   @FXML
   private InputField id, blastProtection;
 

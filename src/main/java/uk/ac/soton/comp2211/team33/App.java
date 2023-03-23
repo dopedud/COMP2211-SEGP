@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.controllers.NewAirportController;
-import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The main class to execute when running the application.

@@ -13,6 +13,7 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 /**
  * The RunwayTab class is a custom component that holds a runway in a tab in an airport. An airport can contain many
  * runways.
+ * Corresponds to user story #13.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
@@ -25,13 +26,16 @@ public class RunwayTab extends Tab {
 
   private final Runway runway;
 
+  /**
+   * A JavaFX UI element to contain 3 panels; configuration panel, visualisation panel, and calculation panel.
+   */
   @FXML
   private SplitPane splitPane;
 
   public RunwayTab(Stage stage, Airport state, Runway runway) {
     logger.info("Creating new runway tab named " + runway.getDesignator());
 
-    // Set the stage this tab belongs to, the state of the airport and the runway this tab possesses
+    // Set the stage this tab belongs to, the state of the airport, and the runway this tab possesses
     this.stage = stage;
     this.state = state;
     this.runway = runway;

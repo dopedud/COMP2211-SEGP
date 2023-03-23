@@ -14,7 +14,8 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The MainScene class that acts as the main workspace for the runway re-declaration.
+ * The MainController controller class that serves as the main workspace for the runway re-declaration.
+ * Corresponds to user story #7, #13.
  *
  * @author Geeth (gv2g21@soton.ac.uk), Abeed (mabs1u21@soton.ac.uk)
  */
@@ -22,6 +23,9 @@ public class MainController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(MainController.class);
 
+  /**
+   * A JavaFX UI element to store different tabs of runways.
+   */
   @FXML
   private TabPane runwayTabs;
 
@@ -34,7 +38,6 @@ public class MainController extends BaseController {
     logger.info("Building MainController...");
 
     // Set stage properties
-
     Screen screen = Screen.getPrimary();
     Rectangle2D bounds = screen.getVisualBounds();
 
@@ -63,6 +66,9 @@ public class MainController extends BaseController {
     new NewRunwayController(ProjectHelpers.createModalStage(stage), state);
   }
 
+  /**
+   * Method to update runway tabs when runway list has changed.
+   */
   private void renderTabs() {
     state.runwayListProperty().addListener((ListChangeListener<? super Runway>) list -> {
       list.next();
@@ -76,6 +82,9 @@ public class MainController extends BaseController {
     });
   }
 
+  /**
+   * Add initial runways, based on example calculations.
+   */
   private void addInitialRunways() {
     state.addRunway("09L", 3902, 3902, 3902, 3595, 240, 306);
     state.addRunway("27R", 3884, 3962, 3884, 3884, 240, 0);
