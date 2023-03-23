@@ -7,13 +7,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.models.Runway;
 
 /**
- * The CalculatorTest class to test calculation for runway values.
+ * The CalculatorTest test class to test calculation for runway values.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
  */
@@ -40,7 +41,11 @@ public class CalculatorTest {
     obstacle20H20N = new Obstacle("BrokenAirplane", 20, 0, 20);
     obstacle20H100S = new Obstacle("BrokenAirplane", 20, 0, -100);
 
-    aircraft = new Aircraft("A380", 300);
+    try {
+      aircraft = new Aircraft("A380", 300);
+    } catch (OutOfRangeException e) {
+      e.printStackTrace();
+    }
   }
 
   @BeforeEach
