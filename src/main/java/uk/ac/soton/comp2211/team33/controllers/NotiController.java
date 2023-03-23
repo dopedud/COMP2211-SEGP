@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The NotiScene class to notify the user if runway values have changed, or reset to its original values.
+ * The NotiController controller class to notify the user if runway values have changed, or reset to its original values.
  * Corresponds to user story #14.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)

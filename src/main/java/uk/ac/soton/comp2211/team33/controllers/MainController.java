@@ -14,7 +14,7 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The MainController class that serves as the main workspace for the runway re-declaration.
+ * The MainController controller class that serves as the main workspace for the runway re-declaration.
  * Corresponds to user story #7, #13.
  *
  * @author Geeth (gv2g21@soton.ac.uk), Abeed (mabs1u21@soton.ac.uk)

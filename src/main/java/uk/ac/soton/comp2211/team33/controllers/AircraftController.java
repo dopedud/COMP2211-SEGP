@@ -9,7 +9,7 @@ import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The AircraftController class that manages edition or addition of the list of aircraft.
+ * The AircraftController controller class that manages edition or addition of the list of aircraft.
  * Corresponds to user story #3.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)

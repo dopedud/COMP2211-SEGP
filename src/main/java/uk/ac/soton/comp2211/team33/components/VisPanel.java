@@ -1,6 +1,8 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
@@ -22,11 +24,13 @@ import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Pair;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
+import java.util.List;
+
 /**
  * The VisPanel class is a custom component that renders the 2D top-down and side-on view.
  * Corresponds to user story #2, #8a, #8b, #8c, #9, #10, #11, #12, #16.
  *
- * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk)
+ * @author Brian (dal1g21@soton.ac.uk), Jackson (jl14u21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */
 public class VisPanel extends StackPane {
   private static final Logger logger = LogManager.getLogger(VisPanel.class);
@@ -69,7 +73,8 @@ public class VisPanel extends StackPane {
   private double rotation = 0;
 
   /**
-   * The offset of the rotation in degrees - used to correctly rotate the vis to match compass heading depending on which side the threshold is
+   * The offset of the rotation in degrees - used to correctly rotate the vis to match compass heading depending on
+   * which side the threshold is.
    * If the threshold is on the left, the offset is 0 degrees, if it is on the right, the offset is 180 degrees.
    */
   private int compassOffset = 0;
@@ -77,7 +82,7 @@ public class VisPanel extends StackPane {
   /**
    * The current transform of the visualisation.
    */
-  private SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
+  private final SimpleObjectProperty<Affine> transform = new SimpleObjectProperty<>(new Affine());
 
   public VisPanel(Airport state, Runway runway) {
     this.runway = runway;
@@ -99,7 +104,7 @@ public class VisPanel extends StackPane {
     runway.currentObstacleProperty().addListener(ignored -> draw());
     runway.currentAircraftProperty().addListener(ignored -> draw());
     runway.obsDistFromThreshProperty().addListener(ignored -> draw());
-    state.runwayListProperty().addListener((ov, oldV, newV) -> draw());
+    state.runwayListProperty().addListener((ListChangeListener<? super Runway>) ignored -> draw());
     runway.ctoraProperty().addListener(ignored -> draw());
     runway.ctodaProperty().addListener(ignored -> draw());
     runway.casdaProperty().addListener(ignored -> draw());
@@ -145,7 +150,7 @@ public class VisPanel extends StackPane {
   }
 
   /**
-   * Get the centre of the canvas as a coordinate
+   * Get the centre of the canvas as a coordinate.
    *
    * @return The current center of the visualisation, in canvas coordinates.
    */
@@ -245,9 +250,8 @@ public class VisPanel extends StackPane {
     updateTransform();
   }
 
-
   /**
-   * Function for drawing the 2D views
+   * Function for drawing the 2D views.
    */
   private void draw() {
     if (isTopDownView) {
@@ -257,7 +261,6 @@ public class VisPanel extends StackPane {
 
     drawSideways();
   }
-
 
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -491,11 +494,11 @@ public class VisPanel extends StackPane {
   }
 
   /**
-   * Draws the distance indicators for the runway when called
+   * Draws the distance indicators for the runway when called.
    *
-   * @param gc     graphics context
+   * @param gc graphics context
    * @param legend distance label
-   * @param color  colour
+   * @param color colour
    * @param startX
    * @param startY
    * @param width
@@ -938,9 +941,9 @@ public class VisPanel extends StackPane {
 
 
   /**
-   * Fetches the other runway object if it exists
+   * Fetches the other runway object if it exists.
    *
-   * @param des the designator of the runway to be searched.
+   * @param des the designator of the runway to be searched
    * @return
    */
   private Runway fetchRunway(String des) {
@@ -962,7 +965,7 @@ public class VisPanel extends StackPane {
    * Checks if the threshold of the matching runway is smaller than the selected runway.
    * If yes, returns true. Otherwise, it returns false.
    *
-   * @param otherDesignator the runway designator of the other side.
+   * @param otherDesignator the runway designator of the other side
    * @return a boolean that determines if the designator should be switched or not
    */
   private boolean checkThresh(String otherDesignator) {

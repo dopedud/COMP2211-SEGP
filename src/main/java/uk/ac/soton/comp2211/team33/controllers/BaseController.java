@@ -8,6 +8,7 @@ import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
  * The BaseController abstract class to create scenes.
+ * This class acts a base controller for all controller classes.
  *
  * @author Brian (dal1g21@soton.ac.uk), Geeth (gv2g21@soton.ac.uk)
  */

@@ -8,7 +8,7 @@ import uk.ac.soton.comp2211.team33.components.InputField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
- * The NewRunwayController class that creates a new runway upon user request.
+ * The NewRunwayController controller class that creates a new runway upon user request.
  * Corresponds to user story #3, #13.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)

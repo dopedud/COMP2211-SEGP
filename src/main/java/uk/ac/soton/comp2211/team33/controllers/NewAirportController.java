@@ -18,7 +18,7 @@ import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
- * The NewAirportController class that creates a new airport upon user request.
+ * The NewAirportController controller class that creates a new airport upon user request.
  * Corresponds to user story #1.
  *
  * @author Abeed (mabs1u21@soton.ac.uk)
