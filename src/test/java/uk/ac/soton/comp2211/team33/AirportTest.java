@@ -3,7 +3,6 @@ package uk.ac.soton.comp2211.team33;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +44,7 @@ public class AirportTest {
   @Test
   @DisplayName("Test for limited range of blast protection values when adding an aircraft to an airport.")
   public void addProhibitedAircraft() {
-    assertThrows(OutOfRangeException.class, () -> state.addAircraft("A380", 250));
-    assertThrows(OutOfRangeException.class, () -> state.addAircraft("A380", 550));
+    assertThrows(IllegalArgumentException.class, () -> state.addAircraft("A380", 250));
+    assertThrows(IllegalArgumentException.class, () -> state.addAircraft("A380", 550));
   }
 }

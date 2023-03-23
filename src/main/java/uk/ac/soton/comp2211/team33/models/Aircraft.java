@@ -2,7 +2,6 @@ package uk.ac.soton.comp2211.team33.models;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 
 /**
  * The class Aircraft models what attributes an aircraft has when runway is being re-declared.
@@ -29,10 +28,13 @@ public class Aircraft {
    * @param id id of the aircraft
    * @param blastProtection blast protection of the aircraft
    */
-  public Aircraft(String id, double blastProtection) throws OutOfRangeException {
-    if (blastProtection < 300 || blastProtection > 500)
-      throw new OutOfRangeException("Blast protection out of range between 300m to 500m.");
-    else this.id = id; this.blastProtection = blastProtection;
+  public Aircraft(String id, double blastProtection) throws IllegalArgumentException {
+    if (blastProtection < 300 || blastProtection > 500) {
+      throw new IllegalArgumentException("Blast protection out of range between 300m to 500m.");
+    } else {
+      this.id = id;
+      this.blastProtection = blastProtection;
+    }
   }
 
   // Below are the usual accessors and mutators for the instance variables of this class.

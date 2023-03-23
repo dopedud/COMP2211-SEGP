@@ -30,7 +30,7 @@ public class App extends Application {
   /**
    * The method to invoke for JavaFX.
    *
-   * @param stage The initial window of the JavaFX application
+   * @param stage the initial window of the JavaFX application
    */
   @Override
   public void start(Stage stage) {

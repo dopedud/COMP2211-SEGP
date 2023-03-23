@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.InputField;
-import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Airport;
 
 /**
@@ -63,7 +62,7 @@ public class AircraftController extends BaseController {
     } catch (NumberFormatException e) {
       e.printStackTrace();
       //TODO: create a modal stage informing the user that value entered is not in correct format
-    } catch (OutOfRangeException e) {
+    } catch (IllegalArgumentException e) {
       e.printStackTrace();
       //TODO: create a modal stage informing the user that value entered is out of range
     }

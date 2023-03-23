@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 import java.io.*;
@@ -72,7 +71,7 @@ public class Airport {
     runwayList.add(new Runway(designator, tora, toda, asda, lda, resa, threshold));
   }
 
-  public void addAircraft(String id, double blastProtection) throws OutOfRangeException {
+  public void addAircraft(String id, double blastProtection) throws IllegalArgumentException {
     aircraftList.add(new Aircraft(id, blastProtection));
   }
 
