@@ -15,7 +15,7 @@
       <MenuItem text="New Runway..." onAction="#onNewRunway"/>
       <SeparatorMenuItem />
       <MenuItem text="Import..." onAction="#onImport"/>
-      <MenuItem text="Export..."/>
+      <MenuItem text="Export..." onAction="#onExport"/>
       <SeparatorMenuItem />
       <MenuItem text="Quit"/>
     </Menu>

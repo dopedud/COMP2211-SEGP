@@ -7,6 +7,10 @@ import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import java.io.*;
+import java.util.*;
+import org.dom4j.*;
+import org.dom4j.io.SAXReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.RunwayTab;
@@ -53,8 +57,6 @@ public class MainController extends BaseController {
     buildScene("/views/MainView.fxml");
 
     renderTabs();
-
-    addInitialRunways();
   }
 
   @FXML
@@ -69,13 +71,48 @@ public class MainController extends BaseController {
 
   @FXML
   private void onImport() {
+    var saxReader = new SAXReader();
+    Document document;
+
     var fileChooser = new FileChooser();
     fileChooser.setTitle("Import Airport State");
-    var file = fileChooser.showOpenDialog(stage);
+    fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+    File file = fileChooser.showOpenDialog(stage);
 
-    if (file != null) {
-      logger.info(file.getPath());
+    if (!getFileExtension(file.getName()).equals("xml")) {
+      logger.error("wrong file type"); //TODO: inform the user that the chosen file has incorrect file extension
+      return;
     }
+
+    //TODO: read XML files
+
+    try {
+      document = saxReader.read(file);
+
+      var airportElement = document.getRootElement();
+
+      state = new Airport(airportElement.attributeValue("city"), airportElement.attributeValue("name"));
+
+      new MainController(stage, state);
+    } catch (DocumentException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void onExport() {
+
+  }
+
+  /**
+   * Method to get the file extension of a file.
+   *
+   * @param fileName name of file
+   * @return file extension
+   */
+  public static String getFileExtension(String fileName) {
+    int dotIndex = fileName.lastIndexOf('.');
+    return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
   }
 
   /**
@@ -92,15 +129,5 @@ public class MainController extends BaseController {
         //TODO: remove runways when tab is closed
       }
     });
-  }
-
-  /**
-   * Add initial runways, based on example calculations.
-   */
-  private void addInitialRunways() {
-    state.addRunway("09L", 3902, 3902, 3902, 3595, 240, 306);
-    state.addRunway("27R", 3884, 3962, 3884, 3884, 240, 0);
-    state.addRunway("09R", 3660, 3660, 3660, 3353, 240, 307);
-    state.addRunway("27L", 3660, 3660, 3660, 3660, 240, 0);
   }
 }
