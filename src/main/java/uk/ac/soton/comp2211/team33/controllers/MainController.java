@@ -10,11 +10,16 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.*;
 import org.dom4j.*;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dom4j.io.SAXWriter;
+import org.dom4j.io.XMLWriter;
 import uk.ac.soton.comp2211.team33.components.RunwayTab;
+import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
+import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
@@ -71,12 +76,12 @@ public class MainController extends BaseController {
 
   @FXML
   private void onImport() {
-    var saxReader = new SAXReader();
     Document document;
 
     var fileChooser = new FileChooser();
     fileChooser.setTitle("Import Airport State");
     fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
     File file = fileChooser.showOpenDialog(stage);
 
     if (!getFileExtension(file.getName()).equals("xml")) {
@@ -87,13 +92,46 @@ public class MainController extends BaseController {
     //TODO: read XML files
 
     try {
-      document = saxReader.read(file);
+      document = new SAXReader().read(file);
 
       var airportElement = document.getRootElement();
 
-      state = new Airport(airportElement.attributeValue("city"), airportElement.attributeValue("name"));
+      var newState = new Airport(airportElement.attributeValue("city"), airportElement.attributeValue("name"));
+      newState.setObstaclesLoaded(Boolean.parseBoolean(airportElement.attributeValue("obstaclesLoaded")));
 
-      new MainController(stage, state);
+      var runwaysElement = airportElement.elements().get(0);
+      var aircraftsElement = airportElement.elements().get(1);
+      var obstaclesElement = airportElement.elements().get(2);
+
+      for (Element runwayElement : runwaysElement.elements()) {
+        String designator = runwayElement.attributeValue("designator");
+        double tora = Double.parseDouble(runwayElement.elements().get(0).getText());
+        double toda = Double.parseDouble(runwayElement.elements().get(1).getText());
+        double asda = Double.parseDouble(runwayElement.elements().get(2).getText());
+        double lda = Double.parseDouble(runwayElement.elements().get(3).getText());
+        double resa = Double.parseDouble(runwayElement.elements().get(4).getText());
+        double threshold = Double.parseDouble(runwayElement.elements().get(5).getText());
+
+        newState.addRunway(designator, tora, toda, asda, lda, resa, threshold);
+      }
+
+      for (Element aircraftElement : aircraftsElement.elements()) {
+        String id = aircraftElement.attributeValue("id");
+        double blastProtection = Double.parseDouble(aircraftElement.elements().get(0).getText());
+
+        newState.addAircraft(id, blastProtection);
+      }
+
+      for (Element obstacleElement : obstaclesElement.elements()) {
+        String name = obstacleElement.attributeValue("name");
+        double height = Double.parseDouble(obstacleElement.elements().get(0).getText());
+        double length = Double.parseDouble(obstacleElement.elements().get(1).getText());
+        double centerline = Double.parseDouble(obstacleElement.elements().get(2).getText());
+
+        newState.addObstacle(name, height, length, centerline);
+      }
+
+      new MainController(stage, newState);
     } catch (DocumentException e) {
       e.printStackTrace();
     }
@@ -101,7 +139,60 @@ public class MainController extends BaseController {
 
   @FXML
   private void onExport() {
+    Document document = DocumentHelper.createDocument();
 
+    var fileChooser = new FileChooser();
+    fileChooser.setTitle("Export Airport State");
+    fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
+    File file = fileChooser.showSaveDialog(stage);
+
+    if (!getFileExtension(file.getName()).equals("xml")) {
+      logger.error("wrong file type"); //TODO: inform the user that the chosen file has incorrect file extension
+      return;
+    }
+
+    try {
+      Element airportElement = document.addElement("airport").
+          addAttribute("city", state.getCity()).
+          addAttribute("name", state.getName()).
+          addAttribute("obstaclesLoaded", String.valueOf(state.getObstaclesLoaded()));
+
+      Element runwaysElement = airportElement.addElement("runways");
+      Element aircraftsElement = airportElement.addElement("aircrafts");
+      Element obstaclesElement = airportElement.addElement("obstacles");
+
+      for (Runway runway : state.runwayListProperty()) {
+        Element runwayElement = runwaysElement.addElement("runway").addAttribute("designator", runway.getDesignator());
+
+        runwayElement.addElement("tora").addText(String.valueOf(runway.getTora()));
+        runwayElement.addElement("toda").addText(String.valueOf(runway.getToda()));
+        runwayElement.addElement("asda").addText(String.valueOf(runway.getAsda()));
+        runwayElement.addElement("lda").addText(String.valueOf(runway.getLda()));
+        runwayElement.addElement("resa").addText(String.valueOf(runway.getResa()));
+        runwayElement.addElement("threshold").addText(String.valueOf(runway.getThreshold()));
+      }
+
+      for (Aircraft aircraft : state.aircraftListProperty()) {
+        Element aircraftElement = aircraftsElement.addElement("aircraft").addAttribute("id", aircraft.getId());
+
+        aircraftElement.addElement("blastProtection").addText(String.valueOf(aircraft.getBlastProtection()));
+      }
+
+      for (Obstacle obstacle : state.obstacleListProperty()) {
+        Element obstacleElement = obstaclesElement.addElement("obstacle").addAttribute("name", obstacle.getName());
+
+        obstacleElement.addElement("height").addText(String.valueOf(obstacle.getHeight()));
+        obstacleElement.addElement("length").addText(String.valueOf(obstacle.getLength()));
+        obstacleElement.addElement("centerline").addText(String.valueOf(obstacle.getCenterline()));
+      }
+
+      var xmlWriter = new XMLWriter(new FileWriter(file), OutputFormat.createPrettyPrint());
+      xmlWriter.write(document);
+      xmlWriter.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -119,6 +210,10 @@ public class MainController extends BaseController {
    * Method to update runway tabs when runway list has changed.
    */
   private void renderTabs() {
+    for (Runway runway : state.runwayListProperty()) {
+      runwayTabs.getTabs().add(new RunwayTab(stage, state, runway));
+    }
+
     state.runwayListProperty().addListener((ListChangeListener<? super Runway>) list -> {
       list.next();
 
