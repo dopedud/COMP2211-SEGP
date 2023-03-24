@@ -8,14 +8,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.*;
-import java.util.*;
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.dom4j.io.SAXWriter;
-import org.dom4j.io.XMLWriter;
 import uk.ac.soton.comp2211.team33.components.RunwayTab;
 import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
@@ -88,8 +86,6 @@ public class MainController extends BaseController {
       logger.error("wrong file type"); //TODO: inform the user that the chosen file has incorrect file extension
       return;
     }
-
-    //TODO: read XML files
 
     try {
       document = new SAXReader().read(file);
