@@ -7,8 +7,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="600" prefHeight="600" minWidth="600" prefWidth="800"
-      xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <MenuBar VBox.vgrow="NEVER">
     <Menu text="File">
       <MenuItem text="Change Airport..." onAction="#onChangeAirport"/>
@@ -16,12 +15,10 @@
       <SeparatorMenuItem />
       <MenuItem text="Import..." onAction="#onImport"/>
       <MenuItem text="Export..." onAction="#onExport"/>
-      <SeparatorMenuItem />
-      <MenuItem text="Quit"/>
     </Menu>
     <Menu text="Help">
       <MenuItem text="About..."/>
     </Menu>
   </MenuBar>
-  <TabPane fx:id="runwayTabs" tabMaxHeight="20.0" tabMaxWidth="100.0" VBox.vgrow="ALWAYS"/>
+  <TabPane fx:id="runwayTabs" tabMaxHeight="20.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS"/>
 </VBox>

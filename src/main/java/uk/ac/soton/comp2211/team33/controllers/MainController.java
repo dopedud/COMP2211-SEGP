@@ -51,7 +51,9 @@ public class MainController extends BaseController {
 
     stage.setX(bounds.getMinX());
     stage.setY(bounds.getMinY());
+    stage.setMinWidth(800);
     stage.setWidth(bounds.getWidth());
+    stage.setMinHeight(600);
     stage.setHeight(bounds.getHeight());
     stage.setResizable(true);
 
