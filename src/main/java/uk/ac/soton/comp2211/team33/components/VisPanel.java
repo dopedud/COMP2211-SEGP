@@ -602,9 +602,19 @@ public class VisPanel extends StackPane {
     // Clears the canvas, clearing a large area so that it is displayed correctly when zoomed out
     gc.clearRect(-5000, -5000, 10000, 10000);
 
+    //Colours that can be changed
+    var grass = Color.valueOf("#7CB342");
+    var clearedAndgraded = Color.valueOf("#0072C6");
+    var runwayBody = Color.valueOf("#242424");
+    var white = Color.valueOf("#ffffff");
+    var thresholdColour = Color.valueOf("#FF5733");
+    var stopwayColour = Color.valueOf("#f7ff00");
+    var clearwayColour = Color.valueOf("#ff8b00");
+    var accent1 = Color.valueOf("#FFD700");
+    var obstacleColour = Color.RED;
 
     //Surrounding area
-    gc.setFill(Color.valueOf("#7CB342"));
+    gc.setFill(grass);
     gc.fillRect(-5000, -5000, 10000, 10000);
 
     //X and Y coordinates
@@ -612,20 +622,20 @@ public class VisPanel extends StackPane {
     double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
 
     //The polygon around the runway
-    gc.setFill(Color.valueOf("#0072C6"));
+    gc.setFill(clearedAndgraded);
     gc.fillPolygon(xCoord, yCoord, 12);
     gc.setStroke(Color.BLACK);
     gc.strokePolygon(xCoord, yCoord, 12);
 
     //Runway body
-    gc.setFill(Color.valueOf("#242424"));
+    gc.setFill(runwayBody);
     gc.fillRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(0.25);
     gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
 
     //Dashed centre line, lower dash number to get more dashes in the line.
-    gc.setStroke(Color.valueOf("#ffffff"));
+    gc.setStroke(white);
     gc.setLineWidth(1);
     int dashes = 9;
     if (runway.getTora() >= 3250) {
@@ -636,7 +646,7 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(0);
 
     //Starting lines at each end of the runway
-    gc.setStroke(Color.valueOf("#ffffff"));
+    gc.setStroke(white);
     gc.setLineWidth(2);
     var tempA = cw * 0.11;
     var tempB = ch * 0.44;
@@ -660,7 +670,7 @@ public class VisPanel extends StackPane {
 
     //Show the runway designators in the 2D view
     gc.setLineWidth(1);
-    gc.setFill(Color.valueOf("#ffffff"));
+    gc.setFill(white);
     if (leftT) {
       gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
       gc.fillText(formattedDes[0], cw * 0.8, ch * 0.48);
@@ -680,8 +690,8 @@ public class VisPanel extends StackPane {
     if (threshold != 0) {
       gc.setLineWidth(1.5);
       gc.setLineDashes(6);
-      gc.setStroke(Color.valueOf("#FF5733"));
-      gc.setFill(Color.valueOf("#FF5733"));
+      gc.setStroke(thresholdColour);
+      gc.setFill(thresholdColour);
       if (leftT) {
         gc.strokeLine(cw * opthresh, ch * 0.41, cw * opthresh, ch * 0.57);
         gc.fillText(threshold + "m", cw * (opthresh - 0.03), ch * 0.6);
@@ -704,8 +714,8 @@ public class VisPanel extends StackPane {
     }
 
     //Stopway on runway end
-    gc.setStroke(Color.valueOf("#f7ff00"));
-    gc.setFill(Color.valueOf("#f7ff00"));
+    gc.setStroke(stopwayColour);
+    gc.setFill(stopwayColour);
     //Write metrics over threshold and draw rectangles
     if (leftT) {
       if (otherRunway != null && otherRunway.getStopway() != 0) {
@@ -735,8 +745,8 @@ public class VisPanel extends StackPane {
     double rectS = 0.9;
     double rectH = 0.425;
     double rectHeight = 0.11;
-    gc.setStroke(Color.valueOf("#ff8b00"));
-    gc.setFill(Color.valueOf("#ff8b00"));
+    gc.setStroke(clearwayColour);
+    gc.setFill(clearwayColour);
     //Includes setting the clearway for the other runway
     if (leftT) {
       clearwayPar = 0.1;
@@ -798,8 +808,8 @@ public class VisPanel extends StackPane {
 
     //Add a marking about the Cleared and Graded area
     gc.setLineWidth(1);
-    gc.setFill(Color.valueOf("#FFD700"));
-    gc.setStroke(Color.valueOf("#FFD700"));
+    gc.setFill(accent1);
+    gc.setStroke(accent1);
     gc.fillText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
     gc.strokeText("Cleared and Graded Area", cw * 0.40, ch * 0.75);
 
@@ -817,8 +827,8 @@ public class VisPanel extends StackPane {
     //Runway distances
     gc.setLineWidth(1.5);
     gc.setLineDashes(5);
-    gc.setStroke(Color.valueOf("#000000"));
-    gc.setFill(Color.valueOf("#000000"));
+    gc.setStroke(Color.BLACK);
+    gc.setFill(Color.BLACK);
     if (leftT) {
       gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
     } else {
@@ -932,8 +942,8 @@ public class VisPanel extends StackPane {
     //Picked an object
     if(runway.getCurrentObstacle() != null) {
       logger.info("Obstacle detected, showing on view.");
-      gc.setFill(Color.RED);
-      gc.setStroke(Color.RED);
+      gc.setFill(obstacleColour);
+      gc.setStroke(obstacleColour);
       var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold())/runway.getTora();
       double offsetY = - runway.getCurrentObstacle().getCenterline()/1000;
       logger.info("This is offsetX " + offsetX);
@@ -1012,7 +1022,7 @@ public class VisPanel extends StackPane {
    */
   private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2, double arrowSize, boolean right) {
 
-    var arrowColour = Color.valueOf("#000000");
+    var arrowColour = Color.BLACK;
     gc.setStroke(arrowColour);
     gc.setFill(arrowColour);
 
