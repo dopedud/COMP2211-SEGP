@@ -1,6 +1,5 @@
 package uk.ac.soton.comp2211.team33.components;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -17,14 +16,11 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Affine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Pair;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
-
-import java.util.List;
 
 /**
  * The VisPanel class is a custom component that renders the 2D top-down and side-on view.
@@ -818,14 +814,6 @@ public class VisPanel extends StackPane {
       gc.fillText("Take-Off/Landing", cw * 0.1, ch * arrowH - 5, 160);
     }
 
-    //Picked an object
-//    if (runway.getCurrentObstacle() != null) {
-//      gc.setFill(Color.RED);
-//      gc.setFont(new Font(30));
-//      gc.fillText(runway.getCurrentObstacle().getName(), cw * (0.1 + ((runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora())), ch / 2);
-//    }
-    gc.setFont(new Font(20));
-
     //Runway distances
     gc.setLineWidth(1.5);
     gc.setLineDashes(5);
@@ -859,16 +847,16 @@ public class VisPanel extends StackPane {
       var revratio = runway.getClda() / runway.getLda();
 
       if (leftT) {
-        if (runway.getObsDistFromThresh() > runway.getTora() / 2) {
+        if (runway.getObsDistFromThresh() + runway.getThreshold() > runway.getTora() / 2) {
           gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1, heightM);
           gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
           gc.strokeLine(cw * forLDA * revratio, heightU, cw * forLDA * revratio, heightD);
         } else {
           gc.strokeLine(cw * forLDA, heightM, cw * 0.1 * ratio, heightM);
-          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
+          gc.strokeLine(cw * 0.1 * ratio, heightU, cw * 0.1 * ratio, heightD);
         }
       } else {
-        if (runway.getObsDistFromThresh() < runway.getTora() / 2) {
+        if (runway.getObsDistFromThresh() + runway.getThreshold() < runway.getTora() / 2) {
           gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.9, heightM);
           gc.strokeLine(cw * 0.9, heightU, cw * 0.9, heightD);
           gc.strokeLine(cw * forLDA * ratio, heightU, cw * forLDA * ratio, heightD);
@@ -936,6 +924,27 @@ public class VisPanel extends StackPane {
       gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.45, heightU);
     }
 
+    gc.setFont(new Font(20));
+
+    gc.strokeOval(cw * 0.5, ch * 0.5, 10, 10);
+    gc.fillOval(cw * 0.5, ch * 0.5, 10, 10);
+
+    //Picked an object
+    if(runway.getCurrentObstacle() != null) {
+      logger.info("Obstacle detected, showing on view.");
+      gc.setFill(Color.RED);
+      gc.setStroke(Color.RED);
+      var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold())/runway.getTora();
+      double offsetY = - runway.getCurrentObstacle().getCenterline()/1000;
+      logger.info("This is offsetX " + offsetX);
+      if (leftT) {
+        gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+        gc.fillOval(cw * (0.9 - offsetX ), ch * (0.475 + offsetY), 10, 10);
+      } else {
+        gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+        gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+      }
+    }
     gc.setFont(new Font(20));
   }
 
@@ -1019,19 +1028,6 @@ public class VisPanel extends StackPane {
       gc.fillPolygon(xs, ys, 3);
     }
 
-//    double dx = x2 - x1, dy = y2 - y1;
-//    double angle = Math.atan2(dy, dx);
-//    int len = (int) Math.sqrt(dx * dx + dy * dy);
-//
-//    Transform transform = Transform.translate(x1, y1);
-//    transform = transform.createConcatenation(Transform.rotate(rotation, canvas.getWidth() / 2.5, canvas.getHeight() / 2.5));
-//    transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
-//    gc.setTransform(new Affine(transform));
-//
-//    gc.strokeLine(0, 0, len, 0);
-//    gc.fillPolygon(new double[]{dx, dx - arrowSize, dx - arrowSize, dx}, new double[]{0, arrowSize, -arrowSize, 0}, 4);
-//
-//    gc.restore();
   }
 
   /**
