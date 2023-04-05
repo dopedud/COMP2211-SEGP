@@ -4,24 +4,29 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <?import uk.ac.soton.comp2211.team33.components.InputField?>
 
 <AnchorPane prefWidth="400.0" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1">
-  <Label text="New runway details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
-  <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
-    <InputField fx:id="designator" label="Designator" tooltip="The designator of the runway" />
-    <InputField fx:id="tora" label="TORA" suffix="m" tooltip="Take Off Run Available"/>
-    <InputField fx:id="toda" label="TODA" suffix="m" tooltip="Take Off Distance Available"/>
-    <InputField fx:id="asda" label="ASDA" suffix="m" tooltip="Accelerate Stop Distance Available"/>
-    <InputField fx:id="lda" label="LDA" suffix="m" tooltip="Landing Distance Available"/>
-    <InputField fx:id="resa" label="RESA" suffix="m" tooltip="Runway End Safety Area"/>
-    <InputField fx:id="threshold" label="Threshold" suffix="m" tooltip="The threshold position of the runway"/>
-    <AnchorPane>
-      <Button mnemonicParsing="false" text="Submit" onAction="#onSubmitRunway"
-              prefHeight="30.0" prefWidth="100.0"
-              AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0"/>
-    </AnchorPane>
+  <VBox AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" spacing="12.0">
+    <Label text="New runway details:" />
+    <Text fx:id="formError" style="-fx-text-fill: red"  />
+
+    <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+      <InputField fx:id="designator" label="Designator" tooltip="The designator of the runway" />
+      <InputField fx:id="tora" label="TORA" suffix="m" tooltip="Take Off Run Available"/>
+      <InputField fx:id="toda" label="TODA" suffix="m" tooltip="Take Off Distance Available"/>
+      <InputField fx:id="asda" label="ASDA" suffix="m" tooltip="Accelerate Stop Distance Available"/>
+      <InputField fx:id="lda" label="LDA" suffix="m" tooltip="Landing Distance Available"/>
+      <InputField fx:id="resa" label="RESA" suffix="m" tooltip="Runway End Safety Area"/>
+      <InputField fx:id="threshold" label="Threshold" suffix="m" tooltip="The threshold position of the runway"/>
+      <AnchorPane>
+        <Button mnemonicParsing="false" text="Submit" onAction="#onSubmitRunway"
+                prefHeight="30.0" prefWidth="100.0"
+                AnchorPane.topAnchor="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0"/>
+      </AnchorPane>
+    </VBox>
   </VBox>
 </AnchorPane>

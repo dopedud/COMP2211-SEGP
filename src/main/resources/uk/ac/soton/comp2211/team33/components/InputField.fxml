@@ -13,5 +13,4 @@
     <TextField fx:id="textFieldNode"/>
     <Label fx:id="suffixNode" minWidth="25"/>
   </HBox>
-
 </fx:root>
