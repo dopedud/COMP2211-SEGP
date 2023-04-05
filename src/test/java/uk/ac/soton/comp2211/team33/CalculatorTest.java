@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import uk.ac.soton.comp2211.team33.exceptions.OutOfRangeException;
 import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.utilities.Calculator;
@@ -43,7 +42,7 @@ public class CalculatorTest {
 
     try {
       aircraft = new Aircraft("A380", 300);
-    } catch (OutOfRangeException e) {
+    } catch (IllegalArgumentException e) {
       e.printStackTrace();
     }
   }
