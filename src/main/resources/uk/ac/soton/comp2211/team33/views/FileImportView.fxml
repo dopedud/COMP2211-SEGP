@@ -9,12 +9,15 @@
 <?import uk.ac.soton.comp2211.team33.components.InputField?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="100.0" prefWidth="600.0">
 
-    <InputField fx:id="fileLocation" label="File" tooltip="The file to import" />
-
-    <HBox spacing="10" AnchorPane.bottomAnchor="10">
+    <HBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+        <Label text="Select File..." />
+        <TextField fx:id="fileLocation" HBox.hgrow="ALWAYS"/>
         <Button onAction="#browseFile" text="Browse" />
+    </HBox>
+
+    <HBox spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" alignment="CENTER">
         <Button onAction="#confirm" text="Confirm" />
     </HBox>
 

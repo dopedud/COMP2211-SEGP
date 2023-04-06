@@ -29,7 +29,7 @@ public class FileImportController extends BaseController {
   private static final Logger logger = LogManager.getLogger(FileImportController.class);
 
   @FXML
-  private InputField fileLocation;
+  private TextField fileLocation;
 
   /**
    * Instantiate a FileImportController.
