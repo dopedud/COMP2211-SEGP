@@ -66,7 +66,7 @@ public class MainController extends BaseController {
 
   @FXML
   private void onChangeAirport() {
-    new NewAirportController(new Stage(), null);
+    new SplashController(new Stage(), null);
   }
 
   @FXML

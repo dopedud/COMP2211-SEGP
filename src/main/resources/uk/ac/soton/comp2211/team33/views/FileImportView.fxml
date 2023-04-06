@@ -13,7 +13,7 @@
 
     <HBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
         <Label text="Select File..." />
-        <TextField fx:id="fileLocation" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="fileLocation" promptText="Path to file" HBox.hgrow="ALWAYS"/>
         <Button onAction="#browseFile" text="Browse" />
     </HBox>
 
