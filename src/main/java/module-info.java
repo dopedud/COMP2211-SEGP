@@ -4,6 +4,7 @@ module uk.ac.soton.comp2211.team33 {
   requires javafx.controls;
   requires javafx.fxml;
   requires dom4j;
+  requires java.xml;
 
   exports uk.ac.soton.comp2211.team33;
   exports uk.ac.soton.comp2211.team33.components;

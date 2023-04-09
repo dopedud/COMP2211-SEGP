@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
+import uk.ac.soton.comp2211.team33.utilities.XMLHelpers;
 
 public class SplashController extends BaseController {
 
@@ -48,11 +49,11 @@ public class SplashController extends BaseController {
 
   @FXML
   private void importAirportFromFile() {
-    SimpleStringProperty filepath = new SimpleStringProperty();
-    var importController = new FileImportController(ProjectHelpers.createModalStage(stage), state);
-    filepath.bind(importController.getSelectedFileLocationProperty());
-    importController.show();
-    logger.info("Importing File " + filepath.get());
+    var filepath = ProjectHelpers.getPathWithDialog(stage);
+    if (filepath != null) {
+      state = XMLHelpers.importAirport(filepath);
+      new MainController(stage, state);
+    }
   }
 
 

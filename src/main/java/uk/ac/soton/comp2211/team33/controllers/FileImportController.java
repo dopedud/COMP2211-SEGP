@@ -23,6 +23,9 @@ import java.io.File;
  * 2. Bind the file location property to a StringProperty, using getSelectedFileLocationProperty()
  * 3. Call show() to show the dialog. Will wait until the dialog is closed.
  * 4. Extract the file location from the StringProperty.
+ *
+ * Alternatively, use ProjectHelpers.getPathWithDialog()
+ *
  */
 public class FileImportController extends BaseController {
 
@@ -37,7 +40,7 @@ public class FileImportController extends BaseController {
    * @param stage The application stage to render the scene in. This should be a modal stage if the dialog is to appear over the application.
    * @param state The global application state
    */
-  FileImportController(Stage stage, Airport state) {
+  public FileImportController(Stage stage, Airport state) {
     super(stage, state);
   }
 
