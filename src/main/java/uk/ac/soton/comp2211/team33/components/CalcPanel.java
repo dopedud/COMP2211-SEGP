@@ -45,8 +45,6 @@ public class CalcPanel extends AnchorPane {
 
   private SimpleBooleanProperty calcTowards = new SimpleBooleanProperty(true);
 
-  private SimpleBooleanProperty redeclared = new SimpleBooleanProperty(false);
-
   @FXML
   private Button switchNotifications;
 
@@ -58,7 +56,6 @@ public class CalcPanel extends AnchorPane {
     this.runway = runway;
 
     this.state.calcTowardsProperty().bind(calcTowards);
-    this.state.redeclararedProperty().bind(redeclared);
 
     ProjectHelpers.renderRoot("/components/CalcPanel.fxml", this, this);
 
@@ -164,18 +161,14 @@ public class CalcPanel extends AnchorPane {
     if (calcTowards.get()) {
       if (runway.getCurrentObstacle() == null) {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been reset.");
-        redeclared.set(false);
       } else {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been re-declared.");
-        redeclared.set(true);
       }
     } else {
       if (runway.getCurrentObstacle() == null || runway.getCurrentAircraft() == null) {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been reset.");
-        redeclared.set(false);
       } else {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been re-declared.");
-        redeclared.set(true);
       }
     }
   }

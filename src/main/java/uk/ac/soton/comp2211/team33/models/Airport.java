@@ -153,11 +153,4 @@ public class Airport {
     return calcTowards.get();
   }
 
-  public boolean isRedeclarared() {
-    return redeclarared.get();
-  }
-
-  public SimpleBooleanProperty redeclararedProperty() {
-    return redeclarared;
-  }
 }
