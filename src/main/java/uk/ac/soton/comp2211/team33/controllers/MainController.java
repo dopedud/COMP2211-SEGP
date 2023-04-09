@@ -19,6 +19,7 @@ import uk.ac.soton.comp2211.team33.models.Aircraft;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
+import uk.ac.soton.comp2211.team33.utilities.Calculator;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
@@ -145,11 +146,6 @@ public class MainController extends BaseController {
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
     File file = fileChooser.showSaveDialog(stage);
 
-    if (!getFileExtension(file.getName()).equals("xml")) {
-      logger.error("wrong file type"); //TODO: inform the user that the chosen file has incorrect file extension
-      return;
-    }
-
     try {
       Element airportElement = document.addElement("airport").
           addAttribute("city", state.getCity()).
@@ -188,6 +184,79 @@ public class MainController extends BaseController {
       var xmlWriter = new XMLWriter(new FileWriter(file), OutputFormat.createPrettyPrint());
       xmlWriter.write(document);
       xmlWriter.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void onPrint() {
+    var fileChooser = new FileChooser();
+    fileChooser.setTitle("Print Airport State");
+    fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+    File file = fileChooser.showSaveDialog(stage);
+
+    try {
+      var fileWriter = new FileWriter(file);
+
+      fileWriter.write("***AIRPORT***: " + state.getName() + ", " + state.getCity() + "\n");
+
+      fileWriter.write("\n");
+
+      fileWriter.write("***RUNWAYS***: \n");
+
+      fileWriter.write("\n");
+
+      for (Runway runway : state.runwayListProperty()) {
+        fileWriter.write("**RUNWAY**: " + runway.getDesignator() + "\n");
+        fileWriter.write("TORA: " + runway.getTora() + " m, ");
+        fileWriter.write("Calculated TORA: " + runway.getCtora() + " m\n");
+        fileWriter.write("TODA: " + runway.getToda() + " m, ");
+        fileWriter.write("Calculated TODA: " + runway.getCtoda() + " m\n");
+        fileWriter.write("ASDA: " + runway.getAsda() + " m, ");
+        fileWriter.write("Calculated ASDA: " + runway.getCasda() + " m\n");
+        fileWriter.write("LDA: " + runway.getLda() + " m, ");
+        fileWriter.write("Calculated LDA: " + runway.getClda() + " m\n");
+
+        fileWriter.write("\n");
+
+        Obstacle currentObstacle = runway.getCurrentObstacle();
+        fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentObstacle.getName() + " m\n");
+        fileWriter.write("Height: " + currentObstacle.getHeight() + " m\n");
+        fileWriter.write("Length: " + currentObstacle.getLength() + " m\n");
+        fileWriter.write("Distance from center-line: " + currentObstacle.getCenterline() + " m\n");
+
+        fileWriter.write("\n");
+
+        Aircraft currentAircraft = runway.getCurrentAircraft();
+        fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentAircraft.getId() + " m\n");
+        fileWriter.write("Blast protection: " + currentAircraft.getBlastProtection() + " m\n");
+
+        fileWriter.write("\n");
+
+        fileWriter.write("CALCULATION FOR TAKE-OFF/LANDING TOWARDS OBSTACLE:\n");
+        fileWriter.write(Calculator.takeOffTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
+            Calculator.landingTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n");
+
+        fileWriter.write("\n");
+
+        fileWriter.write("CALCULATION FOR TAKE-OFF AWAY/LANDING OVER OBSTACLE:\n");
+        fileWriter.write(Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
+            Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n");
+
+        fileWriter.write("\n");
+      }
+
+      for (Obstacle obstacle : state.obstacleListProperty()) {
+
+      }
+
+      for (Aircraft aircraft : state.aircraftListProperty()) {
+
+      }
+
+      fileWriter.close();
     } catch (IOException e) {
       e.printStackTrace();
     }

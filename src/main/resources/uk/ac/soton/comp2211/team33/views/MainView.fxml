@@ -12,9 +12,11 @@
     <Menu text="File">
       <MenuItem text="Change Airport..." onAction="#onChangeAirport"/>
       <MenuItem text="New Runway..." onAction="#onNewRunway"/>
-      <SeparatorMenuItem />
+      <SeparatorMenuItem/>
       <MenuItem text="Import..." onAction="#onImport"/>
       <MenuItem text="Export..." onAction="#onExport"/>
+      <SeparatorMenuItem/>
+      <MenuItem text="Print..." onAction="#onPrint"/>
     </Menu>
     <Menu text="Help">
       <MenuItem text="About..."/>
