@@ -49,6 +49,12 @@ public class Airport {
   private final SimpleBooleanProperty obstaclesLoaded;
 
   /**
+   * Calculation mode boolean, used for the Top-Down view
+   */
+  private final SimpleBooleanProperty calcTowards;
+
+
+  /**
    * Creates a new airport with the specified city and name.
    *
    * @param city city this airport is situated at
@@ -61,7 +67,8 @@ public class Airport {
     runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
     aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
     obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    obstaclesLoaded = new SimpleBooleanProperty();
+    obstaclesLoaded = new SimpleBooleanProperty(false);
+    calcTowards = new SimpleBooleanProperty();
   }
 
   // Below are methods to add and load objects in an airport.
@@ -117,10 +124,6 @@ public class Airport {
     return obstaclesLoaded.get();
   }
 
-  public void setObstaclesLoaded(boolean b) {
-    obstaclesLoaded.set(b);
-  }
-
   public SimpleListProperty<Runway> runwayListProperty() {
     return runwayList;
   }
@@ -136,4 +139,13 @@ public class Airport {
   public SimpleBooleanProperty obstaclesLoadedProperty() {
     return obstaclesLoaded;
   }
+
+  public SimpleBooleanProperty calcTowardsProperty() {
+    return calcTowards;
+  }
+
+  public boolean isCalcTowards() {
+    return calcTowards.get();
+  }
+
 }
