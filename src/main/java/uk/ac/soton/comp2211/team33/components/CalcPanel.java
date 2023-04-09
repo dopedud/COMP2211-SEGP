@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.components;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,7 +43,7 @@ public class CalcPanel extends AnchorPane {
   @FXML
   private DropdownField calcMode;
 
-  private boolean calcTowards = true;
+  private SimpleBooleanProperty calcTowards = new SimpleBooleanProperty(true);
 
   @FXML
   private Button switchNotifications;
@@ -53,6 +54,8 @@ public class CalcPanel extends AnchorPane {
     this.stage = stage;
     this.state = state;
     this.runway = runway;
+
+    this.state.calcTowardsProperty().bind(calcTowards);
 
     ProjectHelpers.renderRoot("/components/CalcPanel.fxml", this, this);
 
@@ -115,7 +118,7 @@ public class CalcPanel extends AnchorPane {
     calcMode.setValue("Take-Off Towards/Landing Towards");
 
     calcMode.valueProperty().addListener((obVal, oldVal, newVal) -> {
-      calcTowards = newVal.equals("Take-Off Towards/Landing Towards");
+      calcTowards.set(newVal.equals("Take-Off Towards/Landing Towards"));
       recalculateRunwayValues();
       notifyRecalculation();
     });
@@ -133,7 +136,7 @@ public class CalcPanel extends AnchorPane {
   }
 
   private void recalculateRunwayValues() {
-    if (calcTowards) {
+    if (calcTowards.get()) {
       if (runway.getCurrentObstacle() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
@@ -154,7 +157,7 @@ public class CalcPanel extends AnchorPane {
   private void notifyRecalculation() {
     if (!switchNoti) return;
 
-    if (calcTowards) {
+    if (calcTowards.get()) {
       if (runway.getCurrentObstacle() == null) {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been reset.");
       } else {
