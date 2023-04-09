@@ -67,8 +67,9 @@ public class Airport {
     runwayList = new SimpleListProperty<>(FXCollections.observableArrayList());
     aircraftList = new SimpleListProperty<>(FXCollections.observableArrayList());
     obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
-    obstaclesLoaded = new SimpleBooleanProperty(false);
+    obstaclesLoaded = new SimpleBooleanProperty();
     calcTowards = new SimpleBooleanProperty();
+
   }
 
   // Below are methods to add and load objects in an airport.
@@ -122,6 +123,10 @@ public class Airport {
 
   public boolean getObstaclesLoaded() {
     return obstaclesLoaded.get();
+  }
+
+  public void setObstaclesLoaded(boolean b) {
+    obstaclesLoaded.set(b);
   }
 
   public SimpleListProperty<Runway> runwayListProperty() {

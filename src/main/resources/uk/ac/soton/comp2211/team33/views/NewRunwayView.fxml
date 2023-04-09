@@ -17,7 +17,7 @@
     <InputField fx:id="asda" label="ASDA" suffix="m" tooltip="Accelerate Stop Distance Available"/>
     <InputField fx:id="lda" label="LDA" suffix="m" tooltip="Landing Distance Available"/>
     <InputField fx:id="resa" label="RESA" suffix="m" tooltip="Runway End Safety Area"/>
-    <InputField fx:id="threshold" label="Threshold" suffix="m" tooltip="The threshold position of the runway"/>
+    <InputField fx:id="threshold" label="Disp. Thresh." suffix="m" tooltip="The distance between the end of the runway and the displaced threshold of the runway"/>
     <AnchorPane>
       <Button mnemonicParsing="false" text="Submit" onAction="#onSubmitRunway"
               prefHeight="30.0" prefWidth="100.0"
