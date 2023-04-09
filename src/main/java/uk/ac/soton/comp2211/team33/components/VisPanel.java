@@ -857,8 +857,6 @@ public class VisPanel extends StackPane {
       //Text name
       var label = "LDA= " + runway.getClda() + "m";
 
-      logger.info("R ==== "  + isRedeclared);
-
       if (runway.getCurrentObstacle() == null || !isRedeclared) {
 
         if (leftT) {
@@ -1004,7 +1002,7 @@ public class VisPanel extends StackPane {
     //Picked an object
     if (runway.getCurrentObstacle() != null) {
 
-      if (Math.abs(runway.getObsDistFromThresh()) > 60 || Math.abs(runway.getCurrentObstacle().getCenterline()) > 75) {
+      if (runway.getObsDistFromThresh() < -60 || Math.abs(runway.getCurrentObstacle().getCenterline()) > 75) {
 
         logger.info("Obstacle does not affect runway, not displaying...");
 
