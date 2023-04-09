@@ -285,12 +285,12 @@ public class VisPanel extends StackPane {
     // Grass
 
     gc.setFill(Color.rgb(73, 145, 99));
-    gc.fillRect(-5000, grassStartY, 10000, layerDepth*10);
+    gc.fillRect(-5000, grassStartY, 10000, layerDepth * 10);
 
     // Dust
 
     gc.setFill(Color.rgb(82, 50, 38));
-    gc.fillRect(-5000, grassStartY + layerDepth, cw*100, ch*100);
+    gc.fillRect(-5000, grassStartY + layerDepth, cw * 100, ch * 100);
 
     // Overall runway properties
 
@@ -483,8 +483,8 @@ public class VisPanel extends StackPane {
 
       double safetyDistancePx = 60 / toda * runwayLengthPx;
       double safetyDistanceStartX = drawLegendFromLeft
-              ? Math.max(obstacleEndX + resaLengthPx, obstacleStartX + heightTimes50Px)
-              : Math.min(obstacleEndX - resaLengthPx, obstacleStartX - heightTimes50Px) - safetyDistancePx;
+        ? Math.max(obstacleEndX + resaLengthPx, obstacleStartX + heightTimes50Px)
+        : Math.min(obstacleEndX - resaLengthPx, obstacleStartX - heightTimes50Px) - safetyDistancePx;
       drawDistanceLegend(gc, "Safety distance", Color.GREEN, safetyDistanceStartX, runwayEndY - 150, safetyDistancePx, 150);
     }
   }
@@ -492,9 +492,9 @@ public class VisPanel extends StackPane {
   /**
    * Draws the distance indicators for the runway when called.
    *
-   * @param gc graphics context
+   * @param gc     graphics context
    * @param legend distance label
-   * @param color colour
+   * @param color  colour
    * @param startX
    * @param startY
    * @param width
@@ -533,6 +533,7 @@ public class VisPanel extends StackPane {
 
   /**
    * Returns a pair of matching runways. The runway with a shorter threshold will be the first item.
+   *
    * @return Pair of runways
    */
   private Pair<Runway, Runway> getRunwayPair() {
@@ -618,8 +619,8 @@ public class VisPanel extends StackPane {
     gc.fillRect(-5000, -5000, 10000, 10000);
 
     //X and Y coordinates
-    double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
-    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
+    double[] xCoord = {0.0, cw * 0.2, cw * 0.3, cw * 0.7, cw * 0.8, cw, cw, cw * 0.8, cw * 0.7, cw * 0.3, cw * 0.2, 0.0};
+    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.2, ch * 0.2, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.8, ch * 0.8, ch * 0.7, ch * 0.7};
 
     //The polygon around the runway
     gc.setFill(clearedAndgraded);
@@ -826,136 +827,255 @@ public class VisPanel extends StackPane {
 
     //Runway distances
     gc.setLineWidth(1.5);
-    gc.setLineDashes(5);
     gc.setStroke(Color.BLACK);
     gc.setFill(Color.BLACK);
-    if (leftT) {
-      gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
-    } else {
-      gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
-    }
     gc.setFont(new Font(15));
     gc.setLineDashes(0);
+
+    //The boolean that will determine the distance line's location
+    var towards = state.isCalcTowards();
+
+    //Location of the obstacle as a ratio
+    double obsLocation;
+    if (leftT) {
+      obsLocation = cw * (0.9 - (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora());
+    } else {
+      obsLocation = cw * (0.1 + (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora());
+    }
+    
+    boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda() 
+      != runway.getCtoda() || runway.getLda() != runway.getClda();
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
     if (runway.getClda() < 0) {
       logger.error("Negative value, not drawing LDA");
     } else {
+
       //Main height
-      var heightM = ch * 0.41;
+      var height = 0.41;
 
-      //Displaced upwards parameter
-      var heightU = ch * 0.4;
+      //Text name
+      var label = "LDA= " + runway.getClda() + "m";
 
-      //Displaced downwards parameter
-      var heightD = ch * 0.42;
+      if (runway.getCurrentObstacle() == null || !isRedeclared) {
 
-      //ratio to multiply with to adjust length
-      var ratio = runway.getLda() / runway.getClda();
-
-      //ratio flipped around for the end of the distance line
-      var revratio = runway.getClda() / runway.getLda();
-
-      if (leftT) {
-        if (runway.getObsDistFromThresh() + runway.getThreshold() > runway.getTora() / 2) {
-          gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1, heightM);
-          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
-          gc.strokeLine(cw * forLDA * revratio, heightU, cw * forLDA * revratio, heightD);
+        if (leftT) {
+          drawTDistance(gc, label, cw * 0.1, height, cw * forLDA, ch);
         } else {
-          gc.strokeLine(cw * forLDA, heightM, cw * 0.1 * ratio, heightM);
-          gc.strokeLine(cw * 0.1 * ratio, heightU, cw * 0.1 * ratio, heightD);
+          drawTDistance(gc, label, cw * forLDA, height, cw * 0.9, ch);
         }
+
       } else {
-        if (runway.getObsDistFromThresh() + runway.getThreshold() < runway.getTora() / 2) {
-          gc.strokeLine(cw * forLDA * ratio, heightM, cw * 0.9, heightM);
-          gc.strokeLine(cw * 0.9, heightU, cw * 0.9, heightD);
-          gc.strokeLine(cw * forLDA * ratio, heightU, cw * forLDA * ratio, heightD);
+
+        if (leftT) {
+
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * forLDA, ch);
+          } else {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          }
+
         } else {
-          gc.strokeLine(cw * forLDA, heightM, cw * 0.9 * revratio, heightM);
-          gc.strokeLine(cw * 0.9 * revratio, heightU, cw * 0.9 * revratio, heightD);
+
+          if (towards) {
+            drawTDistance(gc, label, cw * forLDA, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          }
+
         }
       }
-      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TORA value and adjusts length to current TORA
     if (runway.getCtora() < 0) {
       logger.error("Negative value, not drawing TORA");
     } else {
-      double ratio = runway.getCtora() / runway.getTora();
-      double start = 0.1;
-      double end = 0.9;
-      double heightU = 0.37;
-      double heightM = 0.38;
-      double heightD = 0.39;
-      if (leftT) {
-        gc.strokeLine(cw * end, ch * heightM, cw * start * (1 / ratio), ch * heightM);
-        gc.strokeLine(cw * start * (1 / ratio), ch * heightU, cw * start * (1 / ratio), ch * heightD);
+
+      // Height of the line
+      var height = 0.38;
+
+      //Label for the distance line
+      var label = "TORA= " + runway.getCtora() + "m";
+
+      if (runway.getCurrentObstacle() == null || !isRedeclared) {
+
+        drawTDistance(gc, label, cw * 0.1, height, cw * 0.9, ch);
+
       } else {
-        gc.strokeLine(cw * start, ch * heightM, cw * end * ratio, ch * heightM);
-        gc.strokeLine(cw * end * ratio, ch * heightU, cw * end * ratio, ch * heightD);
+
+        if (leftT) {
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          } else {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          }
+        } else {
+          if (towards) {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          }
+        }
+
       }
-      gc.fillText("TORA= " + runway.getCtora() + "m", cw * 0.45, ch * heightU);
     }
 
     //Displays ASDA value and adjusts length to current ASDA
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
-      double heightU = ch * 0.34;
-      double heightM = ch * 0.35;
-      double heightD = ch * 0.36;
-      double ratio = runway.getCasda() / runway.getAsda();
-      if (leftT) {
-        gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
-        gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
+
+      //Height of the line
+      var height = 0.35;
+
+      //Label to go above the line
+      var label = "ASDA= " + runway.getCasda() + "m";
+
+      if (runway.getCurrentObstacle() == null || !isRedeclared) {
+
+        if (leftT) {
+          drawTDistance(gc, label, cw * stopwayPar, height, cw * 0.9, ch);
+        } else {
+          drawTDistance(gc, label, cw * stopwayPar, height, cw * 0.1, ch);
+        }
+
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
-        gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
+
+        if (leftT) {
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          } else {
+            drawTDistance(gc, label, cw * stopwayPar, height, obsLocation - 20, ch);
+          }
+        } else {
+          if (towards) {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * stopwayPar, ch);
+          }
+        }
+
       }
-      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TODA value and adjusts length to current TODA
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
-      double heightU = ch * 0.31;
-      double heightM = ch * 0.32;
-      double heightD = ch * 0.33;
-      double ratio = runway.getCtora() / runway.getTora();
-      if (leftT) {
-        gc.strokeLine(cw * 0.9, heightM, cw * clearwayPar * (1 / ratio), heightM);
-        gc.strokeLine(cw * clearwayPar * (1 / ratio), heightU, cw * clearwayPar * (1 / ratio), heightD);
+
+      //The height of the line
+      var height = 0.32;
+
+      //Label above the line
+      var label = "TODA= " + runway.getCtoda() + "m";
+
+      if (runway.getCurrentObstacle() == null || !isRedeclared) {
+
+        if (leftT) {
+          drawTDistance(gc, label, cw * clearwayPar, height, cw * 0.9, ch);
+        } else {
+          drawTDistance(gc, label, cw * clearwayPar, height, cw * 0.1, ch);
+        }
+
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * ratio, heightM);
-        gc.strokeLine(cw * clearwayPar * ratio, heightU, cw * clearwayPar * ratio, heightD);
+
+        if (leftT) {
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          } else {
+            drawTDistance(gc, label, cw * clearwayPar, height, obsLocation - 20, ch);
+          }
+        } else {
+          if (towards) {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * clearwayPar, ch);
+          }
+        }
+
       }
-      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.45, heightU);
     }
 
     gc.setFont(new Font(20));
-
-    gc.strokeOval(cw * 0.5, ch * 0.5, 10, 10);
-    gc.fillOval(cw * 0.5, ch * 0.5, 10, 10);
 
     //Picked an object
-    if(runway.getCurrentObstacle() != null) {
-      logger.info("Obstacle detected, showing on view.");
-      gc.setFill(obstacleColour);
-      gc.setStroke(obstacleColour);
-      var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold())/runway.getTora();
-      double offsetY = - runway.getCurrentObstacle().getCenterline()/1000;
-      logger.info("This is offsetX " + offsetX);
-      if (leftT) {
-        gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
-        gc.fillOval(cw * (0.9 - offsetX ), ch * (0.475 + offsetY), 10, 10);
+    if (runway.getCurrentObstacle() != null) {
+
+      if (runway.getObsDistFromThresh() < -60 || Math.abs(runway.getCurrentObstacle().getCenterline()) > 75) {
+
+        logger.info("Obstacle does not affect runway, not displaying...");
+
       } else {
-        gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
-        gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+
+        logger.info("Obstacle detected, showing on view.");
+
+        gc.setFill(obstacleColour);
+        gc.setStroke(obstacleColour);
+
+        var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
+        double offsetY = -runway.getCurrentObstacle().getCenterline() / 1000;
+
+        logger.info("This is offsetX " + offsetX);
+
+        //Draw obstacle as a dot to pinpoint location
+        if (leftT) {
+          gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+        } else {
+          gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+        }
       }
     }
-    gc.setFont(new Font(20));
+  }
+
+  /**
+   * Draws distance line for top-down view
+   *
+   * @param gc    Graphics Context
+   * @param label The text displayed on top of the line
+   * @param x1    The start point of the line
+   * @param y1    The height of the line
+   * @param x2    The end point of the line
+   * @param ch    The height of the canvas
+   */
+  private void drawTDistance(GraphicsContext gc, String label, double x1, double y1, double x2, double ch) {
+
+    //Error handling
+    if (x2 < x1) {
+      var temp = x1;
+      x1 = x2;
+      x2 = temp;
+    }
+
+    var heightM = ch * y1;
+
+    var heightU = ch * (y1 - 0.01);
+
+    var heightD = ch * (y1 + 0.01);
+
+    var length = x2 - x1;
+
+    gc.beginPath();
+
+    //Line vert1
+    gc.moveTo(x1, heightU);
+    gc.lineTo(x1, heightD);
+
+    //Line vert2
+    gc.moveTo(x2, heightU);
+    gc.lineTo(x2, heightD);
+
+    //Distance Line
+    gc.moveTo(x1, heightM);
+    gc.lineTo(x2, heightM);
+
+    // Stroke everything
+    gc.stroke();
+
+    // Add header/distance name
+    gc.fillText(label, x1 + length / 2, heightU);
   }
 
 
@@ -1003,9 +1123,6 @@ public class VisPanel extends StackPane {
       }
       i++;
     }
-//    if (!found) {
-//      logger.info("No matching designator found, keeping the selected runway to the left");
-//    }
     return leftT;
   }
 
