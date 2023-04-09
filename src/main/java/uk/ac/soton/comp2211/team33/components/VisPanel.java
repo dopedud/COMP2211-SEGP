@@ -905,36 +905,52 @@ public class VisPanel extends StackPane {
     if (runway.getCasda() < 0) {
       logger.error("Negative value, not drawing ASDA");
     } else {
-      double heightU = ch * 0.34;
-      double heightM = ch * 0.35;
-      double heightD = ch * 0.36;
-      double ratio = runway.getCasda() / runway.getAsda();
+
+      //Height of the line
+      var height = ch * 0.35;
+
+      //Label to go above the line
+      var label = "ASDA= " + runway.getCasda() + "m";
+
       if (leftT) {
-        gc.strokeLine(cw * 0.9, heightM, cw * stopwayPar * (1 / ratio), heightM);
-        gc.strokeLine(cw * stopwayPar * (1 / ratio), heightU, cw * stopwayPar * (1 / ratio), heightD);
+        if (towards) {
+          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
+        } else {
+          drawTDistance(gc, label, cw * stopwayPar, height, obsLocation - 20);
+        }
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * stopwayPar * ratio, heightM);
-        gc.strokeLine(cw * stopwayPar * ratio, heightU, cw * stopwayPar * ratio, heightD);
+        if (towards) {
+          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
+        } else {
+          drawTDistance(gc, label, obsLocation + 20, height, cw * stopwayPar);
+        }
       }
-      gc.fillText("ASDA= " + runway.getCasda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TODA value and adjusts length to current TODA
     if (runway.getCtoda() < 0) {
       logger.error("Negative value, not drawing TODA");
     } else {
-      double heightU = ch * 0.31;
-      double heightM = ch * 0.32;
-      double heightD = ch * 0.33;
-      double ratio = runway.getCtora() / runway.getTora();
+
+      //The height of the line
+      var height = ch * 0.32;
+
+      //Label above the line
+      var label = "TODA= " + runway.getCtoda() + "m";
+
       if (leftT) {
-        gc.strokeLine(cw * 0.9, heightM, cw * clearwayPar * (1 / ratio), heightM);
-        gc.strokeLine(cw * clearwayPar * (1 / ratio), heightU, cw * clearwayPar * (1 / ratio), heightD);
+        if (towards) {
+          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
+        } else {
+          drawTDistance(gc, label, cw * clearwayPar, height, obsLocation - 20);
+        }
       } else {
-        gc.strokeLine(cw * 0.1, heightM, cw * clearwayPar * ratio, heightM);
-        gc.strokeLine(cw * clearwayPar * ratio, heightU, cw * clearwayPar * ratio, heightD);
+        if (towards) {
+          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
+        } else {
+          drawTDistance(gc, label, obsLocation + 20, height, cw * clearwayPar);
+        }
       }
-      gc.fillText("TODA= " + runway.getCtoda() + "m", cw * 0.45, heightU);
     }
 
     gc.setFont(new Font(20));
