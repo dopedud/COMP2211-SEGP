@@ -618,8 +618,8 @@ public class VisPanel extends StackPane {
     gc.fillRect(-5000, -5000, 10000, 10000);
 
     //X and Y coordinates
-    double[] xCoord = {0.0, cw * 0.18, cw * 0.27, cw * 0.727, cw * 0.818, cw, cw, cw * 0.818, cw * 0.727, cw * 0.27, cw * 0.18, 0.0};
-    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.225, ch * 0.225, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.775, ch * 0.775, ch * 0.7, ch * 0.7};
+    double[] xCoord = {0.0, cw * 0.2, cw * 0.3, cw * 0.7, cw * 0.8, cw, cw, cw * 0.8, cw * 0.7, cw * 0.3, cw * 0.2, 0.0};
+    double[] yCoord = {ch * 0.3, ch * 0.3, ch * 0.2, ch * 0.2, ch * 0.3, ch * 0.3, ch * 0.7, ch * 0.7, ch * 0.8, ch * 0.8, ch * 0.7, ch * 0.7};
 
     //The polygon around the runway
     gc.setFill(clearedAndgraded);
@@ -829,11 +829,11 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(5);
     gc.setStroke(Color.BLACK);
     gc.setFill(Color.BLACK);
-    if (leftT) {
-      gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
-    } else {
-      gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
-    }
+//    if (leftT) {
+//      gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
+//    } else {
+//      gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
+//    }
     gc.setFont(new Font(15));
     gc.setLineDashes(0);
 
@@ -842,13 +842,10 @@ public class VisPanel extends StackPane {
       logger.error("Negative value, not drawing LDA");
     } else {
       //Main height
-      var heightM = ch * 0.41;
+      var height = ch * 0.41;
 
-      //Displaced upwards parameter
-      var heightU = ch * 0.4;
-
-      //Displaced downwards parameter
-      var heightD = ch * 0.42;
+      //Text name
+      var label = "LDA= " + runway.getClda() + "m";
 
       //ratio to multiply with to adjust length
       var ratio = runway.getLda() / runway.getClda();
@@ -858,12 +855,10 @@ public class VisPanel extends StackPane {
 
       if (leftT) {
         if (runway.getObsDistFromThresh() + runway.getThreshold() > runway.getTora() / 2) {
-          gc.strokeLine(cw * forLDA * revratio, heightM, cw * 0.1, heightM);
-          gc.strokeLine(cw * 0.1, heightU, cw * 0.1, heightD);
-          gc.strokeLine(cw * forLDA * revratio, heightU, cw * forLDA * revratio, heightD);
+          drawTDistance(gc, label, cw * 0.1, height, cw * forLDA * revratio);
         } else {
           gc.strokeLine(cw * forLDA, heightM, cw * 0.1 * ratio, heightM);
-          gc.strokeLine(cw * 0.1 * ratio, heightU, cw * 0.1 * ratio, heightD);
+          
         }
       } else {
         if (runway.getObsDistFromThresh() + runway.getThreshold() < runway.getTora() / 2) {
@@ -875,7 +870,6 @@ public class VisPanel extends StackPane {
           gc.strokeLine(cw * 0.9 * revratio, heightU, cw * 0.9 * revratio, heightD);
         }
       }
-      gc.fillText("LDA= " + runway.getClda() + "m", cw * 0.45, heightU);
     }
 
     //Displays TORA value and adjusts length to current TORA
@@ -936,9 +930,6 @@ public class VisPanel extends StackPane {
 
     gc.setFont(new Font(20));
 
-    gc.strokeOval(cw * 0.5, ch * 0.5, 10, 10);
-    gc.fillOval(cw * 0.5, ch * 0.5, 10, 10);
-
     //Picked an object
     if(runway.getCurrentObstacle() != null) {
       logger.info("Obstacle detected, showing on view.");
@@ -955,7 +946,45 @@ public class VisPanel extends StackPane {
         gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
       }
     }
-    gc.setFont(new Font(20));
+  }
+
+  /**
+   * Draws distance line for top-down view
+   * @param gc Graphics Context
+   * @param label The text displayed on top of the line
+   * @param x1 The start point of the line
+   * @param y1 The height of the line
+   * @param x2 The end point of the line
+   */
+  private void drawTDistance(GraphicsContext gc, String label, double x1, double y1, double x2) {
+
+    var heightM = y1;
+
+    var heightU = heightM-0.01;
+
+    var heightD = heightM+0.01;
+
+    var length = x2 - x1;
+
+    gc.beginPath();
+
+    //Line vert1
+    gc.moveTo(x1, heightU);
+    gc.lineTo(x1, heightD);
+
+    //Line vert2
+    gc.moveTo(x2, heightU);
+    gc.lineTo(x2, heightD);
+
+    //Distance Line
+    gc.moveTo(x1,heightM);
+    gc.lineTo(x2,heightM);
+
+    // Stroke everything
+    gc.stroke();
+
+    // Add header/distance name
+    gc.fillText(label, x1 + length / 2, heightU);
   }
 
 
