@@ -827,14 +827,8 @@ public class VisPanel extends StackPane {
 
     //Runway distances
     gc.setLineWidth(1.5);
-    //gc.setLineDashes(5);
     gc.setStroke(Color.BLACK);
     gc.setFill(Color.BLACK);
-//    if (leftT) {
-//      gc.strokeLine(cw * 0.9, ch * 0.3, cw * 0.9, ch * 0.43);
-//    } else {
-//      gc.strokeLine(cw * 0.1, ch * 0.3, cw * 0.1, ch * 0.43);
-//    }
     gc.setFont(new Font(15));
     gc.setLineDashes(0);
 
@@ -860,7 +854,7 @@ public class VisPanel extends StackPane {
       //Text name
       var label = "LDA= " + runway.getClda() + "m";
 
-      if (runway.getCurrentObstacle() == null) {
+      if (runway.getCurrentObstacle() == null || !state.isRedeclarared()) {
 
         if (leftT) {
           drawTDistance(gc, label, cw * 0.1, height, cw * forLDA, ch);
@@ -901,7 +895,7 @@ public class VisPanel extends StackPane {
       //Label for the distance line
       var label = "TORA= " + runway.getCtora() + "m";
 
-      if (runway.getCurrentObstacle() == null) {
+      if (runway.getCurrentObstacle() == null || !state.isRedeclarared()) {
 
         drawTDistance(gc, label, cw * 0.1, height, cw * 0.9, ch);
 
@@ -935,7 +929,7 @@ public class VisPanel extends StackPane {
       //Label to go above the line
       var label = "ASDA= " + runway.getCasda() + "m";
 
-      if (runway.getCurrentObstacle() == null) {
+      if (runway.getCurrentObstacle() == null || !state.isRedeclarared()) {
 
         if (leftT) {
           drawTDistance(gc, label, cw * stopwayPar, height, cw * 0.9, ch);
@@ -973,7 +967,7 @@ public class VisPanel extends StackPane {
       //Label above the line
       var label = "TODA= " + runway.getCtoda() + "m";
 
-      if (runway.getCurrentObstacle() == null) {
+      if (runway.getCurrentObstacle() == null || !state.isRedeclarared()) {
 
         if (leftT) {
           drawTDistance(gc, label, cw * clearwayPar, height, cw * 0.9, ch);

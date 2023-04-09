@@ -54,6 +54,11 @@ public class Airport {
   private final SimpleBooleanProperty calcTowards;
 
   /**
+   * A boolean to show if re-declaration happened or not
+   */
+  private final SimpleBooleanProperty redeclarared;
+
+  /**
    * Creates a new airport with the specified city and name.
    *
    * @param city city this airport is situated at
@@ -68,6 +73,7 @@ public class Airport {
     obstacleList = new SimpleListProperty<>(FXCollections.observableArrayList());
     obstaclesLoaded = new SimpleBooleanProperty(false);
     calcTowards = new SimpleBooleanProperty();
+    redeclarared = new SimpleBooleanProperty(false);
   }
 
   // Below are methods to add and load objects in an airport.
@@ -145,5 +151,13 @@ public class Airport {
 
   public boolean isCalcTowards() {
     return calcTowards.get();
+  }
+
+  public boolean isRedeclarared() {
+    return redeclarared.get();
+  }
+
+  public SimpleBooleanProperty redeclararedProperty() {
+    return redeclarared;
   }
 }
