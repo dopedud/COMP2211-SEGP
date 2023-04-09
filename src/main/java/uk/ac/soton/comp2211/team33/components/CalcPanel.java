@@ -149,8 +149,7 @@ public class CalcPanel extends AnchorPane {
       } else {
         calcBreakdown.setText(
             Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
-                Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft())
-        );
+                Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()));
       }
     }
   }

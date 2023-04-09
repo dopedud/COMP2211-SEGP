@@ -1,11 +1,17 @@
 package uk.ac.soton.comp2211.team33.utilities;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import uk.ac.soton.comp2211.team33.controllers.FileImportController;
+import uk.ac.soton.comp2211.team33.models.Airport;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -94,4 +100,22 @@ public final class ProjectHelpers {
   public static URL getResource(String path) {
     return ProjectHelpers.class.getResource(BASE_PATH + path);
   }
+
+  public static String getPathWithDialog(Stage stage) {
+    // getting a filepath with a file import controller
+    StringProperty filepath = new SimpleStringProperty();
+    var fic = new FileImportController(ProjectHelpers.createModalStage(stage), null);
+    filepath.bind(fic.getSelectedFileLocationProperty());
+    fic.show();
+    return filepath.get();
+  }
+
+  public static String getSavePathWithDialog(Stage stage) {
+    var fileChooser = new FileChooser();
+    fileChooser.setTitle("Save File");
+    fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+    File file = fileChooser.showSaveDialog(stage);
+    return file.getAbsolutePath();
+  }
+
 }
