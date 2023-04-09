@@ -827,7 +827,7 @@ public class VisPanel extends StackPane {
 
     //Runway distances
     gc.setLineWidth(1.5);
-    gc.setLineDashes(5);
+    //gc.setLineDashes(5);
     gc.setStroke(Color.BLACK);
     gc.setFill(Color.BLACK);
 //    if (leftT) {
@@ -855,22 +855,37 @@ public class VisPanel extends StackPane {
     } else {
 
       //Main height
-      var height = ch * 0.41;
+      var height = 0.41;
 
       //Text name
       var label = "LDA= " + runway.getClda() + "m";
 
-      if (leftT) {
-        if (towards) {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * forLDA);
+      if (runway.getCurrentObstacle() == null) {
+
+        if (leftT) {
+          drawTDistance(gc, label, cw * 0.1, height, cw * forLDA, ch);
         } else {
-          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
+          drawTDistance(gc, label, cw * forLDA, height, cw * 0.9, ch);
         }
+
       } else {
-        if (towards) {
-          drawTDistance(gc, label, cw * forLDA, height, obsLocation - 20);
+
+        if (leftT) {
+
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * forLDA, ch);
+          } else {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          }
+
         } else {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
+
+          if (towards) {
+            drawTDistance(gc, label, cw * forLDA, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          }
+
         }
       }
     }
@@ -886,18 +901,26 @@ public class VisPanel extends StackPane {
       //Label for the distance line
       var label = "TORA= " + runway.getCtora() + "m";
 
-      if (leftT) {
-        if (towards) {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
-        } else {
-          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
-        }
+      if (runway.getCurrentObstacle() == null) {
+
+        drawTDistance(gc, label, cw * 0.1, height, cw * 0.9, ch);
+
       } else {
-        if (towards) {
-          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
+
+        if (leftT) {
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          } else {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          }
         } else {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
+          if (towards) {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          }
         }
+
       }
     }
 
@@ -907,23 +930,35 @@ public class VisPanel extends StackPane {
     } else {
 
       //Height of the line
-      var height = ch * 0.35;
+      var height = 0.35;
 
       //Label to go above the line
       var label = "ASDA= " + runway.getCasda() + "m";
 
-      if (leftT) {
-        if (towards) {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
+      if (runway.getCurrentObstacle() == null) {
+
+        if (leftT) {
+          drawTDistance(gc, label, cw * stopwayPar, height, cw * 0.9, ch);
         } else {
-          drawTDistance(gc, label, cw * stopwayPar, height, obsLocation - 20);
+          drawTDistance(gc, label, cw * stopwayPar, height, cw * 0.1, ch);
         }
+
       } else {
-        if (towards) {
-          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
+
+        if (leftT) {
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          } else {
+            drawTDistance(gc, label, cw * stopwayPar, height, obsLocation - 20, ch);
+          }
         } else {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * stopwayPar);
+          if (towards) {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * stopwayPar, ch);
+          }
         }
+
       }
     }
 
@@ -933,23 +968,35 @@ public class VisPanel extends StackPane {
     } else {
 
       //The height of the line
-      var height = ch * 0.32;
+      var height = 0.32;
 
       //Label above the line
       var label = "TODA= " + runway.getCtoda() + "m";
 
-      if (leftT) {
-        if (towards) {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9);
+      if (runway.getCurrentObstacle() == null) {
+
+        if (leftT) {
+          drawTDistance(gc, label, cw * clearwayPar, height, cw * 0.9, ch);
         } else {
-          drawTDistance(gc, label, cw * clearwayPar, height, obsLocation - 20);
+          drawTDistance(gc, label, cw * clearwayPar, height, cw * 0.1, ch);
         }
+
       } else {
-        if (towards) {
-          drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20);
+
+        if (leftT) {
+          if (towards) {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * 0.9, ch);
+          } else {
+            drawTDistance(gc, label, cw * clearwayPar, height, obsLocation - 20, ch);
+          }
         } else {
-          drawTDistance(gc, label, obsLocation + 20, height, cw * clearwayPar);
+          if (towards) {
+            drawTDistance(gc, label, cw * 0.1, height, obsLocation - 20, ch);
+          } else {
+            drawTDistance(gc, label, obsLocation + 20, height, cw * clearwayPar, ch);
+          }
         }
+
       }
     }
 
@@ -957,18 +1004,31 @@ public class VisPanel extends StackPane {
 
     //Picked an object
     if (runway.getCurrentObstacle() != null) {
-      logger.info("Obstacle detected, showing on view.");
-      gc.setFill(obstacleColour);
-      gc.setStroke(obstacleColour);
-      var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
-      double offsetY = -runway.getCurrentObstacle().getCenterline() / 1000;
-      logger.info("This is offsetX " + offsetX);
-      if (leftT) {
-        gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
-        gc.fillOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+
+      if (Math.abs(runway.getObsDistFromThresh()) > 60 || Math.abs(runway.getCurrentObstacle().getCenterline()) > 75) {
+
+        logger.info("Obstacle does not affect runway, not displaying...");
+
       } else {
-        gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
-        gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+
+        logger.info("Obstacle detected, showing on view.");
+
+        gc.setFill(obstacleColour);
+        gc.setStroke(obstacleColour);
+
+        var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
+        double offsetY = -runway.getCurrentObstacle().getCenterline() / 1000;
+
+        logger.info("This is offsetX " + offsetX);
+
+        //Draw obstacle as a dot to pinpoint location
+        if (leftT) {
+          gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+        } else {
+          gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+        }
       }
     }
   }
@@ -981,14 +1041,22 @@ public class VisPanel extends StackPane {
    * @param x1    The start point of the line
    * @param y1    The height of the line
    * @param x2    The end point of the line
+   * @param ch    The height of the canvas
    */
-  private void drawTDistance(GraphicsContext gc, String label, double x1, double y1, double x2) {
+  private void drawTDistance(GraphicsContext gc, String label, double x1, double y1, double x2, double ch) {
 
-    var heightM = y1;
+    //Error handling
+    if (x2 < x1) {
+      var temp = x1;
+      x1 = x2;
+      x2 = temp;
+    }
 
-    var heightU = heightM - 0.01;
+    var heightM = ch * y1;
 
-    var heightD = heightM + 0.01;
+    var heightU = ch * (y1 - 0.01);
+
+    var heightD = ch * (y1 + 0.01);
 
     var length = x2 - x1;
 
@@ -1058,9 +1126,6 @@ public class VisPanel extends StackPane {
       }
       i++;
     }
-//    if (!found) {
-//      logger.info("No matching designator found, keeping the selected runway to the left");
-//    }
     return leftT;
   }
 
