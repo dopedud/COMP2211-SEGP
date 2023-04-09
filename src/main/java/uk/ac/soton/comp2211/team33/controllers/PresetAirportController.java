@@ -48,6 +48,8 @@ public class PresetAirportController extends BaseController {
     super(stage, state);
   }
 
+  // TODO: Change how the presets are loaded, load from XML files instead of a csv file. If not, might be better to remove entirely as presets provide no functionality to the user at the moment.
+
   @Override
   protected void initialise() {
     logger.info("Building NewAirportController...");

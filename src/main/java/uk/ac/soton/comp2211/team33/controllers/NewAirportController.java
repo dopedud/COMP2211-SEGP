@@ -22,6 +22,7 @@ public class NewAirportController extends BaseController {
     super(stage, state);
   }
 
+  // TODO: Make this look a bit nicer
 
   @Override
   protected void initialise() {
