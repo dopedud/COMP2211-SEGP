@@ -20,6 +20,9 @@ public class OptionsController extends BaseController {
   @FXML
   private DropdownField fontSize;
 
+  @FXML
+  private DropdownField visPanelTheme;
+
   public OptionsController(Stage stage, Airport state) {
     super(stage, state);
   }
@@ -45,6 +48,11 @@ public class OptionsController extends BaseController {
     fontSize.setItems(fontSizes);
     fontSize.setValue(StylePrefs.getFontSize());
 
+    ObservableList<String> visPanelStyles = FXCollections.observableArrayList();
+    visPanelStyles.addAll(StylePrefs.getVisPanelThemes());
+    visPanelTheme.setItems(visPanelStyles);
+    visPanelTheme.setValue(StylePrefs.getVisPanelTheme());
+
   }
 
   @FXML
@@ -56,7 +64,9 @@ public class OptionsController extends BaseController {
   private void apply() {
     StylePrefs.setColourScheme(colourMode.getValue());
     StylePrefs.setFontSize(fontSize.getValue());
+    StylePrefs.setVisPanelTheme(visPanelTheme.getValue());
     StylePrefs.updateStyleSheets();
+    StylePrefs.updateVisPanel();
   }
 
   @FXML

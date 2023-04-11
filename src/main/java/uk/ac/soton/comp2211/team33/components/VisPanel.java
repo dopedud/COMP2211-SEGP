@@ -21,6 +21,10 @@ import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Pair;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
+import uk.ac.soton.comp2211.team33.utilities.StylePrefs;
+
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * The VisPanel class is a custom component that renders the 2D top-down and side-on view.
@@ -75,6 +79,10 @@ public class VisPanel extends StackPane {
    */
   private int compassOffset = 0;
 
+  private String pathToColours;
+
+  private String[] colours = new String[0];
+
   /**
    * The current transform of the visualisation.
    */
@@ -85,6 +93,16 @@ public class VisPanel extends StackPane {
     this.state = state;
 
     ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
+
+    StylePrefs.updateVisPanel();
+    pathToColours = StylePrefs.getVisPanelThemePathProperty().get();
+    loadColours();
+
+    StylePrefs.getVisPanelThemePathProperty().addListener((observable, oldValue, newValue) -> {
+      pathToColours = newValue;
+      loadColours();
+      draw();
+    });
 
     directionIndicator.setImage(new Image(ProjectHelpers.getResource("/pictures/direction_indicator.png").toExternalForm()));
     directionIndicator.setPreserveRatio(true);
@@ -110,6 +128,23 @@ public class VisPanel extends StackPane {
     transform.addListener(ignored -> draw());
 
     draw();
+  }
+
+  private void loadColours() {
+    InputStream stream = ProjectHelpers.getResourceAsStream(pathToColours);
+    BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+    ArrayList<String> coloursList = new ArrayList<>();
+    String line;
+    while (true) {
+      try {
+        if ((line = br.readLine()) == null) break;
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      coloursList.add(line.split(",")[0]);
+    }
+
+    colours = coloursList.toArray(new String[0]);
   }
 
   /**
@@ -604,15 +639,25 @@ public class VisPanel extends StackPane {
     gc.clearRect(-5000, -5000, 10000, 10000);
 
     //Colours that can be changed
-    var grass = Color.valueOf("#7CB342");
-    var clearedAndgraded = Color.valueOf("#0072C6");
-    var runwayBody = Color.valueOf("#242424");
-    var white = Color.valueOf("#ffffff");
-    var thresholdColour = Color.valueOf("#FF5733");
-    var stopwayColour = Color.valueOf("#f7ff00");
-    var clearwayColour = Color.valueOf("#ff8b00");
-    var accent1 = Color.valueOf("#FFD700");
-    var obstacleColour = Color.RED;
+//    var grass = Color.valueOf("#7CB342");
+//    var clearedAndgraded = Color.valueOf("#0072C6");
+//    var runwayBody = Color.valueOf("#242424");
+//    var runwayLines = Color.valueOf("#ffffff");
+//    var thresholdColour = Color.valueOf("#FF5733");
+//    var stopwayColour = Color.valueOf("#f7ff00");
+//    var clearwayColour = Color.valueOf("#ff8b00");
+//    var accent1 = Color.valueOf("#FFD700");
+//    var obstacleColour = Color.RED;
+
+    var grass = Color.valueOf(colours[0]);
+    var clearedAndgraded = Color.valueOf(colours[1]);
+    var runwayBody = Color.valueOf(colours[2]);
+    var runwayLines = Color.valueOf(colours[3]);
+    var thresholdColour = Color.valueOf(colours[4]);
+    var stopwayColour = Color.valueOf(colours[5]);
+    var clearwayColour = Color.valueOf(colours[6]);
+    var accent1 = Color.valueOf(colours[7]);
+    var obstacleColour = Color.valueOf(colours[8]);
 
     //Surrounding area
     gc.setFill(grass);
@@ -636,7 +681,7 @@ public class VisPanel extends StackPane {
     gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
 
     //Dashed centre line, lower dash number to get more dashes in the line.
-    gc.setStroke(white);
+    gc.setStroke(runwayLines);
     gc.setLineWidth(1);
     int dashes = 9;
     if (runway.getTora() >= 3250) {
@@ -647,7 +692,7 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(0);
 
     //Starting lines at each end of the runway
-    gc.setStroke(white);
+    gc.setStroke(runwayLines);
     gc.setLineWidth(2);
     var tempA = cw * 0.11;
     var tempB = ch * 0.44;
@@ -671,7 +716,7 @@ public class VisPanel extends StackPane {
 
     //Show the runway designators in the 2D view
     gc.setLineWidth(1);
-    gc.setFill(white);
+    gc.setFill(runwayLines);
     if (leftT) {
       gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
       gc.fillText(formattedDes[0], cw * 0.8, ch * 0.48);

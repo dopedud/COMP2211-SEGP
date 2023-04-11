@@ -10,11 +10,15 @@ import java.util.ArrayList;
  * The Styling class to store and modify the visual preferences set by the user.
  */
 public class StylePrefs {
-  public static SimpleStringProperty colourScheme = new SimpleStringProperty("Dark");
+  private static String colourScheme = new String("Dark");
 
-  public static SimpleStringProperty fontSize = new SimpleStringProperty("Medium");
+  private static String fontSize = new String("Medium");
 
-  public static ObservableList<String> styleSheets = FXCollections.observableArrayList();
+  private static String visPanelTheme = new String("Default");
+
+  private static ObservableList<String> styleSheets = FXCollections.observableArrayList();
+
+  private static SimpleStringProperty visPanelThemePath = new SimpleStringProperty();
 
   /**
    * Private constructor to prevent instantiation.
@@ -23,19 +27,27 @@ public class StylePrefs {
   }
 
   public static void setColourScheme(String colourScheme) {
-    StylePrefs.colourScheme.set(colourScheme);
+    StylePrefs.colourScheme = colourScheme;
   }
 
   public static String getColourScheme() {
-    return colourScheme.get();
+    return colourScheme;
   }
 
   public static void setFontSize(String fontSize) {
-    StylePrefs.fontSize.set(fontSize);
+    StylePrefs.fontSize = fontSize;
   }
 
   public static String getFontSize() {
-    return fontSize.get();
+    return fontSize;
+  }
+
+  public static void setVisPanelTheme(String visPanelTheme) {
+    StylePrefs.visPanelTheme = visPanelTheme;
+  }
+
+  public static String getVisPanelTheme() {
+    return visPanelTheme;
   }
 
   public static String[] getColourSchemes() {
@@ -46,12 +58,20 @@ public class StylePrefs {
     return new String[] {"Small", "Medium", "Large"};
   }
 
+  public static String[] getVisPanelThemes() {
+    return new String[] {"Default", "High Contrast", "Colour Blind"};
+  }
+
   public static ObservableList<String> getStylesSheetsProperty() {
     return StylePrefs.styleSheets;
   }
 
   public static String[] getStyleSheets() {
     return StylePrefs.styleSheets.toArray(new String[0]);
+  }
+
+  public static SimpleStringProperty getVisPanelThemePathProperty() {
+    return StylePrefs.visPanelThemePath;
   }
 
   /**
@@ -62,6 +82,10 @@ public class StylePrefs {
     sheets.add("/style/" + getColourScheme().toLowerCase().replace(" ", "_") + ".css");
     sheets.add("/style/" + getFontSize().toLowerCase().replace(" ", "_") + ".css");
     styleSheets.setAll(sheets);
+  }
+
+  public static void updateVisPanel() {
+    visPanelThemePath.set("/style/vis/" + getVisPanelTheme().toLowerCase().replace(" ", "_") + ".txt");
   }
 
 }

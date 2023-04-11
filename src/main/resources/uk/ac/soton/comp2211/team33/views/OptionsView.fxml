@@ -14,6 +14,7 @@
     <VBox AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" spacing="10">
         <DropdownField fx:id="colourMode" label="Colour Theme"/>
         <DropdownField fx:id="fontSize" label="Font Size"/>
+        <DropdownField fx:id="visPanelTheme" label="Visualisation Theme"/>
     </VBox>
     <HBox spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" alignment="CENTER">
         <Button text="Cancel" onAction="#cancel" />
