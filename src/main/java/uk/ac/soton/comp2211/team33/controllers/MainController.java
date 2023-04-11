@@ -198,4 +198,11 @@ public class MainController extends BaseController {
       }
     });
   }
+
+  @FXML
+  private void onPreferences() {
+    new OptionsController(ProjectHelpers.createModalStage(stage), state);
+  }
+
+
 }

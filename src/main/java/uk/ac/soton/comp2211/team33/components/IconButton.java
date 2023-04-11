@@ -1,8 +1,14 @@
 package uk.ac.soton.comp2211.team33.components;
 
 import javafx.scene.control.Button;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
 
 /**
@@ -41,7 +47,30 @@ public class IconButton extends Button {
       imageView = new ImageView(new Image(ProjectHelpers.getResource(iconPath).toExternalForm()));
       imageView.setPreserveRatio(true);
       imageView.setFitHeight(iconSize);
+
+      this.textFillProperty().addListener((observable, oldValue, newValue) -> {
+        Color newColor = (Color) newValue;
+        setIconColor(newColor);
+      });
+
+      this.fontProperty().addListener((observable, oldValue, newValue) -> {
+        double size = newValue.getSize();
+        this.setIconSize(size);
+        setIconColor((Color) this.getTextFill()); // recolour so the whole icon is coloured properly
+      });
+
       this.setGraphic(imageView);
+    }
+
+    private Paint colorToPaint(Color color) {
+      return new Color(color.getRed(), color.getGreen(), color.getBlue(), 1);
+    }
+
+    public void setIconColor(Color color) {
+      Blend blend2 = new Blend();
+      blend2.setMode(BlendMode.SRC_ATOP);
+      blend2.setTopInput(new ColorInput(0, 0, iconSize, iconSize, colorToPaint(color)));
+      imageView.setEffect(blend2);
     }
 
     public String getIcon() {

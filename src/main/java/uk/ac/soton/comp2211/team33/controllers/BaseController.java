@@ -1,10 +1,13 @@
 package uk.ac.soton.comp2211.team33.controllers;
 
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
+import uk.ac.soton.comp2211.team33.utilities.StylePrefs;
 
 /**
  * The BaseController abstract class to create scenes.
@@ -49,6 +52,21 @@ abstract class BaseController {
    */
   protected void buildScene(String filename) {
     Scene scene = ProjectHelpers.renderScene(filename, this);
+    StylePrefs.updateStyleSheets();
+    for (String styleSheet : StylePrefs.getStyleSheets()) {
+      scene.getStylesheets().add(ProjectHelpers.getResource(styleSheet).toExternalForm());
+    }
+    StylePrefs.getStylesSheetsProperty().addListener(new ListChangeListener<String>() {
+      @Override
+      public void onChanged(Change<? extends String> change) {
+        Platform.runLater(() -> {
+          scene.getStylesheets().clear();
+          for (String styleSheet : StylePrefs.getStyleSheets()) {
+            scene.getStylesheets().add(ProjectHelpers.getResource(styleSheet).toExternalForm());
+          }
+        });
+      }
+    });
     stage.setScene(scene);
     stage.show();
   }
