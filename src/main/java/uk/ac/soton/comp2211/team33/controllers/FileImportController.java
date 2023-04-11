@@ -62,6 +62,7 @@ public class FileImportController extends BaseController {
     stage.setTitle("Select File");
 
     buildScene("/views/FileImportView.fxml");
+    applyStyling();
   }
 
   /**

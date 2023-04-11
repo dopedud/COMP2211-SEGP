@@ -52,6 +52,14 @@ abstract class BaseController {
    */
   protected void buildScene(String filename) {
     Scene scene = ProjectHelpers.renderScene(filename, this);
+    stage.setScene(scene);
+    this.applyStyling();
+    stage.show();
+  }
+
+  protected void applyStyling() {
+    var scene = stage.getScene();
+    if (scene == null) return;
     StylePrefs.updateStyleSheets();
     for (String styleSheet : StylePrefs.getStyleSheets()) {
       scene.getStylesheets().add(ProjectHelpers.getResource(styleSheet).toExternalForm());
@@ -67,7 +75,6 @@ abstract class BaseController {
         });
       }
     });
-    stage.setScene(scene);
-    stage.show();
   }
+
 }
