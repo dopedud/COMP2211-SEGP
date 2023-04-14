@@ -12,10 +12,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 import uk.ac.soton.comp2211.team33.components.DropdownField;
 import uk.ac.soton.comp2211.team33.models.Airport;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
+import uk.ac.soton.comp2211.team33.utilities.XMLHelpers;
 
 /**
  * The NewAirportController controller class that creates a new airport upon user request.
@@ -27,11 +29,6 @@ public class PresetAirportController extends BaseController {
 
   private static final Logger logger = LogManager.getLogger(PresetAirportController.class);
 
-  /**
-   * A JavaFX UI element to select a city for the airport.
-   */
-  @FXML
-  private DropdownField city;
 
   /**
    * A JavaFX UI element to select a name for the airport.
@@ -39,16 +36,12 @@ public class PresetAirportController extends BaseController {
   @FXML
   private DropdownField name;
 
-  /**
-   * Multiple key-value pairs to store different commercial airports throughout the UK.
-   */
-  private MultiValuedMap<String, String> cityNamePairs;
+  private HashMap<String, String> nameToPath;
 
   public PresetAirportController(Stage stage, Airport state) {
     super(stage, state);
   }
 
-  // TODO: Change how the presets are loaded, load from XML files instead of a csv file. If not, might be better to remove entirely as presets provide no functionality to the user at the moment.
 
   @Override
   protected void initialise() {
@@ -58,16 +51,23 @@ public class PresetAirportController extends BaseController {
     stage.setTitle("New Airport");
 
     buildScene("/views/PresetAirportView.fxml");
+
+    nameToPath = new HashMap<String, String>();
     loadPredefinedAirports();
   }
 
   @FXML
   private void onSubmitAirport() {
-    new MainController(stage, new Airport(city.getValue(), name.getValue()));
+    if (name.getValue().equals("-")) {
+      return;
+    }
+    String airportPath = ProjectHelpers.getResource("/data/presets/" + nameToPath.get(name.getValue())).getPath();
+    Airport airport = XMLHelpers.importAirport(airportPath);
+    new MainController(stage, airport);
   }
 
   private void loadPredefinedAirports() {
-    cityNamePairs = new ArrayListValuedHashMap<>();
+    logger.info("Loading airports from CSV file: " + ProjectHelpers.getResource("/data/airports.csv").toExternalForm() + "...");
 
     try {
       InputStream stream = ProjectHelpers.getResourceAsStream("/data/airports.csv");
@@ -77,7 +77,7 @@ public class PresetAirportController extends BaseController {
       while ((line = br.readLine()) != null) {
         String[] values = line.split(",");
 
-        cityNamePairs.put(values[0], values[1]);
+        nameToPath.put(values[0], values[1]);
       }
     }
     catch (IOException e) {
@@ -85,19 +85,9 @@ public class PresetAirportController extends BaseController {
       e.printStackTrace();
     }
 
-    city.setItems(FXCollections.observableArrayList(cityNamePairs.keySet()));
-    city.getItems().add("-");
-    city.setValue("-");
-
+    name.setItems(FXCollections.observableArrayList(nameToPath.keySet()));
     name.getItems().add("-");
     name.setValue("-");
 
-    city.valueProperty().addListener((obVal, oldVal, newVal) -> {
-      if (newVal == null) return;
-
-      name.setItems(FXCollections.observableArrayList(cityNamePairs.get(newVal)));
-      name.getItems().add("-");
-      name.setValue("-");
-    });
   }
 }

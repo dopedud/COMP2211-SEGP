@@ -110,12 +110,12 @@ public class MainController extends BaseController {
 
       fileWriter.write("\n");
 
-      fileWriter.write("***RUNWAYS***: \n");
+      fileWriter.write("**RUNWAYS**: \n");
 
       fileWriter.write("\n");
 
       for (Runway runway : state.runwayListProperty()) {
-        fileWriter.write("**RUNWAY**: " + runway.getDesignator() + "\n");
+        fileWriter.write("*RUNWAY*: " + runway.getDesignator() + "\n");
         fileWriter.write("TORA: " + runway.getTora() + " m, ");
         fileWriter.write("Calculated TORA: " + runway.getCtora() + " m\n");
         fileWriter.write("TODA: " + runway.getToda() + " m, ");
@@ -136,7 +136,7 @@ public class MainController extends BaseController {
         fileWriter.write("\n");
 
         Aircraft currentAircraft = runway.getCurrentAircraft();
-        fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentAircraft.getId() + " m\n");
+        fileWriter.write("CURRENTLY SELECTED AIRCRAFT: " + currentAircraft.getId() + " m\n");
         fileWriter.write("Blast protection: " + currentAircraft.getBlastProtection() + " m\n");
 
         fileWriter.write("\n");
@@ -154,12 +154,30 @@ public class MainController extends BaseController {
         fileWriter.write("\n");
       }
 
-      for (Obstacle obstacle : state.obstacleListProperty()) {
+      fileWriter.write("**OBSTACLES**: \n");
 
+      fileWriter.write("\n");
+
+
+      for (Obstacle obstacle : state.obstacleListProperty()) {
+        fileWriter.write("*OBSTACLE*: " + obstacle.getName() + "\n");
+        fileWriter.write("Height: " + obstacle.getHeight() + "\n");
+        fileWriter.write("Length: " + obstacle.getLength() + "\n");
+        fileWriter.write("Distance from center-line: " + obstacle.getCenterline() + "\n");
+
+        fileWriter.write("\n");
       }
 
-      for (Aircraft aircraft : state.aircraftListProperty()) {
+      fileWriter.write("**AIRCRAFT**: \n");
 
+      fileWriter.write("\n");
+
+
+      for (Aircraft aircraft : state.aircraftListProperty()) {
+        fileWriter.write("*AIRCRAFT*: " + aircraft.getId() + "\n");
+        fileWriter.write("Blast Protection: " + aircraft.getBlastProtection() + "\n");
+
+        fileWriter.write("\n");
       }
 
       fileWriter.close();
