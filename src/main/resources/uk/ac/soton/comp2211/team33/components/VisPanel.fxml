@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <fx:root type="StackPane" xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml">
+         xmlns:fx="http://javafx.com/fxml" styleClass="vis-panel">
   <Canvas fx:id="canvas" />
 
   <!--TODO: Figure out how to make stackpane align children properly, below they are set to show in the bottom right corner but don't-->
