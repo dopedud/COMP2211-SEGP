@@ -47,10 +47,5 @@
             <length>40</length>
             <centerline>5</centerline>
         </obstacle>
-        <obstacle name="Bobby">
-            <height>15</height>
-            <length>20</length>
-            <centerline>0</centerline>
-        </obstacle>
     </obstacles>
 </airport>
