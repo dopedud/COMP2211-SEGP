@@ -11,52 +11,55 @@
 <fx:root type="StackPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
   <Canvas fx:id="canvas" />
+  <!-- Anchor pane that expands to fill all available space -->
 
+  <AnchorPane fx:id="anchorPane" StackPane.alignment="CENTER">
+
+      <VBox AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10" spacing="5" >
+
+          <Region minHeight="20" />
+
+          <BorderPane maxHeight="100" maxWidth="100">
+              <left>
+                  <IconButton icon="/pictures/arrow_left.png" onAction="#translateLeft" BorderPane.alignment="CENTER_LEFT"/>
+              </left>
+              <right>
+                  <IconButton icon="/pictures/arrow_right.png" onAction="#translateRight" BorderPane.alignment="CENTER_RIGHT"/>
+              </right>
+              <top>
+                  <IconButton icon="/pictures/arrow_up.png" onAction="#translateUp" BorderPane.alignment="TOP_CENTER"/>
+              </top>
+              <bottom>
+                  <IconButton icon="/pictures/arrow_down.png" onAction="#translateDown" BorderPane.alignment="BOTTOM_CENTER"/>
+              </bottom>
+          </BorderPane>
+
+          <Region minHeight="20" />
+
+          <HBox spacing="20">
+              <IconButton icon="/pictures/zoom_in.png" onAction="#zoomIn" />
+              <IconButton icon="/pictures/zoom_out.png" onAction="#zoomOut" />
+          </HBox>
+
+
+      </VBox>
+
+      <VBox AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" spacing="5">
+          <Button text="Switch view"  onAction="#onSwitchView" />
+          <Button text="Reset" onAction="#resetTransform" />
+      </VBox>
+
+      <VBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10">
+          <ImageView fx:id="directionIndicator"/>
+          <Region minHeight="20" />
+          <HBox spacing="20">
+              <IconButton icon="/pictures/rotate_anticlockwise.png" onAction="#rotateRight" />
+              <IconButton icon="/pictures/rotate_clockwise.png" onAction="#rotateLeft" />
+              <IconButton icon="/pictures/compass.png" onAction="#rotateToRunwayHeading" />
+          </HBox>
+      </VBox>
+
+  </AnchorPane>
   <!--TODO: Figure out how to make stackpane align children properly, below they are set to show in the bottom right corner but don't-->
 
-  <VBox StackPane.alignment="BOTTOM_RIGHT" spacing="5">
-    <StackPane.margin><Insets top="8" right="8" bottom="8" left="8" /></StackPane.margin>
-    <Button text="Reset" onAction="#resetTransform" />
-
-    <Region minHeight="20" />
-
-    <HBox spacing="20">
-      <IconButton icon="/pictures/rotate_anticlockwise.png" onAction="#rotateRight" />
-      <IconButton icon="/pictures/rotate_clockwise.png" onAction="#rotateLeft" />
-      <IconButton icon="/pictures/compass.png" onAction="#rotateToRunwayHeading" />
-    </HBox>
-
-    <Region minHeight="20" />
-
-    <BorderPane maxHeight="100" maxWidth="100">
-      <left>
-        <IconButton icon="/pictures/arrow_left.png" onAction="#translateLeft" BorderPane.alignment="CENTER_LEFT"/>
-      </left>
-      <right>
-        <IconButton icon="/pictures/arrow_right.png" onAction="#translateRight" BorderPane.alignment="CENTER_RIGHT"/>
-      </right>
-      <top>
-        <IconButton icon="/pictures/arrow_up.png" onAction="#translateUp" BorderPane.alignment="TOP_CENTER"/>
-      </top>
-      <bottom>
-        <IconButton icon="/pictures/arrow_down.png" onAction="#translateDown" BorderPane.alignment="BOTTOM_CENTER"/>
-      </bottom>
-    </BorderPane>
-
-    <Region minHeight="20" />
-
-    <HBox spacing="20">
-      <IconButton icon="/pictures/zoom_in.png" onAction="#zoomIn" />
-      <IconButton icon="/pictures/zoom_out.png" onAction="#zoomOut" />
-    </HBox>
-
-    <Region minHeight="20" />
-
-    <Button text="Switch view"  onAction="#onSwitchView" />
-
-    <Region minHeight="20" />
-
-    <ImageView fx:id="directionIndicator"/>
-
-  </VBox>
 </fx:root>
