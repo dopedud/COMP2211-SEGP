@@ -1,0 +1,40 @@
+<airport name="Gatwick" city="London" obstaclesLoaded="false">
+    <runways>
+        <runway designator="08L">
+            <tora>3902</tora>
+            <toda>3902</toda>
+            <asda>3902</asda>
+            <lda>3595</lda>
+            <resa>350</resa>
+            <threshold>100</threshold>
+        </runway>
+        <runway designator="26R">
+            <tora>3884</tora>
+            <toda>3962</toda>
+            <asda>3884</asda>
+            <lda>3884</lda>
+            <resa>325</resa>
+            <threshold>120</threshold>
+        </runway>
+        <runway designator="08R">
+            <tora>3660</tora>
+            <toda>3660</toda>
+            <asda>3660</asda>
+            <lda>3353</lda>
+            <resa>350</resa>
+            <threshold>100</threshold>
+        </runway>
+        <runway designator="26L">
+            <tora>3660</tora>
+            <toda>3660</toda>
+            <asda>3660</asda>
+            <lda>3660</lda>
+            <resa>325</resa>
+            <threshold>116</threshold>
+        </runway>
+    </runways>
+    <aircrafts>
+    </aircrafts>
+    <obstacles>
+    </obstacles>
+</airport>

@@ -1,6 +1,8 @@
 package uk.ac.soton.comp2211.team33.utilities;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -19,6 +21,9 @@ import java.io.IOException;
 
 public final class XMLHelpers {
 
+  private static final Logger logger = LogManager.getLogger(XMLHelpers.class);
+
+
   /**
    * Private constructor to avoid instancing.
    */
@@ -26,13 +31,14 @@ public final class XMLHelpers {
 
   public static Airport importAirport(String path) {
 
+    logger.info("Importing airport from " + path);
+
     Airport newState = null;
 
     try {
 
-      File file = new File(path);
 
-      Document document = new SAXReader().read(file);
+      Document document = new SAXReader().read(path);
 
       var airportElement = document.getRootElement();
 
@@ -80,6 +86,8 @@ public final class XMLHelpers {
   }
 
   public static void exportAirport(Airport airport, String savePath) {
+
+    logger.info("Exporting airport to " + savePath);
 
     Document document = DocumentHelper.createDocument();
 
