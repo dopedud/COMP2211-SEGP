@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import uk.ac.soton.comp2211.team33.components.DropdownField?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="400.0" prefWidth="600.0">
+    <Label text="Change Preferences:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+    <VBox AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" spacing="10">
+        <DropdownField fx:id="colourMode" label="Colour Theme"/>
+        <DropdownField fx:id="fontSize" label="Font Size"/>
+        <DropdownField fx:id="visPanelTheme" label="Visualisation Theme"/>
+    </VBox>
+    <HBox spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" alignment="CENTER">
+        <Button text="Cancel" onAction="#cancel" />
+        <Button text="Apply" onAction="#apply" />
+        <Button text="OK" onAction="#ok" />
+    </HBox>
+
+</AnchorPane>

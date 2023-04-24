@@ -21,6 +21,10 @@ import uk.ac.soton.comp2211.team33.models.Obstacle;
 import uk.ac.soton.comp2211.team33.models.Runway;
 import uk.ac.soton.comp2211.team33.utilities.Pair;
 import uk.ac.soton.comp2211.team33.utilities.ProjectHelpers;
+import uk.ac.soton.comp2211.team33.utilities.StylePrefs;
+
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * The VisPanel class is a custom component that renders the 2D top-down and side-on view.
@@ -75,6 +79,10 @@ public class VisPanel extends StackPane {
    */
   private int compassOffset = 0;
 
+  private String pathToColours;
+
+  private String[] colours = new String[0];
+
   /**
    * The current transform of the visualisation.
    */
@@ -85,6 +93,16 @@ public class VisPanel extends StackPane {
     this.state = state;
 
     ProjectHelpers.renderRoot("/components/VisPanel.fxml", this, this);
+
+    StylePrefs.updateVisPanel();
+    pathToColours = StylePrefs.getVisPanelThemePathProperty().get();
+    loadColours();
+
+    StylePrefs.getVisPanelThemePathProperty().addListener((observable, oldValue, newValue) -> {
+      pathToColours = newValue;
+      loadColours();
+      draw();
+    });
 
     directionIndicator.setImage(new Image(ProjectHelpers.getResource("/pictures/direction_indicator.png").toExternalForm()));
     directionIndicator.setPreserveRatio(true);
@@ -110,6 +128,23 @@ public class VisPanel extends StackPane {
     transform.addListener(ignored -> draw());
 
     draw();
+  }
+
+  private void loadColours() {
+    InputStream stream = ProjectHelpers.getResourceAsStream(pathToColours);
+    BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+    ArrayList<String> coloursList = new ArrayList<>();
+    String line;
+    while (true) {
+      try {
+        if ((line = br.readLine()) == null) break;
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      coloursList.add(line.split(",")[0]);
+    }
+
+    colours = coloursList.toArray(new String[0]);
   }
 
   /**
@@ -261,6 +296,19 @@ public class VisPanel extends StackPane {
   private void drawSideways() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
+    var grass = Color.valueOf(colours[0]);
+    var runwayBody = Color.valueOf(colours[2]);
+    var thresholdColour = Color.valueOf(colours[4]);
+    var stopwayColour = Color.valueOf(colours[5]);
+    var clearwayColour = Color.valueOf(colours[6]);
+    var obstacleColour = Color.valueOf(colours[8]);
+    var strokeColour = Color.valueOf(colours[9]);
+    var sky = Color.valueOf(colours[10]);
+    var dust = Color.valueOf(colours[11]);
+    var alsTocsColour = Color.valueOf(colours[12]);
+    var resaColour = Color.valueOf(colours[13]);
+    var safetyDistColour = Color.valueOf(colours[14]);
+
     // TODO: disable rotating
 
     gc.setTransform(transform.get());
@@ -279,17 +327,17 @@ public class VisPanel extends StackPane {
 
     // Sky
 
-    gc.setFill(Color.rgb(56, 179, 232));
+    gc.setFill(sky);
     gc.fillRect(-5000, -5000, 10000, 10000);
 
     // Grass
 
-    gc.setFill(Color.rgb(73, 145, 99));
+    gc.setFill(grass);
     gc.fillRect(-5000, grassStartY, 10000, layerDepth * 10);
 
     // Dust
 
-    gc.setFill(Color.rgb(82, 50, 38));
+    gc.setFill(dust);
     gc.fillRect(-5000, grassStartY + layerDepth, cw * 100, ch * 100);
 
     // Overall runway properties
@@ -310,7 +358,7 @@ public class VisPanel extends StackPane {
 
     double designatorStartY = runwayStartY + layerDepth / 2;
 
-    gc.setFill(Color.BLACK);
+    gc.setFill(strokeColour);
     gc.fillText(leftRunway.getDesignator(), runwayStartX - 60, designatorStartY - 10);
     gc.fillText(rightRunway.getDesignator(), runwayEndX + 60, designatorStartY - 10);
 
@@ -320,25 +368,23 @@ public class VisPanel extends StackPane {
     double toraLengthPx = (tora / toda) * runwayLengthPx;
     double runwayBodyEndX = runwayStartX + toraLengthPx;
 
-    gc.setFill(Color.rgb(50, 50, 50));
+    gc.setFill(runwayBody);
     gc.fillRect(runwayStartX, runwayStartY, toraLengthPx, layerDepth);
 
     // Draw primary clearway
 
     double clearway = leftRunway.getClearway();
     double clearwayLengthPx = (clearway / toda) * runwayLengthPx;
-    Color clearwayColor = Color.RED;
 
-    gc.setFill(clearwayColor);
+    gc.setFill(clearwayColour);
     gc.fillRect(runwayBodyEndX, runwayStartY, clearwayLengthPx, layerDepth);
 
     // Draw primary stopway
 
     double stopway = leftRunway.getStopway();
     double stopwayLengthPx = (stopway / toda) * runwayLengthPx;
-    Color stopwayColor = Color.rgb(240, 173, 58);
 
-    gc.setFill(stopwayColor);
+    gc.setFill(stopwayColour);
     gc.fillRect(runwayBodyEndX, runwayStartY, stopwayLengthPx, layerDepth);
 
     // Draw right clearway
@@ -346,7 +392,7 @@ public class VisPanel extends StackPane {
     double rightClearyway = rightRunway == null ? 0 : rightRunway.getClearway();
     double rightClearwayLengthPx = (rightClearyway / toda) * runwayLengthPx;
 
-    gc.setFill(clearwayColor);
+    gc.setFill(clearwayColour);
     gc.fillRect(runwayStartX - rightClearwayLengthPx, runwayStartY, rightClearwayLengthPx, layerDepth);
 
     // Draw right stopway
@@ -354,7 +400,7 @@ public class VisPanel extends StackPane {
     double rightStopway = rightRunway == null ? 0 : rightRunway.getStopway();
     double rightStopwayLengthPx = (rightStopway / toda) * runwayLengthPx;
 
-    gc.setFill(stopwayColor);
+    gc.setFill(stopwayColour);
     gc.fillRect(runwayStartX - rightStopwayLengthPx, runwayStartY, rightStopwayLengthPx, layerDepth);
 
     // Draw ctoda legend
@@ -403,21 +449,21 @@ public class VisPanel extends StackPane {
     // Draw clearway legend
 
     if (clearway > 0) {
-      drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColor, runwayBodyEndX, runwayEndY - 250, clearwayLengthPx, 250);
+      drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColour, runwayBodyEndX, runwayEndY - 250, clearwayLengthPx, 250);
     }
 
     // Draw stopway legend
 
     if (stopway > 0) {
-      drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColor, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
+      drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColour, runwayBodyEndX, runwayEndY - 200, stopwayLengthPx, 200);
     }
 
     if (rightClearyway > 0) {
-      drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColor, runwayStartX - rightClearwayLengthPx, runwayEndY - 250, rightClearwayLengthPx, 250);
+      drawDistanceLegend(gc, "Clearway= " + clearway + " m", clearwayColour, runwayStartX - rightClearwayLengthPx, runwayEndY - 250, rightClearwayLengthPx, 250);
     }
 
     if (rightStopway > 0) {
-      drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColor, runwayStartX - rightStopwayLengthPx, runwayEndY - 250, rightStopwayLengthPx, 250);
+      drawDistanceLegend(gc, "Stopway= " + stopway + " m", stopwayColour, runwayStartX - rightStopwayLengthPx, runwayEndY - 250, rightStopwayLengthPx, 250);
     }
 
     // Draw threshold
@@ -429,13 +475,13 @@ public class VisPanel extends StackPane {
     double thresholdEndY = runwayStartY + thresholdLineLengthPx;
 
     gc.beginPath();
-    gc.setStroke(Color.RED);
+    gc.setStroke(thresholdColour);
     gc.setLineDashes(5);
     gc.moveTo(thresholdStartX, runwayStartY);
     gc.lineTo(thresholdStartX, thresholdEndY);
     gc.stroke();
 
-    gc.setFill(Color.RED);
+    gc.setFill(thresholdColour);
     gc.fillText("Threshold= " + threshold + " m", thresholdStartX, thresholdEndY + 20);
 
     // Draw obstacle
@@ -461,14 +507,14 @@ public class VisPanel extends StackPane {
       // double slopeStartY = obstacleStartY - (obstacleLengthPx * scaledObstacleHeightPx) / (50 * trueObstacleHeightPx - obstacleLengthPx);
 
       gc.beginPath();
-      gc.setStroke(Color.BLUE);
+      gc.setStroke(obstacleColour);
       gc.setLineDashes(5);
       gc.moveTo(obstacleStartX, runwayStartY - scaledObstacleHeightPx);
       gc.lineTo(drawLegendFromLeft ? obstacleStartX + heightTimes50Px : obstacleStartX - heightTimes50Px, runwayStartY);
       gc.stroke();
 
       double slopeLegendStartX = drawLegendFromLeft ? obstacleStartX : obstacleStartX - heightTimes50Px;
-      drawDistanceLegend(gc, "ALS/TOCS= " + obstacle.getHeight() * 50 + " m", Color.BLUE, slopeLegendStartX, runwayStartY - 200, heightTimes50Px, 200);
+      drawDistanceLegend(gc, "ALS/TOCS= " + obstacle.getHeight() * 50 + " m", alsTocsColour, slopeLegendStartX, runwayStartY - 200, heightTimes50Px, 200);
 
       // Draw RESA legend
 
@@ -477,7 +523,7 @@ public class VisPanel extends StackPane {
       double resaLengthPx = (resa / toda) * runwayLengthPx;
 
       double resaLegendStartX = drawLegendFromLeft ? obstacleEndX : obstacleEndX - resaLengthPx;
-      drawDistanceLegend(gc, "RESA= " + resa + " m", Color.RED, resaLegendStartX, runwayEndY - 150, resaLengthPx, 150);
+      drawDistanceLegend(gc, "RESA= " + resa + " m", resaColour, resaLegendStartX, runwayEndY - 150, resaLengthPx, 150);
 
       // Draw safety distance
 
@@ -485,7 +531,7 @@ public class VisPanel extends StackPane {
       double safetyDistanceStartX = drawLegendFromLeft
         ? Math.max(obstacleEndX + resaLengthPx, obstacleStartX + heightTimes50Px)
         : Math.min(obstacleEndX - resaLengthPx, obstacleStartX - heightTimes50Px) - safetyDistancePx;
-      drawDistanceLegend(gc, "Safety distance", Color.GREEN, safetyDistanceStartX, runwayEndY - 150, safetyDistancePx, 150);
+      drawDistanceLegend(gc, "Safety distance", safetyDistColour, safetyDistanceStartX, runwayEndY - 150, safetyDistancePx, 150);
     }
   }
 
@@ -604,15 +650,26 @@ public class VisPanel extends StackPane {
     gc.clearRect(-5000, -5000, 10000, 10000);
 
     //Colours that can be changed
-    var grass = Color.valueOf("#7CB342");
-    var clearedAndgraded = Color.valueOf("#0072C6");
-    var runwayBody = Color.valueOf("#242424");
-    var white = Color.valueOf("#ffffff");
-    var thresholdColour = Color.valueOf("#FF5733");
-    var stopwayColour = Color.valueOf("#f7ff00");
-    var clearwayColour = Color.valueOf("#ff8b00");
-    var accent1 = Color.valueOf("#FFD700");
-    var obstacleColour = Color.RED;
+//    var grass = Color.valueOf("#7CB342");
+//    var clearedAndgraded = Color.valueOf("#0072C6");
+//    var runwayBody = Color.valueOf("#242424");
+//    var runwayLines = Color.valueOf("#ffffff");
+//    var thresholdColour = Color.valueOf("#FF5733");
+//    var stopwayColour = Color.valueOf("#f7ff00");
+//    var clearwayColour = Color.valueOf("#ff8b00");
+//    var accent1 = Color.valueOf("#FFD700");
+//    var obstacleColour = Color.RED;
+
+    var grass = Color.valueOf(colours[0]);
+    var clearedAndgraded = Color.valueOf(colours[1]);
+    var runwayBody = Color.valueOf(colours[2]);
+    var runwayLines = Color.valueOf(colours[3]);
+    var thresholdColour = Color.valueOf(colours[4]);
+    var stopwayColour = Color.valueOf(colours[5]);
+    var clearwayColour = Color.valueOf(colours[6]);
+    var accent1 = Color.valueOf(colours[7]);
+    var obstacleColour = Color.valueOf(colours[8]);
+    var strokeColour = Color.valueOf(colours[9]);
 
     //Surrounding area
     gc.setFill(grass);
@@ -625,18 +682,18 @@ public class VisPanel extends StackPane {
     //The polygon around the runway
     gc.setFill(clearedAndgraded);
     gc.fillPolygon(xCoord, yCoord, 12);
-    gc.setStroke(Color.BLACK);
+    gc.setStroke(strokeColour);
     gc.strokePolygon(xCoord, yCoord, 12);
 
     //Runway body
     gc.setFill(runwayBody);
     gc.fillRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
-    gc.setStroke(Color.BLACK);
+    gc.setStroke(strokeColour);
     gc.setLineWidth(0.25);
     gc.strokeRect(cw * 0.1, ch * 0.43, cw * 0.8, ch * 0.1);
 
     //Dashed centre line, lower dash number to get more dashes in the line.
-    gc.setStroke(white);
+    gc.setStroke(runwayLines);
     gc.setLineWidth(1);
     int dashes = 9;
     if (runway.getTora() >= 3250) {
@@ -647,7 +704,7 @@ public class VisPanel extends StackPane {
     gc.setLineDashes(0);
 
     //Starting lines at each end of the runway
-    gc.setStroke(white);
+    gc.setStroke(runwayLines);
     gc.setLineWidth(2);
     var tempA = cw * 0.11;
     var tempB = ch * 0.44;
@@ -671,7 +728,7 @@ public class VisPanel extends StackPane {
 
     //Show the runway designators in the 2D view
     gc.setLineWidth(1);
-    gc.setFill(white);
+    gc.setFill(runwayLines);
     if (leftT) {
       gc.fillText(formattedDes[1], cw * 0.17, ch * 0.48);
       gc.fillText(formattedDes[0], cw * 0.8, ch * 0.48);
@@ -827,8 +884,8 @@ public class VisPanel extends StackPane {
 
     //Runway distances
     gc.setLineWidth(1.5);
-    gc.setStroke(Color.BLACK);
-    gc.setFill(Color.BLACK);
+    gc.setStroke(strokeColour);
+    gc.setFill(strokeColour);
     gc.setFont(new Font(15));
     gc.setLineDashes(0);
 

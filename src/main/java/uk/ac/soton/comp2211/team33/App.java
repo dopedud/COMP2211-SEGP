@@ -33,6 +33,7 @@ public class App extends Application {
    */
   @Override
   public void start(Stage stage) {
+    //Settings.setStylesheetPath("/css/high_contrast.css");
     new SplashController(stage, null);
   }
 }

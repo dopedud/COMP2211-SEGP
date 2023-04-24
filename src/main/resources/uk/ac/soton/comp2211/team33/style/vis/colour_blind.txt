@@ -1,0 +1,15 @@
+#7CB342, grass
+#0072C6, cleared and graded area                       (top down only)
+#242424, runway body
+#ffffff, runway lines                                  (top down only)
+#FF5733, threshold
+#f7ff00, stopway
+#ff8b00, clearway
+#FFD700, accent                                        (top down only)
+#FF0000, obstacles
+#000000, strokes
+#38b3e8, sky                                           (sideways view only)
+#523226, dust                                          (sideways view only)
+#ff0000, ALS/TOCS                                      (sideways view only)
+#00ff00, RESA                                          (sideways view only)
+#0000ff, safety distance                               (sideways view only)
