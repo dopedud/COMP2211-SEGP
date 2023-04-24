@@ -1,7 +1,5 @@
 package uk.ac.soton.comp2211.team33.controllers;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -10,10 +8,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.*;
-import org.dom4j.*;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import uk.ac.soton.comp2211.team33.components.RunwayTab;
@@ -128,28 +122,45 @@ public class MainController extends BaseController {
         fileWriter.write("\n");
 
         Obstacle currentObstacle = runway.getCurrentObstacle();
-        fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentObstacle.getName() + " m\n");
-        fileWriter.write("Height: " + currentObstacle.getHeight() + " m\n");
-        fileWriter.write("Length: " + currentObstacle.getLength() + " m\n");
-        fileWriter.write("Distance from center-line: " + currentObstacle.getCenterline() + " m\n");
+        if (currentObstacle != null) {
+          fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentObstacle.getName() + " m\n");
+          fileWriter.write("Height: " + currentObstacle.getHeight() + " m\n");
+          fileWriter.write("Length: " + currentObstacle.getLength() + " m\n");
+          fileWriter.write("Distance from center-line: " + currentObstacle.getCenterline() + " m\n");
 
-        fileWriter.write("\n");
+          fileWriter.write("\n");
+        } else fileWriter.write("CURRENTLY SELECTED OBSTACLE: none\n\n");
 
         Aircraft currentAircraft = runway.getCurrentAircraft();
-        fileWriter.write("CURRENTLY SELECTED AIRCRAFT: " + currentAircraft.getId() + " m\n");
-        fileWriter.write("Blast protection: " + currentAircraft.getBlastProtection() + " m\n");
+        if (currentAircraft != null) {
+          fileWriter.write("CURRENTLY SELECTED AIRCRAFT: " + currentAircraft.getId() + " m\n");
+          fileWriter.write("Blast protection: " + currentAircraft.getBlastProtection() + " m\n");
 
-        fileWriter.write("\n");
+          fileWriter.write("\n");
+        } else fileWriter.write("CURRENTLY SELECTED AIRCRAFT: none\n\n");
 
         fileWriter.write("CALCULATION FOR TAKE-OFF/LANDING TOWARDS OBSTACLE:\n");
-        fileWriter.write(Calculator.takeOffTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
-            Calculator.landingTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n");
+        if (currentObstacle != null) {
+          fileWriter.write(Calculator.takeOffTowardsObsPP(runway, currentObstacle) + "\n" +
+              Calculator.landingTowardsObsPP(runway, currentObstacle) + "\n");
+        } else fileWriter.write("""
+            Runway values do not need to be re-declared.
+
+            Select an obstacle and an aircraft to re-declare values.
+            """);
 
         fileWriter.write("\n");
 
         fileWriter.write("CALCULATION FOR TAKE-OFF AWAY/LANDING OVER OBSTACLE:\n");
-        fileWriter.write(Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
-            Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n");
+        if (currentAircraft != null && currentObstacle != null) {
+          fileWriter.write(Calculator.takeOffAwayObsPP(runway, currentObstacle, currentAircraft) + "\n" +
+              Calculator.landingOverObsPP(runway, currentObstacle, currentAircraft) + "\n");
+        }
+        else fileWriter.write("""
+            Runway values do not need to be re-declared.
+
+            Select an obstacle and an aircraft to re-declare values.
+            """);
 
         fileWriter.write("\n");
       }
