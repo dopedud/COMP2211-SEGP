@@ -1,0 +1,186 @@
+.root {
+    -fx-background-color: #2B2B2B;
+    -fx-text-base-color: #ECECEC;
+}
+
+/* Labels */
+
+.label {
+    -fx-text-fill: #ECECEC;
+}
+
+/* Buttons */
+
+.button {
+    -fx-background-color: #4B4B4B;
+}
+
+.button:hover {
+    -fx-background-color: #6B6B6B;
+}
+
+.button:pressed {
+    -fx-background-color: #2B2B2B;
+}
+
+/* Text Fields */
+
+.text-field, .text-area {
+    -fx-background-color: #4B4B4B;
+    -fx-text-fill: #ECECEC;
+}
+
+/* Checkboxes */
+
+.check-box {
+    -fx-text-fill: #ECECEC;
+}
+
+.check-box .box {
+    -fx-background-color: #4B4B4B;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #ECECEC;
+}
+
+/* Radio Buttons */
+
+.radio-button {
+    -fx-text-fill: #ECECEC;
+}
+
+.radio-button .radio {
+    -fx-background-color: #4B4B4B;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #ECECEC;
+}
+
+/* Scroll Bar */
+
+.scroll-bar:vertical {
+    -fx-background-color: #2B2B2B;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: #2B2B2B;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #4B4B4B;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #6B6B6B;
+}
+
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #2B2B2B;
+}
+
+/* List View */
+
+.list-view {
+    -fx-background-color: #4B4B4B;
+    -fx-text-fill: #ECECEC;
+}
+
+/* Table View */
+
+.table-view {
+    -fx-background-color: #4B4B4B;
+    -fx-text-fill: #ECECEC;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #2B2B2B;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #ECECEC;
+}
+
+.table-view:focused .table-cell:filled:selected {
+    -fx-background-color: #6B6B6B;
+    -fx-text-fill: #ECECEC;
+}
+
+.table-view:focused .table-cell:filled {
+    -fx-background-color: #4B4B4B;
+    -fx-text-fill: #ECECEC;
+}
+
+/* Choice box */
+
+.choice-box {
+    -fx-background-color: #4B4B4B;
+    -fx-text-fill: #ECECEC;
+}
+
+.choice-box .arrow {
+    -fx-background-color: #ECECEC;
+    -fx-background-insets: 0;
+    -fx-shape: "M 0 0 L 5 5 L 10 0 Z";
+}
+
+.choice-box .context-menu {
+    -fx-background-color: #4B4B4B;
+}
+
+/* Menu bar */
+
+.menu-bar {
+    -fx-background-color: #4B4B4B;
+    -fx-text-fill: #ECECEC;
+}
+
+.menu-bar .menu-button:hover {
+    -fx-background-color: #6B6B6B;
+}
+
+.menu-bar .context-menu {
+    -fx-background-color: #4B4B4B;
+}
+
+/* Tab */
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #2B2B2B;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #4B4B4B;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: #6B6B6B;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #6B6B6B;
+    -fx-border-width: 2px;
+}
+
+/* Split pane */
+
+.split-pane {
+    -fx-background-color: #2B2B2B;
+}
+
+.split-pane .split-pane-divider {
+    -fx-background-color: #2B2B2B;
+    -fx-border-color: #4B4B4B;
+}
+
+/* Titled pane */
+
+.titled-pane .title {
+    -fx-background-color: #4B4B4B;
+}
+
+.titled-pane .content {
+    -fx-background-color: #2B2B2B;
+    -fx-border-color: #4B4B4B;
+}
