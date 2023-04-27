@@ -11,7 +11,7 @@
             xmlns:fx="http://javafx.com/fxml"
             prefHeight="400.0" prefWidth="600.0">
     <Label AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" textAlignment="CENTER" wrapText="true">
-        Welcome to the Runway Re-Declaration Tool. To begin, please set up a new airport, or select an existing one.
+        Please set up a new airport, or select an existing one.
         Alternatively, you can import an airport configuration from a file.
     </Label>
     <HBox spacing="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" alignment="CENTER">

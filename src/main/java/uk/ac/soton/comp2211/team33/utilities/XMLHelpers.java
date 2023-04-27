@@ -77,8 +77,8 @@ public final class XMLHelpers {
         newState.addObstacle(name, height, length, centerline);
       }
 
-    } catch (DocumentException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     }
 
     return newState;
