@@ -11,7 +11,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             prefHeight="400.0" prefWidth="600.0">
-    <Label text="New runway details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+    <Label text="New airport details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
     <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
         <InputField fx:id="airportName" label="Name" tooltip="The name of the airport" />
         <InputField fx:id="airportCity" label="Region" tooltip="The region where the airport is located"/>
