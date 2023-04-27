@@ -10,7 +10,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1"
             prefWidth="400.0">
-  <Label text="New airport details :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
+  <Label text="Airport :" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0"/>
   <VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
     <DropdownField fx:id="name" label="Name"/>
     <AnchorPane>
