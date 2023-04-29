@@ -308,6 +308,7 @@ public class VisPanel extends StackPane {
     var alsTocsColour = Color.valueOf(colours[12]);
     var resaColour = Color.valueOf(colours[13]);
     var safetyDistColour = Color.valueOf(colours[14]);
+    var legendColour = Color.valueOf(colours[14]);
 
     // TODO: disable rotating
 
@@ -410,7 +411,7 @@ public class VisPanel extends StackPane {
     if (ctoda > 0) {
       double ctodaLengthPx = (ctoda / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayEndX - ctodaLengthPx : runwayStartX - rightClearwayLengthPx;
-      drawDistanceLegend(gc, "TODA= " + ctoda + " m", Color.BLACK,
+      drawDistanceLegend(gc, "TODA= " + ctoda + " m", legendColour,
         startX, runwayEndY - 500, ctodaLengthPx, 500);
     }
 
@@ -421,7 +422,7 @@ public class VisPanel extends StackPane {
     if (ctora > 0) {
       double ctoraLengthPx = (ctora / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX - ctoraLengthPx : runwayStartX;
-      drawDistanceLegend(gc, "TORA= " + ctora + " m", Color.BLACK,
+      drawDistanceLegend(gc, "TORA= " + ctora + " m", legendColour,
         startX, runwayEndY - 200, ctoraLengthPx, 200);
     }
 
@@ -432,7 +433,7 @@ public class VisPanel extends StackPane {
     if (clda > 0) {
       double cldaLengthPx = (clda / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX - cldaLengthPx : runwayStartX;
-      drawDistanceLegend(gc, "LDA= " + clda + " m", Color.BLACK, startX, runwayEndY - 300, cldaLengthPx, 300);
+      drawDistanceLegend(gc, "LDA= " + clda + " m", legendColour, startX, runwayEndY - 300, cldaLengthPx, 300);
     }
 
     // Draw casda
@@ -442,7 +443,7 @@ public class VisPanel extends StackPane {
     if (casda > 0) {
       double casdaLengthPx = (casda / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX + stopwayLengthPx - casdaLengthPx : runwayStartX - rightStopwayLengthPx;
-      drawDistanceLegend(gc, "ASDA= " + casda + " m", Color.BLACK, startX,
+      drawDistanceLegend(gc, "ASDA= " + casda + " m", legendColour, startX,
         runwayEndY - 400, casdaLengthPx, 400);
     }
 

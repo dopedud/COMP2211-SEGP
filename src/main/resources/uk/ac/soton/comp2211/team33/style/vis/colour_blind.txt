@@ -13,3 +13,4 @@
 #CC79A7, ALS/TOCS                                      (sideways view only)
 #009E73, RESA                                          (sideways view only)
 #0072B2, safety distance                               (sideways view only)
+#000000, strokes (sideways)

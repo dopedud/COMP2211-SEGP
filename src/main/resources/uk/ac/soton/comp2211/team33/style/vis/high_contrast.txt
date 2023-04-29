@@ -1,15 +1,16 @@
-#87E911, grass
-#0057E9, cleared and graded area                       (top down only)
-#000000, runway body
-#ffffff, runway lines                                  (top down only)
-#E11845, threshold
-#E11845, stopway
-#F2CA19, clearway
-#F2CA19, accent                                        (top down only)
-#E11845, obstacles
-#FF00BD, strokes
-#56B4E9, sky                                           (sideways view only)
-#000000, dust                                          (sideways view only)
-#E11845, ALS/TOCS                                      (sideways view only)
-#87E911, RESA                                          (sideways view only)
-#0057E9, safety distance                               (sideways view only)
+#090909, grass
+#1E1E1E, cleared and graded area (top down only)
+#020202, runway body
+#FFFFFF, runway lines (top down only)
+#FF8000, threshold
+#FFFF00, stopway
+#FFA500, clearway
+#FFD700, accent (top down only)
+#FF0000, obstacles
+#FFFFFF, strokes
+#1E1E1E, sky (sideways view only)
+#2F2F2F, dust (sideways view only)
+#FF0000, ALS/TOCS (sideways view only)
+#00FF00, RESA (sideways view only)
+#00FFFF, safety distance (sideways view only)
+#FFFFFF, strokes (sideways)
