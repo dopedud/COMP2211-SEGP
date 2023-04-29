@@ -1190,7 +1190,7 @@ public class VisPanel extends StackPane {
    */
   private void drawDirectionArrow(GraphicsContext gc, double x1, double y1, double x2, double arrowSize, boolean right) {
 
-    var arrowColour = Color.BLACK;
+    var arrowColour = Color.valueOf(colours[9]);
     gc.setStroke(arrowColour);
     gc.setFill(arrowColour);
 
