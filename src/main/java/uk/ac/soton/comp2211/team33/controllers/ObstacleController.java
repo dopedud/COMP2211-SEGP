@@ -61,9 +61,4 @@ public class ObstacleController extends BaseController {
 
     stage.close();
   }
-
-  @FXML
-  private void onEditCurrentObstacle() {
-
-  }
 }

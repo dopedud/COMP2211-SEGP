@@ -27,7 +27,7 @@ public class RunwayTab extends Tab {
   private final Runway runway;
 
   /**
-   * A JavaFX UI element to contain 3 panels; configuration panel, visualisation panel, and calculation panel.
+   * A JavaFX UI element that contains 3 panels; configuration panel, visualisation panel, and calculation panel.
    */
   @FXML
   private SplitPane splitPane;
@@ -54,6 +54,6 @@ public class RunwayTab extends Tab {
 
   @FXML
   private void onCloseRunway() {
-
+    state.removeRunway(runway);
   }
 }

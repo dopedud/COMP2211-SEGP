@@ -79,12 +79,24 @@ public class Airport {
     runwayList.add(new Runway(designator, tora, toda, asda, lda, resa, threshold));
   }
 
+  public void removeRunway(Runway runway) {
+    runwayList.remove(runway);
+  }
+
   public void addAircraft(String id, double blastProtection) throws IllegalArgumentException {
     aircraftList.add(new Aircraft(id, blastProtection));
   }
 
+  public void removeAircraft(Aircraft aircraft) throws IllegalArgumentException {
+    aircraftList.remove(aircraft);
+  }
+
   public void addObstacle(String name, double height, double length, double centerline) {
     obstacleList.add(new Obstacle(name, height, length, centerline));
+  }
+
+  public void removeObstacle(Obstacle obstacle) {
+    obstacleList.remove(obstacle);
   }
 
   public void loadPredefinedObstacles() {
