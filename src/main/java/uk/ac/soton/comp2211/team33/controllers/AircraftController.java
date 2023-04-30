@@ -67,9 +67,4 @@ public class AircraftController extends BaseController {
       //TODO: create a modal stage informing the user that value entered is out of range
     }
   }
-
-  @FXML
-  private void onEditCurrentAircraft() {
-
-  }
 }

@@ -106,8 +106,8 @@ public class ConfigPanel extends AnchorPane {
       } else if (list.wasRemoved()) {
         String id = list.getRemoved().get(0).getId();
 
-        aircraftList.getItems().remove(id);
         if (aircraftList.getValue().equals(id)) aircraftList.setValue("None");
+        aircraftList.getItems().remove(id);
       }
     });
 
@@ -155,8 +155,8 @@ public class ConfigPanel extends AnchorPane {
       } else if (list.wasRemoved()) {
         String name = list.getRemoved().get(0).getName();
 
-        obstacleList.getItems().remove(name);
         if (obstacleList.getValue().equals(name)) obstacleList.setValue("None");
+        obstacleList.getItems().remove(name);
       }
     });
 
@@ -193,23 +193,13 @@ public class ConfigPanel extends AnchorPane {
   }
 
   @FXML
-  private void onEditAircraft() {
-
-  }
-
-  @FXML
   private void onAddAircraft() {
     new AircraftController(ProjectHelpers.createModalStage(stage), state, false);
   }
 
   @FXML
   private void onDeleteAircraft() {
-
-  }
-
-  @FXML
-  private void onEditObstacle() {
-
+    state.removeAircraft(runway.getCurrentAircraft());
   }
 
   @FXML
@@ -219,6 +209,6 @@ public class ConfigPanel extends AnchorPane {
 
   @FXML
   private void onDeleteObstacle() {
-
+    state.removeObstacle(runway.getCurrentObstacle());
   }
 }

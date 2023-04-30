@@ -15,11 +15,6 @@
         <VBox spacing="10.0">
           <HBox alignment="CENTER" spacing="10.0">
             <AnchorPane HBox.hgrow="ALWAYS">
-              <Button mnemonicParsing="false" text="Edit" onAction="#onEditAircraft"
-                      AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-            </AnchorPane>
-            <AnchorPane HBox.hgrow="ALWAYS">
               <Button mnemonicParsing="false" text="Add" onAction="#onAddAircraft"
                       AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
@@ -53,11 +48,6 @@
                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
           </AnchorPane>
           <HBox alignment="CENTER" spacing="10.0">
-            <AnchorPane HBox.hgrow="ALWAYS">
-              <Button mnemonicParsing="false" text="Edit" onAction="#onEditObstacle"
-                      AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
-            </AnchorPane>
             <AnchorPane HBox.hgrow="ALWAYS">
               <Button mnemonicParsing="false" text="Add" onAction="#onAddObstacle"
                       AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
