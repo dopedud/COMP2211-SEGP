@@ -220,12 +220,11 @@ public final class Calculator {
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObsDistFromThresh() > -60)) {
       logger.info("No re-declaration needed...");
-      return "Runway values do not need to be re-declared.\n\nCurrent obstacle does not require runway re-declaration.";
+      return "";
     }
 
     logger.info("Re-declaring LDA for landing towards obstacle...");
 
-    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Landing towards obstacle: \n");
 
     calcSummary.append("\n");
@@ -255,12 +254,11 @@ public final class Calculator {
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObsDistFromThresh() > -60)) {
       logger.info("No re-declaration needed...");
-      return "Runway values do not need to be re-declared.\n\nCurrent obstacle does not require runway re-declaration.";
+      return "";
     }
 
     logger.info("Re-declaring LDA for landing over obstacle...");
 
-    calcSummary.append("Summary of calculations for runway: " + runway.getDesignator() + "\n");
     calcSummary.append("Landing over obstacle: \n");
 
     calcSummary.append("\n");
