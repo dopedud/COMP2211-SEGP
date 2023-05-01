@@ -360,7 +360,10 @@ public class VisPanel extends StackPane {
 
     gc.setFill(strokeColour);
     gc.fillText(leftRunway.getDesignator(), runwayStartX - 60, designatorStartY - 10);
-    gc.fillText(rightRunway.getDesignator(), runwayEndX + 60, designatorStartY - 10);
+
+    if (rightRunway != null) {
+      gc.fillText(rightRunway.getDesignator(), runwayEndX + 60, designatorStartY - 10);
+    }
 
     // Draw runway body
 
