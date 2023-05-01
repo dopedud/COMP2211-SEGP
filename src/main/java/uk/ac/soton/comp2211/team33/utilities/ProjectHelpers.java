@@ -114,6 +114,7 @@ public final class ProjectHelpers {
     var fileChooser = new FileChooser();
     fileChooser.setTitle("Save File");
     fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
     File file = fileChooser.showSaveDialog(stage);
     return file.getAbsolutePath();
   }

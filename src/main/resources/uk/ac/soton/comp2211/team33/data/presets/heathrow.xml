@@ -34,7 +34,7 @@
         </runway>
     </runways>
     <aircrafts>
-        <aircraft id="a380">
+        <aircraft id="A380">
             <blastProtection>500</blastProtection>
         </aircraft>
         <aircraft id="747">
