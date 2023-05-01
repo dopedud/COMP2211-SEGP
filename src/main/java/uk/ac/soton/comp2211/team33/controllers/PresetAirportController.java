@@ -63,7 +63,8 @@ public class PresetAirportController extends BaseController {
     }
     String airportPath = ProjectHelpers.getResource("/data/presets/" + nameToPath.get(name.getValue())).getPath();
     Airport airport = XMLHelpers.importAirport(airportPath);
-    new MainController(stage, airport);
+    new MainController(new Stage(), airport);
+    stage.close();
   }
 
   private void loadPredefinedAirports() {
