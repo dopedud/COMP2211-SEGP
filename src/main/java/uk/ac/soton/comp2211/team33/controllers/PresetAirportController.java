@@ -61,7 +61,8 @@ public class PresetAirportController extends BaseController {
     if (name.getValue().equals("-")) {
       return;
     }
-    String airportPath = ProjectHelpers.getResource("/data/presets/" + nameToPath.get(name.getValue())).getPath();
+
+    String airportPath = ProjectHelpers.getResource("/data/presets/" + nameToPath.get(name.getValue())).toExternalForm();
     Airport airport = XMLHelpers.importAirport(airportPath);
     new MainController(new Stage(), airport);
     stage.close();
