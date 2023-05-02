@@ -5,9 +5,11 @@
 
 <?import uk.ac.soton.comp2211.team33.components.InputField?>
 
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            minWidth="300" maxWidth="500">
+         xmlns:fx="http://javafx.com/fxml"
+         minWidth="300" maxWidth="500">
     <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <TitledPane animated="false" collapsible="false" text="Aircraft"
@@ -31,7 +33,7 @@
                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
           </AnchorPane>
           <AnchorPane>
-            <Label text="Blast Protection"
+            <Label text="Blast Protection (m)"
                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0"/>
             <Label fx:id="blastProtection"
                    AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
@@ -65,19 +67,19 @@
                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
           </AnchorPane>
           <AnchorPane>
-            <Label text="Height" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            <Label text="Height (m)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                    AnchorPane.topAnchor="0.0"/>
             <Label fx:id="height" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
                    AnchorPane.topAnchor="0.0"/>
           </AnchorPane>
           <AnchorPane>
-            <Label text="Length" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            <Label text="Length (m)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                    AnchorPane.topAnchor="0.0"/>
             <Label fx:id="length" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
                    AnchorPane.topAnchor="0.0"/>
           </AnchorPane>
           <AnchorPane>
-            <Label text="Center-line" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+            <Label text="Dist. to Center-Line (m)" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                    AnchorPane.topAnchor="0.0"/>
             <Label fx:id="centerline" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0"
                    AnchorPane.topAnchor="0.0"/>
@@ -85,9 +87,18 @@
         </VBox>
       </TitledPane>
       <AnchorPane>
-        <InputField fx:id="obsDistFromThresh" label="Obstacle Distance from Threshold" suffix="m"
-                    AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
+        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <InputField fx:id="obsDistFromThresh" label="Position" suffix="m" />
+            <HBox>
+                <Region minWidth="10" />
+                    <Label prefWidth="250" wrapText="true" alignment="CENTER">
+                        (Distance of the obstacle from the selected threshold)
+                    </Label>
+                <Region minWidth="10" />
+            </HBox>
+        </VBox>
+
       </AnchorPane>
     </VBox>
 </fx:root>
