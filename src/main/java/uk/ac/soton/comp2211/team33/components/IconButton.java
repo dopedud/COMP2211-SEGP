@@ -34,6 +34,8 @@ public class IconButton extends Button {
    */
     private double iconSize = 20;
 
+    private boolean autoResize = true;
+
     public IconButton() {
         super();
     }
@@ -54,8 +56,10 @@ public class IconButton extends Button {
       });
 
       this.fontProperty().addListener((observable, oldValue, newValue) -> {
-        double size = newValue.getSize();
-        this.setIconSize(size);
+        if (autoResize) {
+          double size = newValue.getSize();
+          this.resize(size);
+        }
         setIconColor((Color) this.getTextFill()); // recolour so the whole icon is coloured properly
       });
 
@@ -69,7 +73,7 @@ public class IconButton extends Button {
     public void setIconColor(Color color) {
       Blend blend2 = new Blend();
       blend2.setMode(BlendMode.SRC_ATOP);
-      blend2.setTopInput(new ColorInput(0, 0, iconSize, iconSize, colorToPaint(color)));
+      blend2.setTopInput(new ColorInput(0, 0, iconSize*10, iconSize*10, colorToPaint(color)));
       imageView.setEffect(blend2);
     }
 
@@ -77,14 +81,21 @@ public class IconButton extends Button {
       return this.iconPath;
     }
 
+    private void resize(double size) {
+      this.iconSize = size;
+      imageView.setPreserveRatio(true);
+      imageView.setFitHeight(iconSize);
+    }
+
   /**
-   * Sets the size of the icon, only required if a value other than the default (20px) is desired. Given a height, the width is automatically determined using the image aspect ratio.
+   * Sets the size of the icon, only required if a value other than the default is desired.
+   * Given a height, the width is automatically determined using the image aspect ratio.
+   * Setting this value disables automatic resizing of the icon.
    * @param iconSize Height of the icon in pixels.
    */
     public void setIconSize(double iconSize) {
-      this.iconSize = iconSize;
-      imageView.setPreserveRatio(true);
-      imageView.setFitHeight(iconSize);
+      autoResize = false;
+      resize(iconSize);
     }
 
     public double getIconSize() {
