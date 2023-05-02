@@ -83,7 +83,7 @@ public class FileImportController extends BaseController {
   @FXML
   private void browseFile() {
     var fileChooser = new FileChooser();
-    fileChooser.setTitle("Import File");
+    fileChooser.setTitle("AVIA - Import File");
     fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
     File file = fileChooser.showOpenDialog(stage);

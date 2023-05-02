@@ -40,10 +40,10 @@ public class ObstacleController extends BaseController {
     stage.setResizable(false);
 
     if (isEdit) {
-      stage.setTitle("Edit Current Obstacle");
+      stage.setTitle("AVIA - Edit Current Obstacle");
       buildScene("/views/EditObstacleView.fxml");
     } else {
-      stage.setTitle("New Obstacle");
+      stage.setTitle("AVIA - New Obstacle");
       buildScene("/views/AddObstacleView.fxml");
     }
   }

@@ -29,7 +29,7 @@ public class NewAirportController extends BaseController {
     logger.info("Building New Airport View...");
 
     stage.setResizable(false);
-    stage.setTitle("Runway Re-Declaration Tool");
+    stage.setTitle("AVIA - New Airport");
 
     buildScene("/views/NewAirportView.fxml");
   }

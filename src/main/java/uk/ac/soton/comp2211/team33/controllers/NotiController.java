@@ -38,7 +38,7 @@ public class NotiController extends BaseController {
     logger.info("Building NotiController...");
 
     stage.setResizable(false);
-    stage.setTitle("Notification");
+    stage.setTitle("AVIA - Notification");
 
     buildScene("/views/NotiView.fxml");
   }

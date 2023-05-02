@@ -32,7 +32,7 @@ public class NewRunwayController extends BaseController {
     logger.info("Building NewRunwayController...");
 
     stage.setResizable(false);
-    stage.setTitle("New Runway");
+    stage.setTitle("AVIA - New Runway Setup");
 
     buildScene("/views/NewRunwayView.fxml");
   }

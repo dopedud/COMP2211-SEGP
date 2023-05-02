@@ -31,7 +31,7 @@ public class SplashController extends BaseController {
     logger.info("Building Initial View...");
 
     stage.setResizable(false);
-    stage.setTitle("Runway Re-Declaration Tool");
+    stage.setTitle("AVIA - Runway Management Tool");
 
     buildScene("/views/SplashView.fxml");
   }

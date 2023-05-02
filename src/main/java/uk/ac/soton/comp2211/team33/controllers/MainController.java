@@ -55,7 +55,7 @@ public class MainController extends BaseController {
     stage.setHeight(bounds.getHeight());
     stage.setResizable(true);
 
-    stage.setTitle("Runway Re-decleration Tool - " + state.getName() + ", " + state.getCity());
+    stage.setTitle("AVIA - " + state.getName() + ", " + state.getCity());
 
     buildScene("/views/MainView.fxml");
 
