@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * The Styling class to store and modify the visual preferences set by the user.
  */
 public class StylePrefs {
-  private static String colourScheme = new String("Dark");
+  private static String colourScheme = new String("Light");
 
   private static String fontSize = new String("Medium");
 
