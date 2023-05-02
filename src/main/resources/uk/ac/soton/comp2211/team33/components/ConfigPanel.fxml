@@ -7,6 +7,7 @@
 
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
+<?import uk.ac.soton.comp2211.team33.components.IconView?>
 <fx:root type="AnchorPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml"
          minWidth="300" maxWidth="500">
@@ -98,7 +99,9 @@
                 <Region minWidth="10" />
             </HBox>
         </VBox>
-
       </AnchorPane>
     </VBox>
+    <HBox AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="10" alignment="CENTER">
+        <IconView icon="/pictures/logo.png" iconSize="70" />
+    </HBox>
 </fx:root>
