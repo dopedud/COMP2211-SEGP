@@ -308,7 +308,7 @@ public class VisPanel extends StackPane {
     var alsTocsColour = Color.valueOf(colours[12]);
     var resaColour = Color.valueOf(colours[13]);
     var safetyDistColour = Color.valueOf(colours[14]);
-    var legendColour = Color.valueOf(colours[14]);
+    var legendColour = Color.valueOf(colours[15]);
 
     // TODO: disable rotating
 
@@ -767,26 +767,34 @@ public class VisPanel extends StackPane {
     gc.setFill(stopwayColour);
     //Write metrics over threshold and draw rectangles
     if (leftT) {
+
       if (otherRunway != null && otherRunway.getStopway() != 0) {
         gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+      }
+      if (otherRunway != null) {
         gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
       }
+
       if (stopway != 0) {
         stopwayPar -= stopwayW;
         gc.strokeRect(cw * 0.03, ch * 0.43, cw * stopwayW, ch * boxHeight);
-        gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
       }
+      gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
+
     } else {
       if (stopway != 0) {
         stopwayPar += stopwayW;
         gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
-        gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
       }
+      gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
+
       if (otherRunway != null && otherRunway.getStopway() != 0) {
         gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
-        gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
-
       }
+      if (otherRunway != null) {
+        gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
+      }
+
     }
 
     //Clearway on runway end
@@ -808,11 +816,13 @@ public class VisPanel extends StackPane {
         } else {
           gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
         }
+      }
+      if (otherRunway != null) {
         gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.91, ch * txtHeight);
       }
     } else {
+      double temp = 0.01;
       if (otherRunway != null && otherRunway.getClearway() != 0) {
-        double temp;
         if (otherRunway.getClearway() < otherRunway.getStopway()) {
           gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
           temp = 0.04;
@@ -823,6 +833,8 @@ public class VisPanel extends StackPane {
           gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
           temp = 0.02;
         }
+      }
+      if (otherRunway != null) {
         gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * temp, ch * txtHeight);
       }
     }
@@ -841,7 +853,7 @@ public class VisPanel extends StackPane {
           clearwayPar -= 0.07;
         }
         //Write metrics over threshold
-        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * txtHeight);
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.02, ch * txtHeight);
       } else {
         if (clearway < stopway) {
           gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
@@ -856,7 +868,15 @@ public class VisPanel extends StackPane {
         //Write metrics over threshold
         gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * txtHeight);
       }
+    } else {
+      if (leftT) {
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.02, ch * txtHeight);
+      } else {
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * txtHeight);
+      }
     }
+
+
     gc.setFont(new Font(20));
 
     //Add a marking about the Cleared and Graded area
