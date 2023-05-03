@@ -6,7 +6,7 @@
             <asda>1723</asda>
             <lda>1650</lda>
             <resa>90</resa>
-            <threshold>100</threshold>
+            <threshold>73</threshold>
         </runway>
         <runway designator="20">
             <tora>1650</tora>
@@ -14,7 +14,7 @@
             <asda>1650</asda>
             <lda>1605</lda>
             <resa>90</resa>
-            <threshold>120</threshold>
+            <threshold>45</threshold>
         </runway>
     </runways>
     <aircrafts>
