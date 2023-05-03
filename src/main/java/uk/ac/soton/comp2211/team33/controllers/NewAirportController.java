@@ -40,8 +40,8 @@ public class NewAirportController extends BaseController {
       String name = airportName.getText();
       String city = airportCity.getText();
       logger.info("Creating new airport with name: " + name + " and city: " + city);
-      state = new Airport(name, city);
-      new MainController(stage, state);
+      new MainController(new Stage(), state = new Airport(name, city));
+      stage.close();
     } catch (Exception e) {
       logger.error("Error creating new airport", e);
     }
