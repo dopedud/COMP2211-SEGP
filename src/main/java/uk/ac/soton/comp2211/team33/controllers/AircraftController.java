@@ -40,10 +40,10 @@ public class AircraftController extends BaseController {
     stage.setResizable(false);
 
     if (isEdit) {
-      stage.setTitle("Edit Current Aircraft");
+      stage.setTitle("AVIA - Edit Current Aircraft");
       buildScene("/views/EditAircraftView.fxml");
     } else {
-      stage.setTitle("New Aircraft");
+      stage.setTitle("AVIA - New Aircraft");
       buildScene("/views/AddAircraftView.fxml");
     }
   }

@@ -48,7 +48,7 @@ public class PresetAirportController extends BaseController {
     logger.info("Building NewAirportController...");
 
     stage.setResizable(false);
-    stage.setTitle("New Airport");
+    stage.setTitle("AVIA - Load Preset Airport");
 
     buildScene("/views/PresetAirportView.fxml");
 
