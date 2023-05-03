@@ -910,12 +910,29 @@ public class VisPanel extends StackPane {
     //Location of the obstacle as a ratio
     double obsLocation;
     if (leftT) {
-      obsLocation = cw * (0.9 - (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora());
+      var m = 0.9 - (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
+
+      while (m < 0.1) {
+        m += 0.1;
+      }
+
+      obsLocation = cw * m;
+      System.out.println("test1 = " + (obsLocation / cw));
+
     } else {
-      obsLocation = cw * (0.1 + (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora());
+
+      var n = 0.1 + (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
+
+      while (n > 0.9) {
+        n -= 0.1;
+      }
+
+      obsLocation = cw * n;
+
+      System.out.println("test2 = " + (obsLocation / cw));
     }
-    
-    boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda() 
+
+    boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda()
       != runway.getCtoda() || runway.getLda() != runway.getClda();
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
@@ -1071,7 +1088,7 @@ public class VisPanel extends StackPane {
 
     gc.setFont(new Font(20));
 
-    //Picked an object
+    //Picked an obstacle
     if (runway.getCurrentObstacle() != null) {
 
       if (runway.getObsDistFromThresh() < -60 || Math.abs(runway.getCurrentObstacle().getCenterline()) > 75) {
@@ -1085,18 +1102,15 @@ public class VisPanel extends StackPane {
         gc.setFill(obstacleColour);
         gc.setStroke(obstacleColour);
 
-        var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
         double offsetY = -runway.getCurrentObstacle().getCenterline() / 1000;
-
-        logger.info("This is offsetX " + offsetX);
 
         //Draw obstacle as a dot to pinpoint location
         if (leftT) {
-          gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
-          gc.fillOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.strokeOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
         } else {
-          gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
-          gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.strokeOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
         }
       }
     }

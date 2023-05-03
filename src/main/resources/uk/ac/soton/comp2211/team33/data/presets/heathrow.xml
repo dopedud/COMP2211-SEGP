@@ -13,8 +13,8 @@
             <toda>3962</toda>
             <asda>3884</asda>
             <lda>3884</lda>
-            <resa>325</resa>
-            <threshold>120</threshold>
+            <resa>240</resa>
+            <threshold>0</threshold>
         </runway>
         <runway designator="09R">
             <tora>3660</tora>
