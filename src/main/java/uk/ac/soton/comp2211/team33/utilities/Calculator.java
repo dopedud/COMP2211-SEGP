@@ -95,12 +95,14 @@ public final class Calculator {
 
     calcBreakdown.append("\n");
 
-    calcBreakdown.append("ASDA = TORA = " + newTora + "\n");
+    calcBreakdown.append("ASDA = TORA = " + newTora);
 
     // Update runway with new values
     runway.setCtora(newTora);
-    runway.setCasda(newTora);
     runway.setCtoda(newTora);
+    runway.setCasda(newTora);
+
+    if (newTora <= 0) calcBreakdown = new StringBuilder("Runway values do not need to be re-declared.\n\nTORA is negative.");
 
     return calcBreakdown.toString();
   }
@@ -151,12 +153,14 @@ public final class Calculator {
 
     calcBreakdown.append("ASDA = TORA + STOPWAY\n");
     calcBreakdown.append("ASDA = " + newTora + " + " + runway.getStopway() + "\n");
-    calcBreakdown.append("ASDA = " + (newTora + runway.getStopway()) + "\n");
+    calcBreakdown.append("ASDA = " + (newTora + runway.getStopway()));
 
     // Update runway with new values
     runway.setCtora(newTora);
     runway.setCtoda(newTora + runway.getClearway());
     runway.setCasda(newTora + runway.getStopway());
+
+    if (newTora <= 0) calcBreakdown = new StringBuilder("Runway values do not need to be re-declared.\n\nTORA is negative.");
 
     return calcBreakdown.toString();
   }
@@ -216,7 +220,7 @@ public final class Calculator {
    * @return breakdown of calculations
    */
   public static String landingTowardsObsPP(Runway runway, Obstacle obstacle) {
-    StringBuilder calcSummary = new StringBuilder();
+    StringBuilder calcBreakdown = new StringBuilder();
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObsDistFromThresh() > -60)) {
       logger.info("No re-declaration needed...");
@@ -225,19 +229,21 @@ public final class Calculator {
 
     logger.info("Re-declaring LDA for landing towards obstacle...");
 
-    calcSummary.append("Landing towards obstacle: \n");
+    calcBreakdown.append("Landing towards obstacle: \n");
 
-    calcSummary.append("\n");
+    calcBreakdown.append("\n");
 
     double newLda = runway.getObsDistFromThresh() - runway.getStripEnd() - runway.getResa();
-    calcSummary.append("LDA = Obstacle distance from Threshold - Strip End - RESA\n");
-    calcSummary.append("LDA = " + runway.getObsDistFromThresh() + " - " + runway.getStripEnd() + " - " + runway.getResa() + "\n");
-    calcSummary.append("LDA = " + newLda + "\n");
+    calcBreakdown.append("LDA = Obstacle distance from Threshold - Strip End - RESA\n");
+    calcBreakdown.append("LDA = " + runway.getObsDistFromThresh() + " - " + runway.getStripEnd() + " - " + runway.getResa() + "\n");
+    calcBreakdown.append("LDA = " + newLda);
 
     // Update runway with new values
     runway.setClda(newLda);
 
-    return calcSummary.toString();
+    if (newLda <= 0) calcBreakdown = new StringBuilder("Runway values do not need to be re-declared.\n\nLDA is negative.");
+
+    return calcBreakdown.toString();
   }
 
   /**
@@ -250,7 +256,7 @@ public final class Calculator {
    * @return breakdown of calculations
    */
   public static String landingOverObsPP(Runway runway, Obstacle obstacle, Aircraft aircraft) {
-    StringBuilder calcSummary = new StringBuilder();
+    StringBuilder calcBreakdown = new StringBuilder();
 
     if (!(Math.abs(obstacle.getCenterline()) < 75 && runway.getObsDistFromThresh() > -60)) {
       logger.info("No re-declaration needed...");
@@ -259,47 +265,49 @@ public final class Calculator {
 
     logger.info("Re-declaring LDA for landing over obstacle...");
 
-    calcSummary.append("Landing over obstacle: \n");
+    calcBreakdown.append("Landing over obstacle: \n");
 
-    calcSummary.append("\n");
+    calcBreakdown.append("\n");
 
     double slope = obstacle.getHeight() * runway.getAls();
-    calcSummary.append("Slope = Obstacle Height * Runway Slope\n");
-    calcSummary.append("Slope = " + obstacle.getHeight() + " * " + runway.getAls() + "\n");
-    calcSummary.append("Slope = " + slope + "\n");
+    calcBreakdown.append("Slope = Obstacle Height * Runway Slope\n");
+    calcBreakdown.append("Slope = " + obstacle.getHeight() + " * " + runway.getAls() + "\n");
+    calcBreakdown.append("Slope = " + slope + "\n");
 
-    calcSummary.append("\n");
+    calcBreakdown.append("\n");
 
     double temp;
     if (slope < aircraft.getBlastProtection()) {
       temp = aircraft.getBlastProtection();
-      calcSummary.append("Slope < Blast Protection\n");
-      calcSummary.append("LDA = Original LDA - Blast Protection - Distance from Threshold - Strip End\n");
+      calcBreakdown.append("Slope < Blast Protection\n");
+      calcBreakdown.append("LDA = Original LDA - Blast Protection - Distance from Threshold - Strip End\n");
     } else {
       temp = slope;
-      calcSummary.append("Slope > Blast Protection\n");
-      calcSummary.append("LDA = Original LDA - Slope Calculation - Distance from Threshold - Strip End\n");
+      calcBreakdown.append("Slope > Blast Protection\n");
+      calcBreakdown.append("LDA = Original LDA - Slope Calculation - Distance from Threshold - Strip End\n");
     }
 
-    calcSummary.append("\n");
+    calcBreakdown.append("\n");
 
     double newLda = runway.getLda() - temp - runway.getObsDistFromThresh() - runway.getStripEnd();
-    calcSummary.append("LDA = " + runway.getLda() + " - " + temp + " - " + runway.getObsDistFromThresh() + " - " + runway.getStripEnd() + "\n");
-    calcSummary.append("LDA = " + newLda + "\n");
+    calcBreakdown.append("LDA = " + runway.getLda() + " - " + temp + " - " + runway.getObsDistFromThresh() + " - " + runway.getStripEnd() + "\n");
+    calcBreakdown.append("LDA = " + newLda + "\n");
 
     if (makeNewRESA(newLda, runway, aircraft)) {
-      calcSummary.setLength(0);
-      calcSummary.append("Declaring new RESA due to Blast Protection\n");
-      calcSummary.append("LDA = Original LDA - Distance from Threshold - New RESA\n");
+      calcBreakdown.setLength(0);
+      calcBreakdown.append("Declaring new RESA due to Blast Protection\n");
+      calcBreakdown.append("LDA = Original LDA - Distance from Threshold - New RESA\n");
       newLda = runway.getLda() - runway.getObsDistFromThresh() - runway.getResa();
     }
 
-    calcSummary.append("LDA = " + newLda + "\n");
+    calcBreakdown.append("LDA = " + newLda);
 
     // Update runway with new values
     runway.setClda(newLda);
 
-    return calcSummary.toString();
+    if (newLda <= 0) calcBreakdown = new StringBuilder("Runway values do not need to be re-declared.\n\nLDA is negative.");
+
+    return calcBreakdown.toString();
   }
 
   /**

@@ -50,6 +50,9 @@ public class CalcPanel extends AnchorPane {
 
   private boolean switchNoti;
 
+  private static final String CALC_TOWARDS = "Take-Off Towards/Landing Towards";
+  private static final String CALC_AWAY = "Take-Off Away/Landing Over";
+
   public CalcPanel(Stage stage, Airport state, Runway runway) {
     this.stage = stage;
     this.state = state;
@@ -76,27 +79,27 @@ public class CalcPanel extends AnchorPane {
 
     // Add listeners from calculated values UI to calculated values model
     runway.ctoraProperty().addListener((obVal, oldVal, newVal) -> {
-      if (newVal.doubleValue() == runway.getTora()) ctora.setText("-");
+      if (newVal.doubleValue() == runway.getTora() || newVal.doubleValue() <= 0) ctora.setText("-");
       else ctora.setText(String.valueOf(newVal));
     });
 
     runway.ctodaProperty().addListener((obVal, oldVal, newVal) -> {
-      if (newVal.doubleValue() == runway.getToda()) ctoda.setText("-");
+      if (newVal.doubleValue() == runway.getToda() || newVal.doubleValue() <= 0) ctoda.setText("-");
       else ctoda.setText(String.valueOf(newVal));
     });
 
     runway.casdaProperty().addListener((obVal, oldVal, newVal) -> {
-      if (newVal.doubleValue() == runway.getAsda()) casda.setText("-");
+      if (newVal.doubleValue() == runway.getAsda() || newVal.doubleValue() <= 0) casda.setText("-");
       else casda.setText(String.valueOf(newVal));
     });
 
     runway.cldaProperty().addListener((obVal, oldVal, newVal) -> {
-      if (newVal.doubleValue() == runway.getLda()) clda.setText("-");
+      if (newVal.doubleValue() == runway.getLda() || newVal.doubleValue() <= 0) clda.setText("-");
       else clda.setText(String.valueOf(newVal));
     });
 
     runway.cresaProperty().addListener((obVal, oldVal, newVal) -> {
-      if (newVal.doubleValue() == runway.getResa()) cresa.setText("-");
+      if (newVal.doubleValue() == runway.getResa() || newVal.doubleValue() <= 0) cresa.setText("-");
       else cresa.setText(String.valueOf(newVal));
     });
 
@@ -113,12 +116,12 @@ public class CalcPanel extends AnchorPane {
 
     // Set calculation mode to 2 modes, calculation towards obstacle and away from/over obstacle
     // Also adds a listener to re-calculate values based on which modes selected
-    calcMode.getItems().add("Take-Off Towards/Landing Towards");
-    calcMode.getItems().add("Take-Off Away/Landing Over");
-    calcMode.setValue("Take-Off Towards/Landing Towards");
+    calcMode.getItems().add(CALC_TOWARDS);
+    calcMode.getItems().add(CALC_AWAY);
+    calcMode.setValue(CALC_TOWARDS);
 
     calcMode.valueProperty().addListener((obVal, oldVal, newVal) -> {
-      calcTowards.set(newVal.equals("Take-Off Towards/Landing Towards"));
+      calcTowards.set(newVal.equals(CALC_TOWARDS));
       recalculateRunwayValues();
       notifyRecalculation();
     });
@@ -140,7 +143,7 @@ public class CalcPanel extends AnchorPane {
       if (runway.getCurrentObstacle() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
-        calcBreakdown.setText(Calculator.takeOffTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n" +
+        calcBreakdown.setText(Calculator.takeOffTowardsObsPP(runway, runway.getCurrentObstacle()) + "\n\n" +
                 Calculator.landingTowardsObsPP(runway, runway.getCurrentObstacle()));
       }
     } else {
@@ -148,7 +151,7 @@ public class CalcPanel extends AnchorPane {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
         calcBreakdown.setText(
-            Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n" +
+            Calculator.takeOffAwayObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()) + "\n\n" +
                 Calculator.landingOverObsPP(runway, runway.getCurrentObstacle(), runway.getCurrentAircraft()));
       }
     }
