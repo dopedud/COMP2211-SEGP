@@ -729,12 +729,14 @@ public class VisPanel extends StackPane {
     }
 
     //A variable threshold parameter
-    var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getTora());
-    var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getTora());
+    var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getLda());
+    var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getLda());
     var forLDA = thresh;
+
     if (leftT) {
       forLDA = opthresh;
     }
+
     //Add a threshold if it exists
     if (threshold != 0) {
       gc.setLineWidth(1.5);
@@ -917,7 +919,6 @@ public class VisPanel extends StackPane {
       }
 
       obsLocation = cw * m;
-      System.out.println("test1 = " + (obsLocation / cw));
 
     } else {
 
@@ -929,7 +930,6 @@ public class VisPanel extends StackPane {
 
       obsLocation = cw * n;
 
-      System.out.println("test2 = " + (obsLocation / cw));
     }
 
     boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda()
