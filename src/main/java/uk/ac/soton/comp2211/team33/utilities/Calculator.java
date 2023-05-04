@@ -35,7 +35,9 @@ public final class Calculator {
     runway.setCasda(runway.getAsda());
     runway.setClda(runway.getLda());
 
-    return "Runway values do not need to be re-declared.\n\nSelect an obstacle and an aircraft to re-declare values.";
+    if (runway.getCurrentObstacle() == null && runway.getCurrentAircraft() == null) return "Runway values do not need to be re-declared.\n\nSelect an obstacle and an aircraft to re-declare values.";
+    else if (runway.getCurrentAircraft() == null) return "Runway values do not need to be re-declared.\n\nSelect an aircraft to re-declare values.";
+    else return "Runway values do not need to be re-declared.\n\nSelect an obstacle to re-declare values.";
   }
 
   /**
