@@ -917,7 +917,6 @@ public class VisPanel extends StackPane {
       }
 
       obsLocation = cw * m;
-      System.out.println("test1 = " + (obsLocation / cw));
 
     } else {
 
@@ -929,7 +928,6 @@ public class VisPanel extends StackPane {
 
       obsLocation = cw * n;
 
-      System.out.println("test2 = " + (obsLocation / cw));
     }
 
     boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda()
