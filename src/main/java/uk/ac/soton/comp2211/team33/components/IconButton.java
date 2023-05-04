@@ -73,7 +73,11 @@ public class IconButton extends Button {
     public void setIconColor(Color color) {
       Blend blend2 = new Blend();
       blend2.setMode(BlendMode.SRC_ATOP);
-      blend2.setTopInput(new ColorInput(0, 0, iconSize*10, iconSize*10, colorToPaint(color)));
+      var height = imageView.getImage().getHeight();
+      var width = imageView.getImage().getWidth();
+      var ratio = width / height;
+      System.out.println("Height: " + height + " Width: " + width);
+      blend2.setTopInput(new ColorInput(0, 0, iconSize*ratio, iconSize, colorToPaint(color)));
       imageView.setEffect(blend2);
     }
 
