@@ -13,3 +13,4 @@
 #ff0000, ALS/TOCS                                      (sideways view only)
 #00ff00, RESA                                          (sideways view only)
 #0000ff, safety distance                               (sideways view only)
+#000000, strokes                                       (sideways)

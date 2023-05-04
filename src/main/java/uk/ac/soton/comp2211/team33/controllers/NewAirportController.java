@@ -29,7 +29,7 @@ public class NewAirportController extends BaseController {
     logger.info("Building New Airport View...");
 
     stage.setResizable(false);
-    stage.setTitle("Runway Re-Declaration Tool");
+    stage.setTitle("AVIA - New Airport");
 
     buildScene("/views/NewAirportView.fxml");
   }
@@ -40,8 +40,8 @@ public class NewAirportController extends BaseController {
       String name = airportName.getText();
       String city = airportCity.getText();
       logger.info("Creating new airport with name: " + name + " and city: " + city);
-      state = new Airport(name, city);
-      new MainController(stage, state);
+      new MainController(new Stage(), state = new Airport(name, city));
+      stage.close();
     } catch (Exception e) {
       logger.error("Error creating new airport", e);
     }

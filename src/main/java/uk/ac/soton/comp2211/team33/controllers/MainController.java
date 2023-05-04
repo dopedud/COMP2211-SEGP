@@ -55,7 +55,7 @@ public class MainController extends BaseController {
     stage.setHeight(bounds.getHeight());
     stage.setResizable(true);
 
-    stage.setTitle("Runway Re-decleration Tool - " + state.getName() + ", " + state.getCity());
+    stage.setTitle("AVIA - " + state.getName() + ", " + state.getCity());
 
     buildScene("/views/MainView.fxml");
 
@@ -123,7 +123,7 @@ public class MainController extends BaseController {
 
         Obstacle currentObstacle = runway.getCurrentObstacle();
         if (currentObstacle != null) {
-          fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentObstacle.getName() + " m\n");
+          fileWriter.write("CURRENTLY SELECTED OBSTACLE: " + currentObstacle.getName());
           fileWriter.write("Height: " + currentObstacle.getHeight() + " m\n");
           fileWriter.write("Length: " + currentObstacle.getLength() + " m\n");
           fileWriter.write("Distance from center-line: " + currentObstacle.getCenterline() + " m\n");
@@ -133,7 +133,7 @@ public class MainController extends BaseController {
 
         Aircraft currentAircraft = runway.getCurrentAircraft();
         if (currentAircraft != null) {
-          fileWriter.write("CURRENTLY SELECTED AIRCRAFT: " + currentAircraft.getId() + " m\n");
+          fileWriter.write("CURRENTLY SELECTED AIRCRAFT: " + currentAircraft.getId());
           fileWriter.write("Blast protection: " + currentAircraft.getBlastProtection() + " m\n");
 
           fileWriter.write("\n");
@@ -172,9 +172,9 @@ public class MainController extends BaseController {
 
       for (Obstacle obstacle : state.obstacleListProperty()) {
         fileWriter.write("*OBSTACLE*: " + obstacle.getName() + "\n");
-        fileWriter.write("Height: " + obstacle.getHeight() + "\n");
-        fileWriter.write("Length: " + obstacle.getLength() + "\n");
-        fileWriter.write("Distance from center-line: " + obstacle.getCenterline() + "\n");
+        fileWriter.write("Height: " + obstacle.getHeight() + "m\n");
+        fileWriter.write("Length: " + obstacle.getLength() + "m\n");
+        fileWriter.write("Distance from center-line: " + obstacle.getCenterline() + "m\n");
 
         fileWriter.write("\n");
       }
@@ -186,7 +186,7 @@ public class MainController extends BaseController {
 
       for (Aircraft aircraft : state.aircraftListProperty()) {
         fileWriter.write("*AIRCRAFT*: " + aircraft.getId() + "\n");
-        fileWriter.write("Blast Protection: " + aircraft.getBlastProtection() + "\n");
+        fileWriter.write("Blast Protection: " + aircraft.getBlastProtection() + "m\n");
 
         fileWriter.write("\n");
       }

@@ -32,7 +32,7 @@ public class OptionsController extends BaseController {
     logger.info("Building Options View...");
 
     stage.setResizable(false);
-    stage.setTitle("Options");
+    stage.setTitle("AVIA - Options");
 
     buildScene("/views/OptionsView.fxml");
 

@@ -308,6 +308,7 @@ public class VisPanel extends StackPane {
     var alsTocsColour = Color.valueOf(colours[12]);
     var resaColour = Color.valueOf(colours[13]);
     var safetyDistColour = Color.valueOf(colours[14]);
+    var legendColour = Color.valueOf(colours[15]);
 
     // TODO: disable rotating
 
@@ -413,7 +414,7 @@ public class VisPanel extends StackPane {
     if (ctoda > 0) {
       double ctodaLengthPx = (ctoda / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayEndX - ctodaLengthPx : runwayStartX - rightClearwayLengthPx;
-      drawDistanceLegend(gc, "TODA= " + ctoda + " m", Color.BLACK,
+      drawDistanceLegend(gc, "TODA= " + ctoda + " m", legendColour,
         startX, runwayEndY - 500, ctodaLengthPx, 500);
     }
 
@@ -424,7 +425,7 @@ public class VisPanel extends StackPane {
     if (ctora > 0) {
       double ctoraLengthPx = (ctora / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX - ctoraLengthPx : runwayStartX;
-      drawDistanceLegend(gc, "TORA= " + ctora + " m", Color.BLACK,
+      drawDistanceLegend(gc, "TORA= " + ctora + " m", legendColour,
         startX, runwayEndY - 200, ctoraLengthPx, 200);
     }
 
@@ -435,7 +436,7 @@ public class VisPanel extends StackPane {
     if (clda > 0) {
       double cldaLengthPx = (clda / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX - cldaLengthPx : runwayStartX;
-      drawDistanceLegend(gc, "LDA= " + clda + " m", Color.BLACK, startX, runwayEndY - 300, cldaLengthPx, 300);
+      drawDistanceLegend(gc, "LDA= " + clda + " m", legendColour, startX, runwayEndY - 300, cldaLengthPx, 300);
     }
 
     // Draw casda
@@ -445,7 +446,7 @@ public class VisPanel extends StackPane {
     if (casda > 0) {
       double casdaLengthPx = (casda / toda) * runwayLengthPx;
       double startX = drawLegendFromLeft ? runwayBodyEndX + stopwayLengthPx - casdaLengthPx : runwayStartX - rightStopwayLengthPx;
-      drawDistanceLegend(gc, "ASDA= " + casda + " m", Color.BLACK, startX,
+      drawDistanceLegend(gc, "ASDA= " + casda + " m", legendColour, startX,
         runwayEndY - 400, casdaLengthPx, 400);
     }
 
@@ -731,12 +732,14 @@ public class VisPanel extends StackPane {
     }
 
     //A variable threshold parameter
-    var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getTora());
-    var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getTora());
+    var thresh = 0.1 + 0.8 * (runway.getThreshold() / runway.getLda());
+    var opthresh = 0.9 - 0.8 * (runway.getThreshold() / runway.getLda());
     var forLDA = thresh;
+
     if (leftT) {
       forLDA = opthresh;
     }
+
     //Add a threshold if it exists
     if (threshold != 0) {
       gc.setLineWidth(1.5);
@@ -769,26 +772,34 @@ public class VisPanel extends StackPane {
     gc.setFill(stopwayColour);
     //Write metrics over threshold and draw rectangles
     if (leftT) {
+
       if (otherRunway != null && otherRunway.getStopway() != 0) {
         gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
+      }
+      if (otherRunway != null) {
         gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * (stopwayS + 0.01), ch * 0.38);
       }
+
       if (stopway != 0) {
         stopwayPar -= stopwayW;
         gc.strokeRect(cw * 0.03, ch * 0.43, cw * stopwayW, ch * boxHeight);
-        gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
       }
+      gc.fillText("Stopway" + "\n" + stopway + "m", cw * 0.03, ch * 0.38);
+
     } else {
       if (stopway != 0) {
         stopwayPar += stopwayW;
         gc.strokeRect(cw * stopwayS, ch * 0.43, cw * stopwayW, ch * boxHeight);
-        gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
       }
+      gc.fillText("Stopway" + "\n" + stopway + "m", cw * (stopwayS + 0.01), ch * 0.38);
+
       if (otherRunway != null && otherRunway.getStopway() != 0) {
         gc.strokeRect(cw * 0.02, ch * 0.43, cw * stopwayW, ch * boxHeight);
-        gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
-
       }
+      if (otherRunway != null) {
+        gc.fillText("Stopway" + "\n" + otherRunway.getStopway() + "m", cw * 0.03, ch * 0.38);
+      }
+
     }
 
     //Clearway on runway end
@@ -810,11 +821,13 @@ public class VisPanel extends StackPane {
         } else {
           gc.strokeRect(cw * rectS, ch * rectH, cw * 0.07, ch * rectHeight);
         }
+      }
+      if (otherRunway != null) {
         gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * 0.91, ch * txtHeight);
       }
     } else {
+      double temp = 0.01;
       if (otherRunway != null && otherRunway.getClearway() != 0) {
-        double temp;
         if (otherRunway.getClearway() < otherRunway.getStopway()) {
           gc.strokeRect(cw * 0.04, ch * rectH, cw * 0.06, ch * rectHeight);
           temp = 0.04;
@@ -825,6 +838,8 @@ public class VisPanel extends StackPane {
           gc.strokeRect(cw * 0.02, ch * rectH, cw * 0.07, ch * rectHeight);
           temp = 0.02;
         }
+      }
+      if (otherRunway != null) {
         gc.fillText("Clearway" + "\n" + otherRunway.getClearway() + "m", cw * temp, ch * txtHeight);
       }
     }
@@ -843,7 +858,7 @@ public class VisPanel extends StackPane {
           clearwayPar -= 0.07;
         }
         //Write metrics over threshold
-        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.09, ch * txtHeight);
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.02, ch * txtHeight);
       } else {
         if (clearway < stopway) {
           gc.strokeRect(cw * rectS, ch * rectH, cw * 0.05, ch * rectHeight);
@@ -858,7 +873,15 @@ public class VisPanel extends StackPane {
         //Write metrics over threshold
         gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * txtHeight);
       }
+    } else {
+      if (leftT) {
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.02, ch * txtHeight);
+      } else {
+        gc.fillText("Clearway" + "\n" + clearway + "m", cw * 0.91, ch * txtHeight);
+      }
     }
+
+
     gc.setFont(new Font(20));
 
     //Add a marking about the Cleared and Graded area
@@ -892,12 +915,27 @@ public class VisPanel extends StackPane {
     //Location of the obstacle as a ratio
     double obsLocation;
     if (leftT) {
-      obsLocation = cw * (0.9 - (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora());
+      var m = 0.9 - (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
+
+      while (m < 0.1) {
+        m += 0.1;
+      }
+
+      obsLocation = cw * m;
+
     } else {
-      obsLocation = cw * (0.1 + (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora());
+
+      var n = 0.1 + (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
+
+      while (n > 0.9) {
+        n -= 0.1;
+      }
+
+      obsLocation = cw * n;
+
     }
-    
-    boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda() 
+
+    boolean isRedeclared = runway.getAsda() != runway.getCasda() || runway.getTora() != runway.getCtora() || runway.getToda()
       != runway.getCtoda() || runway.getLda() != runway.getClda();
 
     //Displays LDA value and adjusts length to current LDA. The start of the line also depends on the threshold of the runway.
@@ -1053,7 +1091,7 @@ public class VisPanel extends StackPane {
 
     gc.setFont(new Font(20));
 
-    //Picked an object
+    //Picked an obstacle
     if (runway.getCurrentObstacle() != null) {
 
       if (runway.getObsDistFromThresh() < -60 || Math.abs(runway.getCurrentObstacle().getCenterline()) > 75) {
@@ -1067,18 +1105,15 @@ public class VisPanel extends StackPane {
         gc.setFill(obstacleColour);
         gc.setStroke(obstacleColour);
 
-        var offsetX = (runway.getObsDistFromThresh() + runway.getThreshold()) / runway.getTora();
         double offsetY = -runway.getCurrentObstacle().getCenterline() / 1000;
-
-        logger.info("This is offsetX " + offsetX);
 
         //Draw obstacle as a dot to pinpoint location
         if (leftT) {
-          gc.strokeOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
-          gc.fillOval(cw * (0.9 - offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.strokeOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
         } else {
-          gc.strokeOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
-          gc.fillOval(cw * (0.1 + offsetX), ch * (0.475 + offsetY), 10, 10);
+          gc.strokeOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
+          gc.fillOval(obsLocation, ch * (0.475 + offsetY), 10, 10);
         }
       }
     }
