@@ -1,5 +1,6 @@
 package uk.ac.soton.comp2211.team33.models;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import org.apache.logging.log4j.LogManager;
@@ -39,6 +40,11 @@ public class Runway {
    * TOCS constant of 50m, ALS constant of 50m, and strip end constant of 60m.
    */
   private static final double tocs = 50, als = 50, stripEnd = 60;
+
+  /**
+   * Whether the calculation mode is towards obstacle
+   */
+  private final SimpleBooleanProperty calcTowards = new SimpleBooleanProperty(true);
 
   /**
    * The compass heading of the runway
@@ -283,5 +289,13 @@ public class Runway {
 
   public SimpleDoubleProperty obsDistFromThreshProperty() {
     return obsDistFromThresh;
+  }
+
+  public boolean isCalcTowards() {
+    return calcTowards.get();
+  }
+
+  public void setIsCalcTowards(boolean isTowards) {
+    calcTowards.set(isTowards);
   }
 }

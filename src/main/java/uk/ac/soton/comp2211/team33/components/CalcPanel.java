@@ -1,6 +1,5 @@
 package uk.ac.soton.comp2211.team33.components;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,8 +42,6 @@ public class CalcPanel extends AnchorPane {
   @FXML
   private DropdownField calcMode;
 
-  private SimpleBooleanProperty calcTowards = new SimpleBooleanProperty(true);
-
   @FXML
   private Button switchNotifications;
 
@@ -57,8 +54,6 @@ public class CalcPanel extends AnchorPane {
     this.stage = stage;
     this.state = state;
     this.runway = runway;
-
-    this.state.calcTowardsProperty().bind(calcTowards);
 
     ProjectHelpers.renderRoot("/components/CalcPanel.fxml", this, this);
 
@@ -121,7 +116,7 @@ public class CalcPanel extends AnchorPane {
     calcMode.setValue(CALC_TOWARDS);
 
     calcMode.valueProperty().addListener((obVal, oldVal, newVal) -> {
-      calcTowards.set(newVal.equals(CALC_TOWARDS));
+      runway.setIsCalcTowards(newVal.equals(CALC_TOWARDS));
       recalculateRunwayValues();
       notifyRecalculation();
     });
@@ -139,7 +134,7 @@ public class CalcPanel extends AnchorPane {
   }
 
   private void recalculateRunwayValues() {
-    if (calcTowards.get()) {
+    if (runway.isCalcTowards()) {
       if (runway.getCurrentObstacle() == null) {
         calcBreakdown.setText(Calculator.resetCalculationsPP(runway));
       } else {
@@ -160,7 +155,7 @@ public class CalcPanel extends AnchorPane {
   private void notifyRecalculation() {
     if (!switchNoti) return;
 
-    if (calcTowards.get()) {
+    if (runway.isCalcTowards()) {
       if (runway.getCurrentObstacle() == null) {
         new NotiController(ProjectHelpers.createModalStage(stage), state, "Runway values have been reset.");
       } else {
