@@ -79,10 +79,10 @@ public class Runway {
     this.asda = asda;
     this.lda = lda;
 
-    if (resa < 240) {
-      logger.info("RESA value below 240m. Setting it as 240m minimum value...");
-      this.resa = 240;
-      cresa = new SimpleDoubleProperty(240);
+    if (resa < 60) {
+      logger.info("RESA value below 60m. Setting it as 60m minimum value...");
+      this.resa = 60;
+      cresa = new SimpleDoubleProperty(60);
     } else {
       this.resa = resa;
       cresa = new SimpleDoubleProperty(resa);
