@@ -18,12 +18,12 @@
       <SeparatorMenuItem/>
       <MenuItem text="Print..." onAction="#onPrint"/>
     </Menu>
-    <Menu text="Help">
-      <MenuItem text="About..."/>
-    </Menu>
-<!--    <Menu text="View">-->
-<!--        <MenuItem text="Preferences" onAction="#onPreferences"/>-->
+<!--    <Menu text="Help">-->
+<!--      <MenuItem text="User Manual" onAction="#onManualRequest"/>-->
 <!--    </Menu>-->
+    <Menu text="View">
+        <MenuItem text="Preferences" onAction="#onPreferences"/>
+    </Menu>
   </MenuBar>
   <TabPane fx:id="runwayTabs" tabMaxHeight="20.0" tabMinWidth="100.0" VBox.vgrow="ALWAYS"/>
 </VBox>
