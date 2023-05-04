@@ -18,9 +18,9 @@
       <SeparatorMenuItem/>
       <MenuItem text="Print..." onAction="#onPrint"/>
     </Menu>
-    <Menu text="Help">
-      <MenuItem text="About..."/>
-    </Menu>
+<!--    <Menu text="Help">-->
+<!--      <MenuItem text="User Manual" onAction="#onManualRequest"/>-->
+<!--    </Menu>-->
     <Menu text="View">
         <MenuItem text="Preferences" onAction="#onPreferences"/>
     </Menu>
